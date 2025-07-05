@@ -160,7 +160,7 @@ pub const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
 /// Initialize the Buhera framework with default configuration
 ///
 /// This function sets up the complete VPOS stack with default parameters
-/// suitable for most molecular-scale computational tasks.
+/// suitable for most biological quantum processing tasks.
 ///
 /// # Returns
 ///
@@ -172,7 +172,7 @@ pub const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
 /// use buhera::init_framework;
 ///
 /// let kernel = init_framework();
-/// // The system is now ready for molecular computation
+/// // The system is now ready for biological quantum processing
 /// ```
 pub fn init_framework() -> BuheraResult<VirtualProcessorKernel> {
     // Initialize logging
@@ -183,7 +183,7 @@ pub fn init_framework() -> BuheraResult<VirtualProcessorKernel> {
     
     tracing::info!("Buhera Virtual Processor Architectures framework initialized");
     tracing::info!("Version: {}", VERSION);
-    tracing::info!("Ready for molecular-scale computation");
+    tracing::info!("Ready for biological quantum processing");
     
     Ok(kernel)
 }
@@ -191,7 +191,7 @@ pub fn init_framework() -> BuheraResult<VirtualProcessorKernel> {
 /// Initialize the framework with custom configuration
 ///
 /// This function allows for advanced configuration of the VPOS system
-/// for specialized molecular computational tasks.
+/// for specialized biological quantum processing tasks.
 ///
 /// # Arguments
 ///
@@ -210,6 +210,7 @@ pub fn init_framework() -> BuheraResult<VirtualProcessorKernel> {
 ///     .quantum_coherence_enabled(true)
 ///     .fuzzy_logic_precision(0.001)
 ///     .molecular_substrate_type("synthetic_biology")
+///     .neural_pattern_transfer_enabled(true)
 ///     .build();
 ///
 /// let kernel = init_framework_with_config(config)?;
