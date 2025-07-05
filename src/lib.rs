@@ -139,6 +139,9 @@ pub mod config;
 /// Utilities and helper functions
 pub mod utils;
 
+/// Borgia module for integrating BMD systems
+pub mod borgia;
+
 // Re-export key types for convenience
 pub use error::{BuheraError, BuheraResult};
 pub use vpos::VirtualProcessorKernel;
@@ -150,6 +153,11 @@ pub use neural_transfer::NeuralPatternTransfer;
 pub use bmd::BMDCatalyst;
 pub use semantic::SemanticProcessor;
 pub use foundry::MolecularFoundry;
+pub use borgia::{
+    IntegratedBMDSystem, BMDScale, InformationCatalyst, MolecularStructure, TurbulanceCompiler,
+    CrossScaleAnalysisResult, NavigationStrategy, ConsciousnessAnalysisResult,
+    NoiseEnhancedResult, MolecularNavigationResult
+};
 
 /// Current version of the Buhera framework
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
