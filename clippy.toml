@@ -1,0 +1,74 @@
+# Clippy configuration for Buhera Virtual Processor Architectures
+# Optimized for scientific computing, theoretical frameworks, and complex systems
+
+# Enable all clippy warnings by default
+warn-on-all-wildcard-imports = true
+
+# Disable certain pedantic lints that may be too restrictive for scientific code
+too-many-arguments = "allow"  # Scientific functions often have many parameters
+too-many-lines = "allow"      # Complex algorithms may be naturally long
+module-inception = "allow"    # Deep module nesting is common in scientific frameworks
+similar-names = "allow"       # Mathematical notation often uses similar variable names
+float-cmp = "allow"          # Fuzzy logic requires float comparisons
+cast-precision-loss = "allow" # Quantum and molecular simulations may require precision trade-offs
+
+# Enable specific lints that are important for this project
+missing-docs-in-private-items = "warn"  # Documentation is crucial for theoretical frameworks
+undocumented-unsafe-blocks = "deny"     # Safety documentation is critical
+unwrap-used = "deny"                    # Avoid panics in production molecular systems
+expect-used = "warn"                    # Prefer proper error handling
+panic = "deny"                          # Never panic in molecular substrate operations
+todo = "warn"                           # Track incomplete implementations
+unimplemented = "deny"                  # Ensure all interfaces are implemented
+unreachable = "deny"                    # Quantum states should never be unreachable
+
+# Performance lints important for molecular-scale computation
+inefficient-to-string = "warn"
+string-add = "warn"
+string-add-assign = "warn"
+rc-buffer = "warn"
+redundant-clone = "warn"
+
+# Correctness lints crucial for theoretical frameworks
+correctness = "deny"
+suspicious = "deny"
+complexity = "warn"
+perf = "warn"
+style = "warn"
+pedantic = "warn"
+nursery = "warn"
+cargo = "warn"
+
+# Allow certain complexity in scientific computing
+cognitive-complexity-threshold = 50     # Complex algorithms are acceptable
+type-complexity-threshold = 500         # Quantum types can be complex
+too-many-bool-params = "allow"         # Boolean parameters are common in configurations
+
+# Naming conventions for scientific code
+enum-variant-names = "allow"           # Quantum states may have similar prefixes
+module-name-repetitions = "allow"      # Module names often repeat in scientific contexts
+struct-excessive-bools = "allow"       # Configuration structures may have many booleans
+
+# Documentation requirements
+missing-docs = "warn"                  # All public items should be documented
+missing-safety-doc = "deny"            # Safety documentation is mandatory
+missing-panics-doc = "warn"            # Document potential panics
+missing-errors-doc = "warn"            # Document possible errors
+
+# Allow certain patterns common in scientific computing
+single-match-else = "allow"            # Pattern matching is clearer than if-else
+single-match = "allow"                 # Single match can be clearer
+match-bool = "allow"                   # Boolean matching is sometimes clearer
+if-not-else = "allow"                  # Scientific logic may benefit from this pattern
+bool-comparison = "allow"              # Explicit boolean comparisons can be clearer
+
+# Mathematical and scientific computing allowances
+excessive-precision = "allow"          # High precision is required for molecular calculations
+unreadable-literal = "allow"          # Scientific constants may be long
+approx-constant = "allow"              # Mathematical constants are fine
+float-equality-without-abs = "allow"   # Fuzzy logic requires float equality
+manual-range-contains = "allow"        # Mathematical ranges may be explicit
+
+# Quantum computing specific allowances
+redundant-field-names = "allow"        # Quantum field names often match parameter names
+trivially-copy-pass-by-ref = "allow"   # Quantum states may be small but logically references

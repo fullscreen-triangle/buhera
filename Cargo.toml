@@ -1,0 +1,157 @@
+[package]
+name = "buhera"
+version = "0.1.0"
+edition = "2021"
+authors = ["Buhera Research Team"]
+description = "Buhera Virtual Processor Architectures: A Theoretical Framework for Molecular-Scale Computational Substrates"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/your-org/buhera"
+keywords = ["quantum-computing", "molecular-computing", "fuzzy-logic", "bioinformatics", "virtual-processors"]
+categories = ["science", "simulation", "algorithms"]
+
+[lib]
+name = "buhera"
+path = "src/lib.rs"
+
+[[bin]]
+name = "buhera"
+path = "src/main.rs"
+
+[[bin]]
+name = "vpos"
+path = "src/bin/vpos.rs"
+
+[[bin]]
+name = "molecular-foundry"
+path = "src/bin/molecular_foundry.rs"
+
+[dependencies]
+# Core dependencies
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+clap = { version = "4.0", features = ["derive"] }
+anyhow = "1.0"
+thiserror = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Mathematical and scientific computing
+nalgebra = "0.32"
+ndarray = "0.15"
+num-complex = "0.4"
+statrs = "0.16"
+rand = "0.8"
+rand_distr = "0.4"
+
+# Fuzzy logic and approximate computing
+# Note: We'll implement custom fuzzy logic as no comprehensive crate exists
+fuzzy-logic = { version = "0.1", optional = true }
+
+# Quantum computing simulation
+# Note: These are for simulation purposes as real quantum hardware isn't available
+quantum-simulator = { version = "0.1", optional = true }
+
+# Biological and molecular simulation
+bio = "1.4"
+petgraph = "0.6"
+
+# Semantic processing and NLP
+candle-core = "0.3"
+candle-nn = "0.3"
+candle-transformers = "0.3"
+tokenizers = "0.15"
+
+# Neural network integration
+tch = { version = "0.13", optional = true }
+
+# Async and concurrency
+async-trait = "0.1"
+futures = "0.3"
+crossbeam = "0.8"
+
+# Networking and communication (for distributed BMD processing)
+reqwest = { version = "0.11", features = ["json"] }
+hyper = { version = "0.14", features = ["full"] }
+tonic = "0.10"
+prost = "0.12"
+
+# Data structures and algorithms
+hashbrown = "0.14"
+indexmap = "2.0"
+smallvec = "1.11"
+
+# Time and scheduling
+chrono = { version = "0.4", features = ["serde"] }
+cron = "0.12"
+
+# Configuration and environment
+config = "0.13"
+dotenvy = "0.15"
+
+# Development and testing
+criterion = { version = "0.5", optional = true }
+
+# Additional dependencies for compilation
+uuid = { version = "1.6", features = ["v4"] }
+toml = "0.8"
+
+[dev-dependencies]
+tokio-test = "0.4"
+proptest = "1.0"
+criterion = "0.5"
+tempfile = "3.8"
+pretty_assertions = "1.4"
+
+[features]
+default = ["fuzzy-logic", "quantum-simulation", "neural-networks"]
+fuzzy-logic = ["dep:fuzzy-logic"]
+quantum-simulation = ["dep:quantum-simulator"]
+neural-networks = ["dep:tch"]
+benchmarks = ["dep:criterion"]
+full = ["fuzzy-logic", "quantum-simulation", "neural-networks", "benchmarks"]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true
+overflow-checks = true
+
+[profile.test]
+opt-level = 1
+debug = true
+
+[workspace]
+members = [
+    "crates/vpos-kernel",
+    "crates/molecular-substrate",
+    "crates/fuzzy-state",
+    "crates/quantum-coherence",
+    "crates/neural-integration",
+    "crates/telepathic-comm",
+    "crates/bmd-catalyst",
+    "crates/semantic-processing",
+    "crates/molecular-foundry",
+    "examples/basic-demo",
+    "examples/bmd-processor",
+    "examples/fuzzy-computation",
+    "examples/quantum-coherence"
+]
+
+[workspace.dependencies]
+# Shared dependencies across workspace
+buhera-core = { path = "crates/vpos-kernel" }
+buhera-molecular = { path = "crates/molecular-substrate" }
+buhera-fuzzy = { path = "crates/fuzzy-state" }
+buhera-quantum = { path = "crates/quantum-coherence" }
+buhera-neural = { path = "crates/neural-integration" }
+buhera-telepathic = { path = "crates/telepathic-comm" }
+buhera-bmd = { path = "crates/bmd-catalyst" }
+buhera-semantic = { path = "crates/semantic-processing" }
+buhera-foundry = { path = "crates/molecular-foundry" }

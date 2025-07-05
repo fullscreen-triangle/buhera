@@ -1,0 +1,251 @@
+//! # Buhera Virtual Processor Architectures
+//!
+//! A theoretical framework for molecular-scale computational substrates that transcends
+//! traditional semiconductor limitations through virtual processor architectures.
+//!
+//! This crate implements the core components of the Buhera system:
+//! - Virtual Processing Operating System (VPOS)
+//! - Molecular substrate interfaces
+//! - Fuzzy digital state management
+//! - Quantum coherence management
+//! - Biological Maxwell Demon (BMD) information catalysis
+//! - Semantic information processing
+//! - Neural network integration
+//! - Neural pattern transfer protocols
+//!
+//! ## Architecture Overview
+//!
+//! The Buhera system operates through a layered architecture:
+//!
+//! ```text
+//! ┌─────────────────────────────────────────────────────────────────┐
+//! │                    Application Layer                            │
+//! ├─────────────────────────────────────────────────────────────────┤
+//! │              Semantic Processing Framework                      │
+//! ├─────────────────────────────────────────────────────────────────┤
+//! │            BMD Information Catalyst Services                    │
+//! ├─────────────────────────────────────────────────────────────────┤
+//! │             Neural Pattern Transfer Stack                       │
+//! ├─────────────────────────────────────────────────────────────────┤
+//! │              Neural Network Integration                         │
+//! ├─────────────────────────────────────────────────────────────────┤
+//! │              Quantum Coherence Layer                           │
+//! ├─────────────────────────────────────────────────────────────────┤
+//! │            Fuzzy State Management                              │
+//! ├─────────────────────────────────────────────────────────────────┤
+//! │           Molecular Substrate Interface                        │
+//! ├─────────────────────────────────────────────────────────────────┤
+//! │            Virtual Processor Kernel                           │
+//! └─────────────────────────────────────────────────────────────────┘
+//! ```
+//!
+//! ## Getting Started
+//!
+//! ```rust
+//! use buhera::vpos::VirtualProcessorKernel;
+//! use buhera::molecular::MolecularSubstrate;
+//! use buhera::fuzzy::FuzzyStateManager;
+//!
+//! // Initialize the VPOS kernel
+//! let kernel = VirtualProcessorKernel::new();
+//!
+//! // Create a molecular substrate
+//! let substrate = MolecularSubstrate::synthetic_biology_config();
+//!
+//! // Initialize fuzzy state management
+//! let fuzzy_manager = FuzzyStateManager::new();
+//!
+//! // The system is now ready for molecular-scale computation
+//! ```
+//!
+//! ## Key Features
+//!
+//! - **Virtual Processors**: Computational abstractions operating through molecular interactions
+//! - **Fuzzy Digital Logic**: Continuous-valued computation transcending binary limitations
+//! - **Quantum Coherence**: Biological quantum processing properties
+//! - **BMD Information Catalysis**: Entropy reduction through pattern recognition
+//! - **Semantic Processing**: Meaning-preserving computational transformations
+//! - **Neural Integration**: Biological neural network computational paradigms
+//! - **Neural Pattern Transfer**: Direct neural-to-neural information transfer
+//!
+//! ## Mathematical Foundation
+//!
+//! The system operates on several key mathematical principles:
+//!
+//! ### BMD Information Catalysis
+//!
+//! ```text
+//! iCat_comp = I_input ∘ I_output
+//! ```
+//!
+//! ### Fuzzy Digital States
+//!
+//! ```text
+//! Gate_state(t) = f(input_history, process_context, t) ∈ [0,1]
+//! ```
+//!
+//! ### Quantum Coherence
+//!
+//! ```text
+//! τ_coherence = ℏ / (k_B * T_eff)
+//! ```
+
+#![deny(missing_docs)]
+#![deny(unsafe_code)]
+#![warn(clippy::all)]
+#![warn(clippy::pedantic)]
+#![warn(clippy::nursery)]
+#![warn(clippy::cargo)]
+#![allow(clippy::module_name_repetitions)]
+#![allow(clippy::too_many_arguments)]
+#![allow(clippy::too_many_lines)]
+
+/// Virtual Processing Operating System (VPOS) - The core kernel layer
+pub mod vpos;
+
+/// Molecular substrate interface and management
+pub mod molecular;
+
+/// Fuzzy digital state management and computation
+pub mod fuzzy;
+
+/// Quantum coherence management and biological quantum processing
+pub mod quantum;
+
+/// Neural network integration and biological computation paradigms
+pub mod neural;
+
+/// Neural pattern transfer and direct neural interfaces
+pub mod neural_transfer;
+
+/// Biological Maxwell Demon (BMD) information catalysis services
+pub mod bmd;
+
+/// Semantic information processing and meaning-preserving computation
+pub mod semantic;
+
+/// Molecular foundry system for virtual processor synthesis
+pub mod foundry;
+
+/// Mathematical foundations and computational primitives
+pub mod math;
+
+/// Error types and result handling
+pub mod error;
+
+/// Configuration and system settings
+pub mod config;
+
+/// Utilities and helper functions
+pub mod utils;
+
+// Re-export key types for convenience
+pub use error::{BuheraError, BuheraResult};
+pub use vpos::VirtualProcessorKernel;
+pub use molecular::MolecularSubstrate;
+pub use fuzzy::FuzzyStateManager;
+pub use quantum::QuantumCoherenceLayer;
+pub use neural::NeuralIntegration;
+pub use neural_transfer::NeuralPatternTransfer;
+pub use bmd::BMDCatalyst;
+pub use semantic::SemanticProcessor;
+pub use foundry::MolecularFoundry;
+
+/// Current version of the Buhera framework
+pub const VERSION: &str = env!("CARGO_PKG_VERSION");
+
+/// Framework description
+pub const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
+
+/// Initialize the Buhera framework with default configuration
+///
+/// This function sets up the complete VPOS stack with default parameters
+/// suitable for most molecular-scale computational tasks.
+///
+/// # Returns
+///
+/// A configured `VirtualProcessorKernel` ready for operation
+///
+/// # Examples
+///
+/// ```rust
+/// use buhera::init_framework;
+///
+/// let kernel = init_framework();
+/// // The system is now ready for molecular computation
+/// ```
+pub fn init_framework() -> BuheraResult<VirtualProcessorKernel> {
+    // Initialize logging
+    tracing_subscriber::fmt::init();
+    
+    // Create the kernel with default configuration
+    let kernel = VirtualProcessorKernel::new()?;
+    
+    tracing::info!("Buhera Virtual Processor Architectures framework initialized");
+    tracing::info!("Version: {}", VERSION);
+    tracing::info!("Ready for molecular-scale computation");
+    
+    Ok(kernel)
+}
+
+/// Initialize the framework with custom configuration
+///
+/// This function allows for advanced configuration of the VPOS system
+/// for specialized molecular computational tasks.
+///
+/// # Arguments
+///
+/// * `config` - Custom configuration parameters
+///
+/// # Returns
+///
+/// A configured `VirtualProcessorKernel` with custom settings
+///
+/// # Examples
+///
+/// ```rust
+/// use buhera::{init_framework_with_config, config::BuheraConfig};
+///
+/// let config = BuheraConfig::builder()
+///     .quantum_coherence_enabled(true)
+///     .fuzzy_logic_precision(0.001)
+///     .molecular_substrate_type("synthetic_biology")
+///     .build();
+///
+/// let kernel = init_framework_with_config(config)?;
+/// ```
+pub fn init_framework_with_config(config: config::BuheraConfig) -> BuheraResult<VirtualProcessorKernel> {
+    // Initialize logging with custom configuration
+    tracing_subscriber::fmt::init();
+    
+    // Create the kernel with custom configuration
+    let kernel = VirtualProcessorKernel::with_config(config)?;
+    
+    tracing::info!("Buhera framework initialized with custom configuration");
+    tracing::info!("Version: {}", VERSION);
+    tracing::info!("Configuration: {:?}", kernel.config());
+    
+    Ok(kernel)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_framework_initialization() {
+        let result = init_framework();
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn test_version_defined() {
+        assert!(!VERSION.is_empty());
+    }
+
+    #[test]
+    fn test_description_defined() {
+        assert!(!DESCRIPTION.is_empty());
+        assert!(DESCRIPTION.contains("Buhera"));
+    }
+} 
