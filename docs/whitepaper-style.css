@@ -1,0 +1,331 @@
+/* Professional Technical Whitepaper Styling */
+
+/* Page Layout */
+@page {
+    size: A4;
+    margin: 1in;
+    counter-increment: page;
+    
+    @top-center {
+        content: "Virtual Processing Operating System: Technical Specification";
+        font-size: 10pt;
+        font-family: "Times New Roman", serif;
+    }
+    
+    @bottom-center {
+        content: "Page " counter(page);
+        font-size: 10pt;
+        font-family: "Times New Roman", serif;
+    }
+}
+
+/* Typography */
+body {
+    font-family: "Times New Roman", serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #333;
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: justify;
+}
+
+/* Headings */
+h1 {
+    font-size: 18pt;
+    font-weight: bold;
+    margin-top: 24pt;
+    margin-bottom: 12pt;
+    page-break-after: avoid;
+    text-align: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 8pt;
+}
+
+h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 18pt;
+    margin-bottom: 9pt;
+    page-break-after: avoid;
+}
+
+h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+    page-break-after: avoid;
+}
+
+h4 {
+    font-size: 11pt;
+    font-weight: bold;
+    margin-top: 9pt;
+    margin-bottom: 6pt;
+    page-break-after: avoid;
+}
+
+/* Abstract and Keywords */
+.abstract {
+    font-style: italic;
+    margin: 24pt 0;
+    padding: 12pt;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+/* Paragraphs */
+p {
+    margin-bottom: 6pt;
+    text-indent: 0;
+}
+
+/* Lists */
+ul, ol {
+    margin: 6pt 0;
+    padding-left: 24pt;
+}
+
+li {
+    margin-bottom: 3pt;
+}
+
+/* Mathematical Expressions */
+.math {
+    font-family: "Computer Modern", "Latin Modern Math", serif;
+    font-size: 10pt;
+}
+
+.math.display {
+    text-align: center;
+    margin: 12pt 0;
+    page-break-inside: avoid;
+}
+
+.math.inline {
+    font-size: inherit;
+}
+
+/* Code Blocks */
+pre {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 8pt;
+    font-family: "Courier New", monospace;
+    font-size: 9pt;
+    line-height: 1.4;
+    page-break-inside: avoid;
+    overflow-x: auto;
+}
+
+code {
+    font-family: "Courier New", monospace;
+    font-size: 9pt;
+    background-color: #f5f5f5;
+    padding: 1pt 2pt;
+    border-radius: 2px;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12pt 0;
+    page-break-inside: avoid;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 6pt 8pt;
+    text-align: left;
+    font-size: 10pt;
+}
+
+th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+/* Figures and Diagrams */
+.figure {
+    text-align: center;
+    margin: 12pt 0;
+    page-break-inside: avoid;
+}
+
+.figure img {
+    max-width: 100%;
+    height: auto;
+}
+
+.figure .caption {
+    font-size: 10pt;
+    font-style: italic;
+    margin-top: 6pt;
+}
+
+/* Block Quotes */
+blockquote {
+    margin: 12pt 24pt;
+    padding: 6pt 12pt;
+    border-left: 3px solid #ccc;
+    font-style: italic;
+    background-color: #f9f9f9;
+}
+
+/* References */
+.references {
+    font-size: 10pt;
+    line-height: 1.4;
+}
+
+.references ol {
+    padding-left: 18pt;
+}
+
+.references li {
+    margin-bottom: 6pt;
+}
+
+/* Page Breaks */
+.page-break {
+    page-break-before: always;
+}
+
+.avoid-break {
+    page-break-inside: avoid;
+}
+
+/* Two-column layout for specific sections */
+.two-column {
+    column-count: 2;
+    column-gap: 24pt;
+    column-rule: 1px solid #ccc;
+}
+
+/* Emphasis */
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+/* Links */
+a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Print-specific rules */
+@media print {
+    body {
+        font-size: 10pt;
+        line-height: 1.5;
+    }
+    
+    h1 {
+        font-size: 16pt;
+    }
+    
+    h2 {
+        font-size: 13pt;
+    }
+    
+    h3 {
+        font-size: 11pt;
+    }
+    
+    .no-print {
+        display: none;
+    }
+    
+    a[href]:after {
+        content: "";
+    }
+}
+
+/* Section numbering */
+body {
+    counter-reset: section subsection subsubsection;
+}
+
+h2:before {
+    counter-increment: section;
+    content: counter(section) ". ";
+}
+
+h3:before {
+    counter-increment: subsection;
+    content: counter(section) "." counter(subsection) " ";
+}
+
+h4:before {
+    counter-increment: subsubsection;
+    content: counter(section) "." counter(subsection) "." counter(subsubsection) " ";
+}
+
+/* Performance metrics styling */
+.metrics {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 8pt;
+    margin: 6pt 0;
+}
+
+.metrics-title {
+    font-weight: bold;
+    margin-bottom: 4pt;
+}
+
+/* Mathematical equation numbering */
+.equation {
+    position: relative;
+    text-align: center;
+    margin: 12pt 0;
+}
+
+.equation-number {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10pt;
+}
+
+/* Technical specifications */
+.spec-table {
+    width: 100%;
+    margin: 12pt 0;
+    border-collapse: collapse;
+}
+
+.spec-table th {
+    background-color: #e9ecef;
+    font-weight: bold;
+    padding: 8pt;
+    border: 1px solid #adb5bd;
+}
+
+.spec-table td {
+    padding: 6pt 8pt;
+    border: 1px solid #dee2e6;
+    vertical-align: top;
+}
+
+.spec-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+} 
