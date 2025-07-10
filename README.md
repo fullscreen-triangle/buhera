@@ -1,5 +1,9 @@
 # Buhera Virtual Processor Architectures: A Theoretical Framework for Molecular-Scale Computational Substrates
 
+<p align="center">
+  <img src="assets/img/right-rabbit.png" alt="Logo" width="200"/>
+</p>
+
 **Research Area**: Theoretical Computer Science, Molecular Computing, Quantum Information Processing
 **Keywords**: Virtual processors, molecular substrates, biological Maxwell demons, oscillatory computation, semantic information processing, fuzzy digital architectures, domain-specific optimization
 
