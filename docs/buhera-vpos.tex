@@ -2,33 +2,21 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{mathrsfs}
-\usepackage{geometry}
-\usepackage{hyperref}
-\usepackage{algorithmic}
 \usepackage{amsthm}
-\usepackage{booktabs}
-\usepackage{array}
-\usepackage{mathtools}
+\usepackage{geometry}
 
 % Page geometry
-\geometry{a4paper, margin=0.8in}
+\geometry{a4paper, margin=1in}
 
-% Custom theorem environments
+% Theorem environments
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{axiom}[theorem]{Axiom}
 \newtheorem{principle}[theorem]{Principle}
 
 % Title
-\title{
-    \Large\textbf{Theoretical Foundations of Virtual Quantum Processing Systems}\\
-    \vspace{0.3cm}
-    \normalsize A Mathematical Framework for Molecular-Scale Computational Substrates
-}
+\title{Theoretical Foundations of Virtual Quantum Processing Systems: A Mathematical Framework for Molecular-Scale Computational Substrates}
 
 \author{Kundai Farai Sachikonye}
 \date{}
@@ -56,7 +44,7 @@ where $\mathcal{S}$ is the state space, $\mathcal{I}$ the input space, and $\mat
 \begin{axiom}[Quantum Coherence Preservation]
 Room-temperature quantum coherence persists when:
 \begin{equation}
-T_{2}^* \geq \alpha \cdot T_{operation}
+T_{2}^{*} \geq \alpha \cdot T_{\text{operation}}
 \end{equation}
 where $\alpha \geq 1$ is the coherence safety factor.
 \end{axiom}
@@ -64,7 +52,7 @@ where $\alpha \geq 1$ is the coherence safety factor.
 \begin{axiom}[Information Catalysis Principle]
 Biological Maxwell demon mechanisms satisfy:
 \begin{equation}
-\Delta S_{local} < 0 \Rightarrow \Delta S_{environment} > |\Delta S_{local}|
+\Delta S_{\text{local}} < 0 \Rightarrow \Delta S_{\text{environment}} > |\Delta S_{\text{local}}|
 \end{equation}
 \end{axiom}
 
@@ -93,11 +81,11 @@ where $H$ is the system Hamiltonian and $L_k$ are decoherence operators.
 
 Coherence time is given by:
 \begin{equation}
-T_2^* = \frac{1}{\sum_i \gamma_i}
+T_2^{*} = \frac{1}{\sum_i \gamma_i}
 \end{equation}
 with decoherence suppression:
 \begin{equation}
-\gamma_{suppressed} = \gamma_0 \exp\left(-\frac{E_{protection}}{k_B T}\right)
+\gamma_{\text{suppressed}} = \gamma_0 \exp\left(-\frac{E_{\text{protection}}}{k_B T}\right)
 \end{equation}
 
 \section{Virtual Processing Architecture}
@@ -120,7 +108,7 @@ The virtual processing system operates through nine interconnected layers:
 
 \textbf{Layer 4: Neural Network Integration} - Hybrid learning with molecular contributions:
 \begin{equation}
-\Delta w_{ij} = \eta \cdot \delta_j \cdot x_i + \alpha \cdot \Delta w_{ij}^{prev} + \beta \cdot \mathcal{M}_{molecular}
+\Delta w_{ij} = \eta \cdot \delta_j \cdot x_i + \alpha \cdot \Delta w_{ij}^{\text{prev}} + \beta \cdot \mathcal{M}_{\text{molecular}}
 \end{equation}
 
 \textbf{Layers 5-9}: Communication protocols, information catalysis, semantic processing, framework integration, and application interfaces.
@@ -135,7 +123,7 @@ Virtual processors are classified by substrate:
 \item Type D: Nucleic acid computational circuits
 \end{itemize}
 
-Each operates with characteristic timescale $\tau = 1/k_{substrate}$.
+Each operates with characteristic timescale $\tau = 1/k_{\text{substrate}}$.
 
 \section{Fuzzy Digital Logic Implementation}
 
@@ -143,22 +131,22 @@ Each operates with characteristic timescale $\tau = 1/k_{substrate}$.
 
 A T-norm $T: [0,1]^2 \rightarrow [0,1]$ satisfies commutativity, associativity, monotonicity, and boundary conditions. Common T-norms:
 \begin{align}
-T_{min}(a,b) &= \min(a,b) \\
-T_{prod}(a,b) &= ab \\
-T_{Łukasiewicz}(a,b) &= \max(0, a+b-1)
+T_{\min}(a,b) &= \min(a,b) \\
+T_{\text{prod}}(a,b) &= ab \\
+T_{\text{Lukasiewicz}}(a,b) &= \max(0, a+b-1)
 \end{align}
 
 \subsection{Molecular Implementation}
 
 Conformational states serve as fuzzy variables:
 \begin{equation}
-\mu_{state}(q) = \exp\left(-\frac{|q - q_0|^2}{2\sigma^2}\right)
+\mu_{\text{state}}(q) = \exp\left(-\frac{|q - q_0|^2}{2\sigma^2}\right)
 \end{equation}
 where $q_0$ is the reference state and $\sigma$ controls fuzziness.
 
 Protein conformational changes implement fuzzy operations:
 \begin{equation}
-\mu_{output} = \mathcal{F}(\mu_{input1}, \mu_{input2}, \ldots)
+\mu_{\text{output}} = \mathcal{F}(\mu_{\text{input1}}, \mu_{\text{input2}}, \ldots)
 \end{equation}
 
 \section{Information Catalysis and Pattern Recognition}
@@ -168,7 +156,7 @@ Protein conformational changes implement fuzzy operations:
 \begin{theorem}[Processing Capacity Bound]
 The maximum information processing capacity is:
 \begin{equation}
-I_{max} = \frac{k_B T \ln 2}{\tau_{cycle}}
+I_{\max} = \frac{k_B T \ln 2}{\tau_{\text{cycle}}}
 \end{equation}
 \end{theorem}
 
@@ -183,21 +171,18 @@ Entropy reduction occurs through selective transport:
 
 Pattern recognition efficiency:
 \begin{equation}
-\eta_{pattern} = \frac{\mathcal{I}_{extracted}}{\mathcal{E}_{consumed}}
+\eta_{\text{pattern}} = \frac{\mathcal{I}_{\text{extracted}}}{\mathcal{E}_{\text{consumed}}}
 \end{equation}
 
-\subsection{Molecular Pattern Recognition Algorithm}
+\subsection{Molecular Pattern Recognition}
 
-\begin{algorithm}[H]
-\caption{Molecular Pattern Recognition}
-\begin{algorithmic}[1]
-\State \textbf{Input:} Molecular configuration $\mathcal{C}$
-\State \textbf{Extract:} Feature vector $\mathbf{f} = \{\phi_i(\mathcal{C})\}$
-\State \textbf{Compare:} Against pattern library $\mathcal{P}$
-\State \textbf{Compute:} Similarity scores $s_i$
-\State \textbf{Return:} Best match $\mathcal{P}_{best}$
-\end{algorithmic}
-\end{algorithm}
+The molecular pattern recognition algorithm involves:
+\begin{enumerate}
+\item Extract feature vector $\mathbf{f} = \{\phi_i(\mathcal{C})\}$ from molecular configuration $\mathcal{C}$
+\item Compare against pattern library $\mathcal{P}$
+\item Compute similarity scores $s_i$
+\item Return best match $\mathcal{P}_{\text{best}}$
+\end{enumerate}
 
 \section{Semantic Information Processing}
 
@@ -213,7 +198,7 @@ for any meaning-preserving transformation $\mathcal{T}$.
 
 Semantic information content:
 \begin{equation}
-\mathcal{I}_{semantic}(X) = -\sum_i p_i \log p_i + \lambda \cdot \mathcal{M}(X)
+\mathcal{I}_{\text{semantic}}(X) = -\sum_i p_i \log p_i + \lambda \cdot \mathcal{M}(X)
 \end{equation}
 
 Cross-modal consistency:
@@ -228,7 +213,7 @@ Cross-modal consistency:
 \begin{definition}[Consciousness Metric]
 The consciousness metric is:
 \begin{equation}
-\mathcal{C} = \frac{1}{N} \sum_{i=1}^{N} \mathcal{F}_{reconstruction}(X_i, \hat{X}_i)
+\mathcal{C} = \frac{1}{N} \sum_{i=1}^{N} \mathcal{F}_{\text{reconstruction}}(X_i, \hat{X}_i)
 \end{equation}
 \end{definition}
 
@@ -239,7 +224,7 @@ Reconstruction fidelity:
 
 Cross-modal reconstruction:
 \begin{equation}
-\mathcal{F}_{cross} = \mathcal{F}(\mathcal{R}_{X \rightarrow Y}(X), Y)
+\mathcal{F}_{\text{cross}} = \mathcal{F}(\mathcal{R}_{X \rightarrow Y}(X), Y)
 \end{equation}
 
 \section{Integration and Optimization}
@@ -258,14 +243,14 @@ Load balancing:
 
 Fault tolerance through redundancy:
 \begin{equation}
-\mathcal{R}_{fault} = 1 - \prod_i (1 - \mathcal{R}_i)
+\mathcal{R}_{\text{fault}} = 1 - \prod_i (1 - \mathcal{R}_i)
 \end{equation}
 
 \subsection{Performance Optimization}
 
 Resource management optimization:
 \begin{equation}
-\max_{\mathbf{r}} \sum_i \eta_i(\mathbf{r}_i) \quad \text{subject to} \quad \sum_i \mathbf{r}_i \leq \mathbf{R}_{total}
+\max_{\mathbf{r}} \sum_i \eta_i(\mathbf{r}_i) \quad \text{subject to} \quad \sum_i \mathbf{r}_i \leq \mathbf{R}_{\text{total}}
 \end{equation}
 
 System performance scaling:
@@ -275,7 +260,7 @@ System performance scaling:
 
 Parallel processing efficiency:
 \begin{equation}
-\mathcal{E}_{parallel} = \frac{T_{serial}}{N \cdot T_{parallel}}
+\mathcal{E}_{\text{parallel}} = \frac{T_{\text{serial}}}{N \cdot T_{\text{parallel}}}
 \end{equation}
 
 \section{Error Correction and Distributed Systems}
@@ -292,7 +277,7 @@ A stabilizer code uses commuting Pauli operators $\{S_1, S_2, \ldots, S_k\}$ sat
 \begin{theorem}[Quantum Threshold Theorem]
 Quantum computation is fault-tolerant when:
 \begin{equation}
-p < p_{threshold}
+p < p_{\text{threshold}}
 \end{equation}
 \end{theorem}
 
@@ -303,7 +288,7 @@ Logical gates are implemented as:
 
 \subsection{Distributed Reasoning}
 
-Agent communication uses messages $\mathcal{M} = (sender, receiver, content, timestamp)$.
+Agent communication uses messages $\mathcal{M} = (\text{sender}, \text{receiver}, \text{content}, \text{timestamp})$.
 
 Distributed gradient descent:
 \begin{equation}
