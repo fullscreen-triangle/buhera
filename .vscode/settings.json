@@ -1,0 +1,294 @@
+{
+    // Rust language settings
+    "rust-analyzer.checkOnSave.command": "clippy",
+    "rust-analyzer.checkOnSave.allFeatures": true,
+    "rust-analyzer.cargo.features": ["all"],
+    "rust-analyzer.procMacro.enable": true,
+    "rust-analyzer.imports.granularity.group": "module",
+    "rust-analyzer.completion.addCallParentheses": false,
+    "rust-analyzer.completion.addCallArgumentSnippets": false,
+    "rust-analyzer.lens.enable": true,
+    "rust-analyzer.lens.run": true,
+    "rust-analyzer.lens.debug": true,
+    "rust-analyzer.lens.implementations": true,
+    "rust-analyzer.lens.references": true,
+    "rust-analyzer.semanticHighlighting.strings.enable": true,
+    "rust-analyzer.hover.actions.enable": true,
+    "rust-analyzer.hover.actions.implementations": true,
+    "rust-analyzer.hover.actions.references": true,
+    "rust-analyzer.hover.actions.run": true,
+    "rust-analyzer.hover.actions.debug": true,
+    "rust-analyzer.runnables.cargoExtraArgs": ["--release"],
+    "rust-analyzer.diagnostics.experimental.enable": true,
+    "rust-analyzer.inlayHints.enable": true,
+    "rust-analyzer.inlayHints.parameterHints": true,
+    "rust-analyzer.inlayHints.typeHints": true,
+    "rust-analyzer.inlayHints.chainingHints": true,
+    "rust-analyzer.assist.importGranularity": "module",
+    "rust-analyzer.assist.importPrefix": "by_crate",
+    "rust-analyzer.callInfo.full": true,
+    "rust-analyzer.cargo.buildScripts.enable": true,
+    "rust-analyzer.cargo.loadOutDirsFromCheck": true,
+    "rust-analyzer.experimental.procAttrMacros": true,
+    
+    // Editor settings
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": true
+    },
+    "editor.rulers": [80, 100, 120],
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.tabSize": 4,
+    "editor.trimAutoWhitespace": true,
+    "editor.renderWhitespace": "boundary",
+    "editor.showFoldingControls": "always",
+    "editor.foldingStrategy": "indentation",
+    "editor.minimap.enabled": true,
+    "editor.minimap.renderCharacters": false,
+    "editor.minimap.maxColumn": 120,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.guides.indentation": true,
+    "editor.linkedEditing": true,
+    "editor.semanticHighlighting.enabled": true,
+    "editor.inlineSuggest.enabled": true,
+    "editor.suggest.insertMode": "replace",
+    "editor.suggest.showKeywords": true,
+    "editor.suggest.showSnippets": true,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true,
+        "strings": true
+    },
+    
+    // File associations for molecular computing
+    "files.associations": {
+        "*.rs": "rust",
+        "*.toml": "toml",
+        "*.conf": "ini",
+        "*.foundry": "json",
+        "*.quantum": "json",
+        "*.molecular": "json",
+        "*.neural": "json",
+        "*.semantic": "json",
+        "*.vpos": "json",
+        "*.bmd": "json",
+        "*.fuzzy": "json",
+        "Cargo.lock": "toml",
+        "clippy.toml": "toml",
+        "rustfmt.toml": "toml",
+        "deny.toml": "toml",
+        "bacon.toml": "toml",
+        "typos.toml": "toml",
+        "cliff.toml": "toml",
+        "nextest.toml": "toml",
+        ".taplo.toml": "toml"
+    },
+    
+    // Search and files
+    "search.exclude": {
+        "**/target": true,
+        "**/node_modules": true,
+        "**/.git": true,
+        "**/dist": true,
+        "**/build": true,
+        "**/.cache": true,
+        "**/coverage": true,
+        "**/logs": true,
+        "**/*.log": true,
+        "**/tmp": true,
+        "**/temp": true
+    },
+    "files.exclude": {
+        "**/target/debug": true,
+        "**/target/release": true,
+        "**/target/doc": true,
+        "**/target/.rustc_info.json": true,
+        "**/target/CACHEDIR.TAG": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/*.swp": true,
+        "**/*.swo": true,
+        "**/*~": true
+    },
+    "files.watcherExclude": {
+        "**/target/**": true,
+        "**/.git/**": true,
+        "**/node_modules/**": true,
+        "**/dist/**": true,
+        "**/build/**": true,
+        "**/.cache/**": true,
+        "**/coverage/**": true,
+        "**/logs/**": true,
+        "**/tmp/**": true,
+        "**/temp/**": true
+    },
+    
+    // Terminal settings
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.fontFamily": "Fira Code, Consolas, 'Courier New', monospace",
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.cursorStyle": "line",
+    "terminal.integrated.scrollback": 10000,
+    "terminal.integrated.shell.osx": "/bin/zsh",
+    
+    // Git settings
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "git.enableStatusBarSync": true,
+    "git.showPushSuccessNotification": true,
+    "git.suggestSmartCommit": true,
+    
+    // Markdown settings for documentation
+    "markdown.preview.breaks": true,
+    "markdown.preview.linkify": true,
+    "markdown.preview.typographer": true,
+    "markdown.extension.math.enabled": true,
+    "markdown.extension.list.indentationSize": "adaptive",
+    "markdown.extension.toc.levels": "2..6",
+    "markdown.extension.toc.orderedList": false,
+    "markdown.extension.toc.updateOnSave": true,
+    "markdown.extension.tableFormatter.enabled": true,
+    "markdown.extension.completion.respectVscodeSearchExclude": true,
+    
+    // LaTeX settings for mathematical documentation
+    "latex-workshop.latex.outDir": "./docs/build",
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.clean.fileTypes": ["*.aux", "*.bbl", "*.blg", "*.idx", "*.ind", "*.lof", "*.lot", "*.out", "*.toc", "*.acn", "*.acr", "*.alg", "*.glg", "*.glo", "*.gls", "*.ist", "*.fls", "*.log", "*.fdb_latexmk", "*.synctex.gz"],
+    "latex-workshop.intellisense.package.enabled": true,
+    "latex-workshop.intellisense.citation.enabled": true,
+    "latex-workshop.intellisense.reference.enabled": true,
+    "latex-workshop.message.error.show": true,
+    "latex-workshop.message.warning.show": true,
+    
+    // JSON settings
+    "json.format.enable": true,
+    "json.validate.enable": true,
+    "json.schemas": [
+        {
+            "fileMatch": ["*.quantum", "*.molecular", "*.neural", "*.semantic", "*.vpos", "*.bmd", "*.fuzzy"],
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "version": {"type": "string"},
+                    "description": {"type": "string"},
+                    "parameters": {"type": "object"},
+                    "algorithms": {"type": "array"},
+                    "dependencies": {"type": "array"},
+                    "quantum_coherence": {"type": "object"},
+                    "molecular_substrate": {"type": "object"}
+                }
+            }
+        }
+    ],
+    
+    // TOML settings
+    "toml.formatter.alignEntries": true,
+    "toml.formatter.alignComments": true,
+    "toml.formatter.arrayTrailingComma": true,
+    "toml.formatter.compactArrays": false,
+    "toml.formatter.compactInlineTables": false,
+    "toml.formatter.indentTables": true,
+    "toml.formatter.indentEntries": true,
+    "toml.formatter.trailingNewline": true,
+    "toml.formatter.columnWidth": 120,
+    
+    // Code spell checker
+    "cSpell.enabled": true,
+    "cSpell.language": "en-US",
+    "cSpell.words": [
+        "Buhera", "vpos", "foundry", "molecular", "quantum", "neural", "semantic", "fuzzy", "oscillatory",
+        "BMD", "catalysis", "coherence", "substrate", "enzymatic", "conformational", "proofreading",
+        "polymerase", "miniaturization", "tunneling", "Heisenberg", "deterministic", "instantiate",
+        "superpositions", "amplitude", "coefficients", "synchronization", "locality", "decoherence",
+        "entanglement", "fidelity", "parameterization", "optimization", "architectures", "processors",
+        "substrates", "paradigms", "biocomputing", "neuromorphic", "telepathic", "Masunda", "Stella",
+        "Lorraine", "Sachikonye", "Turbulance", "Benguela", "Kwasa", "Pakati", "Vingi", "Zangalewa",
+        "Honjo", "Masamune", "Heihachi", "Trebuchet", "Sighthound", "VPOS", "clippy", "rustfmt",
+        "nextest", "taplo", "yamllint", "markdownlint", "rustc", "pnpm", "github", "dependabot",
+        "dockerfile", "dockerignore", "gitignore", "gitattributes", "editorconfig", "precommit",
+        "typos", "deny", "bacon", "cliff", "justfile", "toml", "json", "yaml", "yml", "md", "tex",
+        "aux", "fdb", "fls", "log", "out", "pdf", "synctex", "gz", "bbl", "blg", "idx", "ind",
+        "lof", "lot", "toc", "acn", "acr", "alg", "glg", "glo", "gls", "ist", "latexmk"
+    ],
+    "cSpell.ignorePaths": [
+        "**/target/**",
+        "**/node_modules/**",
+        "**/.git/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.cache/**",
+        "**/coverage/**",
+        "**/logs/**",
+        "**/*.log",
+        "**/tmp/**",
+        "**/temp/**"
+    ],
+    
+    // Workspace specific settings
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.iconTheme": "vs-seti",
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "workbench.startupEditor": "readme",
+    "workbench.tree.indent": 20,
+    "workbench.tree.renderIndentGuides": "always",
+    "workbench.activityBar.visible": true,
+    "workbench.statusBar.visible": true,
+    "workbench.sideBar.location": "left",
+    "workbench.panel.defaultLocation": "bottom",
+    "workbench.editor.tabSizing": "shrink",
+    "workbench.editor.wrapTabs": true,
+    "workbench.editor.decorations.badges": true,
+    "workbench.editor.decorations.colors": true,
+    
+    // Problems and diagnostics
+    "problems.decorations.enabled": true,
+    "problems.showCurrentInStatus": true,
+    "problems.sortOrder": "severity",
+    
+    // Explorer settings
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.compactFolders": false,
+    "explorer.openEditors.visible": 5,
+    "explorer.sortOrder": "type",
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "*.rs": "*.rs.bk",
+        "*.toml": "*.toml.bk",
+        "Cargo.toml": "Cargo.lock",
+        "*.md": "*.md.bk",
+        "*.tex": "*.aux,*.bbl,*.blg,*.fdb_latexmk,*.fls,*.log,*.out,*.pdf,*.synctex.gz,*.toc"
+    },
+    
+    // Performance settings
+    "extensions.autoUpdate": false,
+    "extensions.autoCheckUpdates": false,
+    "telemetry.telemetryLevel": "off",
+    "update.mode": "manual",
+    "typescript.preferences.includePackageJsonAutoImports": "off",
+    
+    // Security settings
+    "security.workspace.trust.enabled": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "security.workspace.trust.banner": "always",
+    "security.workspace.trust.startupPrompt": "always",
+    
+    // Experimental features for quantum computing support
+    "experimentalFeatures.quantumComputing": true,
+    "experimentalFeatures.molecularSimulation": true,
+    "experimentalFeatures.semanticProcessing": true,
+    "experimentalFeatures.fuzzyLogic": true,
+    "experimentalFeatures.neuralNetworks": true,
+    "experimentalFeatures.biologicalModeling": true
+} 

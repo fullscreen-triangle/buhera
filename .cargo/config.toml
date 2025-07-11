@@ -1,0 +1,284 @@
+# Cargo configuration for Buhera Virtual Processor Architecture
+# Optimized for scientific computing and theoretical framework development
+
+[build]
+# Use multiple cores for compilation
+jobs = 8
+# Optimize for the target architecture
+target-dir = "target"
+# Enable incremental compilation for faster builds
+incremental = true
+
+[target.x86_64-unknown-linux-gnu]
+# Linux-specific optimizations
+rustflags = [
+    "-C", "target-cpu=native",
+    "-C", "opt-level=3",
+    "-C", "lto=fat",
+    "-C", "codegen-units=1",
+    "-C", "panic=abort"
+]
+
+[target.x86_64-apple-darwin]
+# macOS-specific optimizations (for user's environment)
+rustflags = [
+    "-C", "target-cpu=native",
+    "-C", "opt-level=3",
+    "-C", "lto=fat",
+    "-C", "codegen-units=1",
+    "-C", "panic=abort"
+]
+
+[target.aarch64-apple-darwin]
+# Apple Silicon optimizations
+rustflags = [
+    "-C", "target-cpu=native",
+    "-C", "opt-level=3",
+    "-C", "lto=fat",
+    "-C", "codegen-units=1",
+    "-C", "panic=abort"
+]
+
+[target.x86_64-pc-windows-msvc]
+# Windows-specific optimizations
+rustflags = [
+    "-C", "target-cpu=native",
+    "-C", "opt-level=3",
+    "-C", "lto=fat",
+    "-C", "codegen-units=1"
+]
+
+# Unstable features for quantum computing and molecular simulation
+[unstable]
+# Enable binary dependencies for molecular foundry
+binary-dep-depinfo = true
+# Enable advanced features for theoretical framework
+advanced-env = true
+# Enable codegen backend for quantum simulation
+codegen-backend = true
+# Enable build-std for bare metal quantum devices
+build-std = ["std", "panic_abort"]
+
+# Environment variables for development
+[env]
+# Rust-specific environment variables
+RUST_LOG = "debug"
+RUST_BACKTRACE = "1"
+RUSTFLAGS = "-C target-cpu=native"
+
+# Buhera-specific environment variables
+BUHERA_LOG_LEVEL = "debug"
+BUHERA_ENVIRONMENT = "development"
+BUHERA_CONFIG_PATH = "./etc/vpos/vpos.conf"
+
+# Molecular foundry environment variables
+MOLECULAR_FOUNDRY_DEBUG = "true"
+MOLECULAR_FOUNDRY_SIMULATION = "true"
+MOLECULAR_FOUNDRY_PRECISION = "high"
+PROTEIN_SYNTHESIS_DEBUG = "true"
+ENZYMATIC_REACTION_DEBUG = "true"
+CONFORMATIONAL_DEBUG = "true"
+
+# Quantum coherence environment variables
+QUANTUM_COHERENCE_DEBUG = "true"
+QUANTUM_COHERENCE_SIMULATION = "true"
+QUANTUM_COHERENCE_TEMPERATURE = "room_temperature"
+DECOHERENCE_MONITORING = "true"
+ENTANGLEMENT_DEBUG = "true"
+SUPERPOSITION_DEBUG = "true"
+
+# Neural network environment variables
+NEURAL_NETWORK_DEBUG = "true"
+NEURAL_NETWORK_SIMULATION = "true"
+SYNAPTIC_DEBUG = "true"
+PLASTICITY_DEBUG = "true"
+TELEPATHIC_DEBUG = "true"
+
+# Semantic processing environment variables
+SEMANTIC_DEBUG = "true"
+SEMANTIC_PROCESSING_MODE = "cross_modal"
+MEANING_PRESERVATION_DEBUG = "true"
+CROSS_MODAL_DEBUG = "true"
+CONTEXT_DEBUG = "true"
+
+# Fuzzy logic environment variables
+FUZZY_DEBUG = "true"
+FUZZY_DIGITAL_MODE = "continuous"
+CONTINUOUS_STATE_DEBUG = "true"
+GRADUAL_TRANSITION_DEBUG = "true"
+UNCERTAINTY_DEBUG = "true"
+
+# BMD information catalysis environment variables
+BMD_DEBUG = "true"
+BMD_CATALYSIS_MODE = "entropy_reduction"
+PATTERN_RECOGNITION_DEBUG = "true"
+ENTROPY_REDUCTION_DEBUG = "true"
+INFORMATION_CATALYSIS_DEBUG = "true"
+
+# VPOS kernel environment variables
+VPOS_DEBUG = "true"
+VPOS_KERNEL_MODE = "virtual_processor"
+VIRTUAL_PROCESSOR_DEBUG = "true"
+SCHEDULER_DEBUG = "true"
+MOLECULAR_SUBSTRATE_DEBUG = "true"
+
+# Masunda Temporal Navigator environment variables
+MASUNDA_DEBUG = "true"
+MASUNDA_MEMORIAL_MODE = "stella_lorraine"
+TEMPORAL_COORDINATE_DEBUG = "true"
+PRECISION_DEBUG = "true"
+MEMORIAL_DEBUG = "true"
+
+# Performance and profiling environment variables
+BENCHMARK_DEBUG = "true"
+PERFORMANCE_MONITORING = "true"
+MEMORY_PROFILING = "true"
+INTEGRATION_TEST_DEBUG = "true"
+CROSS_MODULE_DEBUG = "true"
+SYSTEM_INTEGRATION_DEBUG = "true"
+
+# Alias definitions for common development tasks
+[alias]
+# Build aliases
+b = "build"
+br = "build --release"
+c = "check"
+ca = "check --all-targets --all-features"
+cl = "clean"
+
+# Test aliases
+t = "test"
+ta = "test --all-features"
+tb = "test --no-run"
+tc = "test --nocapture"
+
+# Lint and format aliases
+clippy = "clippy --all-targets --all-features -- -D warnings"
+fmt = "fmt --all"
+fix = "fix --all-targets --all-features --allow-dirty"
+
+# Documentation aliases
+doc = "doc --open --no-deps"
+docall = "doc --document-private-items --open"
+
+# Specialized test aliases for Buhera modules
+test-foundry = "test foundry -- --nocapture"
+test-quantum = "test quantum -- --nocapture"
+test-neural = "test neural -- --nocapture"
+test-semantic = "test semantic -- --nocapture"
+test-fuzzy = "test fuzzy -- --nocapture"
+test-bmd = "test bmd -- --nocapture"
+test-vpos = "test vpos -- --nocapture"
+test-masunda = "test masunda -- --nocapture"
+
+# Benchmark aliases
+bench = "bench"
+bench-all = "bench --all-features"
+
+# Utility aliases
+update = "update"
+audit = "audit"
+tree = "tree"
+outdated = "outdated"
+
+# Release aliases
+release = "build --release"
+release-test = "test --release"
+release-bench = "bench --release"
+
+# Development workflow aliases
+dev-check = "check --all-targets --all-features"
+dev-test = "test --all-features"
+dev-clippy = "clippy --all-targets --all-features -- -D warnings"
+dev-fmt = "fmt --all -- --check"
+dev-all = ["dev-fmt", "dev-clippy", "dev-test"]
+
+# Specialized development aliases
+molecular-dev = "test foundry -- --nocapture"
+quantum-dev = "test quantum -- --nocapture"
+neural-dev = "test neural -- --nocapture"
+semantic-dev = "test semantic -- --nocapture"
+fuzzy-dev = "test fuzzy -- --nocapture"
+bmd-dev = "test bmd -- --nocapture"
+vpos-dev = "test vpos -- --nocapture"
+masunda-dev = "test masunda -- --nocapture"
+
+# Integration testing aliases
+integration = "test --test integration_tests"
+integration-debug = "test --test integration_tests -- --nocapture"
+
+# Performance testing aliases
+perf = "test --release --test performance_tests"
+perf-debug = "test --release --test performance_tests -- --nocapture"
+
+# Profile-guided optimization
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+debug = false
+overflow-checks = false
+
+[profile.dev]
+opt-level = 0
+debug = true
+split-debuginfo = "unpacked"
+overflow-checks = true
+panic = "unwind"
+incremental = true
+codegen-units = 16
+
+[profile.test]
+opt-level = 1
+debug = true
+overflow-checks = true
+panic = "unwind"
+incremental = true
+codegen-units = 16
+
+[profile.bench]
+opt-level = 3
+debug = false
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+overflow-checks = false
+
+# Custom profiles for different use cases
+[profile.molecular-simulation]
+inherits = "release"
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+debug = false
+
+[profile.quantum-coherence]
+inherits = "release"
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+debug = false
+
+[profile.neural-network]
+inherits = "release"
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+debug = false
+
+[profile.theoretical-framework]
+inherits = "dev"
+opt-level = 1
+debug = true
+overflow-checks = true
+panic = "unwind"
+incremental = true 

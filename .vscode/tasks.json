@@ -1,0 +1,601 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "cargo build",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["build"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "cargo build --release",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["build", "--release"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "cargo test",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "RUST_LOG": "debug",
+                    "RUST_BACKTRACE": "1"
+                }
+            }
+        },
+        {
+            "label": "cargo test build",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test", "--no-run"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "cargo clippy",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["clippy", "--all-targets", "--all-features", "--", "-D", "warnings"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "cargo fmt",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["fmt"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "cargo doc",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["doc", "--open", "--no-deps"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Test Molecular Foundry",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test", "foundry", "--", "--nocapture"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "RUST_LOG": "trace",
+                    "RUST_BACKTRACE": "full",
+                    "MOLECULAR_FOUNDRY_DEBUG": "true",
+                    "PROTEIN_SYNTHESIS_DEBUG": "true"
+                }
+            }
+        },
+        {
+            "label": "Test Quantum Coherence",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test", "quantum", "--", "--nocapture"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "RUST_LOG": "trace",
+                    "RUST_BACKTRACE": "full",
+                    "QUANTUM_COHERENCE_DEBUG": "true",
+                    "DECOHERENCE_MONITORING": "true"
+                }
+            }
+        },
+        {
+            "label": "Test Neural Networks",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test", "neural", "--", "--nocapture"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "RUST_LOG": "trace",
+                    "RUST_BACKTRACE": "full",
+                    "NEURAL_NETWORK_DEBUG": "true",
+                    "TELEPATHIC_DEBUG": "true"
+                }
+            }
+        },
+        {
+            "label": "Test Semantic Processing",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test", "semantic", "--", "--nocapture"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "RUST_LOG": "trace",
+                    "RUST_BACKTRACE": "full",
+                    "SEMANTIC_DEBUG": "true",
+                    "CROSS_MODAL_DEBUG": "true"
+                }
+            }
+        },
+        {
+            "label": "Test Fuzzy Logic",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test", "fuzzy", "--", "--nocapture"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "RUST_LOG": "trace",
+                    "RUST_BACKTRACE": "full",
+                    "FUZZY_DEBUG": "true",
+                    "CONTINUOUS_STATE_DEBUG": "true"
+                }
+            }
+        },
+        {
+            "label": "Test BMD Information Catalysis",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test", "bmd", "--", "--nocapture"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "RUST_LOG": "trace",
+                    "RUST_BACKTRACE": "full",
+                    "BMD_DEBUG": "true",
+                    "ENTROPY_REDUCTION_DEBUG": "true"
+                }
+            }
+        },
+        {
+            "label": "Test VPOS Kernel",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test", "vpos", "--", "--nocapture"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "RUST_LOG": "trace",
+                    "RUST_BACKTRACE": "full",
+                    "VPOS_DEBUG": "true",
+                    "VIRTUAL_PROCESSOR_DEBUG": "true"
+                }
+            }
+        },
+        {
+            "label": "Test Masunda Temporal Navigator",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test", "masunda", "--", "--nocapture"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "RUST_LOG": "trace",
+                    "RUST_BACKTRACE": "full",
+                    "MASUNDA_DEBUG": "true",
+                    "TEMPORAL_COORDINATE_DEBUG": "true"
+                }
+            }
+        },
+        {
+            "label": "Run Benchmarks",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["bench"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "RUST_LOG": "info",
+                    "BENCHMARK_DEBUG": "true"
+                }
+            }
+        },
+        {
+            "label": "Generate Documentation",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["doc", "--document-private-items", "--open"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Clean Build Artifacts",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["clean"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Update Dependencies",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["update"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Audit Dependencies",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["audit"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Check All",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["check", "--all-targets", "--all-features"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Full Quality Check",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "cargo fmt --all -- --check && cargo clippy --all-targets --all-features -- -D warnings && cargo test --all-features"
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Build LaTeX Documentation",
+            "type": "shell",
+            "command": "pdflatex",
+            "args": ["${relativeFile}"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "options": {
+                "cwd": "${fileDirname}"
+            }
+        },
+        {
+            "label": "Build All LaTeX Documents",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "find docs -name '*.tex' -exec pdflatex -output-directory=docs/build {} \\;"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Watch Mode",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["watch", "-x", "check"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "isBackground": true
+        },
+        {
+            "label": "Integration Test Suite",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "cargo test --test integration_tests -- --nocapture"
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "RUST_LOG": "debug",
+                    "RUST_BACKTRACE": "1",
+                    "INTEGRATION_TEST_DEBUG": "true"
+                }
+            }
+        }
+    ]
+} 
