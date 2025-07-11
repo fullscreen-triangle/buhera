@@ -1,0 +1,400 @@
+# Docker Compose configuration for Buhera Virtual Processor Architecture
+# Comprehensive development and testing environment
+
+version: "3.8"
+
+services:
+  # Main Buhera application
+  buhera:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: buhera-main
+    hostname: buhera-main
+    restart: unless-stopped
+    ports:
+      - "8080:8080" # Main API
+      - "8081:8081" # Molecular Foundry
+      - "8082:8082" # Quantum Coherence
+      - "8083:8083" # Neural Networks
+      - "8084:8084" # Semantic Processing
+      - "8085:8085" # Fuzzy Logic
+      - "8086:8086" # BMD Information Catalysis
+      - "8087:8087" # VPOS Kernel
+      - "8088:8088" # Masunda Temporal Navigator
+      - "8089:8089" # Integration Services
+    environment:
+      - BUHERA_LOG_LEVEL=info
+      - BUHERA_ENVIRONMENT=docker
+      - BUHERA_CONFIG_PATH=/app/etc/vpos/vpos.conf
+      - RUST_LOG=info
+      - RUST_BACKTRACE=1
+      - MOLECULAR_FOUNDRY_SIMULATION=true
+      - QUANTUM_COHERENCE_SIMULATION=true
+      - NEURAL_NETWORK_SIMULATION=true
+      - SEMANTIC_PROCESSING_MODE=cross_modal
+      - FUZZY_DIGITAL_MODE=continuous
+      - BMD_CATALYSIS_MODE=entropy_reduction
+      - VPOS_KERNEL_MODE=virtual_processor
+      - MASUNDA_MEMORIAL_MODE=stella_lorraine
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./etc:/app/etc
+      - buhera-tmp:/app/tmp
+    depends_on:
+      - postgres
+      - redis
+      - prometheus
+      - grafana
+    networks:
+      - buhera-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Development environment
+  buhera-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: buhera-dev
+    hostname: buhera-dev
+    profiles:
+      - dev
+    ports:
+      - "8090:8080" # Development API
+      - "8091:8081" # Development Molecular Foundry
+      - "8092:8082" # Development Quantum Coherence
+      - "8093:8083" # Development Neural Networks
+      - "8094:8084" # Development Semantic Processing
+      - "8095:8085" # Development Fuzzy Logic
+      - "8096:8086" # Development BMD Information Catalysis
+      - "8097:8087" # Development VPOS Kernel
+      - "8098:8088" # Development Masunda Temporal Navigator
+      - "8099:8089" # Development Integration Services
+      - "8888:8888" # Jupyter Lab
+    environment:
+      - BUHERA_LOG_LEVEL=debug
+      - BUHERA_ENVIRONMENT=development
+      - RUST_LOG=debug
+      - RUST_BACKTRACE=full
+      - MOLECULAR_FOUNDRY_DEBUG=true
+      - QUANTUM_COHERENCE_DEBUG=true
+      - NEURAL_NETWORK_DEBUG=true
+      - SEMANTIC_DEBUG=true
+      - FUZZY_DEBUG=true
+      - BMD_DEBUG=true
+      - VPOS_DEBUG=true
+      - MASUNDA_DEBUG=true
+    volumes:
+      - .:/usr/src/buhera
+      - buhera-cargo-cache:/usr/local/cargo/registry
+      - buhera-target-cache:/usr/src/buhera/target
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - buhera-network
+    command: ["cargo", "run"]
+    stdin_open: true
+    tty: true
+
+  # Testing environment
+  buhera-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: testing
+    container_name: buhera-test
+    hostname: buhera-test
+    profiles:
+      - test
+    environment:
+      - BUHERA_LOG_LEVEL=debug
+      - BUHERA_ENVIRONMENT=testing
+      - RUST_LOG=debug
+      - RUST_BACKTRACE=full
+    volumes:
+      - .:/usr/src/buhera
+      - buhera-cargo-cache:/usr/local/cargo/registry
+      - buhera-target-cache:/usr/src/buhera/target
+      - ./coverage:/usr/src/buhera/coverage
+    networks:
+      - buhera-network
+    command: ["cargo", "test", "--all-features"]
+
+  # Benchmarking environment
+  buhera-bench:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: benchmarking
+    container_name: buhera-bench
+    hostname: buhera-bench
+    profiles:
+      - bench
+    environment:
+      - BUHERA_LOG_LEVEL=info
+      - BUHERA_ENVIRONMENT=benchmarking
+      - RUST_LOG=info
+      - BENCHMARK_DEBUG=true
+    volumes:
+      - .:/usr/src/buhera
+      - buhera-cargo-cache:/usr/local/cargo/registry
+      - buhera-target-cache:/usr/src/buhera/target
+      - ./benchmarks:/usr/src/buhera/benchmarks
+    networks:
+      - buhera-network
+    command: ["cargo", "bench", "--all-features"]
+
+  # Documentation generation
+  buhera-docs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: documentation
+    container_name: buhera-docs
+    hostname: buhera-docs
+    profiles:
+      - docs
+    ports:
+      - "8000:8000" # Documentation server
+    volumes:
+      - .:/usr/src/buhera
+      - ./docs:/usr/src/buhera/docs
+    networks:
+      - buhera-network
+    command:
+      ["python3", "-m", "http.server", "8000", "--directory", "target/doc"]
+
+  # PostgreSQL database for persistent data
+  postgres:
+    image: postgres:15-alpine
+    container_name: buhera-postgres
+    hostname: buhera-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=buhera
+      - POSTGRES_USER=buhera
+      - POSTGRES_PASSWORD=buhera_password
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - buhera-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U buhera"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis for caching and session storage
+  redis:
+    image: redis:7-alpine
+    container_name: buhera-redis
+    hostname: buhera-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - buhera-network
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: buhera-prometheus
+    hostname: buhera-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    networks:
+      - buhera-network
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+
+  # Grafana for monitoring dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: buhera-grafana
+    hostname: buhera-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./docker/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./docker/grafana/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - buhera-network
+    depends_on:
+      - prometheus
+
+  # Jaeger for distributed tracing
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: buhera-jaeger
+    hostname: buhera-jaeger
+    restart: unless-stopped
+    ports:
+      - "14268:14268" # Jaeger collector
+      - "16686:16686" # Jaeger UI
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - buhera-network
+
+  # Molecular simulation service
+  molecular-foundry:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: buhera-molecular-foundry
+    hostname: buhera-molecular-foundry
+    restart: unless-stopped
+    ports:
+      - "8101:8080"
+    environment:
+      - BUHERA_LOG_LEVEL=info
+      - BUHERA_ENVIRONMENT=docker
+      - BUHERA_SERVICE_MODE=molecular_foundry
+      - MOLECULAR_FOUNDRY_SIMULATION=true
+      - MOLECULAR_FOUNDRY_PRECISION=high
+      - PROTEIN_SYNTHESIS_DEBUG=false
+    volumes:
+      - ./data/molecular:/app/data
+      - ./logs/molecular:/app/logs
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - buhera-network
+    command: ["./buhera", "--service", "molecular-foundry"]
+
+  # Quantum coherence service
+  quantum-coherence:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: buhera-quantum-coherence
+    hostname: buhera-quantum-coherence
+    restart: unless-stopped
+    ports:
+      - "8102:8080"
+    environment:
+      - BUHERA_LOG_LEVEL=info
+      - BUHERA_ENVIRONMENT=docker
+      - BUHERA_SERVICE_MODE=quantum_coherence
+      - QUANTUM_COHERENCE_SIMULATION=true
+      - QUANTUM_COHERENCE_TEMPERATURE=room_temperature
+      - DECOHERENCE_MONITORING=true
+    volumes:
+      - ./data/quantum:/app/data
+      - ./logs/quantum:/app/logs
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - buhera-network
+    command: ["./buhera", "--service", "quantum-coherence"]
+
+  # Neural network service
+  neural-networks:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: buhera-neural-networks
+    hostname: buhera-neural-networks
+    restart: unless-stopped
+    ports:
+      - "8103:8080"
+    environment:
+      - BUHERA_LOG_LEVEL=info
+      - BUHERA_ENVIRONMENT=docker
+      - BUHERA_SERVICE_MODE=neural_networks
+      - NEURAL_NETWORK_SIMULATION=true
+      - SYNAPTIC_DEBUG=false
+      - TELEPATHIC_DEBUG=false
+    volumes:
+      - ./data/neural:/app/data
+      - ./logs/neural:/app/logs
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - buhera-network
+    command: ["./buhera", "--service", "neural-networks"]
+
+  # Load balancer for high availability
+  nginx:
+    image: nginx:alpine
+    container_name: buhera-nginx
+    hostname: buhera-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - buhera
+      - molecular-foundry
+      - quantum-coherence
+      - neural-networks
+    networks:
+      - buhera-network
+
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+  buhera-tmp:
+    driver: local
+  buhera-cargo-cache:
+    driver: local
+  buhera-target-cache:
+    driver: local
+
+networks:
+  buhera-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
