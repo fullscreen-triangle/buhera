@@ -1,0 +1,177 @@
+{
+    "recommendations": [
+        // Core Rust Development
+        "rust-lang.rust-analyzer",
+        "vadimcn.vscode-lldb",
+        "serayuzgur.crates",
+        "swellaby.vscode-rust-test-adapter",
+        "dustypomerleau.rust-syntax",
+        "bungcip.better-toml",
+        "tamasfe.even-better-toml",
+        
+        // Code Quality and Formatting
+        "esbenp.prettier-vscode",
+        "editorconfig.editorconfig",
+        "streetsidesoftware.code-spell-checker",
+        "usernamehw.errorlens",
+        "oderwat.indent-rainbow",
+        "aaron-bond.better-comments",
+        "gruntfuggly.todo-tree",
+        "shardulm94.trailing-spaces",
+        "ryanluker.vscode-coverage-gutters",
+        "ms-vscode.vscode-json",
+        
+        // Git and Version Control
+        "eamodio.gitlens",
+        "donjayamanne.githistory",
+        "waderyan.gitblame",
+        "github.vscode-pull-request-github",
+        "github.copilot",
+        "github.copilot-chat",
+        
+        // Documentation and LaTeX
+        "james-yu.latex-workshop",
+        "yzhang.markdown-all-in-one",
+        "shd101wyy.markdown-preview-enhanced",
+        "bierner.markdown-mermaid",
+        "bierner.markdown-emoji",
+        "davidanson.vscode-markdownlint",
+        "yzane.markdown-pdf",
+        "tecosaur.latex-utilities",
+        "mathematic.vscode-latex",
+        
+        // Scientific Computing and Mathematics
+        "ms-toolsai.jupyter",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy",
+        "goessner.mdmath",
+        "lextudio.restructuredtext",
+        "trond-snekvik.simple-rst",
+        
+        // Quantum Computing and Simulation
+        "ms-quantum.qsharp",
+        "ms-quantum.quantum-katas",
+        "ms-quantum.quantum-devkit",
+        "quantum-viz.quantum-circuit-viz",
+        "quantum-lab.quantum-simulator",
+        
+        // Molecular and Biological Computing
+        "biotools.molecular-viewer",
+        "biotools.protein-structure",
+        "biotools.dna-sequence",
+        "molecular-sim.molecular-dynamics",
+        "biochem.enzyme-kinetics",
+        
+        // Neural Networks and AI
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "ms-ai-tools.ai-toolkit",
+        "pytorch.pytorch",
+        "tensorflow.tensorflow",
+        "nvidia.cuda-cpp",
+        "intel.oneapi-toolkit",
+        
+        // Data Visualization
+        "ms-vscode.vscode-json",
+        "mechatroner.rainbow-csv",
+        "grapecity.gc-excelviewer",
+        "randomfractalsinc.vscode-data-preview",
+        "ms-toolsai.datawrangler",
+        
+        // Container and DevOps
+        "ms-vscode-remote.remote-containers",
+        "ms-azuretools.vscode-docker",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml",
+        
+        // Terminal and Shell
+        "ms-vscode.powershell",
+        "timonwong.shellcheck",
+        "foxundermoon.shell-format",
+        "mads-hartmann.bash-ide-vscode",
+        "jeff-hykin.better-shellscript-syntax",
+        
+        // Testing and Quality Assurance
+        "hbenl.vscode-test-explorer",
+        "littlefoxteam.vscode-python-test-adapter",
+        "matklad.rust-analyzer-nightly",
+        "swellaby.vscode-rust-test-adapter",
+        "formulahendry.code-runner",
+        "ms-vscode.test-adapter-converter",
+        
+        // Fuzzy Logic and Approximation
+        "fuzzy-logic.fuzzy-systems",
+        "approximation.numerical-methods",
+        "uncertainty.probabilistic-computing",
+        "continuous-logic.fuzzy-sets",
+        
+        // Semantic Processing
+        "semantic-web.rdf-tools",
+        "ontology.owl-editor",
+        "knowledge-graph.sparql",
+        "natural-language.nlp-tools",
+        "semantic-search.vector-db",
+        
+        // Performance and Profiling
+        "ms-vscode.vscode-typescript-next",
+        "ms-vscode.hexeditor",
+        "ms-vscode.cpptools",
+        "vadimcn.vscode-lldb",
+        "webfreak.debug",
+        "ms-vscode.cmake-tools",
+        
+        // Specialized Scientific Tools
+        "computational-physics.simulation-tools",
+        "theoretical-cs.complexity-analysis",
+        "mathematical-modeling.differential-equations",
+        "statistical-mechanics.thermodynamics",
+        "information-theory.entropy-analysis",
+        
+        // Research and Academic Tools
+        "academic.citation-manager",
+        "research.bibliography-tools",
+        "scholarly.reference-manager",
+        "academic-writing.latex-citations",
+        "research-data.dataset-manager",
+        
+        // Visualization and Diagramming
+        "hediet.vscode-drawio",
+        "ms-vscode.vscode-json",
+        "jebbs.plantuml",
+        "bierner.docs-view",
+        "mushan.vscode-paste-image",
+        
+        // Color and Theme
+        "pkief.material-icon-theme",
+        "zhuangtongfa.material-theme",
+        "johnpapa.vscode-peacock",
+        "naumovs.color-highlight",
+        "ms-vscode.theme-tomorrowkit",
+        
+        // Productivity and Workflow
+        "alefragnani.bookmarks",
+        "formulahendry.auto-rename-tag",
+        "ms-vscode.vscode-typescript-next",
+        "wayou.vscode-todo-highlight",
+        "christian-kohler.path-intellisense",
+        
+        // Advanced Development
+        "ms-vscode.vscode-embedded-tools",
+        "ms-vscode.vscode-serial-monitor",
+        "platformio.platformio-ide",
+        "ms-vscode.vscode-arduino",
+        "ms-vscode.vscode-esp-idf-extension"
+    ],
+    "unwantedRecommendations": [
+        "ms-vscode.csharp",
+        "ms-dotnettools.csharp",
+        "ms-vscode.vscode-typescript-next",
+        "ms-vscode.node-debug2",
+        "hookyqr.beautify",
+        "ms-vscode.vscode-css-peek",
+        "bradlc.vscode-tailwindcss",
+        "formulahendry.auto-close-tag",
+        "ms-vscode.vscode-html-language-features"
+    ]
+} 

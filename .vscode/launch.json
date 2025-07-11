@@ -1,0 +1,249 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Buhera Main",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/buhera",
+            "args": [],
+            "env": {
+                "RUST_LOG": "debug",
+                "RUST_BACKTRACE": "1",
+                "BUHERA_LOG_LEVEL": "debug",
+                "MOLECULAR_FOUNDRY_DEBUG": "true",
+                "QUANTUM_COHERENCE_DEBUG": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo build",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "name": "Debug Virtual Processor Tests",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/deps/buhera-${hash}",
+            "args": ["--test"],
+            "env": {
+                "RUST_LOG": "debug",
+                "RUST_BACKTRACE": "1",
+                "BUHERA_TEST_MODE": "true",
+                "MOLECULAR_SIMULATION": "true",
+                "QUANTUM_TESTING": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo test build"
+        },
+        {
+            "name": "Debug Molecular Foundry",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/buhera",
+            "args": ["--module", "foundry", "--verbose"],
+            "env": {
+                "RUST_LOG": "trace",
+                "RUST_BACKTRACE": "full",
+                "MOLECULAR_FOUNDRY_DEBUG": "true",
+                "PROTEIN_SYNTHESIS_DEBUG": "true",
+                "ENZYMATIC_REACTION_DEBUG": "true",
+                "CONFORMATIONAL_DEBUG": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo build",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "name": "Debug Quantum Coherence",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/buhera",
+            "args": ["--module", "quantum", "--coherence-test"],
+            "env": {
+                "RUST_LOG": "trace",
+                "RUST_BACKTRACE": "full",
+                "QUANTUM_COHERENCE_DEBUG": "true",
+                "DECOHERENCE_MONITORING": "true",
+                "ENTANGLEMENT_DEBUG": "true",
+                "SUPERPOSITION_DEBUG": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo build",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "name": "Debug Neural Networks",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/buhera",
+            "args": ["--module", "neural", "--transfer-test"],
+            "env": {
+                "RUST_LOG": "trace",
+                "RUST_BACKTRACE": "full",
+                "NEURAL_NETWORK_DEBUG": "true",
+                "SYNAPTIC_DEBUG": "true",
+                "PLASTICITY_DEBUG": "true",
+                "TELEPATHIC_DEBUG": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo build",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "name": "Debug Semantic Processing",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/buhera",
+            "args": ["--module", "semantic", "--cross-modal"],
+            "env": {
+                "RUST_LOG": "trace",
+                "RUST_BACKTRACE": "full",
+                "SEMANTIC_DEBUG": "true",
+                "MEANING_PRESERVATION_DEBUG": "true",
+                "CROSS_MODAL_DEBUG": "true",
+                "CONTEXT_DEBUG": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo build",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "name": "Debug Fuzzy Logic",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/buhera",
+            "args": ["--module", "fuzzy", "--digital-test"],
+            "env": {
+                "RUST_LOG": "trace",
+                "RUST_BACKTRACE": "full",
+                "FUZZY_DEBUG": "true",
+                "CONTINUOUS_STATE_DEBUG": "true",
+                "GRADUAL_TRANSITION_DEBUG": "true",
+                "UNCERTAINTY_DEBUG": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo build",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "name": "Debug BMD Information Catalysis",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/buhera",
+            "args": ["--module", "bmd", "--catalysis-test"],
+            "env": {
+                "RUST_LOG": "trace",
+                "RUST_BACKTRACE": "full",
+                "BMD_DEBUG": "true",
+                "PATTERN_RECOGNITION_DEBUG": "true",
+                "ENTROPY_REDUCTION_DEBUG": "true",
+                "INFORMATION_CATALYSIS_DEBUG": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo build",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "name": "Debug VPOS Kernel",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/buhera",
+            "args": ["--module", "vpos", "--kernel-test"],
+            "env": {
+                "RUST_LOG": "trace",
+                "RUST_BACKTRACE": "full",
+                "VPOS_DEBUG": "true",
+                "VIRTUAL_PROCESSOR_DEBUG": "true",
+                "SCHEDULER_DEBUG": "true",
+                "MOLECULAR_SUBSTRATE_DEBUG": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo build",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "name": "Debug Masunda Temporal Navigator",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/buhera",
+            "args": ["--module", "temporal", "--masunda-test"],
+            "env": {
+                "RUST_LOG": "trace",
+                "RUST_BACKTRACE": "full",
+                "MASUNDA_DEBUG": "true",
+                "TEMPORAL_COORDINATE_DEBUG": "true",
+                "PRECISION_DEBUG": "true",
+                "MEMORIAL_DEBUG": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo build",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "name": "Debug Integration Tests",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/buhera",
+            "args": ["--integration-test", "--all-modules"],
+            "env": {
+                "RUST_LOG": "debug",
+                "RUST_BACKTRACE": "1",
+                "INTEGRATION_TEST_DEBUG": "true",
+                "CROSS_MODULE_DEBUG": "true",
+                "SYSTEM_INTEGRATION_DEBUG": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo build",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "name": "Debug Performance Benchmarks",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/release/buhera",
+            "args": ["--benchmark", "--all-modules"],
+            "env": {
+                "RUST_LOG": "info",
+                "RUST_BACKTRACE": "1",
+                "BENCHMARK_DEBUG": "true",
+                "PERFORMANCE_MONITORING": "true",
+                "MEMORY_PROFILING": "true"
+            },
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "preLaunchTask": "cargo build --release",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "name": "Attach to Process",
+            "type": "lldb",
+            "request": "attach",
+            "pid": "${command:pickProcess}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "sourceLanguages": ["rust"]
+        }
+    ]
+} 
