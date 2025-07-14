@@ -1,0 +1,129 @@
+# VPOS Neural Scheduler System Makefile
+#
+# Copyright (c) 2024 VPOS Development Team
+# Licensed under MIT License
+
+obj-m += neural-scheduler.o
+
+# Module source files
+neural-scheduler-objs := neural-scheduler.o
+
+# Kernel build directory
+KERNEL_DIR ?= /lib/modules/$(shell uname -r)/build
+
+# Build flags
+ccflags-y := -I$(src)/../../../include
+ccflags-y += -I$(src)/../quantum
+ccflags-y += -I$(src)/../bmd
+ccflags-y += -I$(src)/../temporal
+ccflags-y += -I$(src)/../semantic
+ccflags-y += -I$(src)/../../subsystems/neural-transfer
+ccflags-y += -I$(src)/../../subsystems/molecular-foundry
+ccflags-y += -DVPOS_NEURAL_SCHEDULER
+ccflags-y += -DCONFIG_VPOS_NEURAL_PROCESS_MANAGEMENT
+ccflags-y += -DCONFIG_VPOS_NEURAL_LEARNING_SCHEDULER
+ccflags-y += -DCONFIG_VPOS_NEURAL_CONSCIOUSNESS_SCHEDULER
+ccflags-y += -DCONFIG_VPOS_NEURAL_ATTENTION_SCHEDULER
+ccflags-y += -DCONFIG_VPOS_NEURAL_MEMORY_SCHEDULER
+ccflags-y += -DCONFIG_VPOS_NEURAL_ADAPTATION_SCHEDULER
+ccflags-y += -O2
+ccflags-y += -Wall
+ccflags-y += -Wextra
+ccflags-y += -std=gnu99
+
+# Neural scheduler specific defines
+ccflags-y += -DNEURAL_SCHEDULER_MAX_PROCESSES=4096
+ccflags-y += -DNEURAL_RUNQUEUE_SIZE=1024
+ccflags-y += -DNEURAL_PRIORITY_LEVELS=16
+ccflags-y += -DNEURAL_PROCESS_TYPES=12
+ccflags-y += -DNEURAL_PROCESS_STATES=8
+ccflags-y += -DNEURAL_NETWORK_LAYERS=8
+ccflags-y += -DNEURAL_SYNAPSE_CONNECTIONS=2048
+ccflags-y += -DNEURAL_ACTIVATION_FUNCTIONS=8
+ccflags-y += -DNEURAL_LEARNING_ALGORITHMS=6
+ccflags-y += -DNEURAL_CONSCIOUSNESS_LEVELS=6
+ccflags-y += -DNEURAL_SCHEDULER_TIMESLICE_NS=1000000
+
+# Performance optimization flags
+ccflags-y += -DCONFIG_VPOS_NEURAL_OPTIMIZE_SCHEDULING
+ccflags-y += -DCONFIG_VPOS_NEURAL_OPTIMIZE_LEARNING
+ccflags-y += -DCONFIG_VPOS_NEURAL_OPTIMIZE_ADAPTATION
+ccflags-y += -DCONFIG_VPOS_NEURAL_OPTIMIZE_CONSCIOUSNESS
+ccflags-y += -DCONFIG_VPOS_NEURAL_OPTIMIZE_ATTENTION
+ccflags-y += -DCONFIG_VPOS_NEURAL_OPTIMIZE_MEMORY
+
+# Security flags
+ccflags-y += -DCONFIG_VPOS_NEURAL_SECURITY_CHECKS
+ccflags-y += -DCONFIG_VPOS_NEURAL_PROCESS_PROTECTION
+ccflags-y += -DCONFIG_VPOS_NEURAL_CONSCIOUSNESS_PROTECTION
+ccflags-y += -DCONFIG_VPOS_NEURAL_MEMORY_PROTECTION
+
+# Advanced features
+ccflags-y += -DCONFIG_VPOS_NEURAL_QUANTUM_INTEGRATION
+ccflags-y += -DCONFIG_VPOS_NEURAL_FUZZY_INTEGRATION
+ccflags-y += -DCONFIG_VPOS_NEURAL_BMD_INTEGRATION
+ccflags-y += -DCONFIG_VPOS_NEURAL_TEMPORAL_COORDINATION
+ccflags-y += -DCONFIG_VPOS_NEURAL_SEMANTIC_INTEGRATION
+
+# Build targets
+all: modules
+
+modules:
+	$(MAKE) -C $(KERNEL_DIR) M=$(shell pwd) modules
+
+clean:
+	$(MAKE) -C $(KERNEL_DIR) M=$(shell pwd) clean
+
+install: modules
+	$(MAKE) -C $(KERNEL_DIR) M=$(shell pwd) modules_install
+	depmod -a
+	modprobe neural-scheduler
+
+uninstall:
+	rmmod neural-scheduler || true
+	rm -f /lib/modules/$(shell uname -r)/extra/neural-scheduler.ko
+	depmod -a
+
+test:
+	@echo "Testing neural scheduler system..."
+	@if lsmod | grep -q neural_scheduler; then \
+		echo "Neural scheduler module loaded successfully"; \
+	else \
+		echo "Neural scheduler module not loaded"; \
+		exit 1; \
+	fi
+
+help:
+	@echo "VPOS Neural Scheduler System Build System"
+	@echo "========================================"
+	@echo "Available targets:"
+	@echo "  all      - Build all modules (default)"
+	@echo "  modules  - Build kernel modules"
+	@echo "  clean    - Clean build artifacts"
+	@echo "  install  - Install modules and load"
+	@echo "  uninstall - Remove modules"
+	@echo "  test     - Test module loading"
+	@echo "  help     - Show this help"
+
+info:
+	@echo "VPOS Neural Scheduler System"
+	@echo "============================"
+	@echo "Version: 1.0.0"
+	@echo "Description: Advanced neural process coordination and scheduling"
+	@echo "Features:"
+	@echo "  - Neural process management (4096 processes)"
+	@echo "  - Consciousness-aware scheduling"
+	@echo "  - Attention-driven process coordination"
+	@echo "  - Neural learning and adaptation"
+	@echo "  - Memory-aware scheduling"
+	@echo "  - Multi-layer neural networks (8 layers)"
+	@echo "  - Synaptic connections (2048)"
+	@echo "  - Multiple activation functions (8)"
+	@echo "  - Learning algorithms (6)"
+	@echo "  - Consciousness levels (6)"
+	@echo "  - Quantum-fuzzy integration"
+	@echo "  - BMD-enhanced scheduling"
+	@echo "  - Temporal coordination"
+	@echo "  - Semantic integration"
+
+.PHONY: all modules clean install uninstall test help info 
