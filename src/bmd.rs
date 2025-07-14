@@ -388,12 +388,36 @@ impl BMDCatalyst {
     ) -> VPOSResult<Vec<f64>> {
         let mut catalyzed = input.to_vec();
 
+        // Calculate input entropy for thermodynamic catalysis
+        let input_entropy = self.calculate_entropy(&input);
+        
+        // Apply thermodynamic information catalysis
         for pattern in patterns {
-            // Apply information catalysis based on pattern
+            // BMD catalysis: iCat = ℑinput ◦ ℑoutput
+            let catalysis_strength = pattern.confidence * self.catalysis_efficiency;
+            let entropy_reduction_factor = (1.0 - pattern.entropy / input_entropy).max(0.1);
+            
+            // Apply pattern-specific information amplification
             for (i, value) in catalyzed.iter_mut().enumerate() {
                 if i < pattern.features.len() {
-                    *value *= pattern.confidence * self.catalysis_efficiency;
+                    // Thermodynamic amplification with entropy consideration
+                    let thermodynamic_amplification = catalysis_strength * entropy_reduction_factor;
+                    let memorial_enhancement = (pattern.confidence * 2.718281828459045).sin().abs(); // e factor
+                    
+                    *value *= thermodynamic_amplification * memorial_enhancement * self.amplification_factor;
                 }
+            }
+        }
+
+        // Apply global entropy reduction through information ordering
+        let final_entropy = self.calculate_entropy(&catalyzed);
+        let total_entropy_reduction = input_entropy - final_entropy;
+        
+        // Amplify based on successful entropy reduction
+        if total_entropy_reduction > 0.0 {
+            let entropy_amplification = (1.0 + total_entropy_reduction).powf(0.5);
+            for value in catalyzed.iter_mut() {
+                *value *= entropy_amplification;
             }
         }
 

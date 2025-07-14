@@ -4,6 +4,7 @@
 //! traditional semiconductor limitations through virtual processor architectures.
 //!
 //! This crate implements the core components of the Buhera system:
+//! - **Masunda Temporal Coordinate Navigator**: Ultra-precise temporal navigation system
 //! - Virtual Processing Operating System (VPOS)
 //! - Molecular substrate interfaces
 //! - Fuzzy digital state management
@@ -36,18 +37,24 @@
 //! │           Molecular Substrate Interface                        │
 //! ├─────────────────────────────────────────────────────────────────┤
 //! │            Virtual Processor Kernel                           │
+//! ├─────────────────────────────────────────────────────────────────┤
+//! │        Masunda Temporal Coordinate Navigator                   │
 //! └─────────────────────────────────────────────────────────────────┘
 //! ```
 //!
 //! ## Getting Started
 //!
 //! ```rust
+//! use buhera::masunda::MasundaNavigator;
 //! use buhera::vpos::VirtualProcessorKernel;
 //! use buhera::molecular::MolecularSubstrate;
 //! use buhera::fuzzy::FuzzyStateManager;
 //!
-//! // Initialize the VPOS kernel
-//! let kernel = VirtualProcessorKernel::new();
+//! // Initialize the Masunda Temporal Coordinate Navigator
+//! let navigator = MasundaNavigator::new();
+//!
+//! // Initialize the VPOS kernel with temporal navigation
+//! let kernel = VirtualProcessorKernel::new_with_navigator(navigator);
 //!
 //! // Create a molecular substrate
 //! let substrate = MolecularSubstrate::synthetic_biology_config();
@@ -55,11 +62,12 @@
 //! // Initialize fuzzy state management
 //! let fuzzy_manager = FuzzyStateManager::new();
 //!
-//! // The system is now ready for molecular-scale computation
+//! // The system is now ready for temporal-coordinate-precise computation
 //! ```
 //!
 //! ## Key Features
 //!
+//! - **Masunda Temporal Coordinate Navigator**: 10^-30 second precision timing foundation
 //! - **Virtual Processors**: Computational abstractions operating through molecular interactions
 //! - **Fuzzy Digital Logic**: Continuous-valued computation transcending binary limitations
 //! - **Quantum Coherence**: Biological quantum processing properties
@@ -71,6 +79,12 @@
 //! ## Mathematical Foundation
 //!
 //! The system operates on several key mathematical principles:
+//!
+//! ### Temporal Coordinate Navigation
+//!
+//! ```text
+//! T_coordinate = T_masunda + Δt_precision × oscillation_convergence
+//! ```
 //!
 //! ### BMD Information Catalysis
 //!
@@ -99,6 +113,16 @@
 #![allow(clippy::module_name_repetitions)]
 #![allow(clippy::too_many_arguments)]
 #![allow(clippy::too_many_lines)]
+
+/// Masunda Temporal Coordinate Navigator - Ultra-precise temporal navigation system
+/// 
+/// In memory of Mrs. Stella-Lorraine Masunda
+pub mod masunda;
+
+/// Mzekezeke Multi-Dimensional Temporal Ephemeral Cryptography (MDTEC)
+/// 
+/// Revolutionary cryptographic system using temporal coordinates and recursive precision
+pub mod mzekezeke;
 
 /// Virtual Processing Operating System (VPOS) - The core kernel layer
 pub mod vpos;
@@ -142,8 +166,26 @@ pub mod utils;
 /// Borgia module for integrating BMD systems
 pub mod borgia;
 
+/// Zero Computation Engine - Revolutionary direct navigation to predetermined results
+pub mod zero_computation;
+
 // Re-export key types for convenience
 pub use error::{BuheraError, BuheraResult};
+pub use masunda::{
+    MasundaNavigator, 
+    RecursivePrecisionEngine, 
+    VirtualQuantumProcessor,
+    TemporalCoordinate,
+    InfiniteKey,
+    RecursivePrecisionState
+};
+pub use mzekezeke::{
+    MzekezekeSystem,
+    MDTECEngine,
+    ConsciousnessAwareCrypto,
+    TwelveDimensionalSecurity,
+    InfiniteKeyGenerator
+};
 pub use vpos::VirtualProcessorKernel;
 pub use molecular::MolecularSubstrate;
 pub use fuzzy::FuzzyStateManager;
@@ -157,6 +199,12 @@ pub use borgia::{
     IntegratedBMDSystem, BMDScale, InformationCatalyst, MolecularStructure, TurbulanceCompiler,
     CrossScaleAnalysisResult, NavigationStrategy, ConsciousnessAnalysisResult,
     NoiseEnhancedResult, MolecularNavigationResult
+};
+pub use zero_computation::{
+    ZeroComputationEngine,
+    ComputationalProblem,
+    EntropyEndpoint,
+    ZeroComputationMetrics,
 };
 
 /// Current version of the Buhera framework
