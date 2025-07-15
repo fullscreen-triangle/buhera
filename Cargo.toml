@@ -26,6 +26,18 @@ path = "src/bin/vpos.rs"
 name = "molecular-foundry"
 path = "src/bin/molecular_foundry.rs"
 
+[[bin]]
+name = "buhera-server-farm"
+path = "src/bin/server_farm.rs"
+
+[[bin]]
+name = "buhera-consciousness"
+path = "src/bin/consciousness.rs"
+
+[[bin]]
+name = "buhera-monitor"
+path = "src/bin/monitor.rs"
+
 [dependencies]
 # Core dependencies
 tokio = { version = "1.0", features = ["full"] }
@@ -97,6 +109,16 @@ criterion = { version = "0.5", optional = true }
 uuid = { version = "1.6", features = ["v4"] }
 toml = "0.8"
 
+# Server farm dependencies
+rayon = "1.5"                    # Parallel processing
+parking_lot = "0.12"             # High-performance synchronization
+mio = "0.8"                      # Non-blocking I/O
+bytes = "1.0"                    # Byte manipulation
+dashmap = "5.0"                  # Concurrent hash maps
+atomic = "0.5"                   # Atomic operations
+systemstat = "0.1"               # System statistics
+prometheus = "0.13"              # Metrics collection
+
 [dev-dependencies]
 tokio-test = "0.4"
 proptest = "1.0"
@@ -105,12 +127,34 @@ tempfile = "3.8"
 pretty_assertions = "1.4"
 
 [features]
-default = ["fuzzy-logic", "quantum-simulation", "neural-networks"]
+default = ["fuzzy-logic", "quantum-simulation", "neural-networks", "server_farm", "consciousness", "quantum_thermodynamics"]
 fuzzy-logic = ["dep:fuzzy-logic"]
 quantum-simulation = ["dep:quantum-simulator"]
 neural-networks = ["dep:tch"]
 benchmarks = ["dep:criterion"]
-full = ["fuzzy-logic", "quantum-simulation", "neural-networks", "benchmarks"]
+server_farm = ["gas_oscillation", "cooling", "virtual_foundry"]
+consciousness = ["distributed_memory", "coherence_management"]
+gas_oscillation = ["pressure_control", "molecular_analysis"]
+cooling = ["entropy_prediction", "thermal_control"]
+virtual_foundry = ["infinite_processors", "femtosecond_lifecycle"]
+quantum_thermodynamics = ["quantum_oscillators", "coherence_preservation"]
+monitoring = ["real_time_metrics", "performance_analysis"]
+debugging = ["consciousness_debugger", "oscillation_analyzer"]
+distributed_memory = []
+coherence_management = []
+pressure_control = []
+molecular_analysis = []
+entropy_prediction = []
+thermal_control = []
+infinite_processors = []
+femtosecond_lifecycle = []
+quantum_oscillators = []
+coherence_preservation = []
+real_time_metrics = []
+performance_analysis = []
+consciousness_debugger = []
+oscillation_analyzer = []
+full = ["fuzzy-logic", "quantum-simulation", "neural-networks", "server_farm", "consciousness", "quantum_thermodynamics", "monitoring", "debugging", "benchmarks"]
 
 [profile.release]
 opt-level = 3

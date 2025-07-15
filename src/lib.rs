@@ -169,6 +169,12 @@ pub mod borgia;
 /// Zero Computation Engine - Revolutionary direct navigation to predetermined results
 pub mod zero_computation;
 
+/// Gas Oscillation Server Farm - Consciousness substrate architecture
+pub mod server_farm;
+
+/// VPOS Integration Layer - Seamless integration with existing chip systems
+pub mod integration;
+
 // Re-export key types for convenience
 pub use error::{BuheraError, BuheraResult};
 pub use masunda::{
@@ -205,6 +211,21 @@ pub use zero_computation::{
     ComputationalProblem,
     EntropyEndpoint,
     ZeroComputationMetrics,
+};
+pub use server_farm::{
+    ConsciousnessSubstrate,
+    GasOscillationProcessor,
+    ZeroCostCoolingSystem,
+    ThermodynamicEngine,
+    VirtualProcessorFoundry,
+    AtomicClockNetwork,
+    PressureControlSystem,
+    ServerFarmMonitor,
+};
+pub use integration::{
+    ChipInterfaceManager,
+    VPOSBridge,
+    UnifiedManagement,
 };
 
 /// Current version of the Buhera framework
