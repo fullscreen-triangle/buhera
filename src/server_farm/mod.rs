@@ -78,6 +78,9 @@ pub mod thermodynamics;
 /// Virtual processor foundry implementation
 pub mod virtual_foundry;
 
+/// Consciousness substrate implementation
+pub mod consciousness;
+
 /// Atomic clock synchronization network
 pub mod atomic_clock;
 
