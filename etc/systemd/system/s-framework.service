@@ -1,0 +1,63 @@
+[Unit]
+Description=S-Framework Master Service
+Documentation=file:///usr/share/doc/s-framework/README.md
+After=multi-user.target network.target time-sync.target
+Wants=network.target
+Before=graphical.target
+Requires=s-framework-kernel-modules.service
+
+[Service]
+Type=notify
+ExecStartPre=/usr/local/bin/s-framework-pre-start
+ExecStart=/usr/local/bin/s-framework-master
+ExecStartPost=/usr/local/bin/s-framework-post-start
+ExecReload=/usr/local/bin/s-framework-reload
+ExecStop=/usr/local/bin/s-framework-stop
+ExecStopPost=/usr/local/bin/s-framework-cleanup
+
+# Process management
+User=root
+Group=s-framework
+PIDFile=/var/run/s-framework/s-framework.pid
+NotifyAccess=main
+TimeoutStartSec=60
+TimeoutStopSec=30
+KillMode=mixed
+KillSignal=SIGTERM
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=32768
+LimitMEMLOCK=infinity
+LimitCORE=0
+
+# Security settings
+NoNewPrivileges=false
+ProtectSystem=false
+ProtectHome=false
+PrivateTmp=false
+PrivateDevices=false
+
+# Capabilities required for S-framework operations
+CapabilityBoundingSet=CAP_SYS_ADMIN CAP_SYS_RAWIO CAP_SYS_RESOURCE CAP_IPC_LOCK CAP_NET_ADMIN
+AmbientCapabilities=CAP_SYS_ADMIN CAP_SYS_RAWIO CAP_SYS_RESOURCE CAP_IPC_LOCK
+
+# Environment
+Environment=S_FRAMEWORK_CONFIG_DIR=/etc/s-framework
+Environment=S_FRAMEWORK_LOG_DIR=/var/log/s-framework
+Environment=S_FRAMEWORK_RUN_DIR=/var/run/s-framework
+Environment=S_FRAMEWORK_DATA_DIR=/var/lib/s-framework
+
+# Restart policy
+Restart=always
+RestartSec=5
+StartLimitInterval=300
+StartLimitBurst=5
+
+# Watchdog
+WatchdogSec=60
+NotifyAccess=main
+
+[Install]
+WantedBy=multi-user.target
+Also=s-framework-temporal.service s-framework-entropy.service s-framework-language-bmd.service 

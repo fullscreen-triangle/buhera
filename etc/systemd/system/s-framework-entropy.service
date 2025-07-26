@@ -1,0 +1,62 @@
+[Unit]
+Description=S-Framework Entropy Solver Service  
+Documentation=file:///usr/share/doc/s-framework/s-entropy.md
+After=s-framework-kernel-modules.service network.target
+PartOf=s-framework.service
+Requires=s-framework-kernel-modules.service
+
+[Service]
+Type=notify
+ExecStart=/usr/local/bin/s-framework-entropy-service
+ExecReload=/bin/kill -USR1 $MAINPID
+ExecStop=/bin/kill -TERM $MAINPID
+
+# Process management
+User=root
+Group=s-framework
+PIDFile=/var/run/s-framework/entropy-service.pid
+NotifyAccess=main
+
+# Resource configuration for entropy calculations
+Nice=-5
+LimitNOFILE=32768
+LimitNPROC=16384
+LimitAS=4G
+LimitDATA=2G
+
+# Memory optimization
+MemoryDenyWriteExecute=false
+MemoryMax=2G
+MemoryHigh=1.5G
+
+# Network configuration
+BindToDevice=
+SocketBindAllow=8080
+SocketBindDeny=any
+
+# Environment
+Environment=S_ENTROPY_CONFIG=/etc/entropy/s-entropy.conf
+Environment=S_ENTROPY_SOLVER_THREADS=8
+Environment=S_ENTROPY_RIDICULOUS_RATE=1000000
+
+# Restart policy
+Restart=always
+RestartSec=3
+StartLimitInterval=120
+StartLimitBurst=5
+
+# Timeouts
+TimeoutStartSec=45
+TimeoutStopSec=15
+
+# Health monitoring
+WatchdogSec=45
+
+# Security
+PrivateNetwork=false
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/s-framework /var/log/s-framework /var/run/s-framework
+
+[Install]
+WantedBy=s-framework.service 

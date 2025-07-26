@@ -1,0 +1,737 @@
+#!/bin/bash
+#
+# Discourse Trajectory Navigator
+# 
+# Real-time analysis and visualization of language BMD discourse trajectories
+# Implements neurocomputational discourse analysis for BMD language processing
+# Based on matrix associative memory research and trajectory analysis
+#
+# Copyright (C) 2024 Buhera S-Enhanced VPOS Project
+# Licensed under GPL v3
+
+set -euo pipefail
+
+# Discourse Navigator Configuration
+DISCOURSE_NAV_VERSION="1.0.0"
+LANGUAGE_BMD_PROC="/proc/language_bmd"
+S_DISTANCE_PROC="/proc/s_distance"
+S_TRI_PROC="/proc/s_tri_dimensional"
+DISCOURSE_CONFIG_DIR="/etc/s-vpos"
+DISCOURSE_LOG_FILE="/var/log/s-framework/discourse-navigator.log"
+
+# Color codes for discourse visualization
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+BLUE='\033[34m'
+CYAN='\033[36m'
+MAGENTA='\033[35m'
+WHITE='\033[37m'
+BOLD='\033[1m'
+DIM='\033[2m'
+RESET='\033[0m'
+
+# Discourse analysis color assignments
+COHERENCE_HIGH_COLOR="$GREEN"
+COHERENCE_MED_COLOR="$YELLOW"
+COHERENCE_LOW_COLOR="$RED"
+CONNECTIVITY_COLOR="$CYAN"
+TRAJECTORY_COLOR="$BLUE"
+HYPERCONNECTION_COLOR="$MAGENTA"
+
+# Global variables
+declare -g VERBOSE=false
+declare -g QUIET=false
+declare -g DRY_RUN=false
+declare -g REALTIME_MODE=false
+
+# Analysis constants
+declare -r COHERENCE_OPTIMAL=700
+declare -r COHERENCE_MODERATE=400
+declare -r CONNECTIVITY_HIGH=5
+declare -r HYPERCONNECTION_THRESHOLD=800
+declare -r TRAJECTORY_DISPLAY_LENGTH=20
+
+# Logging function
+log() {
+    local level="$1"
+    shift
+    local message="$*"
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    
+    if [[ "$QUIET" != "true" ]]; then
+        case "$level" in
+            ERROR)   echo -e "${RED}[ERROR]${RESET} $message" >&2 ;;
+            WARN)    echo -e "${YELLOW}[WARN]${RESET} $message" >&2 ;;
+            INFO)    echo -e "${BLUE}[INFO]${RESET} $message" ;;
+            SUCCESS) echo -e "${GREEN}[SUCCESS]${RESET} $message" ;;
+            DEBUG)   [[ "$VERBOSE" == "true" ]] && echo -e "${CYAN}[DEBUG]${RESET} $message" ;;
+        esac
+    fi
+    
+    # Log to file
+    echo "$timestamp [$level] $message" >> "$DISCOURSE_LOG_FILE" 2>/dev/null || true
+}
+
+# Check if language BMD module is available
+check_language_bmd() {
+    if [[ ! -r "$LANGUAGE_BMD_PROC" ]]; then
+        log "ERROR" "Language BMD processing module not available"
+        log "INFO" "Try: sudo modprobe language-bmd"
+        return 1
+    fi
+    
+    log "DEBUG" "Language BMD processing module verified"
+    return 0
+}
+
+# Read language BMD processing state
+read_language_bmd_state() {
+    local total_transfers successful_transfers processing_cycles
+    local trajectory_length overall_coherence semantic_connectivity disorder_measure
+    local hyperconnection_detected analysis_enabled
+    
+    if [[ -r "$LANGUAGE_BMD_PROC" ]]; then
+        total_transfers=$(grep "Total BMD Transfers:" "$LANGUAGE_BMD_PROC" | awk '{print $4}')
+        successful_transfers=$(grep "Successful BMD Transfers:" "$LANGUAGE_BMD_PROC" | awk '{print $4}')
+        processing_cycles=$(grep "Processing Cycles:" "$LANGUAGE_BMD_PROC" | awk '{print $3}')
+        
+        trajectory_length=$(grep "Trajectory Length:" "$LANGUAGE_BMD_PROC" | awk '{print $3}')
+        overall_coherence=$(grep "Overall Coherence:" "$LANGUAGE_BMD_PROC" | awk '{print $3}' | cut -d'/' -f1)
+        semantic_connectivity=$(grep "Semantic Connectivity:" "$LANGUAGE_BMD_PROC" | awk '{print $3}')
+        disorder_measure=$(grep "Disorder Measure:" "$LANGUAGE_BMD_PROC" | awk '{print $3}' | cut -d'/' -f1)
+        hyperconnection_detected=$(grep "Hyperconnection Detected:" "$LANGUAGE_BMD_PROC" | awk '{print $3}')
+        analysis_enabled=$(grep "Analysis Enabled:" "$LANGUAGE_BMD_PROC" | awk '{print $3}')
+        
+        echo "$total_transfers $successful_transfers $processing_cycles $trajectory_length $overall_coherence $semantic_connectivity $disorder_measure $hyperconnection_detected $analysis_enabled"
+    else
+        echo "0 0 0 0 0 0 0 No No"
+    fi
+}
+
+# Get coherence status color
+get_coherence_color() {
+    local coherence="$1"
+    
+    if (( coherence >= COHERENCE_OPTIMAL )); then
+        echo "$COHERENCE_HIGH_COLOR"
+    elif (( coherence >= COHERENCE_MODERATE )); then
+        echo "$COHERENCE_MED_COLOR"
+    else
+        echo "$COHERENCE_LOW_COLOR"
+    fi
+}
+
+# Create discourse trajectory visualization
+visualize_discourse_trajectory() {
+    local coherence="$1" connectivity="$2" disorder="$3" hyperconnection="$4"
+    
+    echo -e "${BOLD}Discourse Trajectory Visualization${RESET}"
+    echo "================================="
+    echo
+    
+    # Coherence visualization (horizontal bar)
+    local coherence_color=$(get_coherence_color "$coherence")
+    local coherence_bars=$(( coherence / 50 ))  # Scale to 0-20 bars
+    
+    echo -e "${BOLD}Coherence Level:${RESET}"
+    printf "["
+    for i in {1..20}; do
+        if (( i <= coherence_bars )); then
+            printf "${coherence_color}█${RESET}"
+        else
+            printf "${DIM}░${RESET}"
+        fi
+    done
+    printf "] %d/1000\n" "$coherence"
+    
+    # Semantic connectivity visualization
+    echo -e "\n${BOLD}Semantic Connectivity:${RESET}"
+    printf "["
+    for i in {1..10}; do
+        if (( i <= connectivity )); then
+            printf "${CONNECTIVITY_COLOR}●${RESET}"
+        else
+            printf "${DIM}○${RESET}"
+        fi
+    done
+    printf "] %d connections\n" "$connectivity"
+    
+    # Disorder measure visualization (inverted)
+    local disorder_bars=$(( (1000 - disorder) / 50 ))  # Inverted scale
+    echo -e "\n${BOLD}Order Level:${RESET}"
+    printf "["
+    for i in {1..20}; do
+        if (( i <= disorder_bars )); then
+            printf "${GREEN}▓${RESET}"
+        else
+            printf "${RED}░${RESET}"
+        fi
+    done
+    printf "] %d/1000 (disorder: %d)\n" "$((1000 - disorder))" "$disorder"
+    
+    # Hyperconnection status
+    echo -e "\n${BOLD}Hyperconnection Status:${RESET}"
+    if [[ "$hyperconnection" == "Yes" ]]; then
+        echo -e "${HYPERCONNECTION_COLOR}◆ DETECTED${RESET} - Disconnection-hyperconnection paradox active"
+        echo "  → Local disconnection with global semantic enhancement"
+    else
+        echo -e "${WHITE}◇ Normal${RESET} - Standard connectivity patterns"
+    fi
+    
+    echo
+}
+
+# Display language module status
+show_module_status() {
+    local module_name module_processings module_success_rate module_coherence
+    
+    echo -e "${BOLD}Language BMD Module Status${RESET}"
+    echo "=========================="
+    echo
+    
+    if [[ -r "$LANGUAGE_BMD_PROC" ]]; then
+        # Parse module information from proc file
+        local in_modules=false
+        local module_id=0
+        
+        while IFS= read -r line; do
+            if [[ "$line" =~ ^Active\ Language\ Modules ]]; then
+                in_modules=true
+                continue
+            elif [[ "$line" =~ ^BMD\ Transfer\ Statistics ]]; then
+                in_modules=false
+                break
+            elif [[ "$in_modules" == "true" && "$line" =~ Module\ ([0-9]+)\ \(([^)]+)\): ]]; then
+                module_id="${BASH_REMATCH[1]}"
+                module_name="${BASH_REMATCH[2]}"
+                echo -e "${TRAJECTORY_COLOR}Module $module_id: $module_name${RESET}"
+            elif [[ "$in_modules" == "true" && "$line" =~ Total\ Processings:\ ([0-9]+) ]]; then
+                module_processings="${BASH_REMATCH[1]}"
+                echo "  Processings: $module_processings"
+            elif [[ "$in_modules" == "true" && "$line" =~ Success\ Rate:\ ([0-9]+)% ]]; then
+                module_success_rate="${BASH_REMATCH[1]}"
+                local success_color="$GREEN"
+                (( module_success_rate < 70 )) && success_color="$YELLOW"
+                (( module_success_rate < 50 )) && success_color="$RED"
+                echo -e "  Success Rate: ${success_color}${module_success_rate}%${RESET}"
+            elif [[ "$in_modules" == "true" && "$line" =~ Discourse\ Coherence:\ ([0-9]+)/10000 ]]; then
+                module_coherence="${BASH_REMATCH[1]}"
+                local coherence_normalized=$(( module_coherence / 10 ))  # Convert to 0-1000 scale
+                local coherence_color=$(get_coherence_color "$coherence_normalized")
+                echo -e "  Coherence: ${coherence_color}${coherence_normalized}/1000${RESET}"
+                echo
+            fi
+        done < "$LANGUAGE_BMD_PROC"
+    else
+        echo "Language BMD module not available"
+    fi
+}
+
+# Display discourse trajectory status
+cmd_status() {
+    log "INFO" "Checking discourse trajectory status..."
+    
+    if ! check_language_bmd; then
+        return 1
+    fi
+    
+    read -r total_transfers successful_transfers processing_cycles trajectory_length \
+            overall_coherence semantic_connectivity disorder_measure \
+            hyperconnection_detected analysis_enabled < <(read_language_bmd_state)
+    
+    echo -e "${BOLD}Discourse Trajectory Analysis Status${RESET}"
+    echo "==================================="
+    echo
+    
+    # Analysis status
+    echo -e "${TRAJECTORY_COLOR}Analysis Configuration:${RESET}"
+    echo "  Analysis Enabled: $analysis_enabled"
+    echo "  Trajectory Length: $trajectory_length points"
+    echo "  Processing Cycles: $processing_cycles"
+    echo
+    
+    # Transfer statistics
+    local success_rate=0
+    if (( total_transfers > 0 )); then
+        success_rate=$(( successful_transfers * 100 / total_transfers ))
+    fi
+    
+    echo -e "${TRAJECTORY_COLOR}BMD Transfer Statistics:${RESET}"
+    echo "  Total Transfers: $total_transfers"
+    echo "  Successful Transfers: $successful_transfers"
+    echo "  Success Rate: ${success_rate}%"
+    echo
+    
+    # Current trajectory visualization
+    visualize_discourse_trajectory "$overall_coherence" "$semantic_connectivity" \
+                                  "$disorder_measure" "$hyperconnection_detected"
+    
+    # Module status
+    show_module_status
+    
+    # Analysis recommendations
+    echo -e "${BOLD}Analysis Recommendations:${RESET}"
+    if (( overall_coherence < COHERENCE_MODERATE )); then
+        echo -e "${YELLOW}⚠ Low coherence detected - consider S-distance optimization${RESET}"
+    fi
+    
+    if (( semantic_connectivity > CONNECTIVITY_HIGH )); then
+        echo -e "${CYAN}ℹ High connectivity - monitor for hyperconnection patterns${RESET}"
+    fi
+    
+    if [[ "$hyperconnection_detected" == "Yes" ]]; then
+        echo -e "${HYPERCONNECTION_COLOR}◆ Hyperconnection paradox active - analyzing disconnection patterns${RESET}"
+    fi
+    
+    if (( disorder_measure > 600 )); then
+        echo -e "${RED}⚠ High discourse disorder - language processing optimization recommended${RESET}"
+    fi
+}
+
+# Monitor discourse trajectory in real-time
+cmd_monitor() {
+    local interval="${1:-2}"
+    
+    log "INFO" "Starting real-time discourse trajectory monitoring (interval: ${interval}s)"
+    
+    if ! check_language_bmd; then
+        return 1
+    fi
+    
+    echo -e "${BOLD}Real-time Discourse Trajectory Monitor${RESET}"
+    echo "Press Ctrl+C to stop"
+    echo
+    
+    # Header
+    printf "%-12s %-10s %-12s %-12s %-10s %-12s %-15s\n" \
+           "Time" "Coherence" "Connectivity" "Disorder" "Transfers" "Success%" "Hyperconn"
+    printf "%-12s %-10s %-12s %-12s %-10s %-12s %-15s\n" \
+           "--------" "--------" "----------" "--------" "---------" "--------" "---------"
+    
+    local last_transfers=0
+    
+    while true; do
+        read -r total_transfers successful_transfers processing_cycles trajectory_length \
+                overall_coherence semantic_connectivity disorder_measure \
+                hyperconnection_detected analysis_enabled < <(read_language_bmd_state)
+        
+        local timestamp=$(date '+%H:%M:%S')
+        
+        # Calculate transfer rate
+        local transfer_rate=$((total_transfers - last_transfers))
+        local success_rate=0
+        if (( total_transfers > 0 )); then
+            success_rate=$(( successful_transfers * 100 / total_transfers ))
+        fi
+        
+        # Color coding for coherence
+        local coherence_color=$(get_coherence_color "$overall_coherence")
+        
+        # Color coding for hyperconnection
+        local hyperconn_indicator="${WHITE}Normal${RESET}"
+        if [[ "$hyperconnection_detected" == "Yes" ]]; then
+            hyperconn_indicator="${HYPERCONNECTION_COLOR}DETECTED${RESET}"
+        fi
+        
+        # Color coding for disorder
+        local disorder_color="$GREEN"
+        (( disorder_measure > 500 )) && disorder_color="$YELLOW"
+        (( disorder_measure > 700 )) && disorder_color="$RED"
+        
+        printf "%-12s ${coherence_color}%-10s${RESET} %-12s ${disorder_color}%-12s${RESET} %-10s %-12s %-15s\n" \
+               "$timestamp" \
+               "$overall_coherence" \
+               "$semantic_connectivity" \
+               "$disorder_measure" \
+               "$transfer_rate" \
+               "${success_rate}%" \
+               "$hyperconn_indicator"
+        
+        last_transfers="$total_transfers"
+        sleep "$interval"
+    done
+}
+
+# Analyze discourse trajectory patterns
+cmd_analyze() {
+    local analysis_depth="${1:-100}"
+    
+    log "INFO" "Performing discourse trajectory pattern analysis (depth: $analysis_depth)"
+    
+    if ! check_language_bmd; then
+        return 1
+    fi
+    
+    echo -e "${BOLD}Discourse Trajectory Pattern Analysis${RESET}"
+    echo "===================================="
+    echo
+    
+    read -r total_transfers successful_transfers processing_cycles trajectory_length \
+            overall_coherence semantic_connectivity disorder_measure \
+            hyperconnection_detected analysis_enabled < <(read_language_bmd_state)
+    
+    # Pattern analysis
+    echo -e "${TRAJECTORY_COLOR}Trajectory Patterns:${RESET}"
+    
+    # Coherence pattern analysis
+    if (( overall_coherence >= COHERENCE_OPTIMAL )); then
+        echo -e "  ${GREEN}✓ High Coherence Pattern${RESET} - Optimal discourse organization"
+        echo "    → Matrix associative memories functioning optimally"
+        echo "    → Context-dependent processing stable"
+    elif (( overall_coherence >= COHERENCE_MODERATE )); then
+        echo -e "  ${YELLOW}◐ Moderate Coherence Pattern${RESET} - Acceptable discourse flow"
+        echo "    → Some matrix instability detected"
+        echo "    → Consider S-distance optimization"
+    else
+        echo -e "  ${RED}✗ Low Coherence Pattern${RESET} - Discourse disorganization detected"
+        echo "    → Matrix associative memory dysfunction"
+        echo "    → Urgent S-distance intervention required"
+    fi
+    
+    echo
+    
+    # Connectivity pattern analysis
+    if (( semantic_connectivity > CONNECTIVITY_HIGH )); then
+        echo -e "  ${CYAN}◆ High Connectivity Pattern${RESET} - Dense semantic network"
+        if [[ "$hyperconnection_detected" == "Yes" ]]; then
+            echo -e "    → ${HYPERCONNECTION_COLOR}Hyperconnection paradox active${RESET}"
+            echo "    → Local disconnection with global semantic enhancement"
+            echo "    → Similar to schizophrenia discourse patterns (Cabana et al.)"
+        else
+            echo "    → Rich semantic associations"
+            echo "    → Optimal cross-domain pattern transfer"
+        fi
+    else
+        echo -e "  ${WHITE}○ Normal Connectivity Pattern${RESET} - Standard semantic network"
+        echo "    → Balanced local-global connectivity"
+        echo "    → Healthy discourse organization"
+    fi
+    
+    echo
+    
+    # Disorder analysis based on research insights
+    local order_level=$((1000 - disorder_measure))
+    echo -e "${TRAJECTORY_COLOR}Discourse Organization Analysis:${RESET}"
+    
+    if (( order_level >= 700 )); then
+        echo -e "  ${GREEN}◆ Highly Organized Discourse${RESET}"
+        echo "    → Matrix memories well-coordinated"
+        echo "    → Goal-oriented linguistic behavior optimal"
+    elif (( order_level >= 400 )); then
+        echo -e "  ${YELLOW}◐ Moderately Organized Discourse${RESET}"
+        echo "    → Some matrix coordination issues"
+        echo "    → Partial goal-oriented behavior"
+    else
+        echo -e "  ${RED}◇ Disorganized Discourse${RESET}"
+        echo "    → Matrix memory disconnection detected"
+        echo "    → Loss of goal-oriented linguistic behavior"
+        echo "    → Pattern consistent with language pathology"
+    fi
+    
+    echo
+    
+    # S-distance integration analysis
+    if [[ -r "$S_DISTANCE_PROC" ]]; then
+        local global_s=$(grep "Global S:" "$S_DISTANCE_PROC" | awk '{print $3}')
+        echo -e "${TRAJECTORY_COLOR}S-Distance Integration:${RESET}"
+        echo "  Current Global S: $global_s"
+        
+        if (( global_s > 500000 )); then
+            echo -e "  ${RED}High S-distance correlates with discourse disorganization${RESET}"
+            echo "  → Observer-process separation affecting language BMD transfer"
+        else
+            echo -e "  ${GREEN}Optimal S-distance supporting coherent discourse${RESET}"
+            echo "  → Good observer-process integration for language processing"
+        fi
+    fi
+    
+    echo
+    
+    # Recommendations based on analysis
+    echo -e "${BOLD}Optimization Recommendations:${RESET}"
+    
+    if (( overall_coherence < COHERENCE_OPTIMAL )); then
+        echo "1. Run S-distance optimization: s-optimizer optimize windowed"
+        echo "2. Enable tri-dimensional navigation: tri-navigator phase sync"
+    fi
+    
+    if [[ "$hyperconnection_detected" == "Yes" ]]; then
+        echo "3. Monitor hyperconnection patterns: discourse-navigator monitor 1"
+        echo "4. Consider ridiculous S solutions: s-optimizer optimize ridiculous"
+    fi
+    
+    if (( disorder_measure > 500 )); then
+        echo "5. Enhance matrix associative memories"
+        echo "6. Increase context-dependent processing strength"
+    fi
+}
+
+# Configure discourse analysis parameters
+cmd_configure() {
+    local action="$1"
+    shift
+    
+    case "$action" in
+        analysis)
+            local enabled="${1:-toggle}"
+            
+            log "INFO" "Configuring discourse analysis: $enabled"
+            
+            if [[ "$DRY_RUN" == "true" ]]; then
+                log "INFO" "DRY RUN: Would configure discourse analysis"
+                return 0
+            fi
+            
+            case "$enabled" in
+                on|enable|true)
+                    echo "1" > /sys/module/language_bmd/parameters/discourse_analysis 2>/dev/null || {
+                        log "WARN" "Could not enable discourse analysis via kernel interface"
+                    }
+                    log "SUCCESS" "Discourse analysis enabled"
+                    ;;
+                off|disable|false)
+                    echo "0" > /sys/module/language_bmd/parameters/discourse_analysis 2>/dev/null || {
+                        log "WARN" "Could not disable discourse analysis via kernel interface"
+                    }
+                    log "SUCCESS" "Discourse analysis disabled"
+                    ;;
+                *)
+                    log "ERROR" "Unknown discourse analysis setting: $enabled"
+                    return 1
+                    ;;
+            esac
+            ;;
+        coherence-threshold)
+            local threshold="$1"
+            
+            if [[ ! "$threshold" =~ ^[0-9]+$ ]]; then
+                log "ERROR" "Coherence threshold must be numeric"
+                return 1
+            fi
+            
+            log "INFO" "Setting coherence threshold to $threshold"
+            
+            if [[ "$DRY_RUN" == "true" ]]; then
+                log "INFO" "DRY RUN: Would set coherence threshold to $threshold"
+                return 0
+            fi
+            
+            echo "$threshold" > /sys/module/language_bmd/parameters/coherence_threshold 2>/dev/null || {
+                log "WARN" "Could not set coherence threshold via kernel interface"
+            }
+            
+            log "SUCCESS" "Coherence threshold set to $threshold"
+            ;;
+        *)
+            log "ERROR" "Unknown configuration action: $action"
+            echo "Available actions: analysis, coherence-threshold"
+            return 1
+            ;;
+    esac
+}
+
+# Interactive discourse trajectory explorer
+cmd_interactive() {
+    log "INFO" "Starting interactive discourse trajectory explorer"
+    
+    if ! check_language_bmd; then
+        return 1
+    fi
+    
+    echo -e "${BOLD}Interactive Discourse Trajectory Explorer${RESET}"
+    echo "========================================"
+    echo "Press 'h' for help, 'q' to quit"
+    echo
+    
+    while true; do
+        # Display current status
+        clear
+        cmd_status
+        echo
+        
+        # Interactive menu
+        echo -e "${TRAJECTORY_COLOR}Navigation Commands:${RESET}"
+        echo "  [s] Show detailed status"
+        echo "  [m] Start real-time monitoring"
+        echo "  [a] Perform pattern analysis"
+        echo "  [c] Configure analysis parameters"
+        echo "  [r] Reset trajectory data"
+        echo "  [h] Show this help"
+        echo "  [q] Quit interactive mode"
+        echo
+        
+        read -p "Command: " -n1 cmd
+        echo
+        
+        case "$cmd" in
+            s)
+                read -p "Press Enter to continue..."
+                ;;
+            m)
+                echo "Starting monitoring (Ctrl+C to stop)..."
+                cmd_monitor 1 || true
+                echo "Monitoring stopped."
+                read -p "Press Enter to continue..."
+                ;;
+            a)
+                cmd_analyze 200
+                read -p "Press Enter to continue..."
+                ;;
+            c)
+                echo "Configuration options:"
+                echo "  [1] Toggle discourse analysis"
+                echo "  [2] Set coherence threshold"
+                read -p "Select option: " -n1 config_cmd
+                echo
+                case "$config_cmd" in
+                    1) cmd_configure analysis toggle ;;
+                    2) 
+                        read -p "Enter threshold (0-1000): " threshold
+                        cmd_configure coherence-threshold "$threshold"
+                        ;;
+                esac
+                read -p "Press Enter to continue..."
+                ;;
+            r)
+                log "INFO" "Resetting trajectory data"
+                echo "reset" > /sys/module/language_bmd/parameters/reset_trajectory 2>/dev/null || {
+                    log "WARN" "Could not reset trajectory via kernel interface"
+                }
+                ;;
+            h)
+                read -p "Press Enter to continue..."
+                ;;
+            q)
+                log "INFO" "Exiting interactive mode"
+                break
+                ;;
+            *)
+                echo "Unknown command: $cmd"
+                sleep 1
+                ;;
+        esac
+    done
+}
+
+# Show usage information
+show_usage() {
+    echo "Discourse Trajectory Navigator v$DISCOURSE_NAV_VERSION"
+    echo "Usage: discourse-navigator [options] <command> [args...]"
+    echo
+    echo "Commands:"
+    echo "  status                     Show current discourse trajectory status"
+    echo "  monitor [interval]         Real-time discourse monitoring"
+    echo "  analyze [depth]           Analyze discourse trajectory patterns"
+    echo "  configure <action> [args] Configure analysis parameters"
+    echo "  interactive               Interactive trajectory exploration"
+    echo "  help                      Show this help"
+    echo
+    echo "Analysis Features:"
+    echo "  • Matrix associative memory tracking"
+    echo "  • Discourse coherence measurement"
+    echo "  • Semantic connectivity analysis"
+    echo "  • Hyperconnection paradox detection"
+    echo "  • S-distance language integration"
+    echo "  • Real-time trajectory visualization"
+    echo
+    echo "Configuration Actions:"
+    echo "  analysis [on|off|toggle]  Enable/disable discourse analysis"
+    echo "  coherence-threshold <n>   Set coherence threshold (0-1000)"
+    echo
+    echo "Options:"
+    echo "  -v, --verbose            Verbose output"
+    echo "  -q, --quiet              Quiet mode"
+    echo "  -n, --dry-run            Show what would be done"
+    echo "  -h, --help               Show this help"
+    echo
+    echo "Examples:"
+    echo "  discourse-navigator status"
+    echo "  discourse-navigator monitor 1"
+    echo "  discourse-navigator analyze 500"
+    echo "  discourse-navigator configure analysis on"
+    echo "  discourse-navigator interactive"
+    echo
+    echo "Based on research: 'Neurocomputational models of language organization'"
+    echo "Matrix associative memory discourse analysis with BMD integration"
+}
+
+# Parse command line options
+parse_options() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -v|--verbose)
+                VERBOSE=true
+                shift
+                ;;
+            -q|--quiet)
+                QUIET=true
+                shift
+                ;;
+            -n|--dry-run)
+                DRY_RUN=true
+                shift
+                ;;
+            -r|--realtime)
+                REALTIME_MODE=true
+                shift
+                ;;
+            -h|--help)
+                show_usage
+                exit 0
+                ;;
+            -*)
+                log "ERROR" "Unknown option: $1"
+                exit 1
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+    
+    echo "$@"
+}
+
+# Main function
+main() {
+    # Create log directory
+    mkdir -p "$(dirname "$DISCOURSE_LOG_FILE")" 2>/dev/null || true
+    
+    # Parse options
+    local remaining_args
+    remaining_args=($(parse_options "$@"))
+    
+    local command="${remaining_args[0]:-status}"
+    
+    case "$command" in
+        status)
+            cmd_status
+            ;;
+        monitor)
+            cmd_monitor "${remaining_args[1]:-2}"
+            ;;
+        analyze)
+            cmd_analyze "${remaining_args[1]:-100}"
+            ;;
+        configure)
+            cmd_configure "${remaining_args[@]:1}"
+            ;;
+        interactive)
+            cmd_interactive
+            ;;
+        help)
+            show_usage
+            ;;
+        *)
+            log "ERROR" "Unknown command: $command"
+            echo "Use 'discourse-navigator help' for usage information"
+            exit 1
+            ;;
+    esac
+}
+
+# Run main function
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi 
