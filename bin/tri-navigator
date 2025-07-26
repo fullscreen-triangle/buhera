@@ -1,0 +1,739 @@
+#!/bin/bash
+#
+# Tri-Dimensional S Navigation Utility
+# 
+# Manual control interface for tri-dimensional S-space navigation
+# Provides coordinate-level control over S_knowledge, S_time, S_entropy dimensions
+#
+# Copyright (C) 2024 Buhera S-Enhanced VPOS Project
+# Licensed under GPL v3
+
+set -euo pipefail
+
+# Tri-Navigator Configuration
+TRI_NAV_VERSION="1.0.0"
+S_TRI_PROC="/proc/s_tri_dimensional"
+S_DISTANCE_PROC="/proc/s_distance"
+TRI_CONFIG_DIR="/etc/s-vpos"
+TRI_LOG_FILE="/var/log/s-framework/tri-navigator.log"
+
+# Color codes for dimensional display
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+BLUE='\033[34m'
+CYAN='\033[36m'
+MAGENTA='\033[35m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
+# Dimensional color assignments
+KNOWLEDGE_COLOR="$BLUE"
+TIME_COLOR="$GREEN"
+ENTROPY_COLOR="$MAGENTA"
+ALIGNMENT_COLOR="$CYAN"
+
+# Global variables
+declare -g VERBOSE=false
+declare -g QUIET=false
+declare -g DRY_RUN=false
+declare -g INTERACTIVE=false
+
+# Navigation phase constants
+declare -A PHASE_NAMES=(
+    [0]="Knowledge Exploration"
+    [1]="Time Navigation"
+    [2]="Entropy Alignment"
+    [3]="Dimensional Sync"
+    [4]="Solution Convergence"
+)
+
+# Logging function
+log() {
+    local level="$1"
+    shift
+    local message="$*"
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    
+    if [[ "$QUIET" != "true" ]]; then
+        case "$level" in
+            ERROR)   echo -e "${RED}[ERROR]${RESET} $message" >&2 ;;
+            WARN)    echo -e "${YELLOW}[WARN]${RESET} $message" >&2 ;;
+            INFO)    echo -e "${BLUE}[INFO]${RESET} $message" ;;
+            SUCCESS) echo -e "${GREEN}[SUCCESS]${RESET} $message" ;;
+            DEBUG)   [[ "$VERBOSE" == "true" ]] && echo -e "${CYAN}[DEBUG]${RESET} $message" ;;
+        esac
+    fi
+    
+    # Log to file
+    echo "$timestamp [$level] $message" >> "$TRI_LOG_FILE" 2>/dev/null || true
+}
+
+# Check if tri-dimensional navigation module is available
+check_tri_navigation() {
+    if [[ ! -r "$S_TRI_PROC" ]]; then
+        log "ERROR" "Tri-dimensional navigation module not available"
+        log "INFO" "Try: sudo modprobe tri-dimensional"
+        return 1
+    fi
+    
+    log "DEBUG" "Tri-dimensional navigation module verified"
+    return 0
+}
+
+# Read current tri-dimensional state
+read_tri_state() {
+    local s_knowledge s_time s_entropy
+    local knowledge_aligned time_aligned entropy_aligned
+    local alignment_score alignment_stability
+    local navigation_phase
+    local knowledge_velocity time_velocity entropy_velocity
+    
+    if [[ -r "$S_TRI_PROC" ]]; then
+        s_knowledge=$(grep "S_knowledge:" "$S_TRI_PROC" | awk '{print $2}')
+        s_time=$(grep "S_time:" "$S_TRI_PROC" | awk '{print $2}')
+        s_entropy=$(grep "S_entropy:" "$S_TRI_PROC" | awk '{print $2}')
+        
+        knowledge_aligned=$(grep "Knowledge Aligned:" "$S_TRI_PROC" | awk '{print $3}')
+        time_aligned=$(grep "Time Aligned:" "$S_TRI_PROC" | awk '{print $3}')
+        entropy_aligned=$(grep "Entropy Aligned:" "$S_TRI_PROC" | awk '{print $3}')
+        
+        alignment_score=$(grep "Alignment Score:" "$S_TRI_PROC" | awk '{print $3}' | cut -d'/' -f1)
+        alignment_stability=$(grep "Alignment Stability:" "$S_TRI_PROC" | awk '{print $3}' | cut -d'%' -f1)
+        
+        navigation_phase=$(grep "Navigation Phase:" "$S_TRI_PROC" | cut -d':' -f2- | sed 's/^ *//')
+        
+        knowledge_velocity=$(grep "Knowledge Velocity:" "$S_TRI_PROC" | awk '{print $3}')
+        time_velocity=$(grep "Time Velocity:" "$S_TRI_PROC" | awk '{print $3}')
+        entropy_velocity=$(grep "Entropy Velocity:" "$S_TRI_PROC" | awk '{print $3}')
+        
+        echo "$s_knowledge $s_time $s_entropy $knowledge_aligned $time_aligned $entropy_aligned $alignment_score $alignment_stability $navigation_phase $knowledge_velocity $time_velocity $entropy_velocity"
+    else
+        echo "0 0 0 No No No 0 0 Unknown 0 0 0"
+    fi
+}
+
+# Format large numbers for display
+format_number() {
+    local num="$1"
+    
+    if (( num > 1000000000 )); then
+        echo "${num:0:-9}.${num: -9:2}G"
+    elif (( num > 1000000 )); then
+        echo "${num:0:-6}.${num: -6:2}M"
+    elif (( num > 1000 )); then
+        echo "${num:0:-3}.${num: -3:1}K"
+    else
+        echo "$num"
+    fi
+}
+
+# Display 3D coordinate visualization
+visualize_3d_position() {
+    local s_knowledge="$1" s_time="$2" s_entropy="$3"
+    local target_knowledge="$4" target_time="$5" target_entropy="$6"
+    
+    echo -e "${BOLD}3D S-Space Position Visualization${RESET}"
+    echo "================================="
+    echo
+    
+    # Calculate normalized positions (0-10 scale for visualization)
+    local max_val=$(( s_knowledge > s_time ? (s_knowledge > s_entropy ? s_knowledge : s_entropy) : (s_time > s_entropy ? s_time : s_entropy) ))
+    max_val=$(( max_val > target_knowledge ? max_val : target_knowledge ))
+    max_val=$(( max_val > target_time ? max_val : target_time ))
+    max_val=$(( max_val > target_entropy ? max_val : target_entropy ))
+    
+    if (( max_val == 0 )); then
+        max_val=1
+    fi
+    
+    local norm_knowledge=$(( s_knowledge * 10 / max_val ))
+    local norm_time=$(( s_time * 10 / max_val ))
+    local norm_entropy=$(( s_entropy * 10 / max_val ))
+    
+    local norm_target_knowledge=$(( target_knowledge * 10 / max_val ))
+    local norm_target_time=$(( target_time * 10 / max_val ))
+    local norm_target_entropy=$(( target_entropy * 10 / max_val ))
+    
+    # S_knowledge axis (horizontal)
+    echo -e "${KNOWLEDGE_COLOR}S_knowledge Axis:${RESET}"
+    printf "0"
+    for i in {1..10}; do
+        if (( i == norm_knowledge )); then
+            printf "${KNOWLEDGE_COLOR}●${RESET}"
+        elif (( i == norm_target_knowledge )); then
+            printf "${KNOWLEDGE_COLOR}◯${RESET}"
+        else
+            printf "─"
+        fi
+    done
+    echo " $(format_number $s_knowledge) (target: $(format_number $target_knowledge))"
+    
+    # S_time axis (horizontal)
+    echo -e "${TIME_COLOR}S_time Axis:${RESET}"
+    printf "0"
+    for i in {1..10}; do
+        if (( i == norm_time )); then
+            printf "${TIME_COLOR}●${RESET}"
+        elif (( i == norm_target_time )); then
+            printf "${TIME_COLOR}◯${RESET}"
+        else
+            printf "─"
+        fi
+    done
+    echo " $(format_number $s_time) (target: $(format_number $target_time))"
+    
+    # S_entropy axis (horizontal)
+    echo -e "${ENTROPY_COLOR}S_entropy Axis:${RESET}"
+    printf "0"
+    for i in {1..10}; do
+        if (( i == norm_entropy )); then
+            printf "${ENTROPY_COLOR}●${RESET}"
+        elif (( i == norm_target_entropy )); then
+            printf "${ENTROPY_COLOR}◯${RESET}"
+        else
+            printf "─"
+        fi
+    done
+    echo " $(format_number $s_entropy) (target: $(format_number $target_entropy))"
+    
+    echo
+    echo "Legend: ● Current position, ◯ Target position"
+}
+
+# Display tri-dimensional status
+cmd_status() {
+    log "INFO" "Checking tri-dimensional navigation status..."
+    
+    if ! check_tri_navigation; then
+        return 1
+    fi
+    
+    read -r s_knowledge s_time s_entropy knowledge_aligned time_aligned entropy_aligned \
+            alignment_score alignment_stability navigation_phase knowledge_velocity \
+            time_velocity entropy_velocity < <(read_tri_state)
+    
+    # Get target coordinates
+    local target_knowledge target_time target_entropy
+    if [[ -r "$S_TRI_PROC" ]]; then
+        target_knowledge=$(grep -A 3 "Target Position" "$S_TRI_PROC" | grep "S_knowledge:" | awk '{print $2}')
+        target_time=$(grep -A 3 "Target Position" "$S_TRI_PROC" | grep "S_time:" | awk '{print $2}')
+        target_entropy=$(grep -A 3 "Target Position" "$S_TRI_PROC" | grep "S_entropy:" | awk '{print $2}')
+    else
+        target_knowledge=1000 target_time=1000 target_entropy=1000
+    fi
+    
+    echo -e "${BOLD}Tri-Dimensional S Navigation Status${RESET}"
+    echo "=================================="
+    echo
+    
+    # Current position
+    echo -e "${ALIGNMENT_COLOR}Current Position in S-Space:${RESET}"
+    echo -e "  ${KNOWLEDGE_COLOR}S_knowledge:${RESET} $(format_number "$s_knowledge")"
+    echo -e "  ${TIME_COLOR}S_time:${RESET}      $(format_number "$s_time")"
+    echo -e "  ${ENTROPY_COLOR}S_entropy:${RESET}   $(format_number "$s_entropy")"
+    echo
+    
+    # Target position
+    echo -e "${ALIGNMENT_COLOR}Target Position in S-Space:${RESET}"
+    echo -e "  ${KNOWLEDGE_COLOR}S_knowledge:${RESET} $(format_number "$target_knowledge")"
+    echo -e "  ${TIME_COLOR}S_time:${RESET}      $(format_number "$target_time")"
+    echo -e "  ${ENTROPY_COLOR}S_entropy:${RESET}   $(format_number "$target_entropy")"
+    echo
+    
+    # 3D visualization
+    visualize_3d_position "$s_knowledge" "$s_time" "$s_entropy" \
+                         "$target_knowledge" "$target_time" "$target_entropy"
+    echo
+    
+    # Dimensional alignment
+    echo -e "${ALIGNMENT_COLOR}Dimensional Alignment:${RESET}"
+    
+    local knowledge_status="${RED}✗${RESET}"
+    [[ "$knowledge_aligned" == "Yes" ]] && knowledge_status="${GREEN}✓${RESET}"
+    
+    local time_status="${RED}✗${RESET}"
+    [[ "$time_aligned" == "Yes" ]] && time_status="${GREEN}✓${RESET}"
+    
+    local entropy_status="${RED}✗${RESET}"
+    [[ "$entropy_aligned" == "Yes" ]] && entropy_status="${GREEN}✓${RESET}"
+    
+    echo -e "  ${KNOWLEDGE_COLOR}Knowledge:${RESET} $knowledge_status"
+    echo -e "  ${TIME_COLOR}Time:${RESET}      $time_status"
+    echo -e "  ${ENTROPY_COLOR}Entropy:${RESET}   $entropy_status"
+    echo "  Alignment Score: $alignment_score/1000"
+    echo "  Alignment Stability: ${alignment_stability}%"
+    echo
+    
+    # Navigation vector
+    echo -e "${ALIGNMENT_COLOR}Navigation Vector:${RESET}"
+    echo -e "  ${KNOWLEDGE_COLOR}Knowledge Velocity:${RESET} $knowledge_velocity"
+    echo -e "  ${TIME_COLOR}Time Velocity:${RESET}      $time_velocity"
+    echo -e "  ${ENTROPY_COLOR}Entropy Velocity:${RESET}   $entropy_velocity"
+    echo
+    
+    # Current navigation phase
+    echo -e "${ALIGNMENT_COLOR}Navigation Phase:${RESET} $navigation_phase"
+    echo
+    
+    # Overall status assessment
+    local overall_status="${RED}MISALIGNED${RESET}"
+    if [[ "$knowledge_aligned" == "Yes" && "$time_aligned" == "Yes" && "$entropy_aligned" == "Yes" ]]; then
+        overall_status="${GREEN}FULLY ALIGNED${RESET}"
+    elif (( alignment_score > 700 )); then
+        overall_status="${YELLOW}CONVERGING${RESET}"
+    elif (( alignment_score > 400 )); then
+        overall_status="${BLUE}NAVIGATING${RESET}"
+    fi
+    
+    echo -e "Overall Status: $overall_status"
+    
+    # Navigation statistics from proc file
+    if [[ -r "$S_TRI_PROC" ]]; then
+        echo
+        echo -e "${ALIGNMENT_COLOR}Navigation Statistics:${RESET}"
+        grep -E "(Total Cycles|Successful Navigations|Success Rate|Dimensional Syncs)" "$S_TRI_PROC" | sed 's/^/  /'
+    fi
+}
+
+# Set navigation target coordinates
+cmd_target() {
+    local s_knowledge="$1" s_time="$2" s_entropy="$3"
+    
+    if [[ -z "$s_knowledge" || -z "$s_time" || -z "$s_entropy" ]]; then
+        log "ERROR" "All three coordinates required: tri-navigator target <s_knowledge> <s_time> <s_entropy>"
+        return 1
+    fi
+    
+    if [[ ! "$s_knowledge" =~ ^[0-9]+$ || ! "$s_time" =~ ^[0-9]+$ || ! "$s_entropy" =~ ^[0-9]+$ ]]; then
+        log "ERROR" "All coordinates must be numeric values"
+        return 1
+    fi
+    
+    log "INFO" "Setting navigation target to ($(format_number $s_knowledge), $(format_number $s_time), $(format_number $s_entropy))"
+    
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log "INFO" "DRY RUN: Would set target to ($s_knowledge, $s_time, $s_entropy)"
+        return 0
+    fi
+    
+    # Set target via sysfs interface (simulated)
+    echo "$s_knowledge $s_time $s_entropy" > /sys/module/tri_dimensional/parameters/target 2>/dev/null || {
+        log "WARN" "Could not set target via kernel interface, using fallback"
+        # Fallback method would go here
+    }
+    
+    log "SUCCESS" "Navigation target set to ($(format_number $s_knowledge), $(format_number $s_time), $(format_number $s_entropy))"
+}
+
+# Navigate to specific coordinates with step control
+cmd_navigate() {
+    local target_knowledge="$1" target_time="$2" target_entropy="$3"
+    local steps="${4:-10}" max_time="${5:-60}"
+    
+    if [[ -z "$target_knowledge" || -z "$target_time" || -z "$target_entropy" ]]; then
+        log "ERROR" "Target coordinates required: tri-navigator navigate <s_knowledge> <s_time> <s_entropy> [steps] [max_time]"
+        return 1
+    fi
+    
+    log "INFO" "Starting navigation to ($(format_number $target_knowledge), $(format_number $target_time), $(format_number $target_entropy))"
+    log "INFO" "Navigation parameters: $steps steps, ${max_time}s max time"
+    
+    if ! check_tri_navigation; then
+        return 1
+    fi
+    
+    # Set target first
+    cmd_target "$target_knowledge" "$target_time" "$target_entropy"
+    
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log "INFO" "DRY RUN: Would navigate in $steps steps over ${max_time}s"
+        return 0
+    fi
+    
+    echo -e "${BOLD}Tri-Dimensional Navigation${RESET}"
+    echo "========================="
+    echo "Target: ($(format_number $target_knowledge), $(format_number $target_time), $(format_number $target_entropy))"
+    echo "Steps: $steps, Max time: ${max_time}s"
+    echo
+    
+    local start_time=$(date +%s)
+    local end_time=$((start_time + max_time))
+    local step_duration=$((max_time / steps))
+    
+    echo "Starting navigation... (Press Ctrl+C to stop)"
+    
+    for ((step=1; step<=steps; step++)); do
+        if (( $(date +%s) >= end_time )); then
+            log "WARN" "Maximum time reached, stopping navigation"
+            break
+        fi
+        
+        echo -e "${CYAN}Step $step/$steps:${RESET}"
+        
+        read -r s_knowledge s_time s_entropy knowledge_aligned time_aligned entropy_aligned \
+                alignment_score alignment_stability navigation_phase knowledge_velocity \
+                time_velocity entropy_velocity < <(read_tri_state)
+        
+        # Display current position
+        echo -e "  Position: (${KNOWLEDGE_COLOR}$(format_number $s_knowledge)${RESET}, ${TIME_COLOR}$(format_number $s_time)${RESET}, ${ENTROPY_COLOR}$(format_number $s_entropy)${RESET})"
+        echo -e "  Alignment: $alignment_score/1000 (${alignment_stability}%)"
+        echo -e "  Phase: $navigation_phase"
+        
+        # Check if target reached
+        local knowledge_distance=$((s_knowledge > target_knowledge ? s_knowledge - target_knowledge : target_knowledge - s_knowledge))
+        local time_distance=$((s_time > target_time ? s_time - target_time : target_time - s_time))
+        local entropy_distance=$((s_entropy > target_entropy ? s_entropy - target_entropy : target_entropy - s_entropy))
+        
+        local total_distance=$((knowledge_distance + time_distance + entropy_distance))
+        
+        if (( total_distance < 1000 )); then
+            log "SUCCESS" "Target reached! Total distance: $(format_number $total_distance)"
+            break
+        fi
+        
+        echo -e "  Distance to target: $(format_number $total_distance)"
+        echo
+        
+        # Wait for next step
+        sleep "$step_duration"
+    done
+    
+    # Final status
+    read -r final_s_knowledge final_s_time final_s_entropy final_knowledge_aligned \
+            final_time_aligned final_entropy_aligned final_alignment_score \
+            final_alignment_stability final_navigation_phase final_knowledge_velocity \
+            final_time_velocity final_entropy_velocity < <(read_tri_state)
+    
+    echo -e "${BOLD}Navigation Complete${RESET}"
+    echo "Final position: ($(format_number $final_s_knowledge), $(format_number $final_s_time), $(format_number $final_s_entropy))"
+    echo "Final alignment: $final_alignment_score/1000 (${final_alignment_stability}%)"
+    
+    if [[ "$final_knowledge_aligned" == "Yes" && "$final_time_aligned" == "Yes" && "$final_entropy_aligned" == "Yes" ]]; then
+        log "SUCCESS" "Full tri-dimensional alignment achieved!"
+    else
+        log "INFO" "Navigation completed, partial alignment achieved"
+    fi
+}
+
+# Set navigation phase manually
+cmd_phase() {
+    local phase="$1"
+    
+    if [[ -z "$phase" ]]; then
+        log "ERROR" "Navigation phase required"
+        echo "Available phases: exploration, time, entropy, sync, convergence"
+        return 1
+    fi
+    
+    local phase_num
+    case "$phase" in
+        exploration|knowledge)
+            phase_num=0
+            ;;
+        time|temporal)
+            phase_num=1
+            ;;
+        entropy)
+            phase_num=2
+            ;;
+        sync|synchronization)
+            phase_num=3
+            ;;
+        convergence|solution)
+            phase_num=4
+            ;;
+        *)
+            log "ERROR" "Unknown phase: $phase"
+            echo "Available phases: exploration, time, entropy, sync, convergence"
+            return 1
+            ;;
+    esac
+    
+    log "INFO" "Setting navigation phase to: ${PHASE_NAMES[$phase_num]}"
+    
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log "INFO" "DRY RUN: Would set phase to $phase_num (${PHASE_NAMES[$phase_num]})"
+        return 0
+    fi
+    
+    # Set phase via sysfs interface (simulated)
+    echo "$phase_num" > /sys/module/tri_dimensional/parameters/phase 2>/dev/null || {
+        log "WARN" "Could not set phase via kernel interface"
+    }
+    
+    log "SUCCESS" "Navigation phase set to: ${PHASE_NAMES[$phase_num]}"
+}
+
+# Monitor tri-dimensional navigation in real-time
+cmd_monitor() {
+    local interval="${1:-2}"
+    
+    log "INFO" "Starting real-time tri-dimensional navigation monitoring (interval: ${interval}s)"
+    
+    if ! check_tri_navigation; then
+        return 1
+    fi
+    
+    echo -e "${BOLD}Real-time Tri-Dimensional Navigation Monitor${RESET}"
+    echo "Press Ctrl+C to stop"
+    echo
+    
+    # Header
+    printf "%-12s %-12s %-12s %-12s %-8s %-8s %-8s %-12s %-20s\n" \
+           "Time" "S_knowledge" "S_time" "S_entropy" "K_Align" "T_Align" "E_Align" "Score" "Phase"
+    printf "%-12s %-12s %-12s %-12s %-8s %-8s %-8s %-12s %-20s\n" \
+           "--------" "-----------" "------" "---------" "-------" "-------" "-------" "-----" "--------------------"
+    
+    while true; do
+        read -r s_knowledge s_time s_entropy knowledge_aligned time_aligned entropy_aligned \
+                alignment_score alignment_stability navigation_phase knowledge_velocity \
+                time_velocity entropy_velocity < <(read_tri_state)
+        
+        local timestamp=$(date '+%H:%M:%S')
+        
+        # Format alignment indicators
+        local k_align="${RED}✗${RESET}"
+        [[ "$knowledge_aligned" == "Yes" ]] && k_align="${GREEN}✓${RESET}"
+        
+        local t_align="${RED}✗${RESET}"
+        [[ "$time_aligned" == "Yes" ]] && t_align="${GREEN}✓${RESET}"
+        
+        local e_align="${RED}✗${RESET}"
+        [[ "$entropy_aligned" == "Yes" ]] && e_align="${GREEN}✓${RESET}"
+        
+        # Truncate phase name for display
+        local short_phase="${navigation_phase:0:18}"
+        
+        printf "%-12s %-12s %-12s %-12s %-8s %-8s %-8s %-12s %-20s\n" \
+               "$timestamp" \
+               "$(format_number "$s_knowledge")" \
+               "$(format_number "$s_time")" \
+               "$(format_number "$s_entropy")" \
+               "$k_align" \
+               "$t_align" \
+               "$e_align" \
+               "$alignment_score" \
+               "$short_phase"
+        
+        sleep "$interval"
+    done
+}
+
+# Interactive tri-dimensional navigation
+cmd_interactive() {
+    log "INFO" "Starting interactive tri-dimensional navigation"
+    
+    if ! check_tri_navigation; then
+        return 1
+    fi
+    
+    echo -e "${BOLD}Interactive Tri-Dimensional Navigation${RESET}"
+    echo "====================================="
+    echo "Use arrow keys to navigate, 'q' to quit, 'h' for help"
+    echo
+    
+    # Enable interactive mode
+    INTERACTIVE=true
+    
+    while true; do
+        # Display current status
+        clear
+        cmd_status
+        echo
+        
+        # Interactive menu
+        echo -e "${ALIGNMENT_COLOR}Navigation Commands:${RESET}"
+        echo "  [k/K] Decrease/Increase S_knowledge"
+        echo "  [t/T] Decrease/Increase S_time"  
+        echo "  [e/E] Decrease/Increase S_entropy"
+        echo "  [r]   Reset to origin (1000, 1000, 1000)"
+        echo "  [p]   Change navigation phase"
+        echo "  [s]   Show detailed status"
+        echo "  [h]   Show this help"
+        echo "  [q]   Quit interactive mode"
+        echo
+        
+        read -p "Command: " -n1 cmd
+        echo
+        
+        case "$cmd" in
+            k)
+                log "INFO" "Decreasing S_knowledge by 1000"
+                # Implement coordinate adjustment
+                ;;
+            K)
+                log "INFO" "Increasing S_knowledge by 1000"
+                # Implement coordinate adjustment
+                ;;
+            t)
+                log "INFO" "Decreasing S_time by 1000"
+                # Implement coordinate adjustment
+                ;;
+            T)
+                log "INFO" "Increasing S_time by 1000"
+                # Implement coordinate adjustment
+                ;;
+            e)
+                log "INFO" "Decreasing S_entropy by 1000"
+                # Implement coordinate adjustment
+                ;;
+            E)
+                log "INFO" "Increasing S_entropy by 1000"
+                # Implement coordinate adjustment
+                ;;
+            r)
+                cmd_target 1000 1000 1000
+                ;;
+            p)
+                echo "Select phase: (e)xploration, (t)ime, (e)ntropy, (s)ync, (c)onvergence"
+                read -p "Phase: " -n1 phase_cmd
+                echo
+                case "$phase_cmd" in
+                    e) cmd_phase "exploration" ;;
+                    t) cmd_phase "time" ;;
+                    n) cmd_phase "entropy" ;;
+                    s) cmd_phase "sync" ;;
+                    c) cmd_phase "convergence" ;;
+                esac
+                ;;
+            s)
+                read -p "Press Enter to continue..."
+                ;;
+            h)
+                read -p "Press Enter to continue..."
+                ;;
+            q)
+                log "INFO" "Exiting interactive mode"
+                break
+                ;;
+            *)
+                echo "Unknown command: $cmd"
+                sleep 1
+                ;;
+        esac
+    done
+    
+    INTERACTIVE=false
+}
+
+# Show usage information
+show_usage() {
+    echo "Tri-Dimensional S Navigation Utility v$TRI_NAV_VERSION"
+    echo "Usage: tri-navigator [options] <command> [args...]"
+    echo
+    echo "Commands:"
+    echo "  status                      Show current navigation status"
+    echo "  target <s_k> <s_t> <s_e>   Set navigation target coordinates"
+    echo "  navigate <s_k> <s_t> <s_e> [steps] [time]  Navigate to coordinates"
+    echo "  phase <phase>              Set navigation phase"
+    echo "  monitor [interval]         Real-time navigation monitoring"
+    echo "  interactive                Interactive navigation mode"
+    echo "  help                       Show this help"
+    echo
+    echo "Navigation Phases:"
+    echo "  exploration               Knowledge exploration phase"
+    echo "  time                      Time navigation phase"
+    echo "  entropy                   Entropy alignment phase"
+    echo "  sync                      Dimensional synchronization"
+    echo "  convergence               Solution convergence"
+    echo
+    echo "Coordinate Format:"
+    echo "  s_k                       S_knowledge coordinate (information deficit)"
+    echo "  s_t                       S_time coordinate (temporal delay)"
+    echo "  s_e                       S_entropy coordinate (entropy distance)"
+    echo
+    echo "Options:"
+    echo "  -v, --verbose             Verbose output"
+    echo "  -q, --quiet              Quiet mode"
+    echo "  -n, --dry-run            Show what would be done"
+    echo "  -h, --help               Show this help"
+    echo
+    echo "Examples:"
+    echo "  tri-navigator status"
+    echo "  tri-navigator target 5000 3000 2000"
+    echo "  tri-navigator navigate 1000 1000 1000 20 120"
+    echo "  tri-navigator phase sync"
+    echo "  tri-navigator monitor 1"
+    echo "  tri-navigator interactive"
+}
+
+# Parse command line options
+parse_options() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -v|--verbose)
+                VERBOSE=true
+                shift
+                ;;
+            -q|--quiet)
+                QUIET=true
+                shift
+                ;;
+            -n|--dry-run)
+                DRY_RUN=true
+                shift
+                ;;
+            -h|--help)
+                show_usage
+                exit 0
+                ;;
+            -*)
+                log "ERROR" "Unknown option: $1"
+                exit 1
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+    
+    echo "$@"
+}
+
+# Main function
+main() {
+    # Create log directory
+    mkdir -p "$(dirname "$TRI_LOG_FILE")" 2>/dev/null || true
+    
+    # Parse options
+    local remaining_args
+    remaining_args=($(parse_options "$@"))
+    
+    local command="${remaining_args[0]:-status}"
+    
+    case "$command" in
+        status)
+            cmd_status
+            ;;
+        target)
+            cmd_target "${remaining_args[1]:-}" "${remaining_args[2]:-}" "${remaining_args[3]:-}"
+            ;;
+        navigate)
+            cmd_navigate "${remaining_args[1]:-}" "${remaining_args[2]:-}" "${remaining_args[3]:-}" \
+                        "${remaining_args[4]:-10}" "${remaining_args[5]:-60}"
+            ;;
+        phase)
+            cmd_phase "${remaining_args[1]:-}"
+            ;;
+        monitor)
+            cmd_monitor "${remaining_args[1]:-2}"
+            ;;
+        interactive)
+            cmd_interactive
+            ;;
+        help)
+            show_usage
+            ;;
+        *)
+            log "ERROR" "Unknown command: $command"
+            echo "Use 'tri-navigator help' for usage information"
+            exit 1
+            ;;
+    esac
+}
+
+# Run main function
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi 

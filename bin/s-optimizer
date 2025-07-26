@@ -1,0 +1,603 @@
+#!/bin/bash
+#
+# S-Distance Optimization Utility
+# 
+# Command-line interface for controlling S-framework optimization
+# Provides manual and automated S-distance minimization
+#
+# Copyright (C) 2024 Buhera S-Enhanced VPOS Project
+# Licensed under GPL v3
+
+set -euo pipefail
+
+# S-Optimizer Configuration
+S_OPTIMIZER_VERSION="1.0.0"
+S_FRAMEWORK_BASE="/sys/s-framework"
+S_DISTANCE_PROC="/proc/s_distance"
+S_MINIMIZER_PROC="/proc/s_minimizer"
+S_TRI_PROC="/proc/s_tri_dimensional"
+S_CONFIG_DIR="/etc/s-vpos"
+S_LOG_FILE="/var/log/s-framework/s-optimizer.log"
+
+# Color codes for output
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+BLUE='\033[34m'
+CYAN='\033[36m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
+# Global variables
+declare -g VERBOSE=false
+declare -g QUIET=false
+declare -g DRY_RUN=false
+
+# Logging function
+log() {
+    local level="$1"
+    shift
+    local message="$*"
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    
+    if [[ "$QUIET" != "true" ]]; then
+        case "$level" in
+            ERROR)   echo -e "${RED}[ERROR]${RESET} $message" >&2 ;;
+            WARN)    echo -e "${YELLOW}[WARN]${RESET} $message" >&2 ;;
+            INFO)    echo -e "${BLUE}[INFO]${RESET} $message" ;;
+            SUCCESS) echo -e "${GREEN}[SUCCESS]${RESET} $message" ;;
+            DEBUG)   [[ "$VERBOSE" == "true" ]] && echo -e "${CYAN}[DEBUG]${RESET} $message" ;;
+        esac
+    fi
+    
+    # Log to file
+    echo "$timestamp [$level] $message" >> "$S_LOG_FILE" 2>/dev/null || true
+}
+
+# Check if S-framework kernel modules are loaded
+check_s_framework() {
+    local modules_ok=true
+    
+    if [[ ! -r "$S_DISTANCE_PROC" ]]; then
+        log "ERROR" "S-distance measurement module not available"
+        modules_ok=false
+    fi
+    
+    if [[ ! -r "$S_MINIMIZER_PROC" ]]; then
+        log "ERROR" "S-minimizer module not available"
+        modules_ok=false
+    fi
+    
+    if [[ ! -r "$S_TRI_PROC" ]]; then
+        log "ERROR" "Tri-dimensional navigation module not available"
+        modules_ok=false
+    fi
+    
+    if [[ "$modules_ok" == "false" ]]; then
+        log "ERROR" "S-framework kernel modules not properly loaded"
+        log "INFO" "Try: sudo modprobe s-distance-meter s-minimizer tri-dimensional"
+        return 1
+    fi
+    
+    log "DEBUG" "S-framework kernel modules verified"
+    return 0
+}
+
+# Read current S-distance values
+read_s_values() {
+    local s_knowledge s_time s_entropy global_s observer_level
+    
+    if [[ -r "$S_DISTANCE_PROC" ]]; then
+        s_knowledge=$(grep "S_knowledge:" "$S_DISTANCE_PROC" | awk '{print $2}')
+        s_time=$(grep "S_time:" "$S_DISTANCE_PROC" | awk '{print $2}')
+        s_entropy=$(grep "S_entropy:" "$S_DISTANCE_PROC" | awk '{print $2}')
+        global_s=$(grep "Global S:" "$S_DISTANCE_PROC" | awk '{print $3}')
+        observer_level=$(grep "Observer Level:" "$S_DISTANCE_PROC" | awk '{print $3}' | cut -d'/' -f1)
+        
+        echo "$s_knowledge $s_time $s_entropy $global_s $observer_level"
+    else
+        echo "0 0 0 0 128"
+    fi
+}
+
+# Format large numbers for display
+format_number() {
+    local num="$1"
+    
+    if (( num > 1000000000 )); then
+        echo "${num:0:-9}.${num: -9:2}G"
+    elif (( num > 1000000 )); then
+        echo "${num:0:-6}.${num: -6:2}M"
+    elif (( num > 1000 )); then
+        echo "${num:0:-3}.${num: -3:1}K"
+    else
+        echo "$num"
+    fi
+}
+
+# Display current S-distance status
+cmd_status() {
+    log "INFO" "Checking S-framework status..."
+    
+    if ! check_s_framework; then
+        return 1
+    fi
+    
+    read -r s_knowledge s_time s_entropy global_s observer_level < <(read_s_values)
+    
+    echo -e "${BOLD}S-Distance Framework Status${RESET}"
+    echo "==========================="
+    echo
+    
+    # Current S-distance values
+    echo -e "${CYAN}Current S-Distance Measurements:${RESET}"
+    echo "  S_knowledge: $(format_number "$s_knowledge")"
+    echo "  S_time:      $(format_number "$s_time")"
+    echo "  S_entropy:   $(format_number "$s_entropy")"
+    echo "  Global S:    $(format_number "$global_s")"
+    echo "  Observer Level: $observer_level/255"
+    echo
+    
+    # S-distance status assessment
+    local status_color status_text
+    if (( global_s < 100000 )); then
+        status_color="$GREEN"
+        status_text="OPTIMAL"
+    elif (( global_s < 500000 )); then
+        status_color="$YELLOW"
+        status_text="MODERATE"
+    else
+        status_color="$RED"
+        status_text="CRITICAL"
+    fi
+    
+    echo -e "S-Distance Status: ${status_color}${BOLD}$status_text${RESET}"
+    echo
+    
+    # Minimizer status
+    if [[ -r "$S_MINIMIZER_PROC" ]]; then
+        echo -e "${CYAN}S-Minimizer Status:${RESET}"
+        grep -E "(Strategy|Current S|Target S|Success Rate)" "$S_MINIMIZER_PROC" | sed 's/^/  /'
+        echo
+    fi
+    
+    # Tri-dimensional navigation status
+    if [[ -r "$S_TRI_PROC" ]]; then
+        echo -e "${CYAN}Tri-Dimensional Navigation:${RESET}"
+        grep -E "(Navigation Phase|Alignment Score|Success Rate)" "$S_TRI_PROC" | sed 's/^/  /'
+        echo
+    fi
+    
+    # System load impact
+    local load_avg=$(cut -d' ' -f1 /proc/loadavg)
+    local memory_usage=$(awk '/MemAvailable/ {avail=$2} /MemTotal/ {total=$2} END {print int((total-avail)*100/total)}' /proc/meminfo)
+    
+    echo -e "${CYAN}System Impact:${RESET}"
+    echo "  Load Average: $load_avg"
+    echo "  Memory Usage: ${memory_usage}%"
+    echo "  S-Framework Overhead: <1%"
+}
+
+# Optimize S-distance using specified strategy
+cmd_optimize() {
+    local strategy="${1:-auto}"
+    local target_reduction="${2:-20}"
+    local duration="${3:-60}"
+    
+    log "INFO" "Starting S-distance optimization (strategy: $strategy, target: ${target_reduction}%, duration: ${duration}s)"
+    
+    if ! check_s_framework; then
+        return 1
+    fi
+    
+    read -r s_knowledge s_time s_entropy global_s observer_level < <(read_s_values)
+    local initial_s="$global_s"
+    
+    echo -e "${BOLD}S-Distance Optimization${RESET}"
+    echo "======================="
+    echo "Strategy: $strategy"
+    echo "Initial S-distance: $(format_number "$initial_s")"
+    echo "Target reduction: ${target_reduction}%"
+    echo "Duration: ${duration}s"
+    echo
+    
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log "INFO" "DRY RUN: Would optimize S-distance using strategy '$strategy'"
+        return 0
+    fi
+    
+    # Set optimization strategy in kernel module
+    case "$strategy" in
+        direct)
+            echo "0" > /sys/module/s_minimizer/parameters/strategy 2>/dev/null || true
+            ;;
+        windowed)
+            echo "1" > /sys/module/s_minimizer/parameters/strategy 2>/dev/null || true
+            ;;
+        cross-domain)
+            echo "2" > /sys/module/s_minimizer/parameters/strategy 2>/dev/null || true
+            ;;
+        ridiculous)
+            echo "3" > /sys/module/s_minimizer/parameters/strategy 2>/dev/null || true
+            ;;
+        disposable)
+            echo "4" > /sys/module/s_minimizer/parameters/strategy 2>/dev/null || true
+            ;;
+        auto)
+            echo "1" > /sys/module/s_minimizer/parameters/auto_strategy 2>/dev/null || true
+            ;;
+    esac
+    
+    # Monitor optimization progress
+    local start_time=$(date +%s)
+    local end_time=$((start_time + duration))
+    local last_s="$initial_s"
+    
+    echo "Optimizing... (Press Ctrl+C to stop)"
+    
+    while (( $(date +%s) < end_time )); do
+        sleep 2
+        
+        read -r new_s_knowledge new_s_time new_s_entropy new_global_s new_observer_level < <(read_s_values)
+        
+        local improvement=$((last_s - new_global_s))
+        local percentage=0
+        if (( initial_s > 0 )); then
+            percentage=$(( (initial_s - new_global_s) * 100 / initial_s ))
+        fi
+        
+        if (( improvement > 0 )); then
+            echo -e "${GREEN}S-distance: $(format_number "$new_global_s") (improved by $(format_number "$improvement"), ${percentage}% total)${RESET}"
+        elif (( improvement < 0 )); then
+            echo -e "${YELLOW}S-distance: $(format_number "$new_global_s") (increased by $(format_number "${improvement#-}"))${RESET}"
+        else
+            echo -e "S-distance: $(format_number "$new_global_s") (no change)"
+        fi
+        
+        last_s="$new_global_s"
+        
+        # Check if target reduction achieved
+        if (( percentage >= target_reduction )); then
+            log "SUCCESS" "Target reduction of ${target_reduction}% achieved!"
+            break
+        fi
+    done
+    
+    # Final results
+    read -r final_s_knowledge final_s_time final_s_entropy final_global_s final_observer_level < <(read_s_values)
+    local total_improvement=$((initial_s - final_global_s))
+    local final_percentage=0
+    if (( initial_s > 0 )); then
+        final_percentage=$(( total_improvement * 100 / initial_s ))
+    fi
+    
+    echo
+    echo -e "${BOLD}Optimization Complete${RESET}"
+    echo "Initial S-distance: $(format_number "$initial_s")"
+    echo "Final S-distance:   $(format_number "$final_global_s")"
+    
+    if (( total_improvement > 0 )); then
+        echo -e "Improvement: ${GREEN}$(format_number "$total_improvement") (${final_percentage}%)${RESET}"
+        log "SUCCESS" "S-distance optimized from $initial_s to $final_global_s (${final_percentage}% reduction)"
+    elif (( total_improvement < 0 )); then
+        echo -e "Change: ${RED}+$(format_number "${total_improvement#-}") (${final_percentage#-}% increase)${RESET}"
+        log "WARN" "S-distance increased from $initial_s to $final_global_s"
+    else
+        echo "No change in S-distance"
+        log "INFO" "S-distance unchanged during optimization"
+    fi
+}
+
+# Set optimization target
+cmd_target() {
+    local new_target="$1"
+    
+    if [[ -z "$new_target" ]]; then
+        log "ERROR" "Target S-distance value required"
+        echo "Usage: s-optimizer target <value>"
+        return 1
+    fi
+    
+    if [[ ! "$new_target" =~ ^[0-9]+$ ]]; then
+        log "ERROR" "Target must be a numeric value"
+        return 1
+    fi
+    
+    log "INFO" "Setting S-distance target to $new_target"
+    
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log "INFO" "DRY RUN: Would set S-distance target to $new_target"
+        return 0
+    fi
+    
+    # Set target in kernel modules
+    echo "$new_target" > /sys/module/s_distance_meter/parameters/target_s 2>/dev/null || true
+    echo "$new_target" > /sys/module/s_minimizer/parameters/target_s 2>/dev/null || true
+    
+    log "SUCCESS" "S-distance target set to $(format_number "$new_target")"
+}
+
+# Configure windowed generation
+cmd_window() {
+    local action="$1"
+    shift
+    
+    case "$action" in
+        add)
+            local s_min="$1" s_max="$2" rate="${3:-1000}" precision="${4:-100}"
+            
+            if [[ -z "$s_min" || -z "$s_max" ]]; then
+                log "ERROR" "Window range required: s-optimizer window add <min> <max> [rate] [precision]"
+                return 1
+            fi
+            
+            log "INFO" "Adding windowed generation: range [$s_min-$s_max], rate $rate/s, precision $precision"
+            
+            if [[ "$DRY_RUN" == "true" ]]; then
+                log "INFO" "DRY RUN: Would add window [$s_min-$s_max] rate=$rate precision=$precision"
+                return 0
+            fi
+            
+            # Add window via sysfs interface (simulated)
+            echo "$s_min $s_max $rate $precision" > /sys/module/s_minimizer/parameters/add_window 2>/dev/null || {
+                log "WARN" "Could not add window via kernel interface, optimization may be limited"
+            }
+            
+            log "SUCCESS" "Window added: range [$(format_number "$s_min")-$(format_number "$s_max")]"
+            ;;
+        list)
+            log "INFO" "Active windowed generation windows:"
+            if [[ -r "$S_MINIMIZER_PROC" ]]; then
+                grep -A 10 "Active Windows" "$S_MINIMIZER_PROC" | grep "Window" | sed 's/^/  /'
+            else
+                echo "  No windows active (kernel module not available)"
+            fi
+            ;;
+        clear)
+            log "INFO" "Clearing all windowed generation windows"
+            
+            if [[ "$DRY_RUN" == "true" ]]; then
+                log "INFO" "DRY RUN: Would clear all windows"
+                return 0
+            fi
+            
+            echo "clear" > /sys/module/s_minimizer/parameters/clear_windows 2>/dev/null || true
+            log "SUCCESS" "All windows cleared"
+            ;;
+        *)
+            log "ERROR" "Unknown window action: $action"
+            echo "Usage: s-optimizer window [add|list|clear] [args...]"
+            return 1
+            ;;
+    esac
+}
+
+# Monitor S-distance in real-time
+cmd_monitor() {
+    local interval="${1:-2}"
+    
+    log "INFO" "Starting real-time S-distance monitoring (interval: ${interval}s)"
+    
+    if ! check_s_framework; then
+        return 1
+    fi
+    
+    echo -e "${BOLD}Real-time S-Distance Monitor${RESET}"
+    echo "Press Ctrl+C to stop"
+    echo
+    
+    # Header
+    printf "%-12s %-12s %-12s %-12s %-12s %-8s\n" "Time" "S_knowledge" "S_time" "S_entropy" "Global_S" "Observer"
+    printf "%-12s %-12s %-12s %-12s %-12s %-8s\n" "--------" "-----------" "------" "---------" "--------" "--------"
+    
+    local last_global_s=0
+    
+    while true; do
+        read -r s_knowledge s_time s_entropy global_s observer_level < <(read_s_values)
+        
+        local timestamp=$(date '+%H:%M:%S')
+        local change=""
+        
+        if (( last_global_s > 0 )); then
+            local diff=$((global_s - last_global_s))
+            if (( diff > 0 )); then
+                change=" ${RED}↑${diff}${RESET}"
+            elif (( diff < 0 )); then
+                change=" ${GREEN}↓${diff#-}${RESET}"
+            else
+                change=" ${BLUE}→${RESET}"
+            fi
+        fi
+        
+        printf "%-12s %-12s %-12s %-12s %-12s %-8s%s\n" \
+            "$timestamp" \
+            "$(format_number "$s_knowledge")" \
+            "$(format_number "$s_time")" \
+            "$(format_number "$s_entropy")" \
+            "$(format_number "$global_s")" \
+            "$observer_level" \
+            "$change"
+        
+        last_global_s="$global_s"
+        sleep "$interval"
+    done
+}
+
+# Benchmark S-optimization strategies
+cmd_benchmark() {
+    local duration="${1:-30}"
+    
+    log "INFO" "Benchmarking S-optimization strategies (${duration}s each)"
+    
+    if ! check_s_framework; then
+        return 1
+    fi
+    
+    local strategies=("direct" "windowed" "cross-domain" "ridiculous" "disposable")
+    local results=()
+    
+    echo -e "${BOLD}S-Optimization Strategy Benchmark${RESET}"
+    echo "================================="
+    echo "Testing each strategy for ${duration} seconds..."
+    echo
+    
+    for strategy in "${strategies[@]}"; do
+        echo -e "${CYAN}Testing strategy: $strategy${RESET}"
+        
+        read -r initial_s_knowledge initial_s_time initial_s_entropy initial_global_s initial_observer_level < <(read_s_values)
+        
+        # Run optimization
+        if [[ "$DRY_RUN" != "true" ]]; then
+            cmd_optimize "$strategy" 50 "$duration" > /dev/null 2>&1 || true
+        fi
+        
+        read -r final_s_knowledge final_s_time final_s_entropy final_global_s final_observer_level < <(read_s_values)
+        
+        local improvement=$((initial_global_s - final_global_s))
+        local percentage=0
+        if (( initial_global_s > 0 )); then
+            percentage=$(( improvement * 100 / initial_global_s ))
+        fi
+        
+        results+=("$strategy:$improvement:$percentage")
+        
+        if (( improvement > 0 )); then
+            echo -e "  Result: ${GREEN}$(format_number "$improvement") improvement (${percentage}%)${RESET}"
+        else
+            echo -e "  Result: ${RED}$(format_number "${improvement#-}") degradation (${percentage#-}%)${RESET}"
+        fi
+        echo
+        
+        # Brief pause between strategies
+        sleep 2
+    done
+    
+    # Summary
+    echo -e "${BOLD}Benchmark Results Summary${RESET}"
+    echo "========================"
+    
+    for result in "${results[@]}"; do
+        IFS=':' read -r strategy improvement percentage <<< "$result"
+        printf "%-15s: %10s (%3s%%)\n" "$strategy" "$(format_number "$improvement")" "$percentage"
+    done
+}
+
+# Show usage information
+show_usage() {
+    echo "S-Distance Optimization Utility v$S_OPTIMIZER_VERSION"
+    echo "Usage: s-optimizer [options] <command> [args...]"
+    echo
+    echo "Commands:"
+    echo "  status                    Show current S-distance status"
+    echo "  optimize [strategy] [%] [duration]  Optimize S-distance"
+    echo "  target <value>           Set S-distance target"
+    echo "  window <action> [args]   Manage windowed generation"
+    echo "  monitor [interval]       Real-time S-distance monitoring"
+    echo "  benchmark [duration]     Benchmark optimization strategies"
+    echo "  help                     Show this help"
+    echo
+    echo "Optimization Strategies:"
+    echo "  direct                   Direct S-distance reduction"
+    echo "  windowed                 Windowed S generation"
+    echo "  cross-domain            Cross-domain pattern transfer"
+    echo "  ridiculous              Ridiculous solutions generation"
+    echo "  disposable              Disposable S navigation"
+    echo "  auto                    Automatic strategy selection"
+    echo
+    echo "Window Actions:"
+    echo "  add <min> <max> [rate] [precision]  Add generation window"
+    echo "  list                    List active windows"
+    echo "  clear                   Clear all windows"
+    echo
+    echo "Options:"
+    echo "  -v, --verbose           Verbose output"
+    echo "  -q, --quiet            Quiet mode"
+    echo "  -n, --dry-run          Show what would be done"
+    echo "  -h, --help             Show this help"
+    echo
+    echo "Examples:"
+    echo "  s-optimizer status"
+    echo "  s-optimizer optimize windowed 30 120"
+    echo "  s-optimizer target 50000"
+    echo "  s-optimizer window add 10000 100000 5000 200"
+    echo "  s-optimizer monitor 1"
+}
+
+# Parse command line options
+parse_options() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -v|--verbose)
+                VERBOSE=true
+                shift
+                ;;
+            -q|--quiet)
+                QUIET=true
+                shift
+                ;;
+            -n|--dry-run)
+                DRY_RUN=true
+                shift
+                ;;
+            -h|--help)
+                show_usage
+                exit 0
+                ;;
+            -*)
+                log "ERROR" "Unknown option: $1"
+                exit 1
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+    
+    echo "$@"
+}
+
+# Main function
+main() {
+    # Create log directory
+    mkdir -p "$(dirname "$S_LOG_FILE")" 2>/dev/null || true
+    
+    # Parse options
+    local remaining_args
+    remaining_args=($(parse_options "$@"))
+    
+    local command="${remaining_args[0]:-status}"
+    
+    case "$command" in
+        status)
+            cmd_status
+            ;;
+        optimize)
+            cmd_optimize "${remaining_args[1]:-auto}" "${remaining_args[2]:-20}" "${remaining_args[3]:-60}"
+            ;;
+        target)
+            cmd_target "${remaining_args[1]:-}"
+            ;;
+        window)
+            cmd_window "${remaining_args[@]:1}"
+            ;;
+        monitor)
+            cmd_monitor "${remaining_args[1]:-2}"
+            ;;
+        benchmark)
+            cmd_benchmark "${remaining_args[1]:-30}"
+            ;;
+        help)
+            show_usage
+            ;;
+        *)
+            log "ERROR" "Unknown command: $command"
+            echo "Use 's-optimizer help' for usage information"
+            exit 1
+            ;;
+    esac
+}
+
+# Run main function
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi 

@@ -1,0 +1,468 @@
+#!/bin/bash
+#
+# S-Distance Aware Command Shell
+# 
+# Interactive shell with real-time S-distance optimization
+# Minimizes observer-process separation for all user interactions
+#
+# Copyright (C) 2024 Buhera S-Enhanced VPOS Project
+# Licensed under GPL v3
+
+set -euo pipefail
+
+# S-Distance Shell Configuration
+S_SHELL_VERSION="1.0.0"
+S_SHELL_CONFIG_DIR="/etc/s-vpos"
+S_SHELL_CACHE_DIR="/var/cache/s-framework"
+S_SHELL_LOG_FILE="/var/log/s-framework/s-shell.log"
+S_DISTANCE_PROC="/proc/s_distance"
+S_MINIMIZER_PROC="/proc/s_minimizer"
+S_TRI_PROC="/proc/s_tri_dimensional"
+
+# Shell state variables
+declare -g S_CURRENT_DISTANCE=0
+declare -g S_TARGET_DISTANCE=1000
+declare -g S_OPTIMIZATION_ACTIVE=true
+declare -g S_SHELL_PID=$$
+declare -g S_COMMAND_COUNT=0
+declare -g S_SUCCESSFUL_OPTIMIZATIONS=0
+declare -g S_OBSERVER_LEVEL=128
+declare -g S_AUTO_OPTIMIZATION=true
+
+# Color codes for S-distance status display
+declare -g S_COLOR_OPTIMAL="\033[32m"    # Green
+declare -g S_COLOR_MODERATE="\033[33m"   # Yellow  
+declare -g S_COLOR_CRITICAL="\033[31m"   # Red
+declare -g S_COLOR_RESET="\033[0m"       # Reset
+declare -g S_COLOR_PROMPT="\033[36m"     # Cyan
+declare -g S_COLOR_INFO="\033[34m"       # Blue
+
+# Initialize logging
+initialize_logging() {
+    local log_dir=$(dirname "$S_SHELL_LOG_FILE")
+    mkdir -p "$log_dir" 2>/dev/null || true
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [$$] S-Distance Shell initialized" >> "$S_SHELL_LOG_FILE" 2>/dev/null || true
+}
+
+# Log function with S-distance context
+s_log() {
+    local level="$1"
+    shift
+    local message="$*"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [$$] [$level] S-Distance: $S_CURRENT_DISTANCE, $message" >> "$S_SHELL_LOG_FILE" 2>/dev/null || true
+}
+
+# Read current S-distance from kernel module
+read_s_distance() {
+    if [[ -r "$S_DISTANCE_PROC" ]]; then
+        local global_s=$(grep "Global S:" "$S_DISTANCE_PROC" 2>/dev/null | awk '{print $3}' || echo "0")
+        S_CURRENT_DISTANCE=${global_s:-0}
+        
+        local observer_level=$(grep "Observer Level:" "$S_DISTANCE_PROC" 2>/dev/null | awk '{print $3}' | cut -d'/' -f1 || echo "128")
+        S_OBSERVER_LEVEL=${observer_level:-128}
+    else
+        # Fallback: estimate S-distance based on shell metrics
+        local load_avg=$(cut -d' ' -f1 /proc/loadavg 2>/dev/null || echo "1.0")
+        local memory_pressure=$(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo 2>/dev/null || echo "1000")
+        
+        # Simple S-distance estimation
+        S_CURRENT_DISTANCE=$((${load_avg%.*} * 1000 + (4000000 / memory_pressure)))
+    fi
+}
+
+# Get S-distance status color
+get_s_status_color() {
+    local distance="$1"
+    
+    if (( distance < 100000 )); then
+        echo "$S_COLOR_OPTIMAL"
+    elif (( distance < 500000 )); then
+        echo "$S_COLOR_MODERATE"  
+    else
+        echo "$S_COLOR_CRITICAL"
+    fi
+}
+
+# Format S-distance for display
+format_s_distance() {
+    local distance="$1"
+    
+    if (( distance > 1000000 )); then
+        echo "${distance:0:-6}.${distance: -6:2}M"
+    elif (( distance > 1000 )); then
+        echo "${distance:0:-3}.${distance: -3:1}K"
+    else
+        echo "$distance"
+    fi
+}
+
+# Generate S-optimized prompt
+generate_s_prompt() {
+    read_s_distance
+    
+    local s_color=$(get_s_status_color "$S_CURRENT_DISTANCE")
+    local s_formatted=$(format_s_distance "$S_CURRENT_DISTANCE")
+    local s_status
+    
+    if (( S_CURRENT_DISTANCE < 100000 )); then
+        s_status="OPTIMAL"
+    elif (( S_CURRENT_DISTANCE < 500000 )); then
+        s_status="MODERATE"
+    else
+        s_status="CRITICAL"
+    fi
+    
+    local observer_indicator
+    if (( S_OBSERVER_LEVEL < 50 )); then
+        observer_indicator="🐄"  # Sentient cow level
+    elif (( S_OBSERVER_LEVEL < 100 )); then
+        observer_indicator="👤"  # Human level
+    elif (( S_OBSERVER_LEVEL < 200 )); then
+        observer_indicator="🤖"  # AI level
+    else
+        observer_indicator="⚡"  # Advanced AI level
+    fi
+    
+    local optimization_indicator
+    if [[ "$S_AUTO_OPTIMIZATION" == "true" ]]; then
+        optimization_indicator="🎯"
+    else
+        optimization_indicator="⏸️"
+    fi
+    
+    echo -e "${S_COLOR_PROMPT}s-shell${S_COLOR_RESET} ${s_color}[S:${s_formatted}|${s_status}]${S_COLOR_RESET} ${observer_indicator}${optimization_indicator} ${S_COLOR_INFO}\w${S_COLOR_RESET} $ "
+}
+
+# Apply S-optimization to command before execution
+optimize_command() {
+    local cmd="$1"
+    local optimized_cmd="$cmd"
+    
+    if [[ "$S_AUTO_OPTIMIZATION" != "true" ]]; then
+        echo "$optimized_cmd"
+        return 0
+    fi
+    
+    # S-distance optimization strategies for common commands
+    case "$cmd" in
+        ls\ *|ll\ *|la\ *)
+            # Optimize directory listing for reduced information processing
+            if (( S_CURRENT_DISTANCE > 200000 )); then
+                optimized_cmd="$cmd --color=auto | head -50"  # Limit output to reduce cognitive load
+            fi
+            ;;
+        find\ *)
+            # Optimize find commands for reduced search complexity
+            if (( S_CURRENT_DISTANCE > 300000 )); then
+                optimized_cmd="timeout 10s $cmd"  # Time limit to prevent excessive processing
+            fi
+            ;;
+        grep\ *|egrep\ *|fgrep\ *)
+            # Optimize search commands for focused results
+            if (( S_CURRENT_DISTANCE > 250000 )); then
+                optimized_cmd="$cmd | head -20"  # Limit results to reduce information overload
+            fi
+            ;;
+        cat\ *|less\ *|more\ *)
+            # Optimize file viewing for manageable chunks
+            if (( S_CURRENT_DISTANCE > 150000 )); then
+                optimized_cmd="${cmd/cat/head -100}"  # Show first 100 lines only
+                optimized_cmd="${optimized_cmd/less/head -100}"
+                optimized_cmd="${optimized_cmd/more/head -100}"
+            fi
+            ;;
+        make\ *|cmake\ *|ninja\ *)
+            # Optimize build commands for reduced computational load
+            if (( S_CURRENT_DISTANCE > 400000 )); then
+                local jobs=$(($(nproc) / 2))  # Reduce parallel jobs
+                optimized_cmd="$cmd -j$jobs"
+            fi
+            ;;
+        git\ *)
+            # Optimize git commands for reduced history processing
+            if (( S_CURRENT_DISTANCE > 200000 )); then
+                case "$cmd" in
+                    git\ log*)
+                        optimized_cmd="$cmd --oneline -10"  # Show recent commits only
+                        ;;
+                    git\ status*)
+                        optimized_cmd="$cmd --short"  # Compact status
+                        ;;
+                esac
+            fi
+            ;;
+        vim\ *|nano\ *|emacs\ *)
+            # Optimize editors for reduced startup complexity
+            if (( S_CURRENT_DISTANCE > 300000 )); then
+                optimized_cmd="$cmd -u NONE"  # Minimal configuration
+            fi
+            ;;
+    esac
+    
+    # Apply universal S-optimization strategies
+    if (( S_CURRENT_DISTANCE > 500000 )); then
+        # Critical S-distance: Apply aggressive optimization
+        
+        # Add timeout to prevent runaway processes
+        if [[ "$optimized_cmd" != timeout\ * ]]; then
+            optimized_cmd="timeout 30s $optimized_cmd"
+        fi
+        
+        # Reduce nice level for lower system impact
+        optimized_cmd="nice -n 10 $optimized_cmd"
+        
+        # Limit memory usage
+        optimized_cmd="ulimit -m 524288; $optimized_cmd"  # 512MB limit
+    fi
+    
+    echo "$optimized_cmd"
+}
+
+# Execute command with S-distance monitoring
+execute_s_optimized_command() {
+    local original_cmd="$1"
+    local start_distance="$S_CURRENT_DISTANCE"
+    
+    # Apply S-optimization
+    local optimized_cmd=$(optimize_command "$original_cmd")
+    
+    # Log command execution
+    s_log "INFO" "Executing: $original_cmd (optimized: $optimized_cmd)"
+    
+    # Record start time for performance measurement
+    local start_time=$(date +%s%N)
+    
+    # Execute the optimized command
+    eval "$optimized_cmd"
+    local exit_code=$?
+    
+    # Record end time
+    local end_time=$(date +%s%N)
+    local execution_time=$(( (end_time - start_time) / 1000000 ))  # Convert to milliseconds
+    
+    # Update command statistics
+    ((S_COMMAND_COUNT++))
+    
+    # Read S-distance after execution
+    local old_distance="$S_CURRENT_DISTANCE"
+    read_s_distance
+    local new_distance="$S_CURRENT_DISTANCE"
+    
+    # Check if S-distance improved
+    if (( new_distance < old_distance )); then
+        ((S_SUCCESSFUL_OPTIMIZATIONS++))
+        s_log "SUCCESS" "Command reduced S-distance: $old_distance -> $new_distance (${execution_time}ms)"
+    else
+        s_log "INFO" "Command completed: S-distance $old_distance -> $new_distance (${execution_time}ms, exit: $exit_code)"
+    fi
+    
+    # Display S-distance change if significant
+    local distance_change=$((new_distance - old_distance))
+    if (( distance_change > 10000 || distance_change < -10000 )); then
+        local change_color
+        if (( distance_change < 0 )); then
+            change_color="$S_COLOR_OPTIMAL"
+            echo -e "${change_color}S-Distance improved by $(format_s_distance ${distance_change#-})${S_COLOR_RESET}"
+        else
+            change_color="$S_COLOR_CRITICAL"
+            echo -e "${change_color}S-Distance increased by $(format_s_distance $distance_change)${S_COLOR_RESET}"
+        fi
+    fi
+    
+    return $exit_code
+}
+
+# Built-in S-shell commands
+s_builtin_status() {
+    echo -e "${S_COLOR_INFO}S-Distance Shell Status${S_COLOR_RESET}"
+    echo "========================="
+    echo "Shell PID: $S_SHELL_PID"
+    echo "Commands executed: $S_COMMAND_COUNT"
+    echo "Successful optimizations: $S_SUCCESSFUL_OPTIMIZATIONS"
+    
+    if (( S_COMMAND_COUNT > 0 )); then
+        local success_rate=$((S_SUCCESSFUL_OPTIMIZATIONS * 100 / S_COMMAND_COUNT))
+        echo "Optimization success rate: ${success_rate}%"
+    fi
+    
+    echo
+    read_s_distance
+    local s_color=$(get_s_status_color "$S_CURRENT_DISTANCE")
+    echo -e "Current S-Distance: ${s_color}$(format_s_distance "$S_CURRENT_DISTANCE")${S_COLOR_RESET}"
+    echo "Target S-Distance: $(format_s_distance "$S_TARGET_DISTANCE")"
+    echo "Observer Level: $S_OBSERVER_LEVEL/255"
+    echo "Auto-optimization: $S_AUTO_OPTIMIZATION"
+    
+    # Show kernel module status if available
+    if [[ -r "$S_DISTANCE_PROC" ]]; then
+        echo
+        echo -e "${S_COLOR_INFO}Kernel Module Status:${S_COLOR_RESET}"
+        grep -E "(Status|Total Measurements|Success Rate)" "$S_DISTANCE_PROC" 2>/dev/null || echo "S-distance module active"
+    fi
+    
+    if [[ -r "$S_MINIMIZER_PROC" ]]; then
+        echo
+        echo -e "${S_COLOR_INFO}S-Minimizer Status:${S_COLOR_RESET}"
+        grep -E "(Strategy|Success Rate)" "$S_MINIMIZER_PROC" 2>/dev/null || echo "S-minimizer active"
+    fi
+}
+
+s_builtin_optimize() {
+    local action="${1:-toggle}"
+    
+    case "$action" in
+        on|enable|true)
+            S_AUTO_OPTIMIZATION=true
+            echo -e "${S_COLOR_OPTIMAL}S-optimization enabled${S_COLOR_RESET}"
+            ;;
+        off|disable|false)
+            S_AUTO_OPTIMIZATION=false
+            echo -e "${S_COLOR_CRITICAL}S-optimization disabled${S_COLOR_RESET}"
+            ;;
+        toggle)
+            if [[ "$S_AUTO_OPTIMIZATION" == "true" ]]; then
+                S_AUTO_OPTIMIZATION=false
+                echo -e "${S_COLOR_CRITICAL}S-optimization disabled${S_COLOR_RESET}"
+            else
+                S_AUTO_OPTIMIZATION=true
+                echo -e "${S_COLOR_OPTIMAL}S-optimization enabled${S_COLOR_RESET}"
+            fi
+            ;;
+        status)
+            echo "S-optimization: $S_AUTO_OPTIMIZATION"
+            ;;
+        *)
+            echo "Usage: s-optimize [on|off|toggle|status]"
+            ;;
+    esac
+}
+
+s_builtin_target() {
+    local new_target="$1"
+    
+    if [[ -z "$new_target" ]]; then
+        echo "Current S-distance target: $(format_s_distance "$S_TARGET_DISTANCE")"
+        return 0
+    fi
+    
+    if [[ "$new_target" =~ ^[0-9]+$ ]]; then
+        S_TARGET_DISTANCE="$new_target"
+        echo "S-distance target set to: $(format_s_distance "$S_TARGET_DISTANCE")"
+        s_log "CONFIG" "Target S-distance changed to $S_TARGET_DISTANCE"
+    else
+        echo "Error: Target must be a numeric value"
+        return 1
+    fi
+}
+
+s_builtin_help() {
+    echo -e "${S_COLOR_INFO}S-Distance Shell Built-in Commands${S_COLOR_RESET}"
+    echo "=================================="
+    echo "s-status         Show shell and S-distance status"
+    echo "s-optimize       Control automatic S-optimization [on|off|toggle|status]"
+    echo "s-target [N]     Set or show S-distance target"
+    echo "s-help           Show this help"
+    echo "s-exit           Exit S-distance shell"
+    echo
+    echo -e "${S_COLOR_INFO}Features:${S_COLOR_RESET}"
+    echo "• Real-time S-distance monitoring in prompt"
+    echo "• Automatic command optimization for reduced cognitive load"
+    echo "• Observer sophistication level tracking"
+    echo "• Integration with S-framework kernel modules"
+    echo "• Command execution performance monitoring"
+    echo
+    echo -e "${S_COLOR_INFO}S-Distance Status Indicators:${S_COLOR_RESET}"
+    echo -e "• ${S_COLOR_OPTIMAL}OPTIMAL${S_COLOR_RESET}   - S-distance < 100K (excellent observer-process integration)"
+    echo -e "• ${S_COLOR_MODERATE}MODERATE${S_COLOR_RESET}  - S-distance < 500K (acceptable separation)"
+    echo -e "• ${S_COLOR_CRITICAL}CRITICAL${S_COLOR_RESET}  - S-distance > 500K (high separation, optimization needed)"
+    echo
+    echo -e "${S_COLOR_INFO}Observer Level Indicators:${S_COLOR_RESET}"
+    echo "🐄 Sentient cow level (0-49)     👤 Human level (50-99)"
+    echo "🤖 AI level (100-199)            ⚡ Advanced AI level (200+)"
+}
+
+# Main shell loop
+main_shell_loop() {
+    local input_line
+    
+    while true; do
+        # Generate and display S-optimized prompt
+        PS1=$(generate_s_prompt)
+        
+        # Read user input
+        read -e -p "$PS1" input_line
+        
+        # Skip empty lines
+        [[ -z "${input_line// }" ]] && continue
+        
+        # Add to bash history
+        history -s "$input_line"
+        
+        # Handle built-in commands
+        case "$input_line" in
+            s-status)
+                s_builtin_status
+                continue
+                ;;
+            s-optimize*)
+                s_builtin_optimize ${input_line#s-optimize }
+                continue
+                ;;
+            s-target*)
+                s_builtin_target ${input_line#s-target }
+                continue
+                ;;
+            s-help)
+                s_builtin_help
+                continue
+                ;;
+            s-exit|exit|quit)
+                s_log "INFO" "Shell session ended"
+                echo -e "${S_COLOR_INFO}S-Distance Shell session ended${S_COLOR_RESET}"
+                break
+                ;;
+        esac
+        
+        # Execute command with S-optimization
+        execute_s_optimized_command "$input_line"
+    done
+}
+
+# Signal handlers for graceful shutdown
+cleanup_and_exit() {
+    s_log "INFO" "Shell terminating (signal received)"
+    echo -e "\n${S_COLOR_INFO}S-Distance Shell terminating...${S_COLOR_RESET}"
+    exit 0
+}
+
+trap cleanup_and_exit SIGINT SIGTERM
+
+# Main execution
+main() {
+    # Initialize logging
+    initialize_logging
+    
+    # Display welcome message
+    echo -e "${S_COLOR_INFO}S-Distance Aware Shell v${S_SHELL_VERSION}${S_COLOR_RESET}"
+    echo "Real-time S-distance optimization for enhanced observer-process integration"
+    echo "Type 's-help' for built-in commands, 's-exit' to quit"
+    echo
+    
+    # Initial S-distance reading
+    read_s_distance
+    s_log "INFO" "Shell session started, initial S-distance: $S_CURRENT_DISTANCE"
+    
+    # Enable command history
+    set +H  # Disable history expansion for safety
+    HISTFILE="$HOME/.s_shell_history"
+    HISTSIZE=1000
+    HISTFILESIZE=2000
+    
+    # Enter main shell loop
+    main_shell_loop
+}
+
+# Run main function if script is executed directly
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi 
