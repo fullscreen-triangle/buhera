@@ -1,0 +1,426 @@
+/*
+ * S-Distance Measurement Kernel Module
+ * 
+ * Provides real-time measurement of observer-process separation distance (S)
+ * Core component of the S-Enhanced VPOS system
+ * 
+ * Copyright (C) 2024 Buhera S-Enhanced VPOS Project
+ * Licensed under GPL v3
+ */
+
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/init.h>
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <linux/uaccess.h>
+#include <linux/spinlock.h>
+#include <linux/ktime.h>
+#include <linux/atomic.h>
+#include <linux/workqueue.h>
+#include <linux/timer.h>
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Buhera S-Enhanced VPOS Team");
+MODULE_DESCRIPTION("Real-time S-distance measurement for observer-process separation");
+MODULE_VERSION("1.0.0");
+
+// S-Distance measurement structures
+struct s_distance_measurement {
+    u64 s_knowledge;     // Information deficit distance
+    u64 s_time;          // Temporal distance to solution
+    u64 s_entropy;       // Entropy change distance
+    u64 global_s;        // Combined S-distance value
+    ktime_t timestamp;   // Measurement timestamp
+    u32 process_id;      // Associated process ID
+    u8 observer_level;   // Observer sophistication level (0-255)
+};
+
+struct s_distance_context {
+    struct s_distance_measurement current;
+    struct s_distance_measurement target;
+    struct s_distance_measurement history[1024]; // Circular buffer
+    u32 history_index;
+    atomic64_t measurement_count;
+    spinlock_t lock;
+    struct workqueue_struct *measurement_wq;
+    struct delayed_work measurement_work;
+    bool active;
+};
+
+// Global S-distance context
+static struct s_distance_context s_ctx;
+
+// S-distance calculation constants
+#define S_MAX_VALUE             0xFFFFFFFFFFFFFFFFULL
+#define S_MIN_VALUE             0x0000000000000001ULL
+#define S_MEASUREMENT_INTERVAL  1000  // microseconds
+#define S_HISTORY_SIZE          1024
+#define S_OBSERVER_LEVELS       256
+
+// Tri-dimensional S calculation weights
+#define S_KNOWLEDGE_WEIGHT      0.333
+#define S_TIME_WEIGHT          0.333  
+#define S_ENTROPY_WEIGHT       0.334
+
+/*
+ * Core S-distance calculation algorithms
+ */
+
+static u64 calculate_s_knowledge(struct task_struct *task)
+{
+    u64 s_knowledge = 0;
+    
+    if (!task)
+        return S_MAX_VALUE;
+    
+    // Measure information deficit based on process state
+    // Higher unknown information = higher S_knowledge
+    
+    // Memory pressure indicates information processing load
+    s_knowledge += (task->mm ? get_mm_rss(task->mm) : 0) * 1000;
+    
+    // CPU usage indicates computational effort (higher = more separation)
+    s_knowledge += task->utime + task->stime;
+    
+    // I/O wait indicates external information dependency
+    s_knowledge += task->ioac.syscr + task->ioac.syscw;
+    
+    // Context switches indicate process uncertainty
+    s_knowledge += task->nvcsw + task->nivcsw;
+    
+    return min(s_knowledge, S_MAX_VALUE);
+}
+
+static u64 calculate_s_time(struct task_struct *task)
+{
+    u64 s_time = 0;
+    ktime_t now = ktime_get();
+    
+    if (!task)
+        return S_MAX_VALUE;
+    
+    // Measure temporal distance to solution
+    // Longer predicted completion time = higher S_time
+    
+    // Process age indicates temporal accumulation
+    s_time += ktime_to_us(ktime_sub(now, task->start_time));
+    
+    // Sleep time indicates temporal delay
+    s_time += task->sum_sleep_runtime / 1000;
+    
+    // Block time indicates temporal obstruction
+    s_time += task->ioac.blkio_delay_total / 1000;
+    
+    // Scheduling delay indicates temporal separation
+    s_time += task->sched_info.run_delay / 1000;
+    
+    return min(s_time, S_MAX_VALUE);
+}
+
+static u64 calculate_s_entropy(struct task_struct *task)
+{
+    u64 s_entropy = 0;
+    
+    if (!task)
+        return S_MAX_VALUE;
+    
+    // Measure entropy change distance to accessible limits
+    // Higher entropy variance = higher S_entropy
+    
+    // Memory fragmentation indicates entropy increase
+    if (task->mm) {
+        s_entropy += task->mm->total_vm * 100;
+        s_entropy += task->mm->locked_vm * 200;
+    }
+    
+    // Signal handling indicates entropy management effort  
+    s_entropy += task->signal->nvcsw * 50;
+    
+    // Page faults indicate entropy disorder
+    s_entropy += task->maj_flt * 1000 + task->min_flt * 10;
+    
+    // Thread count indicates entropy distribution
+    s_entropy += get_nr_threads(task) * 500;
+    
+    return min(s_entropy, S_MAX_VALUE);
+}
+
+static u64 calculate_global_s(u64 s_knowledge, u64 s_time, u64 s_entropy)
+{
+    u64 weighted_sum = 0;
+    
+    // Tri-dimensional S calculation with non-linear optimization
+    // Lower global S indicates better observer-process integration
+    
+    weighted_sum += (u64)(s_knowledge * S_KNOWLEDGE_WEIGHT);
+    weighted_sum += (u64)(s_time * S_TIME_WEIGHT);
+    weighted_sum += (u64)(s_entropy * S_ENTROPY_WEIGHT);
+    
+    // Apply non-linear S optimization (impossible solutions can improve global S)
+    if (s_knowledge > s_time && s_time > s_entropy) {
+        // Ascending pattern - apply reduction
+        weighted_sum = weighted_sum * 7 / 10;
+    } else if (s_entropy > s_time && s_time > s_knowledge) {
+        // Descending pattern - apply increase
+        weighted_sum = weighted_sum * 13 / 10;
+    }
+    
+    return min(weighted_sum, S_MAX_VALUE);
+}
+
+static u8 determine_observer_level(struct task_struct *task)
+{
+    u8 level = 0;
+    
+    if (!task)
+        return 0;
+    
+    // Determine observer sophistication (0 = sentient cow, 255 = maximum AI)
+    
+    // CPU priority indicates observer capability
+    level += (task->static_prio < 120) ? (120 - task->static_prio) * 5 : 0;
+    
+    // Memory usage indicates processing complexity
+    if (task->mm) {
+        u64 rss = get_mm_rss(task->mm);
+        level += min((u32)(rss / (1024 * 1024)), 100U); // MB to level points
+    }
+    
+    // Nice value indicates observer sophistication
+    level += (task->static_prio > 120) ? 0 : (120 - task->static_prio);
+    
+    // Real-time processes get higher observer levels
+    if (task->policy == SCHED_RR || task->policy == SCHED_FIFO)
+        level += 50;
+    
+    return min(level, (u8)255);
+}
+
+/*
+ * S-distance measurement worker function
+ */
+static void s_distance_measurement_worker(struct work_struct *work)
+{
+    struct s_distance_context *ctx = container_of(to_delayed_work(work),
+                                                  struct s_distance_context,
+                                                  measurement_work);
+    struct task_struct *current_task = current;
+    struct s_distance_measurement measurement = {0};
+    unsigned long flags;
+    
+    // Perform tri-dimensional S-distance measurement
+    measurement.s_knowledge = calculate_s_knowledge(current_task);
+    measurement.s_time = calculate_s_time(current_task);
+    measurement.s_entropy = calculate_s_entropy(current_task);
+    measurement.global_s = calculate_global_s(measurement.s_knowledge,
+                                             measurement.s_time,
+                                             measurement.s_entropy);
+    measurement.timestamp = ktime_get();
+    measurement.process_id = current_task->pid;
+    measurement.observer_level = determine_observer_level(current_task);
+    
+    // Update context with new measurement
+    spin_lock_irqsave(&ctx->lock, flags);
+    
+    ctx->current = measurement;
+    ctx->history[ctx->history_index] = measurement;
+    ctx->history_index = (ctx->history_index + 1) % S_HISTORY_SIZE;
+    atomic64_inc(&ctx->measurement_count);
+    
+    spin_unlock_irqrestore(&ctx->lock, flags);
+    
+    // Schedule next measurement
+    if (ctx->active) {
+        queue_delayed_work(ctx->measurement_wq, &ctx->measurement_work,
+                          usecs_to_jiffies(S_MEASUREMENT_INTERVAL));
+    }
+}
+
+/*
+ * Proc filesystem interface for S-distance monitoring
+ */
+static int s_distance_proc_show(struct seq_file *m, void *v)
+{
+    struct s_distance_measurement current_measurement;
+    unsigned long flags;
+    u64 measurement_count;
+    
+    spin_lock_irqsave(&s_ctx.lock, flags);
+    current_measurement = s_ctx.current;
+    spin_unlock_irqrestore(&s_ctx.lock, flags);
+    
+    measurement_count = atomic64_read(&s_ctx.measurement_count);
+    
+    seq_printf(m, "S-Distance Measurement System Status\n");
+    seq_printf(m, "===================================\n\n");
+    
+    seq_printf(m, "Current S-Distance Measurements:\n");
+    seq_printf(m, "  S_knowledge: %llu\n", current_measurement.s_knowledge);
+    seq_printf(m, "  S_time:      %llu\n", current_measurement.s_time);
+    seq_printf(m, "  S_entropy:   %llu\n", current_measurement.s_entropy);
+    seq_printf(m, "  Global S:    %llu\n", current_measurement.global_s);
+    seq_printf(m, "  Process ID:  %u\n", current_measurement.process_id);
+    seq_printf(m, "  Observer Level: %u/255\n", current_measurement.observer_level);
+    seq_printf(m, "  Timestamp:   %lld us\n", ktime_to_us(current_measurement.timestamp));
+    seq_printf(m, "\n");
+    
+    seq_printf(m, "System Statistics:\n");
+    seq_printf(m, "  Total Measurements: %llu\n", measurement_count);
+    seq_printf(m, "  Measurement Active: %s\n", s_ctx.active ? "Yes" : "No");
+    seq_printf(m, "  History Buffer:     %u/%u entries\n", 
+               min((u32)measurement_count, S_HISTORY_SIZE), S_HISTORY_SIZE);
+    
+    seq_printf(m, "\nS-Distance Optimization Status:\n");
+    if (current_measurement.global_s < S_MAX_VALUE / 2) {
+        seq_printf(m, "  Status: OPTIMAL (Low observer-process separation)\n");
+    } else if (current_measurement.global_s < S_MAX_VALUE * 3 / 4) {
+        seq_printf(m, "  Status: MODERATE (Medium observer-process separation)\n");
+    } else {
+        seq_printf(m, "  Status: CRITICAL (High observer-process separation)\n");
+    }
+    
+    return 0;
+}
+
+static int s_distance_proc_open(struct inode *inode, struct file *file)
+{
+    return single_open(file, s_distance_proc_show, NULL);
+}
+
+static const struct proc_ops s_distance_proc_ops = {
+    .proc_open = s_distance_proc_open,
+    .proc_read = seq_read,
+    .proc_lseek = seq_lseek,
+    .proc_release = single_release,
+};
+
+/*
+ * Public API functions for other kernel modules
+ */
+
+// Get current S-distance measurement
+int s_distance_get_current(struct s_distance_measurement *measurement)
+{
+    unsigned long flags;
+    
+    if (!measurement)
+        return -EINVAL;
+    
+    spin_lock_irqsave(&s_ctx.lock, flags);
+    *measurement = s_ctx.current;
+    spin_unlock_irqrestore(&s_ctx.lock, flags);
+    
+    return 0;
+}
+EXPORT_SYMBOL(s_distance_get_current);
+
+// Get S-distance for specific process
+int s_distance_get_for_process(pid_t pid, struct s_distance_measurement *measurement)
+{
+    struct task_struct *task;
+    
+    if (!measurement)
+        return -EINVAL;
+    
+    rcu_read_lock();
+    task = find_task_by_vpid(pid);
+    if (!task) {
+        rcu_read_unlock();
+        return -ESRCH;
+    }
+    
+    measurement->s_knowledge = calculate_s_knowledge(task);
+    measurement->s_time = calculate_s_time(task);
+    measurement->s_entropy = calculate_s_entropy(task);
+    measurement->global_s = calculate_global_s(measurement->s_knowledge,
+                                              measurement->s_time,
+                                              measurement->s_entropy);
+    measurement->timestamp = ktime_get();
+    measurement->process_id = pid;
+    measurement->observer_level = determine_observer_level(task);
+    
+    rcu_read_unlock();
+    
+    return 0;
+}
+EXPORT_SYMBOL(s_distance_get_for_process);
+
+// Set S-distance optimization target
+int s_distance_set_target(const struct s_distance_measurement *target)
+{
+    unsigned long flags;
+    
+    if (!target)
+        return -EINVAL;
+    
+    spin_lock_irqsave(&s_ctx.lock, flags);
+    s_ctx.target = *target;
+    spin_unlock_irqrestore(&s_ctx.lock, flags);
+    
+    return 0;
+}
+EXPORT_SYMBOL(s_distance_set_target);
+
+/*
+ * Module initialization and cleanup
+ */
+static int __init s_distance_meter_init(void)
+{
+    int ret = 0;
+    
+    printk(KERN_INFO "S-Distance Meter: Initializing S-distance measurement system\n");
+    
+    // Initialize S-distance context
+    memset(&s_ctx, 0, sizeof(s_ctx));
+    spin_lock_init(&s_ctx.lock);
+    atomic64_set(&s_ctx.measurement_count, 0);
+    
+    // Create measurement workqueue
+    s_ctx.measurement_wq = create_singlethread_workqueue("s_distance_measurement");
+    if (!s_ctx.measurement_wq) {
+        printk(KERN_ERR "S-Distance Meter: Failed to create measurement workqueue\n");
+        return -ENOMEM;
+    }
+    
+    // Initialize measurement work
+    INIT_DELAYED_WORK(&s_ctx.measurement_work, s_distance_measurement_worker);
+    
+    // Create proc entry
+    if (!proc_create("s_distance", 0444, NULL, &s_distance_proc_ops)) {
+        printk(KERN_ERR "S-Distance Meter: Failed to create proc entry\n");
+        destroy_workqueue(s_ctx.measurement_wq);
+        return -ENOMEM;
+    }
+    
+    // Start measurement system
+    s_ctx.active = true;
+    queue_delayed_work(s_ctx.measurement_wq, &s_ctx.measurement_work, 0);
+    
+    printk(KERN_INFO "S-Distance Meter: Successfully initialized\n");
+    printk(KERN_INFO "S-Distance Meter: Measurement interval: %u microseconds\n", 
+           S_MEASUREMENT_INTERVAL);
+    printk(KERN_INFO "S-Distance Meter: Tri-dimensional S measurement active\n");
+    
+    return ret;
+}
+
+static void __exit s_distance_meter_exit(void)
+{
+    printk(KERN_INFO "S-Distance Meter: Shutting down S-distance measurement system\n");
+    
+    // Stop measurement system
+    s_ctx.active = false;
+    cancel_delayed_work_sync(&s_ctx.measurement_work);
+    
+    // Cleanup workqueue
+    destroy_workqueue(s_ctx.measurement_wq);
+    
+    // Remove proc entry
+    remove_proc_entry("s_distance", NULL);
+    
+    printk(KERN_INFO "S-Distance Meter: Successfully shutdown\n");
+}
+
+module_init(s_distance_meter_init);
+module_exit(s_distance_meter_exit); 
