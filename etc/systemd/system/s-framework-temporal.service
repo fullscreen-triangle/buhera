@@ -1,0 +1,59 @@
+[Unit]
+Description=S-Framework Temporal Precision Service
+Documentation=file:///usr/share/doc/s-framework/temporal-precision.md
+After=s-framework-kernel-modules.service network.target time-sync.target
+PartOf=s-framework.service
+Requires=s-framework-kernel-modules.service
+
+[Service]
+Type=notify
+ExecStart=/usr/local/bin/s-framework-temporal-service
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -TERM $MAINPID
+
+# Process management
+User=root
+Group=s-framework
+PIDFile=/var/run/s-framework/temporal-service.pid
+NotifyAccess=main
+
+# Resource requirements for high-precision timing
+Nice=-10
+IOSchedulingClass=1
+IOSchedulingPriority=4
+CPUSchedulingPolicy=1
+CPUSchedulingPriority=80
+
+# Realtime constraints
+LimitRTPRIO=80
+LimitRTTIME=infinity
+
+# Memory management
+LimitMEMLOCK=infinity
+OOMScoreAdjust=-500
+
+# Network configuration
+BindToDevice=
+SocketBindAllow=9090
+SocketBindDeny=any
+
+# Environment
+Environment=S_TEMPORAL_CONFIG=/etc/temporal/temporal-precision.conf
+Environment=S_TEMPORAL_PRECISION_MODE=femtosecond
+Environment=S_TEMPORAL_SYNC_SOURCES=ntp,ptp
+
+# Restart policy
+Restart=always
+RestartSec=2
+StartLimitInterval=60
+StartLimitBurst=3
+
+# Timeouts
+TimeoutStartSec=30
+TimeoutStopSec=10
+
+# Watchdog for temporal service health
+WatchdogSec=30
+
+[Install]
+WantedBy=s-framework.service 

@@ -1,0 +1,27 @@
+[Unit]
+Description=S-Framework Kernel Modules
+Documentation=file:///usr/share/doc/s-framework/kernel-modules.md
+DefaultDependencies=false
+After=systemd-modules-load.service
+Before=s-framework.service
+ConditionPathExists=/lib/modules/%i/kernel/s-framework
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+
+# Load S-framework kernel modules in correct order
+ExecStart=/bin/sh -c 'for module in s-distance-meter tri-dimensional s-minimizer language-bmd; do modprobe $module || exit 1; done'
+
+# Unload modules on stop (reverse order)
+ExecStop=/bin/sh -c 'for module in language-bmd s-minimizer tri-dimensional s-distance-meter; do modprobe -r $module 2>/dev/null || true; done'
+
+# Module loading environment
+Environment=MODPROBE_OPTIONS="-v"
+
+# Timeouts
+TimeoutStartSec=30
+TimeoutStopSec=15
+
+[Install]
+WantedBy=s-framework.service 

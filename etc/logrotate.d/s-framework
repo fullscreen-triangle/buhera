@@ -1,0 +1,133 @@
+# S-Framework Log Rotation Configuration
+# Manages rotation, compression, and retention of S-framework log files
+
+/var/log/s-framework/*.log {
+    # Rotation frequency and size limits
+    daily
+    size 100M
+    rotate 10
+    
+    # Compression and cleanup
+    compress
+    delaycompress
+    notifempty
+    missingok
+    
+    # File permissions and ownership
+    create 644 root s-framework
+    
+    # Post-rotation scripts
+    postrotate
+        # Reload S-framework logging service if running
+        if systemctl is-active s-framework-logging >/dev/null 2>&1; then
+            systemctl reload s-framework-logging
+        fi
+        
+        # Send SIGUSR1 to S-framework processes to reopen log files
+        for pid in $(pgrep -f "s-framework"); do
+            if [ -n "$pid" ]; then
+                kill -USR1 "$pid" 2>/dev/null || true
+            fi
+        done
+    endscript
+    
+    # Pre-rotation scripts
+    prerotate
+        # Check disk space before rotation
+        if [ $(df /var/log/s-framework | awk 'NR==2 {print $5}' | cut -d'%' -f1) -gt 90 ]; then
+            echo "Warning: Low disk space in /var/log/s-framework" | logger -t s-framework-logrotate
+        fi
+    endscript
+}
+
+# Specialized rotation for high-frequency S-distance logs
+/var/log/s-framework/s-distance.log {
+    hourly
+    size 50M
+    rotate 24
+    compress
+    delaycompress
+    notifempty
+    missingok
+    create 644 root s-framework
+    
+    postrotate
+        # Specific handling for S-distance meter log rotation
+        if [ -f /proc/s-framework/s-distance/control ]; then
+            echo "log_rotate" > /proc/s-framework/s-distance/control
+        fi
+    endscript
+}
+
+# Specialized rotation for tri-dimensional navigation logs
+/var/log/s-framework/tri-dimensional.log {
+    hourly
+    size 50M
+    rotate 24
+    compress
+    delaycompress
+    notifempty
+    missingok
+    create 644 root s-framework
+    
+    postrotate
+        # Specific handling for tri-dimensional log rotation
+        if [ -f /proc/s-framework/tri-dimensional/control ]; then
+            echo "log_rotate" > /proc/s-framework/tri-dimensional/control
+        fi
+    endscript
+}
+
+# Debug and trace logs (more aggressive rotation)
+/var/log/s-framework/debug/*.log {
+    hourly
+    size 10M
+    rotate 6
+    compress
+    delaycompress
+    notifempty
+    missingok
+    create 644 root s-framework
+    maxage 7
+}
+
+# Performance and metrics logs
+/var/log/s-framework/metrics/*.log {
+    daily
+    size 200M
+    rotate 30
+    compress
+    delaycompress
+    notifempty
+    missingok
+    create 644 root s-framework
+    
+    postrotate
+        # Archive metrics to long-term storage if configured
+        if [ -x /usr/local/bin/s-framework-metrics-archive ]; then
+            /usr/local/bin/s-framework-metrics-archive
+        fi
+    endscript
+}
+
+# Security audit logs (extended retention)
+/var/log/s-framework/security/*.log {
+    weekly
+    size 100M
+    rotate 52
+    compress
+    delaycompress
+    notifempty
+    missingok
+    create 600 root root
+    
+    # Never auto-delete security logs
+    maxage 0
+    
+    postrotate
+        # Notify security monitoring systems
+        if [ -x /usr/local/bin/s-framework-security-notify ]; then
+            /usr/local/bin/s-framework-security-notify "Security log rotated"
+        fi
+    endscript
+} 
