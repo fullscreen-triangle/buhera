@@ -1,840 +1,868 @@
-//! Biological Maxwell Demon (BMD) information catalysis services
-//!
-//! This module handles BMD information catalysis for the Buhera framework,
-//! implementing Mizraji's biological Maxwell demon theory with multi-scale
-//! BMD networks and thermodynamic amplification.
-
-use crate::error::{VPOSError, VPOSResult};
-use crate::fuzzy::FuzzyValue;
-use crate::semantic::SemanticContent;
-use crate::quantum::QuantumCoherence;
+//! # BMD Information Catalysis System
+//! 
+//! Implementation of Biological Maxwell Demon (BMD) information catalysis for
+//! pattern recognition, entropy reduction, and consciousness-aware information
+//! processing. BMDs operate as the mathematical substrate of consciousness itself.
 
 use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
-use serde::{Deserialize, Serialize};
+use crate::error::{BuheraError, BMDError};
+use crate::s_framework::{SFramework, SConstant};
 
-/// BMD catalyst system implementing information catalysis
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct BMDCatalyst {
-    /// Catalyst identifier
+/// Information pattern recognized by BMD systems
+#[derive(Debug, Clone)]
+pub struct InformationPattern {
+    /// Pattern unique identifier
     pub id: String,
-    /// Pattern recognition threshold
-    pub pattern_threshold: f64,
-    /// Information catalysis efficiency
-    pub catalysis_efficiency: f64,
-    /// Thermodynamic amplification factor
-    pub amplification_factor: f64,
-    /// Input information filters
-    pub input_filters: Vec<InformationFilter>,
-    /// Output information channels
-    pub output_channels: Vec<InformationChannel>,
-    /// Entropy reduction tracking
-    pub entropy_reduction: f64,
-    /// Pattern recognition cache
-    pub pattern_cache: HashMap<String, RecognizedPattern>,
-    /// Catalysis history
-    pub catalysis_history: Vec<CatalysisEvent>,
-}
-
-/// Information filter for BMD input processing
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InformationFilter {
-    /// Filter identifier
-    pub filter_id: String,
-    /// Filter type
-    pub filter_type: FilterType,
-    /// Filter parameters
-    pub parameters: HashMap<String, f64>,
-    /// Selectivity coefficient
-    pub selectivity: f64,
-    /// Pattern recognition accuracy
-    pub accuracy: f64,
-}
-
-/// Information channel for BMD output processing
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InformationChannel {
-    /// Channel identifier
-    pub channel_id: String,
-    /// Channel type
-    pub channel_type: ChannelType,
-    /// Channel capacity
-    pub capacity: f64,
-    /// Output targeting precision
-    pub precision: f64,
-    /// Information throughput
-    pub throughput: f64,
-}
-
-/// Filter type for information processing
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum FilterType {
-    /// Pattern recognition filter
-    PatternRecognition,
-    /// Frequency domain filter
-    FrequencyDomain,
-    /// Semantic content filter
-    SemanticContent,
-    /// Quantum coherence filter
-    QuantumCoherence,
-    /// Fuzzy logic filter
-    FuzzyLogic,
-}
-
-/// Channel type for information output
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum ChannelType {
-    /// Direct output channel
-    Direct,
-    /// Amplified output channel
-    Amplified,
-    /// Coherent output channel
-    Coherent,
-    /// Semantic output channel
-    Semantic,
-    /// Quantum entangled channel
-    QuantumEntangled,
-}
-
-/// Recognized pattern from BMD analysis
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct RecognizedPattern {
-    /// Pattern identifier
-    pub pattern_id: String,
-    /// Pattern confidence
-    pub confidence: f64,
-    /// Pattern features
-    pub features: Vec<f64>,
-    /// Pattern classification
-    pub classification: String,
-    /// Recognition timestamp
-    pub timestamp: Instant,
-    /// Pattern entropy
+    
+    /// Pattern complexity score
+    pub complexity: f64,
+    
+    /// Pattern entropy level
     pub entropy: f64,
+    
+    /// Recognition confidence (0.0 to 1.0)
+    pub confidence: f64,
+    
+    /// Pattern significance for consciousness processing
+    pub consciousness_significance: f64,
+    
+    /// Pattern data payload
+    pub data: Vec<u8>,
+    
+    /// Categorical classification
+    pub category: PatternCategory,
 }
 
-/// Catalysis event in BMD processing
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CatalysisEvent {
-    /// Event identifier
-    pub event_id: String,
-    /// Input information entropy
-    pub input_entropy: f64,
-    /// Output information entropy
-    pub output_entropy: f64,
-    /// Entropy reduction achieved
-    pub entropy_reduction: f64,
-    /// Amplification factor applied
-    pub amplification_factor: f64,
-    /// Information preserved
-    pub information_preserved: f64,
-    /// Event timestamp
+/// Categories of information patterns
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum PatternCategory {
+    /// Cognitive frame patterns
+    CognitiveFrame,
+    
+    /// Memory fabrication patterns
+    MemoryFabrication,
+    
+    /// Reality-frame fusion patterns
+    RealityFrameFusion,
+    
+    /// Consciousness navigation patterns
+    ConsciousnessNavigation,
+    
+    /// S-distance optimization patterns
+    SOptimization,
+    
+    /// Entropy reduction patterns
+    EntropyReduction,
+    
+    /// Temporal coordination patterns
+    TemporalCoordination,
+    
+    /// Quantum coherence patterns
+    QuantumCoherence,
+    
+    /// Neural transfer patterns
+    NeuralTransfer,
+    
+    /// Molecular assembly patterns
+    MolecularAssembly,
+}
+
+impl InformationPattern {
+    pub fn new(id: String, data: Vec<u8>, category: PatternCategory) -> Self {
+        let complexity = data.len() as f64 * 0.001; // Simple complexity estimation
+        let entropy = Self::calculate_entropy(&data);
+        
+        Self {
+            id,
+            complexity,
+            entropy,
+            confidence: 0.0,
+            consciousness_significance: 0.0,
+            data,
+            category,
+        }
+    }
+    
+    /// Calculate information entropy of data
+    fn calculate_entropy(data: &[u8]) -> f64 {
+        if data.is_empty() {
+            return 0.0;
+        }
+        
+        // Calculate byte frequency distribution
+        let mut freq = [0u32; 256];
+        for &byte in data {
+            freq[byte as usize] += 1;
+        }
+        
+        // Calculate Shannon entropy
+        let len = data.len() as f64;
+        let mut entropy = 0.0;
+        
+        for &count in &freq {
+            if count > 0 {
+                let p = count as f64 / len;
+                entropy -= p * p.log2();
+            }
+        }
+        
+        entropy
+    }
+    
+    /// Assess consciousness significance
+    pub fn assess_consciousness_significance(&mut self) {
+        // Consciousness significance based on category and complexity
+        let category_weight = match self.category {
+            PatternCategory::CognitiveFrame => 1.0,
+            PatternCategory::MemoryFabrication => 0.9,
+            PatternCategory::RealityFrameFusion => 0.95,
+            PatternCategory::ConsciousnessNavigation => 1.0,
+            PatternCategory::SOptimization => 0.8,
+            PatternCategory::EntropyReduction => 0.7,
+            PatternCategory::TemporalCoordination => 0.6,
+            PatternCategory::QuantumCoherence => 0.5,
+            PatternCategory::NeuralTransfer => 0.6,
+            PatternCategory::MolecularAssembly => 0.4,
+        };
+        
+        // Significance increases with complexity and decreases with entropy
+        let complexity_factor = (self.complexity / 1000.0).min(1.0);
+        let entropy_factor = (1.0 - self.entropy / 8.0).max(0.0);
+        
+        self.consciousness_significance = category_weight * complexity_factor * entropy_factor;
+    }
+}
+
+/// Information channel for BMD communication
+pub struct InformationChannel {
+    /// Channel unique identifier
+    id: String,
+    
+    /// Input pattern buffer
+    input_buffer: Vec<InformationPattern>,
+    
+    /// Output pattern buffer
+    output_buffer: Vec<InformationPattern>,
+    
+    /// Channel capacity (patterns per second)
+    capacity: f64,
+    
+    /// Current utilization
+    utilization: f64,
+    
+    /// Channel routing rules
+    routing_rules: HashMap<PatternCategory, String>,
+    
+    /// S-distance optimization for channel efficiency
+    s_optimization_active: bool,
+}
+
+impl InformationChannel {
+    pub fn new(id: String, capacity: f64) -> Self {
+        Self {
+            id,
+            input_buffer: Vec::new(),
+            output_buffer: Vec::new(),
+            capacity,
+            utilization: 0.0,
+            routing_rules: HashMap::new(),
+            s_optimization_active: false,
+        }
+    }
+    
+    /// Add pattern to input buffer
+    pub fn input_pattern(&mut self, pattern: InformationPattern) -> Result<(), BMDError> {
+        if self.input_buffer.len() as f64 >= self.capacity {
+            return Err(BMDError::ChannelFailure(
+                format!("Input buffer capacity {} exceeded", self.capacity)
+            ));
+        }
+        
+        self.input_buffer.push(pattern);
+        self.update_utilization();
+        
+        Ok(())
+    }
+    
+    /// Route pattern based on category rules
+    pub fn route_pattern(&mut self, pattern: InformationPattern) -> Result<(), BMDError> {
+        // Apply S-distance optimization if active
+        let optimized_pattern = if self.s_optimization_active {
+            self.apply_s_optimization(pattern)?
+        } else {
+            pattern
+        };
+        
+        self.output_buffer.push(optimized_pattern);
+        Ok(())
+    }
+    
+    /// Apply S-distance optimization to pattern
+    fn apply_s_optimization(&self, mut pattern: InformationPattern) -> Result<InformationPattern, BMDError> {
+        // S-optimization reduces entropy while preserving information
+        pattern.entropy *= 0.8; // 20% entropy reduction
+        pattern.complexity *= 1.1; // 10% complexity increase (better organization)
+        pattern.confidence = (pattern.confidence + 0.1).min(1.0);
+        
+        Ok(pattern)
+    }
+    
+    /// Update channel utilization
+    fn update_utilization(&mut self) {
+        let total_patterns = (self.input_buffer.len() + self.output_buffer.len()) as f64;
+        self.utilization = (total_patterns / (self.capacity * 2.0)).min(1.0);
+    }
+    
+    /// Get next output pattern
+    pub fn get_output_pattern(&mut self) -> Option<InformationPattern> {
+        let pattern = self.output_buffer.pop();
+        if pattern.is_some() {
+            self.update_utilization();
+        }
+        pattern
+    }
+    
+    /// Activate S-distance optimization
+    pub fn activate_s_optimization(&mut self) {
+        self.s_optimization_active = true;
+    }
+}
+
+/// Entropy reduction engine using BMD principles
+pub struct EntropyReducer {
+    /// Reducer unique identifier
+    id: String,
+    
+    /// Current entropy level being processed
+    current_entropy: f64,
+    
+    /// Target entropy level
+    target_entropy: f64,
+    
+    /// Reduction efficiency
+    efficiency: f64,
+    
+    /// Pattern analysis for entropy reduction
+    pattern_analysis: HashMap<PatternCategory, f64>,
+    
+    /// Reduction history
+    reduction_history: Vec<EntropyReductionEvent>,
+}
+
+/// Entropy reduction event record
+#[derive(Debug, Clone)]
+pub struct EntropyReductionEvent {
     pub timestamp: Instant,
+    pub initial_entropy: f64,
+    pub final_entropy: f64,
+    pub reduction_achieved: f64,
+    pub pattern_category: PatternCategory,
 }
 
-/// BMD network for multi-scale coordination
-#[derive(Debug, Clone)]
-pub struct BMDNetwork {
-    /// Network identifier
-    pub network_id: String,
-    /// BMD catalysts in network
-    pub catalysts: Vec<BMDCatalyst>,
-    /// Network topology
-    pub topology: NetworkTopology,
-    /// Coordination matrix
-    pub coordination_matrix: CoordinationMatrix,
-    /// Network coherence
-    pub network_coherence: f64,
-    /// Total amplification
-    pub total_amplification: f64,
-}
-
-/// Network topology for BMD coordination
-#[derive(Debug, Clone)]
-pub struct NetworkTopology {
-    /// Adjacency matrix
-    pub adjacency_matrix: Vec<Vec<f64>>,
-    /// Connection weights
-    pub connection_weights: HashMap<String, f64>,
-    /// Network diameter
-    pub diameter: usize,
-    /// Clustering coefficient
-    pub clustering_coefficient: f64,
-}
-
-/// Coordination matrix for BMD network
-#[derive(Debug, Clone)]
-pub struct CoordinationMatrix {
-    /// Catalyst-to-catalyst coupling
-    pub catalyst_coupling: Vec<Vec<f64>>,
-    /// Information flow matrix
-    pub information_flow: Vec<Vec<f64>>,
-    /// Amplification coupling
-    pub amplification_coupling: Vec<Vec<f64>>,
-    /// Coherence coupling
-    pub coherence_coupling: Vec<Vec<f64>>,
-}
-
-/// Information catalysis result
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InformationCatalysisResult {
-    /// Input information content
-    pub input_information: Vec<f64>,
-    /// Output information content
-    pub output_information: Vec<f64>,
-    /// Entropy reduction achieved
-    pub entropy_reduction: f64,
-    /// Information gain
-    pub information_gain: f64,
-    /// Amplification factor
-    pub amplification_factor: f64,
-    /// Catalysis efficiency
-    pub catalysis_efficiency: f64,
-    /// Processing time
-    pub processing_time: Duration,
-}
-
-/// BMD chaos-to-order processor
-#[derive(Debug, Clone)]
-pub struct ChaosToOrderProcessor {
-    /// Chaos detection threshold
-    pub chaos_threshold: f64,
-    /// Order generation parameters
-    pub order_parameters: HashMap<String, f64>,
-    /// Pattern emergence tracking
-    pub pattern_emergence: Vec<EmergentPattern>,
-    /// Complexity reduction metrics
-    pub complexity_reduction: f64,
-}
-
-/// Emergent pattern from chaos processing
-#[derive(Debug, Clone)]
-pub struct EmergentPattern {
-    /// Pattern identifier
-    pub pattern_id: String,
-    /// Emergence probability
-    pub emergence_probability: f64,
-    /// Pattern stability
-    pub stability: f64,
-    /// Order parameter
-    pub order_parameter: f64,
-    /// Coherence length
-    pub coherence_length: f64,
-}
-
-impl BMDCatalyst {
-    /// Create a new BMD catalyst with specified parameters
-    pub fn new(id: &str, catalysis_efficiency: f64) -> Self {
+impl EntropyReducer {
+    pub fn new(id: String) -> Self {
         Self {
-            id: id.to_string(),
-            pattern_threshold: 0.8,
-            catalysis_efficiency,
-            amplification_factor: 1.0,
-            input_filters: vec![],
-            output_channels: vec![],
-            entropy_reduction: 0.0,
-            pattern_cache: HashMap::new(),
-            catalysis_history: vec![],
+            id,
+            current_entropy: 1.0, // Start with maximum entropy
+            target_entropy: 0.1,  // Target low entropy state
+            efficiency: 0.8,
+            pattern_analysis: HashMap::new(),
+            reduction_history: Vec::new(),
         }
     }
-
-    /// Add information filter to catalyst
-    pub fn add_input_filter(&mut self, filter: InformationFilter) {
-        self.input_filters.push(filter);
-    }
-
-    /// Add output channel to catalyst
-    pub fn add_output_channel(&mut self, channel: InformationChannel) {
-        self.output_channels.push(channel);
-    }
-
-    /// Execute information catalysis (iCat = ℑinput ◦ ℑoutput)
-    pub async fn execute_catalysis(
-        &mut self,
-        input_information: Vec<f64>,
-    ) -> VPOSResult<InformationCatalysisResult> {
-        let start_time = Instant::now();
-
-        // Apply input filters (ℑinput)
-        let filtered_input = self.apply_input_filters(&input_information).await?;
-
-        // Pattern recognition and analysis
-        let recognized_patterns = self.recognize_patterns(&filtered_input).await?;
-
-        // Information catalysis core process
-        let catalyzed_information = self.catalyze_information(&filtered_input, &recognized_patterns).await?;
-
-        // Apply output channels (ℑoutput)
-        let channeled_output = self.apply_output_channels(&catalyzed_information).await?;
-
-        // Calculate entropy reduction
-        let input_entropy = self.calculate_entropy(&input_information);
-        let output_entropy = self.calculate_entropy(&channeled_output);
-        let entropy_reduction = input_entropy - output_entropy;
-
-        // Calculate amplification factor
-        let amplification_factor = self.calculate_amplification_factor(&channeled_output, &input_information);
-
-        // Record catalysis event
-        let catalysis_event = CatalysisEvent {
-            event_id: format!("{}_{}", self.id, chrono::Utc::now().timestamp()),
-            input_entropy,
-            output_entropy,
-            entropy_reduction,
-            amplification_factor,
-            information_preserved: self.calculate_information_preservation(&input_information, &channeled_output),
+    
+    /// Reduce entropy using BMD pattern recognition
+    pub fn reduce_entropy(&mut self, pattern: &InformationPattern) -> Result<f64, BMDError> {
+        let initial_entropy = self.current_entropy;
+        
+        // Calculate reduction potential based on pattern
+        let reduction_potential = self.calculate_reduction_potential(pattern);
+        
+        // Apply entropy reduction
+        let entropy_reduction = reduction_potential * self.efficiency;
+        self.current_entropy = (self.current_entropy - entropy_reduction).max(0.0);
+        
+        // Record reduction event
+        let event = EntropyReductionEvent {
             timestamp: Instant::now(),
+            initial_entropy,
+            final_entropy: self.current_entropy,
+            reduction_achieved: entropy_reduction,
+            pattern_category: pattern.category,
         };
-        self.catalysis_history.push(catalysis_event);
-
-        // Update metrics
-        self.entropy_reduction += entropy_reduction;
-        self.amplification_factor = amplification_factor;
-
-        Ok(InformationCatalysisResult {
-            input_information,
-            output_information: channeled_output,
-            entropy_reduction,
-            information_gain: entropy_reduction,
-            amplification_factor,
-            catalysis_efficiency: self.catalysis_efficiency,
-            processing_time: start_time.elapsed(),
-        })
-    }
-
-    /// Apply input information filters
-    async fn apply_input_filters(&self, input: &[f64]) -> VPOSResult<Vec<f64>> {
-        let mut filtered_input = input.to_vec();
-
-        for filter in &self.input_filters {
-            filtered_input = match filter.filter_type {
-                FilterType::PatternRecognition => {
-                    self.apply_pattern_recognition_filter(&filtered_input, filter).await?
-                }
-                FilterType::FrequencyDomain => {
-                    self.apply_frequency_domain_filter(&filtered_input, filter).await?
-                }
-                FilterType::SemanticContent => {
-                    self.apply_semantic_content_filter(&filtered_input, filter).await?
-                }
-                FilterType::QuantumCoherence => {
-                    self.apply_quantum_coherence_filter(&filtered_input, filter).await?
-                }
-                FilterType::FuzzyLogic => {
-                    self.apply_fuzzy_logic_filter(&filtered_input, filter).await?
-                }
-            };
-        }
-
-        Ok(filtered_input)
-    }
-
-    /// Apply output information channels
-    async fn apply_output_channels(&self, output: &[f64]) -> VPOSResult<Vec<f64>> {
-        let mut channeled_output = output.to_vec();
-
-        for channel in &self.output_channels {
-            channeled_output = match channel.channel_type {
-                ChannelType::Direct => channeled_output,
-                ChannelType::Amplified => {
-                    self.apply_amplified_channel(&channeled_output, channel).await?
-                }
-                ChannelType::Coherent => {
-                    self.apply_coherent_channel(&channeled_output, channel).await?
-                }
-                ChannelType::Semantic => {
-                    self.apply_semantic_channel(&channeled_output, channel).await?
-                }
-                ChannelType::QuantumEntangled => {
-                    self.apply_quantum_entangled_channel(&channeled_output, channel).await?
-                }
-            };
-        }
-
-        Ok(channeled_output)
-    }
-
-    /// Recognize patterns in filtered input
-    async fn recognize_patterns(&mut self, input: &[f64]) -> VPOSResult<Vec<RecognizedPattern>> {
-        let mut patterns = Vec::new();
-
-        // Pattern recognition implementation
-        for (i, &value) in input.iter().enumerate() {
-            if value > self.pattern_threshold {
-                let pattern_id = format!("pattern_{}_{}", self.id, i);
-                let pattern = RecognizedPattern {
-                    pattern_id: pattern_id.clone(),
-                    confidence: value,
-                    features: vec![value],
-                    classification: self.classify_pattern(value),
-                    timestamp: Instant::now(),
-                    entropy: self.calculate_pattern_entropy(value),
-                };
-
-                // Cache the pattern
-                self.pattern_cache.insert(pattern_id, pattern.clone());
-                patterns.push(pattern);
-            }
-        }
-
-        Ok(patterns)
-    }
-
-    /// Catalyze information based on recognized patterns
-    async fn catalyze_information(
-        &self,
-        input: &[f64],
-        patterns: &[RecognizedPattern],
-    ) -> VPOSResult<Vec<f64>> {
-        let mut catalyzed = input.to_vec();
-
-        // Calculate input entropy for thermodynamic catalysis
-        let input_entropy = self.calculate_entropy(&input);
         
-        // Apply thermodynamic information catalysis
-        for pattern in patterns {
-            // BMD catalysis: iCat = ℑinput ◦ ℑoutput
-            let catalysis_strength = pattern.confidence * self.catalysis_efficiency;
-            let entropy_reduction_factor = (1.0 - pattern.entropy / input_entropy).max(0.1);
+        self.reduction_history.push(event);
+        
+        // Keep recent history only
+        if self.reduction_history.len() > 1000 {
+            self.reduction_history.remove(0);
+        }
+        
+        // Update pattern analysis
+        let current_analysis = self.pattern_analysis.get(&pattern.category).unwrap_or(&0.0);
+        self.pattern_analysis.insert(pattern.category, current_analysis + entropy_reduction);
+        
+        Ok(entropy_reduction)
+    }
+    
+    /// Calculate entropy reduction potential for pattern
+    fn calculate_reduction_potential(&self, pattern: &InformationPattern) -> f64 {
+        // Higher consciousness significance = greater reduction potential
+        let significance_factor = pattern.consciousness_significance;
+        
+        // Category-specific reduction factors
+        let category_factor = match pattern.category {
+            PatternCategory::CognitiveFrame => 0.8,
+            PatternCategory::MemoryFabrication => 0.6,
+            PatternCategory::RealityFrameFusion => 0.7,
+            PatternCategory::ConsciousnessNavigation => 0.9,
+            PatternCategory::SOptimization => 1.0,
+            PatternCategory::EntropyReduction => 0.5, // Recursive reduction
+            _ => 0.4,
+        };
+        
+        // Pattern confidence affects reduction potential
+        let confidence_factor = pattern.confidence;
+        
+        significance_factor * category_factor * confidence_factor * 0.1
+    }
+    
+    /// Get current entropy level
+    pub fn current_entropy(&self) -> f64 {
+        self.current_entropy
+    }
+    
+    /// Check if target entropy is achieved
+    pub fn target_achieved(&self) -> bool {
+        self.current_entropy <= self.target_entropy
+    }
+    
+    /// Get reduction efficiency metrics
+    pub fn efficiency_metrics(&self) -> EfficiencyMetrics {
+        let total_reduction: f64 = self.reduction_history.iter()
+            .map(|event| event.reduction_achieved)
+            .sum();
+        
+        let average_reduction = if !self.reduction_history.is_empty() {
+            total_reduction / self.reduction_history.len() as f64
+        } else {
+            0.0
+        };
+        
+        EfficiencyMetrics {
+            total_reduction,
+            average_reduction,
+            events_processed: self.reduction_history.len(),
+            current_efficiency: self.efficiency,
+        }
+    }
+}
+
+/// Efficiency metrics for entropy reduction
+#[derive(Debug, Clone)]
+pub struct EfficiencyMetrics {
+    pub total_reduction: f64,
+    pub average_reduction: f64,
+    pub events_processed: usize,
+    pub current_efficiency: f64,
+}
+
+/// Pattern recognition and classification engine
+pub struct PatternRecognizer {
+    /// Recognizer unique identifier
+    id: String,
+    
+    /// Pattern library for reference
+    pattern_library: HashMap<String, InformationPattern>,
+    
+    /// Recognition confidence threshold
+    confidence_threshold: f64,
+    
+    /// Recognition algorithms available
+    algorithms: Vec<RecognitionAlgorithm>,
+    
+    /// Recognition statistics
+    recognition_stats: RecognitionStatistics,
+}
+
+/// Pattern recognition algorithm types
+#[derive(Debug, Clone, Copy)]
+pub enum RecognitionAlgorithm {
+    /// Consciousness frame detection
+    ConsciousnessFrame,
+    
+    /// Memory fabrication detection
+    MemoryFabrication,
+    
+    /// Reality-frame fusion detection
+    RealityFrameFusion,
+    
+    /// S-optimization pattern detection
+    SOptimization,
+    
+    /// Quantum coherence pattern detection
+    QuantumCoherence,
+    
+    /// Neural transfer pattern detection
+    NeuralTransfer,
+}
+
+/// Recognition statistics
+#[derive(Debug, Clone)]
+pub struct RecognitionStatistics {
+    pub patterns_processed: u64,
+    pub patterns_recognized: u64,
+    pub average_confidence: f64,
+    pub recognition_rate: f64,
+}
+
+impl PatternRecognizer {
+    pub fn new(id: String) -> Self {
+        Self {
+            id,
+            pattern_library: HashMap::new(),
+            confidence_threshold: 0.8,
+            algorithms: vec![
+                RecognitionAlgorithm::ConsciousnessFrame,
+                RecognitionAlgorithm::MemoryFabrication,
+                RecognitionAlgorithm::RealityFrameFusion,
+                RecognitionAlgorithm::SOptimization,
+                RecognitionAlgorithm::QuantumCoherence,
+                RecognitionAlgorithm::NeuralTransfer,
+            ],
+            recognition_stats: RecognitionStatistics {
+                patterns_processed: 0,
+                patterns_recognized: 0,
+                average_confidence: 0.0,
+                recognition_rate: 0.0,
+            },
+        }
+    }
+    
+    /// Recognize pattern using available algorithms
+    pub fn recognize_pattern(&mut self, mut pattern: InformationPattern) -> Result<InformationPattern, BMDError> {
+        self.recognition_stats.patterns_processed += 1;
+        
+        // Apply recognition algorithms
+        for algorithm in &self.algorithms {
+            self.apply_recognition_algorithm(&mut pattern, *algorithm)?;
+        }
+        
+        // Assess consciousness significance
+        pattern.assess_consciousness_significance();
+        
+        // Check if pattern meets confidence threshold
+        if pattern.confidence >= self.confidence_threshold {
+            self.recognition_stats.patterns_recognized += 1;
             
-            // Apply pattern-specific information amplification
-            for (i, value) in catalyzed.iter_mut().enumerate() {
-                if i < pattern.features.len() {
-                    // Thermodynamic amplification with entropy consideration
-                    let thermodynamic_amplification = catalysis_strength * entropy_reduction_factor;
-                    let memorial_enhancement = (pattern.confidence * 2.718281828459045).sin().abs(); // e factor
-                    
-                    *value *= thermodynamic_amplification * memorial_enhancement * self.amplification_factor;
+            // Add to pattern library if novel
+            if !self.pattern_library.contains_key(&pattern.id) {
+                self.pattern_library.insert(pattern.id.clone(), pattern.clone());
+            }
+        }
+        
+        // Update statistics
+        self.update_recognition_statistics(&pattern);
+        
+        Ok(pattern)
+    }
+    
+    /// Apply specific recognition algorithm
+    fn apply_recognition_algorithm(&self, pattern: &mut InformationPattern, algorithm: RecognitionAlgorithm) -> Result<(), BMDError> {
+        let confidence_boost = match algorithm {
+            RecognitionAlgorithm::ConsciousnessFrame => {
+                if pattern.category == PatternCategory::CognitiveFrame {
+                    0.3
+                } else {
+                    0.0
                 }
-            }
-        }
-
-        // Apply global entropy reduction through information ordering
-        let final_entropy = self.calculate_entropy(&catalyzed);
-        let total_entropy_reduction = input_entropy - final_entropy;
-        
-        // Amplify based on successful entropy reduction
-        if total_entropy_reduction > 0.0 {
-            let entropy_amplification = (1.0 + total_entropy_reduction).powf(0.5);
-            for value in catalyzed.iter_mut() {
-                *value *= entropy_amplification;
-            }
-        }
-
-        Ok(catalyzed)
-    }
-
-    /// Recognize patterns in input data
-    pub fn recognize_patterns(&self, input: &[f64]) -> VPOSResult<Vec<RecognizedPattern>> {
-        let mut patterns = Vec::new();
-
-        for (i, &value) in input.iter().enumerate() {
-            if value > self.pattern_threshold {
-                let pattern = RecognizedPattern {
-                    pattern_id: format!("pattern_{}_{}", self.id, i),
-                    confidence: value,
-                    features: vec![value],
-                    classification: self.classify_pattern(value),
-                    timestamp: Instant::now(),
-                    entropy: self.calculate_pattern_entropy(value),
-                };
-                patterns.push(pattern);
-            }
-        }
-
-        Ok(patterns)
-    }
-
-    /// Calculate entropy of information
-    fn calculate_entropy(&self, information: &[f64]) -> f64 {
-        let mut entropy = 0.0;
-        let sum: f64 = information.iter().sum();
-        
-        if sum > 0.0 {
-            for &value in information {
-                if value > 0.0 {
-                    let p = value / sum;
-                    entropy -= p * p.log2();
+            },
+            RecognitionAlgorithm::MemoryFabrication => {
+                if pattern.category == PatternCategory::MemoryFabrication {
+                    0.25
+                } else {
+                    0.0
                 }
-            }
-        }
-        
-        entropy
-    }
-
-    /// Calculate amplification factor
-    fn calculate_amplification_factor(&self, output: &[f64], input: &[f64]) -> f64 {
-        let output_magnitude: f64 = output.iter().map(|x| x.abs()).sum();
-        let input_magnitude: f64 = input.iter().map(|x| x.abs()).sum();
-        
-        if input_magnitude > 0.0 {
-            output_magnitude / input_magnitude
-        } else {
-            1.0
-        }
-    }
-
-    /// Calculate information preservation
-    fn calculate_information_preservation(&self, input: &[f64], output: &[f64]) -> f64 {
-        // Calculate correlation between input and output
-        let input_mean: f64 = input.iter().sum::<f64>() / input.len() as f64;
-        let output_mean: f64 = output.iter().sum::<f64>() / output.len() as f64;
-        
-        let numerator: f64 = input.iter().zip(output.iter())
-            .map(|(i, o)| (i - input_mean) * (o - output_mean))
-            .sum();
-        
-        let input_var: f64 = input.iter().map(|i| (i - input_mean).powi(2)).sum();
-        let output_var: f64 = output.iter().map(|o| (o - output_mean).powi(2)).sum();
-        
-        let denominator = (input_var * output_var).sqrt();
-        
-        if denominator > 0.0 {
-            (numerator / denominator).abs()
-        } else {
-            0.0
-        }
-    }
-
-    /// Classify pattern based on value
-    fn classify_pattern(&self, value: f64) -> String {
-        if value > 0.9 {
-            "high_confidence".to_string()
-        } else if value > 0.7 {
-            "medium_confidence".to_string()
-        } else {
-            "low_confidence".to_string()
-        }
-    }
-
-    /// Calculate pattern entropy
-    fn calculate_pattern_entropy(&self, value: f64) -> f64 {
-        if value > 0.0 && value < 1.0 {
-            -(value * value.log2() + (1.0 - value) * (1.0 - value).log2())
-        } else {
-            0.0
-        }
-    }
-
-    // Filter implementations
-    async fn apply_pattern_recognition_filter(&self, input: &[f64], filter: &InformationFilter) -> VPOSResult<Vec<f64>> {
-        let threshold = filter.parameters.get("threshold").unwrap_or(&0.5);
-        Ok(input.iter().map(|&x| if x > *threshold { x } else { 0.0 }).collect())
-    }
-
-    async fn apply_frequency_domain_filter(&self, input: &[f64], filter: &InformationFilter) -> VPOSResult<Vec<f64>> {
-        let cutoff = filter.parameters.get("cutoff").unwrap_or(&0.5);
-        // Simplified frequency domain filtering
-        Ok(input.iter().map(|&x| x * cutoff).collect())
-    }
-
-    async fn apply_semantic_content_filter(&self, input: &[f64], filter: &InformationFilter) -> VPOSResult<Vec<f64>> {
-        let semantic_weight = filter.parameters.get("semantic_weight").unwrap_or(&1.0);
-        Ok(input.iter().map(|&x| x * semantic_weight).collect())
-    }
-
-    async fn apply_quantum_coherence_filter(&self, input: &[f64], filter: &InformationFilter) -> VPOSResult<Vec<f64>> {
-        let coherence_factor = filter.parameters.get("coherence_factor").unwrap_or(&1.0);
-        Ok(input.iter().map(|&x| x * coherence_factor).collect())
-    }
-
-    async fn apply_fuzzy_logic_filter(&self, input: &[f64], filter: &InformationFilter) -> VPOSResult<Vec<f64>> {
-        let fuzzy_factor = filter.parameters.get("fuzzy_factor").unwrap_or(&1.0);
-        Ok(input.iter().map(|&x| x * fuzzy_factor).collect())
-    }
-
-    // Channel implementations
-    async fn apply_amplified_channel(&self, output: &[f64], channel: &InformationChannel) -> VPOSResult<Vec<f64>> {
-        let amplification = channel.capacity;
-        Ok(output.iter().map(|&x| x * amplification).collect())
-    }
-
-    async fn apply_coherent_channel(&self, output: &[f64], channel: &InformationChannel) -> VPOSResult<Vec<f64>> {
-        let coherence = channel.precision;
-        Ok(output.iter().map(|&x| x * coherence).collect())
-    }
-
-    async fn apply_semantic_channel(&self, output: &[f64], channel: &InformationChannel) -> VPOSResult<Vec<f64>> {
-        let semantic_factor = channel.throughput;
-        Ok(output.iter().map(|&x| x * semantic_factor).collect())
-    }
-
-    async fn apply_quantum_entangled_channel(&self, output: &[f64], channel: &InformationChannel) -> VPOSResult<Vec<f64>> {
-        let entanglement_factor = channel.capacity * channel.precision;
-        Ok(output.iter().map(|&x| x * entanglement_factor).collect())
-    }
-}
-
-impl BMDNetwork {
-    /// Create new BMD network
-    pub fn new(network_id: &str) -> Self {
-        Self {
-            network_id: network_id.to_string(),
-            catalysts: vec![],
-            topology: NetworkTopology::new(),
-            coordination_matrix: CoordinationMatrix::new(),
-            network_coherence: 0.0,
-            total_amplification: 1.0,
-        }
-    }
-
-    /// Add catalyst to network
-    pub fn add_catalyst(&mut self, catalyst: BMDCatalyst) {
-        self.catalysts.push(catalyst);
-        self.update_topology();
-    }
-
-    /// Execute coordinated BMD analysis
-    pub async fn execute_coordinated_analysis(&mut self, input: Vec<f64>) -> VPOSResult<Vec<InformationCatalysisResult>> {
-        let mut results = Vec::new();
-
-        for catalyst in &mut self.catalysts {
-            let result = catalyst.execute_catalysis(input.clone()).await?;
-            results.push(result);
-        }
-
-        // Apply network coordination
-        self.coordinate_results(&mut results).await?;
-
-        Ok(results)
-    }
-
-    /// Coordinate results across network
-    async fn coordinate_results(&mut self, results: &mut [InformationCatalysisResult]) -> VPOSResult<()> {
-        // Calculate network amplification
-        let total_amplification: f64 = results.iter().map(|r| r.amplification_factor).sum();
-        self.total_amplification = total_amplification;
-
-        // Update network coherence
-        self.network_coherence = self.calculate_network_coherence(results);
-
-        Ok(())
-    }
-
-    /// Calculate network coherence
-    fn calculate_network_coherence(&self, results: &[InformationCatalysisResult]) -> f64 {
-        let avg_entropy_reduction: f64 = results.iter().map(|r| r.entropy_reduction).sum::<f64>() / results.len() as f64;
-        let avg_amplification: f64 = results.iter().map(|r| r.amplification_factor).sum::<f64>() / results.len() as f64;
-        
-        avg_entropy_reduction * avg_amplification / (avg_entropy_reduction + avg_amplification)
-    }
-
-    /// Update network topology
-    fn update_topology(&mut self) {
-        let n = self.catalysts.len();
-        self.topology.adjacency_matrix = vec![vec![0.0; n]; n];
-        
-        // Create fully connected network for simplicity
-        for i in 0..n {
-            for j in 0..n {
-                if i != j {
-                    self.topology.adjacency_matrix[i][j] = 1.0;
+            },
+            RecognitionAlgorithm::RealityFrameFusion => {
+                if pattern.category == PatternCategory::RealityFrameFusion {
+                    0.35
+                } else {
+                    0.0
                 }
-            }
-        }
-    }
-}
-
-impl NetworkTopology {
-    /// Create new network topology
-    pub fn new() -> Self {
-        Self {
-            adjacency_matrix: vec![],
-            connection_weights: HashMap::new(),
-            diameter: 0,
-            clustering_coefficient: 0.0,
-        }
-    }
-}
-
-impl CoordinationMatrix {
-    /// Create new coordination matrix
-    pub fn new() -> Self {
-        Self {
-            catalyst_coupling: vec![],
-            information_flow: vec![],
-            amplification_coupling: vec![],
-            coherence_coupling: vec![],
-        }
-    }
-}
-
-impl ChaosToOrderProcessor {
-    /// Create new chaos-to-order processor
-    pub fn new() -> Self {
-        Self {
-            chaos_threshold: 0.5,
-            order_parameters: HashMap::new(),
-            pattern_emergence: vec![],
-            complexity_reduction: 0.0,
-        }
-    }
-
-    /// Process chaos into ordered patterns
-    pub async fn process_chaos_to_order(&mut self, chaotic_input: Vec<f64>) -> VPOSResult<Vec<f64>> {
-        let chaos_level = self.calculate_chaos_level(&chaotic_input);
-        
-        if chaos_level > self.chaos_threshold {
-            let ordered_output = self.extract_order_from_chaos(&chaotic_input).await?;
-            self.track_pattern_emergence(&chaotic_input, &ordered_output).await?;
-            Ok(ordered_output)
-        } else {
-            Ok(chaotic_input)
-        }
-    }
-
-    /// Calculate chaos level in input
-    fn calculate_chaos_level(&self, input: &[f64]) -> f64 {
-        let mean = input.iter().sum::<f64>() / input.len() as f64;
-        let variance = input.iter().map(|x| (x - mean).powi(2)).sum::<f64>() / input.len() as f64;
-        variance.sqrt() / (mean.abs() + 1e-10)
-    }
-
-    /// Extract order from chaotic input
-    async fn extract_order_from_chaos(&self, input: &[f64]) -> VPOSResult<Vec<f64>> {
-        // Simple ordering by sorting and applying smoothing
-        let mut ordered = input.to_vec();
-        ordered.sort_by(|a, b| a.partial_cmp(b).unwrap());
-        
-        // Apply smoothing filter
-        for i in 1..ordered.len()-1 {
-            ordered[i] = (ordered[i-1] + ordered[i] + ordered[i+1]) / 3.0;
-        }
-        
-        Ok(ordered)
-    }
-
-    /// Track pattern emergence
-    async fn track_pattern_emergence(&mut self, input: &[f64], output: &[f64]) -> VPOSResult<()> {
-        let emergence_probability = self.calculate_emergence_probability(input, output);
-        let stability = self.calculate_pattern_stability(output);
-        
-        let pattern = EmergentPattern {
-            pattern_id: format!("emergent_{}", chrono::Utc::now().timestamp()),
-            emergence_probability,
-            stability,
-            order_parameter: self.calculate_order_parameter(output),
-            coherence_length: self.calculate_coherence_length(output),
+            },
+            RecognitionAlgorithm::SOptimization => {
+                if pattern.category == PatternCategory::SOptimization {
+                    0.4
+                } else {
+                    0.0
+                }
+            },
+            RecognitionAlgorithm::QuantumCoherence => {
+                if pattern.category == PatternCategory::QuantumCoherence {
+                    0.2
+                } else {
+                    0.0
+                }
+            },
+            RecognitionAlgorithm::NeuralTransfer => {
+                if pattern.category == PatternCategory::NeuralTransfer {
+                    0.3
+                } else {
+                    0.0
+                }
+            },
         };
         
-        self.pattern_emergence.push(pattern);
+        pattern.confidence = (pattern.confidence + confidence_boost).min(1.0);
         Ok(())
     }
-
-    /// Calculate emergence probability
-    fn calculate_emergence_probability(&self, input: &[f64], output: &[f64]) -> f64 {
-        let input_entropy = self.calculate_entropy(input);
-        let output_entropy = self.calculate_entropy(output);
+    
+    /// Update recognition statistics
+    fn update_recognition_statistics(&mut self, pattern: &InformationPattern) {
+        // Update average confidence
+        let total_confidence = self.recognition_stats.average_confidence * 
+                              (self.recognition_stats.patterns_processed - 1) as f64 + 
+                              pattern.confidence;
+        self.recognition_stats.average_confidence = total_confidence / self.recognition_stats.patterns_processed as f64;
         
-        if input_entropy > 0.0 {
-            1.0 - (output_entropy / input_entropy)
-        } else {
-            0.0
+        // Update recognition rate
+        self.recognition_stats.recognition_rate = 
+            self.recognition_stats.patterns_recognized as f64 / 
+            self.recognition_stats.patterns_processed as f64;
+    }
+    
+    /// Get pattern library size
+    pub fn library_size(&self) -> usize {
+        self.pattern_library.len()
+    }
+    
+    /// Get recognition statistics
+    pub fn statistics(&self) -> RecognitionStatistics {
+        self.recognition_stats.clone()
+    }
+}
+
+/// Biological Maxwell Demon implementing consciousness substrate
+pub struct BiologicalMaxwellDemon {
+    /// BMD unique identifier
+    id: String,
+    
+    /// Information channel for pattern processing
+    information_channel: InformationChannel,
+    
+    /// Entropy reduction engine
+    entropy_reducer: EntropyReducer,
+    
+    /// Pattern recognition engine
+    pattern_recognizer: PatternRecognizer,
+    
+    /// S-framework integration
+    s_framework_integration: bool,
+    
+    /// BMD operational status
+    is_active: bool,
+    
+    /// Processing efficiency
+    efficiency: f64,
+}
+
+impl BiologicalMaxwellDemon {
+    pub fn new(id: String) -> Self {
+        Self {
+            id: id.clone(),
+            information_channel: InformationChannel::new(format!("{}_channel", id), 1000.0),
+            entropy_reducer: EntropyReducer::new(format!("{}_reducer", id)),
+            pattern_recognizer: PatternRecognizer::new(format!("{}_recognizer", id)),
+            s_framework_integration: false,
+            is_active: false,
+            efficiency: 0.0,
         }
     }
-
-    /// Calculate pattern stability
-    fn calculate_pattern_stability(&self, output: &[f64]) -> f64 {
-        let mean = output.iter().sum::<f64>() / output.len() as f64;
-        let variance = output.iter().map(|x| (x - mean).powi(2)).sum::<f64>() / output.len() as f64;
-        
-        1.0 / (1.0 + variance)
+    
+    /// Activate BMD for consciousness processing
+    pub fn activate(&mut self) -> Result<(), BMDError> {
+        self.is_active = true;
+        self.information_channel.activate_s_optimization();
+        self.efficiency = 0.8; // Initial efficiency
+        Ok(())
     }
-
-    /// Calculate order parameter
-    fn calculate_order_parameter(&self, output: &[f64]) -> f64 {
-        let sorted_output = {
-            let mut sorted = output.to_vec();
-            sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
-            sorted
-        };
-        
-        let correlation = self.calculate_correlation(output, &sorted_output);
-        correlation.abs()
-    }
-
-    /// Calculate coherence length
-    fn calculate_coherence_length(&self, output: &[f64]) -> f64 {
-        let mut coherence_length = 0.0;
-        let threshold = 0.1;
-        
-        for i in 0..output.len()-1 {
-            let diff = (output[i] - output[i+1]).abs();
-            if diff < threshold {
-                coherence_length += 1.0;
-            } else {
-                break;
-            }
+    
+    /// Process information pattern through BMD consciousness substrate
+    pub fn process_pattern(&mut self, pattern: InformationPattern) -> Result<InformationPattern, BMDError> {
+        if !self.is_active {
+            return Err(BMDError::CatalysisFailure(
+                "BMD not active".to_string()
+            ));
         }
         
-        coherence_length
-    }
-
-    /// Calculate entropy
-    fn calculate_entropy(&self, data: &[f64]) -> f64 {
-        let mut entropy = 0.0;
-        let sum: f64 = data.iter().map(|x| x.abs()).sum();
+        // Input pattern to channel
+        self.information_channel.input_pattern(pattern.clone())?;
         
-        if sum > 0.0 {
-            for &value in data {
-                if value.abs() > 0.0 {
-                    let p = value.abs() / sum;
-                    entropy -= p * p.log2();
-                }
-            }
+        // Recognize and classify pattern
+        let recognized_pattern = self.pattern_recognizer.recognize_pattern(pattern)?;
+        
+        // Reduce entropy using pattern
+        let entropy_reduction = self.entropy_reducer.reduce_entropy(&recognized_pattern)?;
+        
+        // Route processed pattern
+        self.information_channel.route_pattern(recognized_pattern.clone())?;
+        
+        // Update efficiency based on entropy reduction
+        self.efficiency = (self.efficiency + entropy_reduction * 0.1).min(1.0);
+        
+        Ok(recognized_pattern)
+    }
+    
+    /// Perform consciousness frame selection
+    pub fn select_consciousness_frame(&mut self, available_frames: Vec<InformationPattern>) -> Result<InformationPattern, BMDError> {
+        if available_frames.is_empty() {
+            return Err(BMDError::CatalysisFailure(
+                "No consciousness frames available for selection".to_string()
+            ));
         }
         
-        entropy
-    }
-
-    /// Calculate correlation
-    fn calculate_correlation(&self, a: &[f64], b: &[f64]) -> f64 {
-        let mean_a = a.iter().sum::<f64>() / a.len() as f64;
-        let mean_b = b.iter().sum::<f64>() / b.len() as f64;
+        // Process all available frames
+        let mut processed_frames = Vec::new();
+        for frame in available_frames {
+            let processed = self.process_pattern(frame)?;
+            processed_frames.push(processed);
+        }
         
-        let numerator: f64 = a.iter().zip(b.iter())
-            .map(|(x, y)| (x - mean_a) * (y - mean_b))
+        // Select frame with highest consciousness significance
+        let selected_frame = processed_frames.into_iter()
+            .max_by(|a, b| a.consciousness_significance.partial_cmp(&b.consciousness_significance).unwrap())
+            .ok_or_else(|| BMDError::CatalysisFailure(
+                "Failed to select consciousness frame".to_string()
+            ))?;
+        
+        Ok(selected_frame)
+    }
+    
+    /// Enable S-framework integration
+    pub fn enable_s_framework_integration(&mut self) {
+        self.s_framework_integration = true;
+        self.information_channel.activate_s_optimization();
+    }
+    
+    /// Get BMD status and metrics
+    pub fn status(&self) -> BMDStatus {
+        BMDStatus {
+            id: self.id.clone(),
+            is_active: self.is_active,
+            efficiency: self.efficiency,
+            current_entropy: self.entropy_reducer.current_entropy(),
+            target_achieved: self.entropy_reducer.target_achieved(),
+            pattern_library_size: self.pattern_recognizer.library_size(),
+            recognition_stats: self.pattern_recognizer.statistics(),
+            s_framework_integration: self.s_framework_integration,
+        }
+    }
+}
+
+/// BMD status information
+#[derive(Debug, Clone)]
+pub struct BMDStatus {
+    pub id: String,
+    pub is_active: bool,
+    pub efficiency: f64,
+    pub current_entropy: f64,
+    pub target_achieved: bool,
+    pub pattern_library_size: usize,
+    pub recognition_stats: RecognitionStatistics,
+    pub s_framework_integration: bool,
+}
+
+/// Information catalyst managing multiple BMDs
+pub struct InformationCatalyst {
+    /// Catalyst unique identifier
+    id: String,
+    
+    /// Collection of BMD instances
+    bmds: HashMap<String, BiologicalMaxwellDemon>,
+    
+    /// S-framework integration
+    s_framework: Arc<Mutex<SFramework>>,
+    
+    /// Catalyst efficiency
+    efficiency: f64,
+    
+    /// System status
+    is_active: bool,
+}
+
+impl InformationCatalyst {
+    pub fn new(id: String, s_framework: &SFramework) -> Self {
+        Self {
+            id,
+            bmds: HashMap::new(),
+            s_framework: Arc::new(Mutex::new(s_framework.clone())),
+            efficiency: 0.0,
+            is_active: false,
+        }
+    }
+    
+    /// Add BMD to catalyst system
+    pub fn add_bmd(&mut self, mut bmd: BiologicalMaxwellDemon) -> Result<(), BMDError> {
+        bmd.enable_s_framework_integration();
+        let bmd_id = bmd.id.clone();
+        self.bmds.insert(bmd_id, bmd);
+        Ok(())
+    }
+    
+    /// Activate information catalyst system
+    pub fn activate_catalyst(&mut self) -> Result<(), BMDError> {
+        self.is_active = true;
+        
+        // Activate all BMDs
+        for bmd in self.bmds.values_mut() {
+            bmd.activate()?;
+        }
+        
+        self.calculate_system_efficiency();
+        Ok(())
+    }
+    
+    /// Process pattern through optimal BMD
+    pub fn catalyze_information(&mut self, pattern: InformationPattern) -> Result<InformationPattern, BMDError> {
+        if !self.is_active {
+            return Err(BMDError::CatalysisFailure(
+                "Information catalyst not active".to_string()
+            ));
+        }
+        
+        // Find optimal BMD based on pattern category
+        let optimal_bmd_id = self.find_optimal_bmd(&pattern)?;
+        
+        // Process pattern through optimal BMD
+        let processed_pattern = self.bmds.get_mut(&optimal_bmd_id)
+            .unwrap()
+            .process_pattern(pattern)?;
+        
+        self.calculate_system_efficiency();
+        
+        Ok(processed_pattern)
+    }
+    
+    /// Find optimal BMD for pattern processing
+    fn find_optimal_bmd(&self, pattern: &InformationPattern) -> Result<String, BMDError> {
+        if self.bmds.is_empty() {
+            return Err(BMDError::CatalysisFailure(
+                "No BMDs available for catalysis".to_string()
+            ));
+        }
+        
+        // Find BMD with highest efficiency and active status
+        let optimal_bmd = self.bmds.iter()
+            .filter(|(_, bmd)| bmd.is_active)
+            .max_by(|(_, a), (_, b)| a.efficiency.partial_cmp(&b.efficiency).unwrap())
+            .map(|(id, _)| id.clone())
+            .ok_or_else(|| BMDError::CatalysisFailure(
+                "No active BMDs available".to_string()
+            ))?;
+        
+        Ok(optimal_bmd)
+    }
+    
+    /// Calculate system-wide efficiency
+    fn calculate_system_efficiency(&mut self) {
+        if self.bmds.is_empty() {
+            self.efficiency = 0.0;
+            return;
+        }
+        
+        let total_efficiency: f64 = self.bmds.values()
+            .map(|bmd| bmd.efficiency)
             .sum();
         
-        let var_a: f64 = a.iter().map(|x| (x - mean_a).powi(2)).sum();
-        let var_b: f64 = b.iter().map(|y| (y - mean_b).powi(2)).sum();
+        self.efficiency = total_efficiency / self.bmds.len() as f64;
+    }
+    
+    /// Get catalyst system status
+    pub fn catalyst_status(&self) -> CatalystStatus {
+        let bmd_statuses: Vec<BMDStatus> = self.bmds.values()
+            .map(|bmd| bmd.status())
+            .collect();
         
-        let denominator = (var_a * var_b).sqrt();
-        
-        if denominator > 0.0 {
-            numerator / denominator
-        } else {
-            0.0
+        CatalystStatus {
+            id: self.id.clone(),
+            is_active: self.is_active,
+            efficiency: self.efficiency,
+            bmd_count: self.bmds.len(),
+            bmd_statuses,
         }
     }
 }
 
-impl Default for BMDCatalyst {
-    fn default() -> Self {
-        Self::new("default", 0.8)
-    }
+/// Catalyst system status
+#[derive(Debug, Clone)]
+pub struct CatalystStatus {
+    pub id: String,
+    pub is_active: bool,
+    pub efficiency: f64,
+    pub bmd_count: usize,
+    pub bmd_statuses: Vec<BMDStatus>,
 }
 
-impl Default for BMDNetwork {
-    fn default() -> Self {
-        Self::new("default_network")
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn test_information_pattern() {
+        let data = b"test pattern data".to_vec();
+        let mut pattern = InformationPattern::new(
+            "test".to_string(),
+            data,
+            PatternCategory::CognitiveFrame
+        );
+        
+        pattern.assess_consciousness_significance();
+        assert!(pattern.consciousness_significance > 0.0);
     }
-}
-
-impl Default for ChaosToOrderProcessor {
-    fn default() -> Self {
-        Self::new()
+    
+    #[test]
+    fn test_entropy_reducer() {
+        let mut reducer = EntropyReducer::new("test".to_string());
+        let pattern = InformationPattern::new(
+            "test".to_string(),
+            b"test".to_vec(),
+            PatternCategory::EntropyReduction
+        );
+        
+        let reduction = reducer.reduce_entropy(&pattern).unwrap();
+        assert!(reduction >= 0.0);
+        assert!(reducer.current_entropy() < 1.0);
     }
-}
-
-impl Default for NetworkTopology {
-    fn default() -> Self {
-        Self::new()
+    
+    #[test]
+    fn test_pattern_recognizer() {
+        let mut recognizer = PatternRecognizer::new("test".to_string());
+        let pattern = InformationPattern::new(
+            "test".to_string(),
+            b"consciousness frame data".to_vec(),
+            PatternCategory::CognitiveFrame
+        );
+        
+        let recognized = recognizer.recognize_pattern(pattern).unwrap();
+        assert!(recognized.confidence > 0.0);
     }
-}
-
-impl Default for CoordinationMatrix {
-    fn default() -> Self {
-        Self::new()
+    
+    #[test]
+    fn test_biological_maxwell_demon() {
+        let mut bmd = BiologicalMaxwellDemon::new("test_bmd".to_string());
+        bmd.activate().unwrap();
+        
+        let pattern = InformationPattern::new(
+            "test".to_string(),
+            b"test pattern".to_vec(),
+            PatternCategory::CognitiveFrame
+        );
+        
+        let processed = bmd.process_pattern(pattern).unwrap();
+        assert!(processed.confidence > 0.0);
+        assert!(bmd.efficiency > 0.0);
     }
 } 
