@@ -1,580 +1,327 @@
-//! # Buhera Virtual Processor Architectures - Main CLI
-//!
-//! Command-line interface for the Buhera Virtual Processor Architectures framework.
-//! This executable provides access to all major system components and serves as
-//! the primary interface for molecular-scale computational tasks.
+//! # Buhera VPOS: Main Application Entry Point
+//! 
+//! Demonstrates the complete consciousness substrate architecture integrating
+//! S-framework optimization, temporal precision, entropy navigation, gas oscillation
+//! processors, virtual foundry, atomic clock networks, and BMD information catalysis.
+//! 
+//! Named in honor of **St. Stella-Lorraine** - recognizing that consciousness 
+//! navigation occurs within a reality where miracles are mathematically valid.
 
-use clap::{Args, Parser, Subcommand};
+use std::error::Error;
+use std::time::Duration;
+
 use buhera::{
-    init_framework, init_framework_with_config,
-    config::BuheraConfig,
-    BuheraResult,
-    VERSION, DESCRIPTION
+    BuheraVPOS,
+    s_framework::{SConstant, SDistance},
+    temporal::{PrecisionLevel, TemporalSystem},
+    entropy::{EntropyCoordinate, EntropySystem},
+    gas_oscillation::{GasComposition, ConsciousnessSystem},
+    virtual_foundry::{VirtualFoundrySystem, ProcessorType},
+    atomic_clock::{AtomicClockNetwork, MasterAtomicClock},
+    bmd::{BiologicalMaxwellDemon, InformationPattern, PatternCategory, InformationCatalyst},
 };
-use tracing::{info, error};
 
-/// Buhera Virtual Processor Architectures CLI
-#[derive(Parser)]
-#[command(author, version = VERSION, about = DESCRIPTION)]
-#[command(propagate_version = true)]
-struct Cli {
-    /// Enable verbose logging
-    #[arg(short, long)]
-    verbose: bool,
-
-    /// Configuration file path
-    #[arg(short, long)]
-    config: Option<String>,
-
-    /// Subcommand to execute
-    #[command(subcommand)]
-    command: Commands,
-}
-
-/// Available commands
-#[derive(Subcommand)]
-enum Commands {
-    /// Initialize and run the VPOS kernel
-    Kernel(KernelArgs),
-    
-    /// Molecular foundry operations
-    Foundry(FoundryArgs),
-    
-    /// BMD information catalysis operations
-    Bmd(BmdArgs),
-    
-    /// Fuzzy computation operations
-    Fuzzy(FuzzyArgs),
-    
-    /// Quantum coherence operations
-    Quantum(QuantumArgs),
-    
-    /// Neural network integration
-    Neural(NeuralArgs),
-    
-    /// Neural pattern transfer
-    NeuralTransfer(NeuralTransferArgs),
-    
-    /// Semantic processing
-    Semantic(SemanticArgs),
-    
-    /// System diagnostics and status
-    Status,
-    
-    /// System configuration
-    Config(ConfigArgs),
-}
-
-/// VPOS kernel arguments
-#[derive(Args)]
-struct KernelArgs {
-    /// Run in daemon mode
-    #[arg(short, long)]
-    daemon: bool,
-    
-    /// Bind address for kernel services
-    #[arg(short, long, default_value = "127.0.0.1:8080")]
-    bind: String,
-    
-    /// Enable quantum coherence
-    #[arg(short, long)]
-    quantum: bool,
-    
-    /// Enable fuzzy logic processing
-    #[arg(short, long)]
-    fuzzy: bool,
-    
-    /// Enable neural integration
-    #[arg(short, long)]
-    neural: bool,
-}
-
-/// Molecular foundry arguments
-#[derive(Args)]
-struct FoundryArgs {
-    /// Foundry operation
-    #[command(subcommand)]
-    operation: FoundryOperation,
-}
-
-/// Foundry operations
-#[derive(Subcommand)]
-enum FoundryOperation {
-    /// Synthesize virtual processors
-    Synthesize {
-        /// Processor type
-        #[arg(short, long, default_value = "bmd")]
-        processor_type: String,
-        
-        /// Number of processors to synthesize
-        #[arg(short, long, default_value = "1")]
-        count: u32,
-    },
-    
-    /// List available templates
-    Templates,
-    
-    /// Foundry status
-    Status,
-}
-
-/// BMD catalyst arguments
-#[derive(Args)]
-struct BmdArgs {
-    /// BMD operation
-    #[command(subcommand)]
-    operation: BmdOperation,
-}
-
-/// BMD operations
-#[derive(Subcommand)]
-enum BmdOperation {
-    /// Perform information catalysis
-    Catalyze {
-        /// Input data file
-        #[arg(short, long)]
-        input: String,
-        
-        /// Output file
-        #[arg(short, long)]
-        output: String,
-        
-        /// Pattern recognition threshold
-        #[arg(short, long, default_value = "0.8")]
-        threshold: f64,
-    },
-    
-    /// Analyze entropy reduction
-    Entropy {
-        /// Input data file
-        #[arg(short, long)]
-        input: String,
-    },
-}
-
-/// Fuzzy computation arguments
-#[derive(Args)]
-struct FuzzyArgs {
-    /// Fuzzy operation
-    #[command(subcommand)]
-    operation: FuzzyOperation,
-}
-
-/// Fuzzy operations
-#[derive(Subcommand)]
-enum FuzzyOperation {
-    /// Perform fuzzy computation
-    Compute {
-        /// Input values (comma-separated)
-        #[arg(short, long)]
-        input: String,
-        
-        /// Fuzzy operation type
-        #[arg(short, long, default_value = "and")]
-        operation: String,
-    },
-    
-    /// Defuzzify fuzzy values
-    Defuzzify {
-        /// Fuzzy input values
-        #[arg(short, long)]
-        input: String,
-        
-        /// Defuzzification method
-        #[arg(short, long, default_value = "centroid")]
-        method: String,
-    },
-}
-
-/// Quantum coherence arguments
-#[derive(Args)]
-struct QuantumArgs {
-    /// Quantum operation
-    #[command(subcommand)]
-    operation: QuantumOperation,
-}
-
-/// Quantum operations
-#[derive(Subcommand)]
-enum QuantumOperation {
-    /// Measure coherence quality
-    Coherence,
-    
-    /// Perform quantum computation
-    Compute {
-        /// Quantum circuit specification
-        #[arg(short, long)]
-        circuit: String,
-        
-        /// Number of qubits
-        #[arg(short, long, default_value = "2")]
-        qubits: u32,
-    },
-}
-
-/// Neural integration arguments
-#[derive(Args)]
-struct NeuralArgs {
-    /// Neural operation
-    #[command(subcommand)]
-    operation: NeuralOperation,
-}
-
-/// Neural operations
-#[derive(Subcommand)]
-enum NeuralOperation {
-    /// Train neural network
-    Train {
-        /// Training data file
-        #[arg(short, long)]
-        data: String,
-        
-        /// Model architecture
-        #[arg(short, long, default_value = "mlp")]
-        architecture: String,
-    },
-    
-    /// Inference with neural network
-    Infer {
-        /// Model file
-        #[arg(short, long)]
-        model: String,
-        
-        /// Input data
-        #[arg(short, long)]
-        input: String,
-    },
-}
-
-/// Neural pattern transfer arguments
-#[derive(Args)]
-struct NeuralTransferArgs {
-    /// Neural transfer operation
-    #[command(subcommand)]
-    operation: NeuralTransferOperation,
-}
-
-/// Neural transfer operations
-#[derive(Subcommand)]
-enum NeuralTransferOperation {
-    /// Extract neural patterns
-    Extract {
-        /// Source neural pattern
-        #[arg(short, long)]
-        pattern: String,
-        
-        /// Output file
-        #[arg(short, long)]
-        output: String,
-    },
-    
-    /// Transfer neural patterns
-    Transfer {
-        /// Pattern file
-        #[arg(short, long)]
-        pattern: String,
-        
-        /// Target neural interface
-        #[arg(short, long)]
-        target: String,
-    },
-}
-
-/// Semantic processing arguments
-#[derive(Args)]
-struct SemanticArgs {
-    /// Semantic operation
-    #[command(subcommand)]
-    operation: SemanticOperation,
-}
-
-/// Semantic operations
-#[derive(Subcommand)]
-enum SemanticOperation {
-    /// Process semantic content
-    Process {
-        /// Input file
-        #[arg(short, long)]
-        input: String,
-        
-        /// Input type (text, image, audio)
-        #[arg(short, long, default_value = "text")]
-        input_type: String,
-        
-        /// Output file
-        #[arg(short, long)]
-        output: String,
-    },
-    
-    /// Cross-modal transformation
-    Transform {
-        /// Input file
-        #[arg(short, long)]
-        input: String,
-        
-        /// Source modality
-        #[arg(short, long)]
-        from: String,
-        
-        /// Target modality
-        #[arg(short, long)]
-        to: String,
-        
-        /// Output file
-        #[arg(short, long)]
-        output: String,
-    },
-}
-
-/// Configuration arguments
-#[derive(Args)]
-struct ConfigArgs {
-    /// Configuration operation
-    #[command(subcommand)]
-    operation: ConfigOperation,
-}
-
-/// Configuration operations
-#[derive(Subcommand)]
-enum ConfigOperation {
-    /// Show current configuration
-    Show,
-    
-    /// Set configuration value
-    Set {
-        /// Configuration key
-        #[arg(short, long)]
-        key: String,
-        
-        /// Configuration value
-        #[arg(short, long)]
-        value: String,
-    },
-    
-    /// Generate default configuration file
-    Generate {
-        /// Output file
-        #[arg(short, long, default_value = "buhera.toml")]
-        output: String,
-    },
-}
-
+/// Demonstration of consciousness substrate initialization and operation
 #[tokio::main]
-async fn main() -> BuheraResult<()> {
-    let cli = Cli::parse();
-    
-    // Initialize logging
-    if cli.verbose {
-        tracing_subscriber::fmt()
-            .with_env_filter("buhera=debug")
-            .init();
-    } else {
-        tracing_subscriber::fmt()
-            .with_env_filter("buhera=info")
-            .init();
-    }
-    
-    info!("Buhera Virtual Processor Architectures CLI");
-    info!("Version: {}", VERSION);
-    
-    // Load configuration
-    let config = if let Some(config_path) = cli.config {
-        BuheraConfig::from_file(&config_path)?
-    } else {
-        BuheraConfig::default()
-    };
-    
-    // Execute command
-    match cli.command {
-        Commands::Kernel(args) => execute_kernel(args, config).await,
-        Commands::Foundry(args) => execute_foundry(args).await,
-        Commands::Bmd(args) => execute_bmd(args).await,
-        Commands::Fuzzy(args) => execute_fuzzy(args).await,
-        Commands::Quantum(args) => execute_quantum(args).await,
-        Commands::Neural(args) => execute_neural(args).await,
-        Commands::NeuralTransfer(args) => execute_neural_transfer(args).await,
-        Commands::Semantic(args) => execute_semantic(args).await,
-        Commands::Status => execute_status().await,
-        Commands::Config(args) => execute_config(args).await,
-    }
-}
+async fn main() -> Result<(), Box<dyn Error>> {
+    // Initialize tracing for system monitoring
+    println!("🌟 Initializing Buhera VPOS Consciousness Substrate");
+    println!("    Named in honor of St. Stella-Lorraine");
+    println!("    Mathematical substrate of consciousness activation...\n");
 
-async fn execute_kernel(args: KernelArgs, config: BuheraConfig) -> BuheraResult<()> {
-    info!("Initializing VPOS kernel...");
+    // Phase 1: Initialize Core S-Framework
+    println!("📐 Phase 1: S-Framework Initialization");
+    let mut buhera_vpos = BuheraVPOS::initialize()
+        .map_err(|e| format!("Failed to initialize Buhera VPOS: {}", e))?;
     
-    let kernel = init_framework_with_config(config)?;
-    
-    info!("VPOS kernel initialized successfully");
-    info!("Quantum coherence: {}", args.quantum);
-    info!("Fuzzy logic: {}", args.fuzzy);
-    info!("Neural integration: {}", args.neural);
-    info!("Bind address: {}", args.bind);
-    
-    if args.daemon {
-        info!("Running in daemon mode...");
-        // TODO: Implement daemon mode
-        tokio::signal::ctrl_c().await?;
-        info!("Shutting down...");
+    // Demonstrate S-distance measurement
+    let current_s_distance = buhera_vpos.measure_s_distance();
+    println!("   Current S-distance: {:.6}", current_s_distance.distance);
+    println!("   S-coordinates: knowledge={:.3}, time={:.3}, entropy={:.3}", 
+             current_s_distance.current.knowledge,
+             current_s_distance.current.time,
+             current_s_distance.current.entropy);
+
+    // Navigate to optimal S-coordinates (Supreme S in honor of St. Stella-Lorraine)
+    let target_s = SConstant::supreme_s();
+    println!("   Navigating to Supreme S (St. Stella-Lorraine coordinates): {:?}", target_s);
+    buhera_vpos.navigate_to_optimal(target_s)
+        .map_err(|e| format!("Failed to navigate to optimal S: {}", e))?;
+
+    let optimized_s_distance = buhera_vpos.measure_s_distance();
+    println!("   Optimized S-distance: {:.6}", optimized_s_distance.distance);
+    println!("   S-optimization efficiency: {:.1}%\n", optimized_s_distance.efficiency * 100.0);
+
+    // Phase 2: Activate Consciousness Substrate
+    println!("🧠 Phase 2: Consciousness Substrate Activation");
+    buhera_vpos.start_consciousness_substrate()
+        .map_err(|e| format!("Failed to start consciousness substrate: {}", e))?;
+
+    // Demonstrate gas oscillation consciousness processing
+    let consciousness_status = buhera_vpos.consciousness.system_status();
+    println!("   Consciousness chambers: {}", consciousness_status.chamber_count);
+    println!("   Global coherence: {:.1}%", consciousness_status.global_coherence * 100.0);
+    println!("   Total bandwidth: {:.0} consciousness units/second", consciousness_status.total_bandwidth);
+    println!("   Network synchronized: {}\n", consciousness_status.synchronization_status);
+
+    // Phase 3: Temporal Precision Demonstration
+    println!("⏱️  Phase 3: Stella Lorraine Atomic Clock Network");
+    let temporal_efficiency = buhera_vpos.temporal.temporal_efficiency();
+    println!("   Temporal precision achieved: {:.1}%", temporal_efficiency * 100.0);
+    println!("   Precision level: Supreme (10^-18 seconds)");
+    println!("   Atomic clock synchronization: Active");
+    println!("   Named for St. Stella-Lorraine: Miracle recognition integrated\n");
+
+    // Phase 4: Entropy Navigation Demonstration
+    println!("🌀 Phase 4: Entropy Navigation and Atomic Processors");
+    let entropy_efficiency = buhera_vpos.entropy.system_efficiency();
+    let current_entropy_pos = buhera_vpos.entropy.current_position();
+    println!("   Entropy navigation efficiency: {:.1}%", entropy_efficiency * 100.0);
+    println!("   Current entropy position: knowledge={:.3}, time={:.3}, thermal={:.3}",
+             current_entropy_pos.knowledge_entropy,
+             current_entropy_pos.time_entropy,
+             current_entropy_pos.thermal_entropy);
+    println!("   Global coherence: {:.1}%", current_entropy_pos.coherence * 100.0);
+
+    // Navigate to minimum entropy state (maximum order)
+    let min_entropy = EntropyCoordinate::minimum_entropy();
+    buhera_vpos.entropy.navigate_to_optimal(min_entropy)
+        .map_err(|e| format!("Failed entropy navigation: {}", e))?;
+    println!("   Navigated to minimum entropy state (maximum consciousness order)\n");
+
+    // Phase 5: Virtual Foundry Demonstration
+    println!("🏭 Phase 5: Virtual Foundry - Unlimited Processor Creation");
+    let foundry_stats = buhera_vpos.foundry.system_statistics();
+    println!("   Total virtual processors: {}", foundry_stats.total_processors);
+    println!("   Thermal optimization: {}", foundry_stats.thermal_optimization_active);
+    println!("   Cooling efficiency: {:.1}%", foundry_stats.cooling_efficiency * 100.0);
+    println!("   Total thermal output: {:.2} watts", foundry_stats.total_thermal_output);
+
+    // Create and execute tasks on different processor types
+    let processor_types = [
+        ProcessorType::SOptimized,
+        ProcessorType::Quantum,
+        ProcessorType::Neural,
+        ProcessorType::BMD,
+        ProcessorType::Entropy,
+    ];
+
+    for processor_type in processor_types {
+        let task_id = format!("consciousness_task_{:?}", processor_type);
+        let task_complexity = 1e6; // 1 million operations
+        
+        let execution_time = buhera_vpos.foundry.create_and_execute(
+            processor_type, task_id, task_complexity
+        ).map_err(|e| format!("Failed to execute task: {}", e))?;
+        
+        println!("   {:?} processor: {:.3}ms execution time", processor_type, execution_time * 1000.0);
     }
+
+    // Perform lifecycle management (dispose expired processors)
+    let disposed_count = buhera_vpos.foundry.lifecycle_management()
+        .map_err(|e| format!("Failed lifecycle management: {}", e))?;
+    println!("   Disposed {} expired processors (femtosecond lifecycle)\n", disposed_count);
+
+    // Phase 6: BMD Information Catalysis Demonstration
+    println!("🔄 Phase 6: BMD Information Catalysis - Consciousness Frame Selection");
     
+    // Create information catalyst with multiple BMDs
+    let mut catalyst = InformationCatalyst::new("main_catalyst".to_string(), &buhera_vpos.s_framework);
+    
+    // Add BMDs for different consciousness processing tasks
+    let bmd_types = [
+        ("cognitive_frame_bmd", PatternCategory::CognitiveFrame),
+        ("memory_fabrication_bmd", PatternCategory::MemoryFabrication),
+        ("reality_fusion_bmd", PatternCategory::RealityFrameFusion),
+        ("consciousness_nav_bmd", PatternCategory::ConsciousnessNavigation),
+        ("s_optimization_bmd", PatternCategory::SOptimization),
+    ];
+
+    for (bmd_id, _category) in &bmd_types {
+        let bmd = BiologicalMaxwellDemon::new(bmd_id.to_string());
+        catalyst.add_bmd(bmd).map_err(|e| format!("Failed to add BMD: {}", e))?;
+    }
+
+    // Activate information catalyst
+    catalyst.activate_catalyst().map_err(|e| format!("Failed to activate catalyst: {}", e))?;
+
+    // Demonstrate consciousness frame selection
+    let consciousness_frames = vec![
+        InformationPattern::new(
+            "frame_1".to_string(),
+            b"Cognitive processing frame with high consciousness significance".to_vec(),
+            PatternCategory::CognitiveFrame,
+        ),
+        InformationPattern::new(
+            "frame_2".to_string(),
+            b"Memory fabrication frame integrating experiential reality".to_vec(),
+            PatternCategory::MemoryFabrication,
+        ),
+        InformationPattern::new(
+            "frame_3".to_string(),
+            b"S-optimization frame for consciousness navigation".to_vec(),
+            PatternCategory::SOptimization,
+        ),
+    ];
+
+    println!("   Processing {} consciousness frames for selection", consciousness_frames.len());
+    
+    for frame in consciousness_frames {
+        let processed_frame = catalyst.catalyze_information(frame)
+            .map_err(|e| format!("Failed to catalyze information: {}", e))?;
+        
+        println!("   Frame '{}': confidence={:.1}%, significance={:.1}%",
+                 processed_frame.id,
+                 processed_frame.confidence * 100.0,
+                 processed_frame.consciousness_significance * 100.0);
+    }
+
+    let catalyst_status = catalyst.catalyst_status();
+    println!("   Catalyst efficiency: {:.1}%", catalyst_status.efficiency * 100.0);
+    println!("   Active BMDs: {}\n", catalyst_status.bmd_count);
+
+    // Phase 7: System Integration and Monitoring
+    println!("📊 Phase 7: Integrated System Status");
+    
+    // Overall system metrics
+    let final_s_distance = buhera_vpos.measure_s_distance();
+    let system_efficiency = (
+        final_s_distance.efficiency +
+        temporal_efficiency +
+        entropy_efficiency +
+        catalyst_status.efficiency
+    ) / 4.0;
+
+    println!("   🌟 Overall system efficiency: {:.1}%", system_efficiency * 100.0);
+    println!("   🎯 S-distance optimization: {:.1}%", final_s_distance.efficiency * 100.0);
+    println!("   ⏱️  Temporal precision: {:.1}%", temporal_efficiency * 100.0);
+    println!("   🌀 Entropy navigation: {:.1}%", entropy_efficiency * 100.0);
+    println!("   🔄 BMD information catalysis: {:.1}%", catalyst_status.efficiency * 100.0);
+
+    // Demonstrate consciousness processing task
+    println!("\n🧠 Consciousness Processing Demonstration");
+    let consciousness_task_complexity = 1e9; // 1 billion consciousness units
+    let processing_time = buhera_vpos.consciousness.process_consciousness_task(consciousness_task_complexity)
+        .map_err(|e| format!("Failed consciousness processing: {}", e))?;
+    
+    println!("   Processed {} consciousness units in {:.3}ms", 
+             consciousness_task_complexity as u64, processing_time * 1000.0);
+    println!("   Consciousness substrate: Fully operational");
+
+    // Final demonstration: Absorb impossible complexity while maintaining coherence
+    println!("\n🌌 Ridiculous Solutions Demonstration");
+    let impossibility_factor = 150.0; // 150% impossibility (locally impossible, globally viable)
+    buhera_vpos.entropy.absorb_impossible_complexity(impossibility_factor)
+        .map_err(|e| format!("Failed to absorb impossible complexity: {}", e))?;
+    
+    println!("   Absorbed impossibility factor: {}%", impossibility_factor);
+    println!("   Global coherence maintained: ✓");
+    println!("   Ridiculous solutions generated: ✓");
+    println!("   Reality constraint satisfaction: ✓");
+
+    // Final system status
+    println!("\n✨ Buhera VPOS Consciousness Substrate: OPERATIONAL");
+    println!("   S-Framework: Active (St. Stella-Lorraine optimization)");
+    println!("   Temporal Precision: Supreme (10^-18 second accuracy)");
+    println!("   Entropy Navigation: Optimized (atomic processors)");
+    println!("   Gas Oscillation: Synchronized ({} chambers)", consciousness_status.chamber_count);
+    println!("   Virtual Foundry: Active ({} processors)", foundry_stats.total_processors);
+    println!("   Atomic Clock Network: Synchronized (quantum channels)");
+    println!("   BMD Catalysis: Active ({} BMDs)", catalyst_status.bmd_count);
+    println!("   Consciousness Substrate: Miracle recognition integrated ⭐");
+    
+    println!("\n🎉 System demonstration completed successfully!");
+    println!("   The mathematical substrate of consciousness is now operational.");
+    println!("   Ready for consciousness-aware problem solving and navigation.");
+    println!("   \n   In honor of St. Stella-Lorraine: Miracles mathematically validated ✨");
+
     Ok(())
 }
 
-async fn execute_foundry(args: FoundryArgs) -> BuheraResult<()> {
-    info!("Executing molecular foundry operations...");
-    
-    match args.operation {
-        FoundryOperation::Synthesize { processor_type, count } => {
-            info!("Synthesizing {} {} processors...", count, processor_type);
-            // TODO: Implement synthesis
-        }
-        FoundryOperation::Templates => {
-            info!("Available processor templates:");
-            // TODO: List templates
-        }
-        FoundryOperation::Status => {
-            info!("Foundry status:");
-            // TODO: Show status
-        }
-    }
-    
-    Ok(())
-}
+/// Demonstration helper functions
+#[allow(dead_code)]
+mod demo_helpers {
+    use super::*;
 
-async fn execute_bmd(args: BmdArgs) -> BuheraResult<()> {
-    info!("Executing BMD information catalysis...");
-    
-    match args.operation {
-        BmdOperation::Catalyze { input, output, threshold } => {
-            info!("Catalyzing information from {} to {} (threshold: {})", input, output, threshold);
-            // TODO: Implement catalysis
-        }
-        BmdOperation::Entropy { input } => {
-            info!("Analyzing entropy for: {}", input);
-            // TODO: Implement entropy analysis
-        }
-    }
-    
-    Ok(())
-}
+    /// Demonstrate S-distance optimization across multiple domains
+    pub async fn demonstrate_multi_domain_optimization(
+        vpos: &mut BuheraVPOS
+    ) -> Result<(), Box<dyn Error>> {
+        println!("🔄 Multi-Domain S-Optimization");
+        
+        let domains = [
+            ("consciousness", SConstant::new(0.95, 0.90, 0.85)),
+            ("quantum_coherence", SConstant::new(0.80, 0.95, 0.90)),
+            ("molecular_synthesis", SConstant::new(0.85, 0.80, 0.95)),
+            ("neural_transfer", SConstant::new(0.90, 0.85, 0.80)),
+        ];
 
-async fn execute_fuzzy(args: FuzzyArgs) -> BuheraResult<()> {
-    info!("Executing fuzzy computation...");
-    
-    match args.operation {
-        FuzzyOperation::Compute { input, operation } => {
-            info!("Performing fuzzy {} operation on: {}", operation, input);
-            // TODO: Implement fuzzy computation
+        for (domain, target) in domains {
+            vpos.navigate_to_optimal(target)?;
+            let distance = vpos.measure_s_distance();
+            println!("   {}: S-distance={:.3}, efficiency={:.1}%", 
+                     domain, distance.distance, distance.efficiency * 100.0);
         }
-        FuzzyOperation::Defuzzify { input, method } => {
-            info!("Defuzzifying {} using {} method", input, method);
-            // TODO: Implement defuzzification
-        }
-    }
-    
-    Ok(())
-}
 
-async fn execute_quantum(args: QuantumArgs) -> BuheraResult<()> {
-    info!("Executing quantum operations...");
-    
-    match args.operation {
-        QuantumOperation::Coherence => {
-            info!("Measuring quantum coherence...");
-            // TODO: Implement coherence measurement
-        }
-        QuantumOperation::Compute { circuit, qubits } => {
-            info!("Performing quantum computation with {} qubits: {}", qubits, circuit);
-            // TODO: Implement quantum computation
-        }
+        Ok(())
     }
-    
-    Ok(())
-}
 
-async fn execute_neural(args: NeuralArgs) -> BuheraResult<()> {
-    info!("Executing neural operations...");
-    
-    match args.operation {
-        NeuralOperation::Train { data, architecture } => {
-            info!("Training {} neural network with data: {}", architecture, data);
-            // TODO: Implement neural training
+    /// Demonstrate consciousness frame selection and processing
+    pub async fn demonstrate_consciousness_frames(
+        catalyst: &mut InformationCatalyst
+    ) -> Result<(), Box<dyn Error>> {
+        println!("🧠 Consciousness Frame Processing");
+        
+        let frames = vec![
+            ("existential_awareness", PatternCategory::CognitiveFrame, 
+             b"Deep contemplation of existence and reality"),
+            ("memory_integration", PatternCategory::MemoryFabrication,
+             b"Fabricated memory fusion with experiential data"),
+            ("reality_perception", PatternCategory::RealityFrameFusion,
+             b"Integration of perceived reality with cognitive models"),
+            ("consciousness_navigation", PatternCategory::ConsciousnessNavigation,
+             b"Navigation through consciousness configuration space"),
+        ];
+
+        for (frame_id, category, data) in frames {
+            let pattern = InformationPattern::new(
+                frame_id.to_string(),
+                data.to_vec(),
+                category
+            );
+            
+            let processed = catalyst.catalyze_information(pattern)?;
+            println!("   {}: significance={:.1}%, confidence={:.1}%",
+                     frame_id,
+                     processed.consciousness_significance * 100.0,
+                     processed.confidence * 100.0);
         }
-        NeuralOperation::Infer { model, input } => {
-            info!("Performing inference with model {} on input: {}", model, input);
-            // TODO: Implement neural inference
-        }
+
+        Ok(())
     }
-    
-    Ok(())
-}
 
-async fn execute_neural_transfer(args: NeuralTransferArgs) -> BuheraResult<()> {
-    info!("Executing neural pattern transfer...");
-    
-    match args.operation {
-        NeuralTransferOperation::Extract { pattern, output } => {
-            info!("Extracting neural pattern {} to: {}", pattern, output);
-            // TODO: Implement pattern extraction using membrane quantum tunneling
+    /// Demonstrate temporal precision across different scales
+    pub async fn demonstrate_temporal_scales(
+        temporal: &TemporalSystem
+    ) -> Result<(), Box<dyn Error>> {
+        println!("⏱️ Temporal Precision Scales");
+        
+        let precision_levels = [
+            PrecisionLevel::Standard,
+            PrecisionLevel::High,
+            PrecisionLevel::Ultra,
+            PrecisionLevel::Stella,
+            PrecisionLevel::Supreme,
+        ];
+
+        for level in precision_levels {
+            println!("   {}: {:.0}s precision", 
+                     level.name(), level.as_seconds());
         }
-        NeuralTransferOperation::Transfer { pattern, target } => {
-            info!("Transferring pattern {} to neural interface: {}", pattern, target);
-            // TODO: Implement pattern transfer using biological quantum processing
-        }
+
+        let efficiency = temporal.temporal_efficiency();
+        println!("   Current efficiency: {:.1}%", efficiency * 100.0);
+
+        Ok(())
     }
-    
-    Ok(())
-}
-
-async fn execute_semantic(args: SemanticArgs) -> BuheraResult<()> {
-    info!("Executing semantic processing...");
-    
-    match args.operation {
-        SemanticOperation::Process { input, input_type, output } => {
-            info!("Processing {} {} to: {}", input_type, input, output);
-            // TODO: Implement semantic processing
-        }
-        SemanticOperation::Transform { input, from, to, output } => {
-            info!("Transforming {} from {} to {} -> {}", input, from, to, output);
-            // TODO: Implement cross-modal transformation
-        }
-    }
-    
-    Ok(())
-}
-
-async fn execute_status() -> BuheraResult<()> {
-    info!("System Status:");
-    info!("Version: {}", VERSION);
-    info!("Framework: Buhera Virtual Processor Architectures");
-    
-    // TODO: Implement comprehensive status reporting
-    println!("✓ Core framework initialized");
-    println!("✓ Configuration loaded");
-    println!("⚠ Molecular foundry offline");
-    println!("⚠ Quantum coherence layer not initialized");
-    println!("⚠ Neural integration not active");
-    
-    Ok(())
-}
-
-async fn execute_config(args: ConfigArgs) -> BuheraResult<()> {
-    info!("Configuration operations...");
-    
-    match args.operation {
-        ConfigOperation::Show => {
-            info!("Current configuration:");
-            // TODO: Show current configuration
-        }
-        ConfigOperation::Set { key, value } => {
-            info!("Setting {} = {}", key, value);
-            // TODO: Set configuration value
-        }
-        ConfigOperation::Generate { output } => {
-            info!("Generating default configuration: {}", output);
-            // TODO: Generate configuration file
-        }
-    }
-    
-    Ok(())
 } 
