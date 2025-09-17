@@ -21,16 +21,15 @@ from .core.cascade_compression import MetaInformationCascade
 from .core.equivalence_detection import EquivalenceDetector
 from .core.navigation_retrieval import NavigationRetriever
 from .core.network_understanding import UnderstandingNetwork
+from .core.foundry_validation import FoundryValidator
+from .core.virtual_processing_validation import VirtualProcessingValidator
 
 # Validation demonstrations
 from .demonstrations.compression_demo import CompressionDemo
 from .demonstrations.understanding_demo import UnderstandingDemo
 from .demonstrations.network_evolution_demo import NetworkEvolutionDemo
-
-# Benchmarking tools
-from .benchmarks.compression_benchmarks import CompressionBenchmark
-from .benchmarks.retrieval_benchmarks import RetrievalBenchmark
-from .benchmarks.understanding_metrics import UnderstandingMetrics
+from .demonstrations.foundry_demo import FoundryDemo
+from .demonstrations.virtual_acceleration_demo import VirtualAccelerationDemo
 
 __all__ = [
     # Core components
@@ -38,14 +37,13 @@ __all__ = [
     'EquivalenceDetector', 
     'NavigationRetriever',
     'UnderstandingNetwork',
+    'FoundryValidator',
+    'VirtualProcessingValidator',
     
     # Demonstrations
     'CompressionDemo',
     'UnderstandingDemo',
     'NetworkEvolutionDemo',
-    
-    # Benchmarks
-    'CompressionBenchmark',
-    'RetrievalBenchmark', 
-    'UnderstandingMetrics',
+    'FoundryDemo',
+    'VirtualAccelerationDemo',
 ]

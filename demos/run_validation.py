@@ -20,12 +20,14 @@ def main():
     print("  1. Quick demonstration (5 minutes)")
     print("  2. Compression validation (15 minutes)")
     print("  3. Network evolution validation (10 minutes)")
-    print("  4. Full validation suite (30 minutes)")
-    print("  5. Exit")
+    print("  4. Foundry architecture validation (20 minutes)")
+    print("  5. Virtual processing acceleration validation (15 minutes)")
+    print("  6. Full validation suite (60 minutes)")
+    print("  7. Exit")
     print()
     
     try:
-        choice = input("Select option (1-5): ").strip()
+        choice = input("Select option (1-7): ").strip()
         
         if choice == "1":
             print("\nRunning quick demonstration...")
@@ -40,17 +42,25 @@ def main():
             subprocess.run([sys.executable, "-m", "buhera_validation.cli", "--network-evolution"], cwd=Path(__file__).parent)
         
         elif choice == "4":
+            print("\nRunning foundry architecture validation...")
+            subprocess.run([sys.executable, "-m", "buhera_validation.cli", "--foundry"], cwd=Path(__file__).parent)
+        
+        elif choice == "5":
+            print("\nRunning virtual processing acceleration validation...")
+            subprocess.run([sys.executable, "-m", "buhera_validation.cli", "--virtual-acceleration"], cwd=Path(__file__).parent)
+        
+        elif choice == "6":
             print("\nRunning full validation suite...")
             output_dir = "validation_results"
             subprocess.run([sys.executable, "-m", "buhera_validation.cli", "--full-suite", "--output", output_dir], cwd=Path(__file__).parent)
             print(f"\nResults saved to: {output_dir}/")
         
-        elif choice == "5":
+        elif choice == "7":
             print("Goodbye!")
             sys.exit(0)
         
         else:
-            print("Invalid choice. Please select 1-5.")
+            print("Invalid choice. Please select 1-7.")
             
     except KeyboardInterrupt:
         print("\n\nValidation cancelled.")
