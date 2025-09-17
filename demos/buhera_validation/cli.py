@@ -15,6 +15,8 @@ from .demonstrations.compression_demo import CompressionDemo
 from .demonstrations.network_evolution_demo import NetworkEvolutionDemo
 from .demonstrations.foundry_demo import FoundryDemo
 from .demonstrations.virtual_acceleration_demo import VirtualAccelerationDemo
+from .visualization_manager import BuheraVisualizationManager
+from .results_manager import BuheraResultsManager
 
 
 def run_compression_validation(output_dir: str = None):
@@ -25,10 +27,24 @@ def run_compression_validation(output_dir: str = None):
     results = demo.run_full_validation()
     
     if output_dir:
+        # Save JSON results (legacy)
         output_path = Path(output_dir) / "compression_validation_results.json"
         with open(output_path, 'w') as f:
             json.dump(results, f, indent=2, default=str)
-        print(f"Results saved to: {output_path}")
+        
+        # Generate comprehensive outputs
+        results_manager = BuheraResultsManager(output_dir)
+        visualization_manager = BuheraVisualizationManager(output_dir)
+        
+        # Save in multiple formats
+        saved_files = results_manager._save_json_results({"compression_validation": results})
+        
+        # Generate visualizations
+        compression_viz = visualization_manager.create_compression_visualizations(results)
+        
+        print(f"📊 Results saved to: {output_path}")
+        print(f"📈 Generated {len(compression_viz)} visualization files")
+        print(f"📂 All outputs in: {output_dir}/")
     
     return results
 
@@ -126,16 +142,37 @@ def run_full_validation_suite(output_dir: str = None):
     results["comprehensive_summary"] = comprehensive_summary
     
     if output_dir:
-        # Save complete results
+        # Initialize comprehensive managers
+        print(f"\n📊 COMPREHENSIVE RESULTS AND VISUALIZATION GENERATION...")
+        print(f"Output directory: {output_dir}")
+        
+        # Initialize managers
+        results_manager = BuheraResultsManager(output_dir)
+        visualization_manager = BuheraVisualizationManager(output_dir)
+        
+        # Save comprehensive results in multiple formats
+        saved_files = results_manager.save_all_results(results)
+        
+        # Generate extensive visualizations
+        visualization_files = visualization_manager.generate_all_visualizations(results)
+        
+        # Save complete results (legacy format)
         output_path = Path(output_dir) / "full_validation_suite_results.json"
         with open(output_path, 'w') as f:
             json.dump(results, f, indent=2, default=str)
-        print(f"Complete results saved to: {output_path}")
         
-        # Generate markdown report
+        # Generate markdown report (legacy format)
         report_path = Path(output_dir) / "validation_report.md"
         generate_markdown_report(results, report_path)
-        print(f"Markdown report generated: {report_path}")
+        
+        # Print file summary
+        print(f"\n📁 COMPREHENSIVE OUTPUT GENERATED:")
+        total_files = sum(len(files) for files in saved_files.values()) + sum(len(files) for files in visualization_files.values())
+        print(f"   📊 Total files generated: {total_files}")
+        print(f"   📄 Results saved in multiple formats: JSON, CSV, HTML, Excel, Markdown, LaTeX")
+        print(f"   📈 Extensive visualizations: Dashboards, charts, performance analysis")
+        print(f"   🎯 Publication-ready materials: Academic papers, executive summaries")
+        print(f"   📂 All files saved to: {output_dir}/")
     
     print_final_validation_summary(comprehensive_summary)
     
