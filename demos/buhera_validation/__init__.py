@@ -23,6 +23,7 @@ from .core.navigation_retrieval import NavigationRetriever
 from .core.network_understanding import UnderstandingNetwork
 from .core.foundry_validation import FoundryValidator
 from .core.virtual_processing_validation import VirtualProcessingValidator
+from .core.proof_validated_storage import ProofValidatedCascadeStorage, ProofSystem, ProofTerm
 
 # Validation demonstrations
 from .demonstrations.compression_demo import CompressionDemo
@@ -30,6 +31,7 @@ from .demonstrations.understanding_demo import UnderstandingDemo
 from .demonstrations.network_evolution_demo import NetworkEvolutionDemo
 from .demonstrations.foundry_demo import FoundryDemo
 from .demonstrations.virtual_acceleration_demo import VirtualAccelerationDemo
+from .demonstrations.proof_validated_demo import ProofValidatedStorageDemo
 
 # Comprehensive managers
 from .visualization_manager import BuheraVisualizationManager
@@ -43,6 +45,9 @@ __all__ = [
     'UnderstandingNetwork',
     'FoundryValidator',
     'VirtualProcessingValidator',
+    'ProofValidatedCascadeStorage',
+    'ProofSystem',
+    'ProofTerm',
     
     # Demonstrations
     'CompressionDemo',
@@ -50,6 +55,7 @@ __all__ = [
     'NetworkEvolutionDemo',
     'FoundryDemo',
     'VirtualAccelerationDemo',
+    'ProofValidatedStorageDemo',
     
     # Comprehensive managers
     'BuheraVisualizationManager',
