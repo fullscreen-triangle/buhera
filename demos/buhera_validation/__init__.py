@@ -31,6 +31,10 @@ from .demonstrations.network_evolution_demo import NetworkEvolutionDemo
 from .demonstrations.foundry_demo import FoundryDemo
 from .demonstrations.virtual_acceleration_demo import VirtualAccelerationDemo
 
+# Comprehensive managers
+from .visualization_manager import BuheraVisualizationManager
+from .results_manager import BuheraResultsManager
+
 __all__ = [
     # Core components
     'MetaInformationCascade',
@@ -46,4 +50,8 @@ __all__ = [
     'NetworkEvolutionDemo',
     'FoundryDemo',
     'VirtualAccelerationDemo',
+    
+    # Comprehensive managers
+    'BuheraVisualizationManager',
+    'BuheraResultsManager',
 ]
