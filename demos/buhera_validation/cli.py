@@ -15,6 +15,7 @@ from .demonstrations.compression_demo import CompressionDemo
 from .demonstrations.network_evolution_demo import NetworkEvolutionDemo
 from .demonstrations.foundry_demo import FoundryDemo
 from .demonstrations.virtual_acceleration_demo import VirtualAccelerationDemo
+from .demonstrations.proof_validated_demo import ProofValidatedStorageDemo
 from .visualization_manager import BuheraVisualizationManager
 from .results_manager import BuheraResultsManager
 
@@ -97,6 +98,36 @@ def run_virtual_acceleration_validation(output_dir: str = None):
     return results
 
 
+def run_proof_validated_storage_validation(output_dir: str = None):
+    """Run proof-validated storage validation demonstration."""
+    
+    print("Starting Proof-Validated Storage Validation Demonstration...")
+    demo = ProofValidatedStorageDemo()
+    results = demo.run_comprehensive_demonstration()
+    
+    if output_dir:
+        # Save JSON results
+        output_path = Path(output_dir) / "proof_validated_storage_results.json"
+        with open(output_path, 'w') as f:
+            json.dump(results, f, indent=2, default=str)
+        
+        # Generate comprehensive outputs
+        results_manager = BuheraResultsManager(output_dir)
+        visualization_manager = BuheraVisualizationManager(output_dir)
+        
+        # Save in multiple formats
+        saved_files = results_manager._save_json_results({"proof_validated_storage": results})
+        
+        # Generate visualizations
+        proof_viz = demo.generate_visualizations(results)
+        
+        print(f"📊 Results saved to: {output_path}")
+        print(f"📈 Generated {len(proof_viz)} visualization files")
+        print(f"📂 All outputs in: {output_dir}/")
+    
+    return results
+
+
 def run_full_validation_suite(output_dir: str = None):
     """Run complete validation suite."""
     
@@ -135,10 +166,17 @@ def run_full_validation_suite(output_dir: str = None):
     results["virtual_acceleration"] = virtual_results
     print()
     
-    # Create comprehensive summary
-    print("Phase 5: Comprehensive Analysis")
+    # Run proof-validated storage validation
+    print("Phase 5: Proof-Validated Storage Validation")
     print("-" * 50)
-    comprehensive_summary = create_comprehensive_summary(compression_results, network_results, foundry_results, virtual_results)
+    proof_storage_results = run_proof_validated_storage_validation(output_dir)
+    results["proof_validated_storage"] = proof_storage_results
+    print()
+    
+    # Create comprehensive summary
+    print("Phase 6: Comprehensive Analysis")
+    print("-" * 50)
+    comprehensive_summary = create_comprehensive_summary(compression_results, network_results, foundry_results, virtual_results, proof_storage_results)
     results["comprehensive_summary"] = comprehensive_summary
     
     if output_dir:
@@ -179,7 +217,7 @@ def run_full_validation_suite(output_dir: str = None):
     return results
 
 
-def create_comprehensive_summary(compression_results: dict, network_results: dict, foundry_results: dict = None, virtual_results: dict = None) -> dict:
+def create_comprehensive_summary(compression_results: dict, network_results: dict, foundry_results: dict = None, virtual_results: dict = None, proof_storage_results: dict = None) -> dict:
     """Create comprehensive summary of all validation results."""
     
     # Extract key metrics from compression validation
@@ -251,6 +289,16 @@ def create_comprehensive_summary(compression_results: dict, network_results: dic
             "unlimited_parallel_processing": virtual_summary["acceleration_claims_validated"]["unlimited_parallel_processing"]
         })
     
+    # Add proof-validated storage breakthroughs if available
+    if proof_storage_results:
+        proof_summary = proof_storage_results["comprehensive_summary"]
+        breakthroughs_validated.update({
+            "formal_proof_integration": proof_summary["key_breakthroughs_validated"]["formal_proof_integration"],
+            "storage_generation_equivalence_proven": proof_summary["key_breakthroughs_validated"]["storage_understanding_generation_equivalence"],
+            "mathematical_correctness_guarantees": proof_summary["key_breakthroughs_validated"]["mathematical_correctness_guarantees"],
+            "consciousness_substrate_formalization": proof_summary["key_breakthroughs_validated"]["consciousness_substrate_formalization"]
+        })
+    
     return {
         "overall_validation": {
             "framework_validated": overall_validated,
@@ -271,6 +319,7 @@ def create_comprehensive_summary(compression_results: dict, network_results: dic
             "network_evolution_validation_passed": network_validated,
             "foundry_validation_passed": foundry_validated if foundry_results else None,
             "virtual_acceleration_validation_passed": virtual_validated if virtual_results else None,
+            "proof_storage_validation_passed": proof_storage_results["comprehensive_summary"]["framework_fully_validated"] if proof_storage_results else None,
             "total_tests_passed": sum(validations),
             "total_tests_run": len(validations)
         }
@@ -401,6 +450,8 @@ Examples:
                        help='Run foundry architecture validation demonstration')
     parser.add_argument('--virtual-acceleration', action='store_true',
                        help='Run virtual processing acceleration validation demonstration')
+    parser.add_argument('--proof-storage', action='store_true',
+                       help='Run proof-validated storage validation demonstration')
     parser.add_argument('--full-suite', action='store_true',
                        help='Run complete validation suite')
     parser.add_argument('--output', '-o', type=str,
@@ -423,6 +474,8 @@ Examples:
         run_foundry_validation(args.output)
     elif args.virtual_acceleration:
         run_virtual_acceleration_validation(args.output)
+    elif args.proof_storage:
+        run_proof_validated_storage_validation(args.output)
     else:
         # Default to full suite
         print("No specific validation specified. Running full validation suite...")
