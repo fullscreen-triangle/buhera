@@ -13,6 +13,8 @@ from pathlib import Path
 
 from .demonstrations.compression_demo import CompressionDemo
 from .demonstrations.network_evolution_demo import NetworkEvolutionDemo
+from .demonstrations.foundry_demo import FoundryDemo
+from .demonstrations.virtual_acceleration_demo import VirtualAccelerationDemo
 
 
 def run_compression_validation(output_dir: str = None):
@@ -47,6 +49,38 @@ def run_network_evolution_validation(output_dir: str = None):
     return results
 
 
+def run_foundry_validation(output_dir: str = None):
+    """Run foundry architecture validation demonstration."""
+    
+    print("Starting Foundry Architecture Validation Demonstration...")
+    demo = FoundryDemo()
+    results = demo.run_full_foundry_validation()
+    
+    if output_dir:
+        output_path = Path(output_dir) / "foundry_validation_results.json"
+        with open(output_path, 'w') as f:
+            json.dump(results, f, indent=2, default=str)
+        print(f"Results saved to: {output_path}")
+    
+    return results
+
+
+def run_virtual_acceleration_validation(output_dir: str = None):
+    """Run virtual processing acceleration validation demonstration."""
+    
+    print("Starting Virtual Processing Acceleration Validation Demonstration...")
+    demo = VirtualAccelerationDemo()
+    results = demo.run_full_virtual_acceleration_validation()
+    
+    if output_dir:
+        output_path = Path(output_dir) / "virtual_acceleration_results.json"
+        with open(output_path, 'w') as f:
+            json.dump(results, f, indent=2, default=str)
+        print(f"Results saved to: {output_path}")
+    
+    return results
+
+
 def run_full_validation_suite(output_dir: str = None):
     """Run complete validation suite."""
     
@@ -71,10 +105,24 @@ def run_full_validation_suite(output_dir: str = None):
     results["network_evolution"] = network_results
     print()
     
-    # Create comprehensive summary
-    print("Phase 3: Comprehensive Analysis")
+    # Run foundry validation
+    print("Phase 3: Foundry Architecture Validation")
     print("-" * 50)
-    comprehensive_summary = create_comprehensive_summary(compression_results, network_results)
+    foundry_results = run_foundry_validation(output_dir)
+    results["foundry_validation"] = foundry_results
+    print()
+    
+    # Run virtual acceleration validation
+    print("Phase 4: Virtual Processing Acceleration Validation")
+    print("-" * 50)
+    virtual_results = run_virtual_acceleration_validation(output_dir)
+    results["virtual_acceleration"] = virtual_results
+    print()
+    
+    # Create comprehensive summary
+    print("Phase 5: Comprehensive Analysis")
+    print("-" * 50)
+    comprehensive_summary = create_comprehensive_summary(compression_results, network_results, foundry_results, virtual_results)
     results["comprehensive_summary"] = comprehensive_summary
     
     if output_dir:
@@ -94,7 +142,7 @@ def run_full_validation_suite(output_dir: str = None):
     return results
 
 
-def create_comprehensive_summary(compression_results: dict, network_results: dict) -> dict:
+def create_comprehensive_summary(compression_results: dict, network_results: dict, foundry_results: dict = None, virtual_results: dict = None) -> dict:
     """Create comprehensive summary of all validation results."""
     
     # Extract key metrics from compression validation
@@ -107,9 +155,36 @@ def create_comprehensive_summary(compression_results: dict, network_results: dic
     network_validated = network_summary["validation_success"]
     network_score = network_summary["learning_score"]
     
+    # Extract key metrics from foundry validation (if available)
+    foundry_validated = False
+    foundry_score = 0.0
+    if foundry_results:
+        foundry_summary = foundry_results["validation_summary"]
+        foundry_validated = foundry_summary["validation_status"]["foundry_validated"]
+        foundry_score = foundry_summary["quantitative_results"]["average_validation_score"]
+    
+    # Extract key metrics from virtual acceleration validation (if available)
+    virtual_validated = False
+    virtual_score = 0.0
+    if virtual_results:
+        virtual_summary = virtual_results["validation_summary"]
+        virtual_validated = virtual_summary["validation_status"]["acceleration_validated"]
+        virtual_score = virtual_summary["quantitative_results"]["average_validation_score"]
+    
     # Calculate overall framework validation
-    overall_score = (compression_score + network_score) / 2
-    overall_validated = compression_validated and network_validated and overall_score > 0.7
+    scores = [compression_score, network_score]
+    validations = [compression_validated, network_validated]
+    
+    if foundry_results:
+        scores.append(foundry_score)
+        validations.append(foundry_validated)
+    
+    if virtual_results:
+        scores.append(virtual_score)
+        validations.append(virtual_validated)
+    
+    overall_score = sum(scores) / len(scores)
+    overall_validated = all(validations) and overall_score > 0.7
     
     # Key breakthroughs validated
     breakthroughs_validated = {
@@ -120,6 +195,24 @@ def create_comprehensive_summary(compression_results: dict, network_results: dic
         "understanding_accumulation": network_validated,
         "network_information_about_information": network_summary["network_growth"]["final_nodes"] > 10
     }
+    
+    # Add foundry breakthroughs if available
+    if foundry_results:
+        foundry_summary = foundry_results["validation_summary"]
+        breakthroughs_validated.update({
+            "molecular_scale_processing": foundry_summary["foundry_claims_validated"]["processor_density_10e9_per_m3"],
+            "room_temperature_quantum_coherence": foundry_summary["foundry_claims_validated"]["room_temperature_quantum_coherence"],
+            "gas_oscillation_processing": foundry_validated
+        })
+    
+    # Add virtual processing breakthroughs if available
+    if virtual_results:
+        virtual_summary = virtual_results["validation_summary"]
+        breakthroughs_validated.update({
+            "10e30_hz_processing": virtual_summary["acceleration_claims_validated"]["frequency_10e30_hz"],
+            "femtosecond_precision": virtual_summary["acceleration_claims_validated"]["femtosecond_precision"],
+            "unlimited_parallel_processing": virtual_summary["acceleration_claims_validated"]["unlimited_parallel_processing"]
+        })
     
     return {
         "overall_validation": {
@@ -139,8 +232,10 @@ def create_comprehensive_summary(compression_results: dict, network_results: dic
         "validation_components": {
             "compression_validation_passed": compression_validated,
             "network_evolution_validation_passed": network_validated,
-            "total_tests_passed": sum([compression_validated, network_validated]),
-            "total_tests_run": 2
+            "foundry_validation_passed": foundry_validated if foundry_results else None,
+            "virtual_acceleration_validation_passed": virtual_validated if virtual_results else None,
+            "total_tests_passed": sum(validations),
+            "total_tests_run": len(validations)
         }
     }
 
@@ -265,6 +360,10 @@ Examples:
                        help='Run compression validation demonstration')
     parser.add_argument('--network-evolution', action='store_true',
                        help='Run network evolution validation demonstration')
+    parser.add_argument('--foundry', action='store_true',
+                       help='Run foundry architecture validation demonstration')
+    parser.add_argument('--virtual-acceleration', action='store_true',
+                       help='Run virtual processing acceleration validation demonstration')
     parser.add_argument('--full-suite', action='store_true',
                        help='Run complete validation suite')
     parser.add_argument('--output', '-o', type=str,
@@ -283,6 +382,10 @@ Examples:
         run_compression_validation(args.output)
     elif args.network_evolution:
         run_network_evolution_validation(args.output)
+    elif args.foundry:
+        run_foundry_validation(args.output)
+    elif args.virtual_acceleration:
+        run_virtual_acceleration_validation(args.output)
     else:
         # Default to full suite
         print("No specific validation specified. Running full validation suite...")
