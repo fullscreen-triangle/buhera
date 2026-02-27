@@ -1,0 +1,4 @@
+warning: user-defined alias `clippy` is shadowing an external subcommand found at: `C:\Users\kundai\.cargo\bin\cargo-clippy.exe`
+This was previously accepted but is being phased out; it will become a hard error in a future release.
+For more information, see issue #10049 <https://github.com/rust-lang/cargo/issues/10049>.
+error: alias clippy has unresolvable recursive definition: clippy -> clippy

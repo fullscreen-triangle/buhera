@@ -723,7 +723,8 @@ class UnderstandingNetwork:
             "connection_count_change": sum(len(conns) for conns in post_state.connections.values()) - 
                                     sum(len(conns) for conns in pre_state.connections.values()),
             "storage_pattern_changes": len(post_state.storage_patterns) - len(pre_state.storage_patterns),
-            "understanding_improvement": post_state.understanding_history[-1].understanding_metrics["network_understanding"] - 
+            "understanding_improvement": (post_state.understanding_history[-1].understanding_metrics["network_understanding"] 
+                                        if post_state.understanding_history else 0.0) - 
                                        (pre_state.understanding_history[-1].understanding_metrics["network_understanding"] 
                                         if pre_state.understanding_history else 0.0)
         }

@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: categorical-processing-unit.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: plainnat.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Database file #1: references.bib
+Warning--empty journal in sze2007
+You've used 18 entries,
+            2773 wiz_defined-function locations,
+            725 strings with 7740 characters,
+and the built_in function-call counts, 7018 in all, are:
+= -- 681
+> -- 222
+< -- 17
++ -- 85
+- -- 66
+* -- 513
+:= -- 1102
+add.period$ -- 72
+call.type$ -- 18
+change.case$ -- 76
+chr.to.int$ -- 17
+cite$ -- 37
+duplicate$ -- 358
+empty$ -- 667
+format.name$ -- 88
+if$ -- 1463
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 20
+newline$ -- 116
+num.names$ -- 72
+pop$ -- 129
+preamble$ -- 1
+purify$ -- 58
+quote$ -- 0
+skip$ -- 238
+stack$ -- 0
+substring$ -- 339
+swap$ -- 19
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 188
+warning$ -- 1
+while$ -- 79
+width$ -- 0
+write$ -- 273
+(There was 1 warning)
