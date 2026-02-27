@@ -1,0 +1,3 @@
+[console_scripts]
+buhera-benchmark = buhera_validation.benchmarks:main
+buhera-demo = buhera_validation.cli:main

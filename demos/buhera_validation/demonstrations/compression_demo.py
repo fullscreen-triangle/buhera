@@ -578,7 +578,8 @@ class CompressionDemo:
             p = np.poly1d(z)
             plt.plot(understanding_scores, p(understanding_scores), "r--", alpha=0.8)
         
-        plt.xlabel('Understanding Score')\n        plt.ylabel('Compression Improvement (%)')
+        plt.xlabel('Understanding Score')
+        plt.ylabel('Compression Improvement (%)')
         plt.title('Understanding Score vs Compression Improvement')
         plt.grid(True, alpha=0.3)
         plt.tight_layout()

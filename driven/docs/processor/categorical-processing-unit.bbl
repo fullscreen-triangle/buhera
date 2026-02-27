@@ -1,0 +1,135 @@
+\begin{thebibliography}{18}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bennett(1973)]{bennett1973}
+Charles~H. Bennett.
+\newblock Logical reversibility of computation.
+\newblock \emph{IBM Journal of Research and Development}, 17\penalty0
+  (6):\penalty0 525--532, 1973.
+\newblock \doi{10.1147/rd.176.0525}.
+
+\bibitem[Boltzmann(1877)]{boltzmann1877}
+Ludwig Boltzmann.
+\newblock {\"U}ber die beziehung zwischen dem zweiten hauptsatze der
+  mechanischen w{\"a}rmetheorie und der wahrscheinlichkeitsrechnung respektive
+  den s{\"a}tzen {\"u}ber das w{\"a}rmegleichgewicht.
+\newblock \emph{Wiener Berichte}, 76:\penalty0 373--435, 1877.
+
+\bibitem[Brillouin(1951)]{brillouin1951}
+L{\'e}on Brillouin.
+\newblock Maxwell's demon cannot operate: Information and entropy. i.
+\newblock \emph{Journal of Applied Physics}, 22\penalty0 (3):\penalty0
+  334--337, 1951.
+\newblock \doi{10.1063/1.1699951}.
+
+\bibitem[Deutsch(1985)]{deutsch1985}
+David Deutsch.
+\newblock Quantum theory, the church-turing principle and the universal quantum
+  computer.
+\newblock \emph{Proceedings of the Royal Society of London A}, 400\penalty0
+  (1818):\penalty0 97--117, 1985.
+\newblock \doi{10.1098/rspa.1985.0070}.
+
+\bibitem[Feynman(1982)]{feynman1982}
+Richard~P. Feynman.
+\newblock Simulating physics with computers.
+\newblock \emph{International Journal of Theoretical Physics}, 21\penalty0
+  (6-7):\penalty0 467--488, 1982.
+\newblock \doi{10.1007/BF02650179}.
+
+\bibitem[Goldstein et~al.(2002)Goldstein, Poole, and Safko]{goldstein2002}
+Herbert Goldstein, Charles~P. Poole, and John~L. Safko.
+\newblock \emph{Classical Mechanics}.
+\newblock Addison Wesley, 3rd edition, 2002.
+
+\bibitem[Kitaev(1997)]{kitaev1997}
+Alexei~Yu. Kitaev.
+\newblock Quantum computations: Algorithms and error correction.
+\newblock \emph{Russian Mathematical Surveys}, 52\penalty0 (6):\penalty0
+  1191--1249, 1997.
+\newblock \doi{10.1070/RM1997v052n06ABEH002155}.
+
+\bibitem[Landauer(1961)]{landauer1961}
+Rolf Landauer.
+\newblock Irreversibility and heat generation in the computing process.
+\newblock \emph{IBM Journal of Research and Development}, 5\penalty0
+  (3):\penalty0 183--191, 1961.
+\newblock \doi{10.1147/rd.53.0183}.
+
+\bibitem[Maxwell(1867)]{maxwell1867}
+James~Clerk Maxwell.
+\newblock On the dynamical theory of gases.
+\newblock \emph{Philosophical Transactions of the Royal Society of London},
+  157:\penalty0 49--88, 1867.
+\newblock \doi{10.1098/rstl.1867.0004}.
+
+\bibitem[Nielsen and Chuang(2010)]{nielsen2010}
+Michael~A. Nielsen and Isaac~L. Chuang.
+\newblock \emph{Quantum Computation and Quantum Information}.
+\newblock Cambridge University Press, 10th anniversary edition, 2010.
+\newblock \doi{10.1017/CBO9780511976667}.
+
+\bibitem[Planck(1901)]{planck1901}
+Max Planck.
+\newblock {\"U}ber das gesetz der energieverteilung im normalspectrum.
+\newblock \emph{Annalen der Physik}, 309\penalty0 (3):\penalty0 553--563, 1901.
+\newblock \doi{10.1002/andp.19013090310}.
+
+\bibitem[Preskill(2018)]{preskill2018}
+John Preskill.
+\newblock Quantum computing in the nisq era and beyond.
+\newblock \emph{Quantum}, 2:\penalty0 79, 2018.
+\newblock \doi{10.22331/q-2018-08-06-79}.
+
+\bibitem[Sachikonye(2025{\natexlab{a}})]{sachikonye2025quantum}
+Kundai~Farai Sachikonye.
+\newblock On the thermodynamic consequences of an oscillatory reality on
+  material and informational flux processes in biological systems with
+  information storage: Derivation of quantum logic gates in biological
+  membranes.
+\newblock \emph{SSRN Electronic Journal}, 2025{\natexlab{a}}.
+\newblock \doi{10.2139/ssrn.5680582}.
+\newblock SSRN 5680582.
+
+\bibitem[Sachikonye(2025{\natexlab{b}})]{sachikonye2025semiconductor}
+Kundai~Farai Sachikonye.
+\newblock On the thermodynamic consequences of categorical mechanics:
+  Biological semiconductor junction oscillatory integrated logic circuits.
+\newblock \emph{SSRN Electronic Journal}, 2025{\natexlab{b}}.
+\newblock \doi{10.2139/ssrn.5680570}.
+\newblock SSRN 5680570.
+
+\bibitem[Shannon(1948)]{shannon1948}
+Claude~E. Shannon.
+\newblock A mathematical theory of communication.
+\newblock \emph{Bell System Technical Journal}, 27\penalty0 (3):\penalty0
+  379--423, 1948.
+\newblock \doi{10.1002/j.1538-7305.1948.tb01338.x}.
+
+\bibitem[Shockley(1949)]{shockley1949}
+William Shockley.
+\newblock The theory of p-n junctions in semiconductors and p-n junction
+  transistors.
+\newblock \emph{Bell System Technical Journal}, 28\penalty0 (3):\penalty0
+  435--489, 1949.
+\newblock \doi{10.1002/j.1538-7305.1949.tb03645.x}.
+
+\bibitem[Sze and Ng(2007)]{sze2007}
+Simon~M. Sze and Kwok~K. Ng.
+\newblock Physics of semiconductor devices.
+\newblock 2007.
+\newblock \doi{10.1002/0470068329}.
+
+\bibitem[Szilard(1929)]{szilard1929}
+Leo Szilard.
+\newblock {\"U}ber die entropieverminderung in einem thermodynamischen system
+  bei eingriffen intelligenter wesen.
+\newblock \emph{Zeitschrift f{\"u}r Physik}, 53\penalty0 (11-12):\penalty0
+  840--856, 1929.
+\newblock \doi{10.1007/BF01341281}.
+
+\end{thebibliography}
