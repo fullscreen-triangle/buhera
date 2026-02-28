@@ -1,0 +1,61 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: buhera-operating-system.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: plainnat.bst
+I found no \bibdata command---while reading file buhera-operating-system.aux
+Warning--I didn't find a database entry for "tanenbaum2014modern"
+Warning--I didn't find a database entry for "silberschatz2018operating"
+Warning--I didn't find a database entry for "cormen2009introduction"
+Warning--I didn't find a database entry for "hennessy2011computer"
+Warning--I didn't find a database entry for "kocher2019spectre"
+Warning--I didn't find a database entry for "mudge2001power"
+Warning--I didn't find a database entry for "landauer1961"
+Warning--I didn't find a database entry for "bennett1982"
+Warning--I didn't find a database entry for "barr1990category"
+Warning--I didn't find a database entry for "awodey2010category"
+Warning--I didn't find a database entry for "nielsen2010"
+Warning--I didn't find a database entry for "bennett1973"
+Warning--I didn't find a database entry for "dennis1980dataflow"
+You've used 0 entries,
+            2773 wiz_defined-function locations,
+            604 strings with 5072 characters,
+and the built_in function-call counts, 33 in all, are:
+= -- 0
+> -- 0
+< -- 0
++ -- 0
+- -- 0
+* -- 2
+:= -- 10
+add.period$ -- 0
+call.type$ -- 0
+change.case$ -- 0
+chr.to.int$ -- 0
+cite$ -- 0
+duplicate$ -- 0
+empty$ -- 1
+format.name$ -- 0
+if$ -- 1
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 0
+newline$ -- 8
+num.names$ -- 0
+pop$ -- 0
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 1
+stack$ -- 0
+substring$ -- 0
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 0
+width$ -- 0
+write$ -- 7
+(There was 1 error message)
