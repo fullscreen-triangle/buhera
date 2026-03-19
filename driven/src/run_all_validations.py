@@ -18,7 +18,7 @@ import json
 # Add current directory to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from sorting.validate_sorting import validate_sorting_complexity, extrapolate_to_large_n
+from sorting.validate_sorting import validate_sorting_complexity, extrapolate_to_large_n, validate_index_retrieval
 from ipc.validate_ipc import validate_ipc_performance
 from commutation.validate_commutation import (
     validate_commutation_relations,
@@ -68,9 +68,31 @@ def run_all_validations(mode: str = "standard"):
         ipc_trials = 5
         comm_n_max = 5
 
-    # 1. Sorting Validation
+    # 1a. Index Retrieval Validation (clean O(log_3 N) demonstration)
     print("\n" + "#" * 80)
-    print(" VALIDATION 1/3: SORTING PERFORMANCE")
+    print(" VALIDATION 1/4: INDEX RETRIEVAL COMPLEXITY O(log_3 N)")
+    print("#" * 80 + "\n")
+
+    try:
+        retrieval_results = validate_index_retrieval(
+            sizes=[27, 81, 243, 729, 2187, 6561, 19683, 59049],
+            queries_per_size=30,
+        )
+        master_results["validations"]["index_retrieval"] = {
+            "status": "SUCCESS",
+            "r_squared": retrieval_results["complexity_fit"]["r_squared"],
+            "validated": retrieval_results["complexity_fit"]["validated_o_log3_n"],
+            "file": f"index_retrieval_validation_{timestamp}.json"
+        }
+        save_results(retrieval_results, f"index_retrieval_validation_{timestamp}.json")
+        print("\n[OK] Index retrieval validation complete")
+    except Exception as e:
+        print(f"\n[FAIL] Index retrieval FAILED: {e}")
+        master_results["validations"]["index_retrieval"] = {"status": "FAILED", "error": str(e)}
+
+    # 1b. Sorting Validation (address navigation benchmark)
+    print("\n" + "#" * 80)
+    print(" VALIDATION 2/4: SORTING PERFORMANCE")
     print("#" * 80 + "\n")
 
     try:
@@ -108,7 +130,7 @@ def run_all_validations(mode: str = "standard"):
 
     # 2. IPC Validation
     print("\n" + "#" * 80)
-    print(" VALIDATION 2/3: INTER-PROCESS COMMUNICATION")
+    print(" VALIDATION 3/4: INTER-PROCESS COMMUNICATION")
     print("#" * 80 + "\n")
 
     try:
@@ -137,7 +159,7 @@ def run_all_validations(mode: str = "standard"):
 
     # 3. Commutation Validation
     print("\n" + "#" * 80)
-    print(" VALIDATION 3/3: CATEGORICAL-PHYSICAL COMMUTATION")
+    print(" VALIDATION 4/4: CATEGORICAL-PHYSICAL COMMUTATION")
     print("#" * 80 + "\n")
 
     try:

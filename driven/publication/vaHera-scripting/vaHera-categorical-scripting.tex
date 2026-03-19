@@ -18,6 +18,20 @@
 \usetikzlibrary{automata,positioning,arrows,shapes}
 \usepackage{cleveref}
 \usepackage{natbib}
+\usepackage{stmaryrd}
+
+% Custom notation commands
+\newcommand{\Scoord}{\mathbf{S}}
+\newcommand{\cataddr}{\mathcal{A}}
+\newcommand{\pentstate}{\hat{\sigma}_{\mathrm{pen}}}
+
+% Switch/Case extensions for algpseudocode
+\algnewcommand\algorithmicswitch{\textbf{switch}}
+\algnewcommand\algorithmiccase{\textbf{case}}
+\algdef{SE}[SWITCH]{Switch}{EndSwitch}[1]{\algorithmicswitch\ #1}{}
+\algdef{SE}[CASE]{Case}{EndCase}[1]{\algorithmiccase\ #1:}{}
+\algtext*{EndSwitch}
+\algtext*{EndCase}
 
 % Theorem environments
 \newtheorem{theorem}{Theorem}[section]
@@ -775,27 +789,27 @@ where:
 \subsubsection{Expression Evaluation}
 
 \begin{equation}
-    \frac{}{⟨n, \rho⟩ \Downarrow n}
+    \frac{}{\langle n, \rho\rangle \Downarrow n}
     \quad \text{(E-Num)}
 \end{equation}
 
 \begin{equation}
-    \frac{x \in \text{dom}(\rho)}{⟨x, \rho⟩ \Downarrow \rho(x)}
+    \frac{x \in \text{dom}(\rho)}{\langle x, \rho\rangle \Downarrow \rho(x)}
     \quad \text{(E-Var)}
 \end{equation}
 
 \begin{equation}
-    \frac{⟨e_1, \rho⟩ \Downarrow v_1 \quad ⟨e_2, \rho⟩ \Downarrow v_2}{⟨e_1 + e_2, \rho⟩ \Downarrow v_1 + v_2}
+    \frac{\langle e_1, \rho\rangle \Downarrow v_1 \quad \langle e_2, \rho\rangle \Downarrow v_2}{\langle e_1 + e_2, \rho\rangle \Downarrow v_1 + v_2}
     \quad \text{(E-Add)}
 \end{equation}
 
 \begin{equation}
-    \frac{⟨e_1, \rho⟩ \Downarrow v_1 \quad ⟨e_2, \rho⟩ \Downarrow v_2}{⟨e_1 \times e_2, \rho⟩ \Downarrow v_1 \times v_2}
+    \frac{\langle e_1, \rho\rangle \Downarrow v_1 \quad \langle e_2, \rho\rangle \Downarrow v_2}{\langle e_1 \times e_2, \rho\rangle \Downarrow v_1 \times v_2}
     \quad \text{(E-Mul)}
 \end{equation}
 
 \begin{equation}
-    \frac{⟨e, \rho⟩ \Downarrow v \quad ⟨n, \rho⟩ \Downarrow k}{⟨e^n, \rho⟩ \Downarrow v^k}
+    \frac{\langle e, \rho\rangle \Downarrow v \quad \langle n, \rho\rangle \Downarrow k}{\langle e^n, \rho\rangle \Downarrow v^k}
     \quad \text{(E-Pow)}
 \end{equation}
 
@@ -803,27 +817,27 @@ where:
 
 \textbf{Resolve Statement}:
 \begin{equation}
-    \frac{⟨s, \rho⟩ \Downarrow \text{stateName} \quad \cataddr = \text{LookupState}(\text{stateName})}{⟨\texttt{resolve final state at } s, \sigma⟩ \Downarrow \sigma[\rho[\text{final\_addr} := \cataddr]]}
+    \frac{\langle s, \rho\rangle \Downarrow \text{stateName} \quad \cataddr = \text{LookupState}(\text{stateName})}{\langle\texttt{resolve final state at } s, \sigma\rangle \Downarrow \sigma[\rho[\text{final\_addr} := \cataddr]]}
 \end{equation}
 
 \textbf{Navigate to Penultimate}:
 \begin{multline}
-    \frac{\text{final\_addr} \in \rho \quad \pentstate = \text{ComputePenultimate}(\rho(\text{final\_addr}))}{⟨\texttt{navigate to penultimate}, \sigma⟩ \Downarrow \sigma[\rho[\text{current} := \pentstate]]}
+    \frac{\text{final\_addr} \in \rho \quad \pentstate = \text{ComputePenultimate}(\rho(\text{final\_addr}))}{\langle\texttt{navigate to penultimate}, \sigma\rangle \Downarrow \sigma[\rho[\text{current} := \pentstate]]}
 \end{multline}
 
 \textbf{Complete Trajectory}:
 \begin{multline}
-    \frac{\text{current} = \pentstate \quad \text{final\_addr} \in \rho \quad \phi = \text{CompletionMorphism}(\pentstate, \rho(\text{final\_addr}))}{⟨\texttt{complete trajectory}, \sigma⟩ \Downarrow \sigma[\rho[\text{current} := \phi(\pentstate)]]}
+    \frac{\text{current} = \pentstate \quad \text{final\_addr} \in \rho \quad \phi = \text{CompletionMorphism}(\pentstate, \rho(\text{final\_addr}))}{\langle\texttt{complete trajectory}, \sigma\rangle \Downarrow \sigma[\rho[\text{current} := \phi(\pentstate)]]}
 \end{multline}
 
 \textbf{Memory Create}:
 \begin{equation}
-    \frac{⟨c, \rho⟩ \Downarrow (s_k, s_t, s_e) \quad \mathcal{M}' = \mathcal{M}[\text{trajectory} \mathrel{+}= (s_k, s_t, s_e)]}{⟨\texttt{memory create at } c, \sigma⟩ \Downarrow \sigma[\mathcal{M} := \mathcal{M}']
+    \frac{\langle c, \rho\rangle \Downarrow (s_k, s_t, s_e) \quad \mathcal{M}' = \mathcal{M}[\text{trajectory} \mathrel{+}= (s_k, s_t, s_e)]}{\langle\texttt{memory create at } c, \sigma\rangle \Downarrow \sigma[\mathcal{M} := \mathcal{M}']}
 \end{equation}
 
 \textbf{Memory Write}:
 \begin{multline}
-    \frac{⟨v, \rho⟩ \Downarrow \text{val} \quad h = \text{hash}(\mathcal{M}.\text{trajectory}) \quad t = \text{AssignTier}(\|\mathcal{M}.\text{trajectory}\|)}{⟨\texttt{memory write } v \texttt{ at trajectory}, \sigma⟩ \Downarrow \sigma[\mathcal{M}[\text{entries}[h] := (\text{val}, t)]]}
+    \frac{\langle v, \rho\rangle \Downarrow \text{val} \quad h = \text{hash}(\mathcal{M}.\text{trajectory}) \quad t = \text{AssignTier}(\|\mathcal{M}.\text{trajectory}\|)}{\langle\texttt{memory write } v \texttt{ at trajectory}, \sigma\rangle \Downarrow \sigma[\mathcal{M}[\text{entries}[h] := (\text{val}, t)]]}
 \end{multline}
 
 where the tier assignment function:
@@ -839,37 +853,37 @@ where the tier assignment function:
 
 \textbf{Demon Move}:
 \begin{multline}
-    \frac{⟨c, \rho⟩ \Downarrow (s_k, s_t, s_e) \quad \mathcal{D}' = \mathcal{D}[\text{position} := c, \text{history} \mathrel{+}= c]}{⟨\texttt{demon move to } c, \sigma⟩ \Downarrow \sigma[\mathcal{D} := \mathcal{D}']
+    \frac{\langle c, \rho\rangle \Downarrow (s_k, s_t, s_e) \quad \mathcal{D}' = \mathcal{D}[\text{position} := c, \text{history} \mathrel{+}= c]}{\langle\texttt{demon move to } c, \sigma\rangle \Downarrow \sigma[\mathcal{D} := \mathcal{D}']}
 \end{multline}
 
 \textbf{Demon Sort} (zero cost):
 \begin{equation}
-    \frac{\mathcal{D}' = \mathcal{D}[\text{stats.sorts} \mathrel{+}= 1, W_{\text{cat}} := 0]}{⟨\texttt{demon sort by partition}, \sigma⟩ \Downarrow \sigma[\mathcal{D} := \mathcal{D}']
+    \frac{\mathcal{D}' = \mathcal{D}[\text{stats.sorts} \mathrel{+}= 1, W_{\text{cat}} := 0]}{\langle\texttt{demon sort by partition}, \sigma\rangle \Downarrow \sigma[\mathcal{D} := \mathcal{D}']}
 \end{equation}
 
 The zero cost follows from $[\hat{O}_{\text{cat}}, \hat{O}_{\text{phys}}] = 0$.
 
 \textbf{Controller Create}:
 \begin{multline}
-    \frac{⟨f, \rho⟩ \Downarrow \text{freq} \quad \omega = 2\pi \cdot \text{freq} \quad \mathcal{C}' = \text{CreateController}(\omega)}{⟨\texttt{controller create at } f, \sigma⟩ \Downarrow \sigma[\mathcal{C} := \mathcal{C}']
+    \frac{\langle f, \rho\rangle \Downarrow \text{freq} \quad \omega = 2\pi \cdot \text{freq} \quad \mathcal{C}' = \text{CreateController}(\omega)}{\langle\texttt{controller create at } f, \sigma\rangle \Downarrow \sigma[\mathcal{C} := \mathcal{C}']}
 \end{multline}
 
 \textbf{Controller Verify}:
 \begin{multline}
-    \frac{\mathcal{C}.\text{rate} = dM/dt \quad \mathcal{C}.\omega/(2\pi/M) = r_2 \quad 1/⟨\tau_p⟩ = r_3 \quad |dM/dt - r_2| < \epsilon \quad |dM/dt - r_3| < \epsilon}{⟨\texttt{controller verify}, \sigma⟩ \Downarrow \sigma[\omega \mathrel{+}= \text{``VERIFIED''}]
+    \frac{\mathcal{C}.\text{rate} = dM/dt \quad \mathcal{C}.\omega/(2\pi/M) = r_2 \quad 1/\langle\tau_p\rangle = r_3 \quad |dM/dt - r_2| < \epsilon \quad |dM/dt - r_3| < \epsilon}{\langle\texttt{controller verify}, \sigma\rangle \Downarrow \sigma[\omega \mathrel{+}= \text{``VERIFIED''}]}
 \end{multline}
 
 \subsection{Denotational Semantics}
 
 \begin{definition}[Semantic Domain]
-Let $\mathcal{D} = \mathbb{R}^+ \times \text{Dim}$ be the domain of positive reals with dimensions. The semantic function $⟦\cdot⟧$ maps expressions to functions $\text{Env} \to \mathcal{D}$.
+Let $\mathcal{D} = \mathbb{R}^+ \times \text{Dim}$ be the domain of positive reals with dimensions. The semantic function $\llbracket\cdot\rrbracket$ maps expressions to functions $\text{Env} \to \mathcal{D}$.
 \end{definition}
 
 \begin{align}
-    ⟦n⟧ \rho &= (n, \mathbf{1}) \\
-    ⟦x⟧ \rho &= \rho(x) \\
-    ⟦e_1 + e_2⟧ \rho &= \text{add}(⟦e_1⟧ \rho, ⟦e_2⟧ \rho) \\
-    ⟦e_1 \times e_2⟧ \rho &= \text{mul}(⟦e_1⟧ \rho, ⟦e_2⟧ \rho)
+    \llbracket n\rrbracket \rho &= (n, \mathbf{1}) \\
+    \llbracket x\rrbracket \rho &= \rho(x) \\
+    \llbracket e_1 + e_2\rrbracket \rho &= \text{add}(\llbracket e_1\rrbracket \rho, \llbracket e_2\rrbracket \rho) \\
+    \llbracket e_1 \times e_2\rrbracket \rho &= \text{mul}(\llbracket e_1\rrbracket \rho, \llbracket e_2\rrbracket \rho)
 \end{align}
 
 where $\text{add}((v_1, D), (v_2, D)) = (v_1 + v_2, D)$ (matching dimensions required) and $\text{mul}((v_1, D_1), (v_2, D_2)) = (v_1 \cdot v_2, D_1 \cdot D_2)$.
@@ -879,7 +893,7 @@ where $\text{add}((v_1, D), (v_2, D)) = (v_1 + v_2, D)$ (matching dimensions req
 \begin{theorem}[Operational-Denotational Consistency]
 For all expressions $e$ and environments $\rho$:
 \begin{equation}
-    ⟨e, \rho⟩ \Downarrow v \iff ⟦e⟧ \rho = v
+    \langle e, \rho\rangle \Downarrow v \iff \llbracket e\rrbracket \rho = v
 \end{equation}
 \end{theorem}
 
@@ -949,7 +963,7 @@ The trajectory is the sequence of S-coordinates visited. The hash of the traject
 
 A demon has state:
 \begin{equation}
-    \mathcal{D} = ⟨\text{position}, \text{history}, \text{aperture}, \text{stats}⟩
+    \mathcal{D} = \langle\text{position}, \text{history}, \text{aperture}, \text{stats}\rangle
 \end{equation}
 
 where:
@@ -978,7 +992,7 @@ Categorical operations preserve energy:
 \begin{proof}
 The categorical operation $\hat{O}_{\text{cat}}$ commutes with the Hamiltonian $\hat{H}$. Therefore, eigenvalues of $\hat{H}$ are preserved:
 \begin{equation}
-    \hat{H}\hat{O}_{\text{cat}}|\psi⟩ = \hat{O}_{\text{cat}}\hat{H}|\psi⟩ = E \hat{O}_{\text{cat}}|\psi⟩
+    \hat{H}\hat{O}_{\text{cat}}|\psi\rangle = \hat{O}_{\text{cat}}\hat{H}|\psi\rangle = E \hat{O}_{\text{cat}}|\psi\rangle
 \end{equation}
 
 Energy is unchanged: $W = \Delta E = 0$. $\square$
@@ -999,7 +1013,7 @@ demon aperture close
 
 A controller has:
 \begin{equation}
-    \mathcal{C} = ⟨\omega, M, t, \text{history}, \text{verified}⟩
+    \mathcal{C} = \langle\omega, M, t, \text{history}, \text{verified}\rangle
 \end{equation}
 
 where:
@@ -1015,7 +1029,7 @@ where:
 
 The controller verifies:
 \begin{equation}
-    \frac{dM}{dt} = \frac{\omega}{2\pi/M} = \frac{1}{⟨\tau_p⟩}
+    \frac{dM}{dt} = \frac{\omega}{2\pi/M} = \frac{1}{\langle\tau_p\rangle}
 \end{equation}
 
 \begin{lstlisting}
@@ -1039,14 +1053,14 @@ controller verify         # Verify identity
 
 \begin{definition}[Average Partition Duration]
 \begin{equation}
-    ⟨\tau_p⟩ = \frac{1}{N} \sum_{i=1}^{N} \tau_{p,i}
+    \langle\tau_p\rangle = \frac{1}{N} \sum_{i=1}^{N} \tau_{p,i}
 \end{equation}
 \end{definition}
 
 \begin{theorem}[Identity Holds]
 The three quantities are equal:
 \begin{equation}
-    \frac{dM}{dt} = Mf = \frac{1}{⟨\tau_p⟩}
+    \frac{dM}{dt} = Mf = \frac{1}{\langle\tau_p\rangle}
 \end{equation}
 \end{theorem}
 
@@ -1208,7 +1222,7 @@ Navigation to categorical addresses is $O(\log_3 N)$. Repeated navigation to the
         \EndIf
     \EndIf
     \State path $\gets$ NavigateFull(addr)
-    \State cache[addr] $\gets$ $⟨$path, now()$⟩$
+    \State cache[addr] $\gets$ $\langle$path, now()$\rangle$
     \State \Return path
 \EndFunction
 \end{algorithmic}
@@ -1513,7 +1527,7 @@ We have presented vaHera, a categorical scripting language for the Buhera operat
 
     \item \textbf{Zero-Cost Demon Operations}: Exploitation of $[\hat{O}_{\text{cat}}, \hat{O}_{\text{phys}}] = 0$ for thermodynamically free categorical sorting.
 
-    \item \textbf{Triple Equivalence Verification}: Continuous verification of $dM/dt = \omega/(2\pi/M) = 1/⟨\tau_p⟩$.
+    \item \textbf{Triple Equivalence Verification}: Continuous verification of $dM/dt = \omega/(2\pi/M) = 1/\langle\tau_p\rangle$.
 
     \item \textbf{Practical Performance}: $10^3$--$10^6$× speedup for categorical problems through $O(\log_3 N)$ navigation complexity.
 \end{enumerate}

@@ -140,6 +140,90 @@ class TernaryPartitionTree:
         }
 
 
+class ValueIndexedPartitionTree:
+    """
+    Ternary partition tree indexed by item VALUE, not hash.
+
+    This correctly demonstrates O(log_3 N) per-item retrieval:
+    - Build phase  : insert N items in O(N * depth) = O(N log_3 N) total.
+    - Retrieval    : locate the item whose value falls in the p-th percentile
+                     by navigating log_3(N) levels down the tree.
+
+    This is the structure underlying the O(log_3 N) complexity claim.
+    The 'categorical address' of a value x in [lo, hi] is the ternary path
+    obtained by repeatedly trisecting the interval.
+    """
+
+    def __init__(self):
+        # Each node stores a sorted list of values that fall in its interval.
+        # key = ternary path tuple, value = list of floats
+        self._buckets: Dict[Tuple[int, ...], List[float]] = {(): []}
+
+    def insert(self, x: float) -> Tuple[int, ...]:
+        """Insert value x (assumed in [0, 1]) and return its categorical address."""
+        lo, hi = 0.0, 1.0
+        path: List[int] = []
+        depth = 0
+        while True:
+            mid1 = lo + (hi - lo) / 3
+            mid2 = lo + 2 * (hi - lo) / 3
+            if x < mid1:
+                branch = 0
+                hi = mid1
+            elif x < mid2:
+                branch = 1
+                lo, hi = mid1, mid2
+            else:
+                branch = 2
+                lo = mid2
+            path.append(branch)
+            depth += 1
+            key = tuple(path)
+            if key not in self._buckets:
+                self._buckets[key] = []
+            self._buckets[key].append(x)
+            # Stop when bucket is a singleton or we reach max depth
+            if len(self._buckets[key]) <= 1 or depth >= 20:
+                break
+        return tuple(path)
+
+    def find(self, x: float) -> Tuple[int, float]:
+        """
+        Navigate to the leaf containing x.
+        Returns (navigation_steps, found_value).
+        """
+        lo, hi = 0.0, 1.0
+        path: List[int] = []
+        steps = 0
+        while True:
+            mid1 = lo + (hi - lo) / 3
+            mid2 = lo + 2 * (hi - lo) / 3
+            if x < mid1:
+                branch = 0
+                hi = mid1
+            elif x < mid2:
+                branch = 1
+                lo, hi = mid1, mid2
+            else:
+                branch = 2
+                lo = mid2
+            path.append(branch)
+            steps += 1
+            key = tuple(path)
+            bucket = self._buckets.get(key, [])
+            if len(bucket) <= 1 or steps >= 20:
+                found = bucket[0] if bucket else float('nan')
+                return steps, found
+
+    def find_percentile(self, p: float, sorted_data: np.ndarray) -> Tuple[int, float]:
+        """
+        Navigate to the item at percentile p in [0,1] using the partition tree.
+        Returns (navigation_steps, value).
+        """
+        target = float(np.percentile(sorted_data, p * 100))
+        return self.find(target)
+
+
 class CategoricalProcessor:
     """
     Categorical processor implementing trajectory completion.
@@ -378,7 +462,7 @@ def save_results(results: Dict[str, Any], filename: str, format: str = "json"):
     filepath = output_dir / filename
 
     if format == "json":
-        with open(filepath, 'w') as f:
+        with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(results, f, indent=2, default=str)
     elif format == "csv":
         # Flatten nested dict for CSV
@@ -398,7 +482,7 @@ def save_results(results: Dict[str, Any], filename: str, format: str = "json"):
 
         flat_data = flatten(results)
 
-        with open(filepath, 'w', newline='') as f:
+        with open(filepath, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(['metric', 'value'])
             writer.writerows(flat_data)
