@@ -20,6 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from core import (
     CategoricalProcessor,
+    ValueIndexedPartitionTree,
     generate_test_data,
     save_results,
     KB
@@ -231,6 +232,112 @@ def validate_sorting_complexity(
     return results
 
 
+def validate_index_retrieval(
+    sizes: List[int] = None,
+    queries_per_size: int = 20,
+) -> Dict[str, Any]:
+    """
+    Correctly demonstrates O(log_3 N) per-item retrieval from a pre-built
+    value-indexed partition tree.
+
+    Methodology
+    -----------
+    Build phase  : insert N uniform[0,1] items into ValueIndexedPartitionTree.
+                   One-time cost, amortised over all queries.
+    Query phase  : for each of `queries_per_size` uniformly spaced percentiles,
+                   navigate to the corresponding value in the tree and count steps.
+    Baseline     : linear scan of an unsorted array to find the nearest value.
+
+    Expected result : navigation steps ~ ceil(log_3 N), linear scan ~ N/2.
+    """
+    if sizes is None:
+        sizes = [27, 81, 243, 729, 2187, 6561, 19683]  # Powers of 3
+
+    print("=" * 80)
+    print("INDEX RETRIEVAL COMPLEXITY: O(log_3 N) DEMONSTRATION")
+    print("=" * 80)
+
+    results = {
+        "description": (
+            "Per-item retrieval from a pre-built value-indexed ternary partition tree. "
+            "Demonstrates O(log_3 N) navigation steps vs O(N) linear scan."
+        ),
+        "sizes": sizes,
+        "data_points": [],
+        "complexity_fit": {}
+    }
+
+    for n in sizes:
+        data = np.random.rand(n).tolist()
+        sorted_data = np.array(sorted(data))
+
+        # Build the tree (one-time cost, not timed for the benchmark)
+        tree = ValueIndexedPartitionTree()
+        for x in data:
+            tree.insert(x)
+
+        # Query: navigate to evenly-spaced percentile targets
+        percentiles = np.linspace(0.05, 0.95, queries_per_size)
+        nav_steps_list = []
+        linear_steps_list = []
+
+        for p in percentiles:
+            target = float(np.percentile(sorted_data, p * 100))
+
+            # Categorical: tree navigation
+            nav_steps, _ = tree.find(target)
+            nav_steps_list.append(nav_steps)
+
+            # Baseline: linear scan of the unsorted array
+            linear_steps = 0
+            best_dist = float('inf')
+            for x in data:
+                linear_steps += 1
+                if abs(x - target) < best_dist:
+                    best_dist = abs(x - target)
+            linear_steps_list.append(linear_steps)
+
+        mean_nav = float(np.mean(nav_steps_list))
+        mean_linear = float(np.mean(linear_steps_list))
+        theoretical_log3 = float(np.log(n) / np.log(3))
+
+        results["data_points"].append({
+            "n": n,
+            "mean_navigation_steps": mean_nav,
+            "mean_linear_steps": mean_linear,
+            "theoretical_log3_n": theoretical_log3,
+            "speedup": mean_linear / mean_nav if mean_nav > 0 else 0,
+            "nav_vs_theory_ratio": mean_nav / theoretical_log3 if theoretical_log3 > 0 else 0
+        })
+
+        print(f"N={n:>6}: nav={mean_nav:.1f} steps  "
+              f"(theory log_3(N)={theoretical_log3:.1f})  "
+              f"linear={mean_linear:.0f}  "
+              f"speedup={mean_linear/mean_nav:.1f}x")
+
+    # Complexity fit: navigation steps vs log_3(N)
+    ns = np.array([d["n"] for d in results["data_points"]])
+    nav_steps_arr = np.array([d["mean_navigation_steps"] for d in results["data_points"]])
+    log3_n = np.log(ns) / np.log(3)
+
+    fit = np.polyfit(log3_n, nav_steps_arr, 1)
+    r2 = float(np.corrcoef(log3_n, nav_steps_arr)[0, 1] ** 2)
+
+    results["complexity_fit"] = {
+        "model": "navigation_steps = a * log_3(N) + b",
+        "a": float(fit[0]),
+        "b": float(fit[1]),
+        "r_squared": r2,
+        "validated_o_log3_n": r2 > 0.95
+    }
+
+    print(f"\nComplexity fit: steps = {fit[0]:.3f} * log_3(N) + {fit[1]:.3f}  "
+          f"(R^2 = {r2:.6f})")
+    print(f"O(log_3 N) validated: {'[OK] YES' if r2 > 0.95 else '[FAIL] NO'}")
+
+    return results
+
+
 def extrapolate_to_large_n(results: Dict[str, Any], target_sizes: List[int]) -> Dict[str, Any]:
     """
     Extrapolate performance to larger N based on complexity fits.
@@ -273,29 +380,39 @@ def extrapolate_to_large_n(results: Dict[str, Any], target_sizes: List[int]) -> 
 
 
 if __name__ == "__main__":
-    # Run comprehensive validation
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    # 1. Index retrieval benchmark — the clean O(log_3 N) demonstration
+    retrieval_results = validate_index_retrieval(
+        sizes=[27, 81, 243, 729, 2187, 6561, 19683, 59049],
+        queries_per_size=30,
+    )
+    retrieval_filepath = save_results(
+        retrieval_results,
+        f"index_retrieval_validation_{timestamp}.json",
+        format="json"
+    )
+    print(f"\n[OK] Index retrieval results saved to: {retrieval_filepath}")
+
+    # 2. Address navigation benchmark (existing)
     results = validate_sorting_complexity(
         sizes=[100, 500, 1000, 5000, 10000, 50000, 100000],
         n_trials=5,
         distributions=["random", "reversed", "gaussian"]
     )
 
-    # Save results
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filepath = save_results(
         results,
         f"sorting_validation_{timestamp}.json",
         format="json"
     )
-    print(f"\n[OK] Results saved to: {filepath}")
+    print(f"\n[OK] Sorting validation saved to: {filepath}")
 
-    # Extrapolate to large N
+    # 3. Extrapolate to large N
     extrapolation = extrapolate_to_large_n(
         results,
         target_sizes=[500000, 1000000, 10000000, 100000000]
     )
-
-    # Save extrapolation
     extrap_filepath = save_results(
         extrapolation,
         f"sorting_extrapolation_{timestamp}.json",

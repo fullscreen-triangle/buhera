@@ -20,7 +20,12 @@ import numpy as np
 from typing import Dict, List, Any, Tuple
 from datetime import datetime
 import sys
+import io
 from pathlib import Path
+
+# Fix Windows console encoding so Unicode symbols (hbar, hat operators) print cleanly
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))

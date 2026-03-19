@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(find:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(python run_all_validations.py --mode quick)",
+      "Bash(python -c \":*)"
     ]
   }
 }

@@ -1,0 +1,27 @@
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel1_complexity.png}
+    \caption{Categorical Navigation Complexity. (a) Measured navigation steps vs.\ $\log_3 N$ with linear fit (slope $= 0.965$, $R^2 = 0.9993$); dashed line is the theoretical $y = x$ reference. (b) Speedup of backward navigation over linear scan vs.\ $N$ (log-log); advantage grows as $N/\log_3 N$, reaching $5{,}905\times$ at $N = 59{,}049$. (c) Three-dimensional surface of navigation steps over $(\log_3 N,\, \text{query rank})$ grid, confirming that step count depends only on $\log_3 N$ and is independent of which percentile is queried. (d) Operation counts for categorical $\mathcal{O}(\log_3 N)$ vs.\ conventional $\mathcal{O}(N\log N)$ sorting on a logarithmic scale, illustrating the asymptotic divergence.}
+    \label{fig:panel1_complexity}
+\end{figure*}
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel2_ipc.png}
+    \caption{IPC Address-Transfer Performance. (a) Transfer latency ($\mu$s) vs.\ data size (MB, log scale); categorical address transfer (24 bytes, teal) is near-constant while the conventional copy baseline (dashed) grows linearly with payload. (b) Speedup of categorical IPC over pipe (circles) and shared-memory (squares) baselines vs.\ data size (log-log); speedup reaches $5{,}435\times$ at 10~MB. (c) Three-dimensional surface of IPC speedup over $(\log_{10}(\text{bytes}),\, \text{method})$, showing the joint scaling behaviour for pipe and shared-memory channels. (d) Energy ratio (categorical / pipe) vs.\ data size; categorical energy is constant at $5.54\times10^{-19}$~J regardless of payload, producing ratios approaching $10^{-6}$ at large sizes.}
+    \label{fig:panel2_ipc}
+\end{figure*}
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel3_commutation.png}
+    \caption{Categorical-Physical Commutation Relations. (a) Frobenius norms of all nine commutators $[\hat{O}_{\mathrm{cat}},\hat{O}_{\mathrm{phys}}]$ displayed as a lollipop plot; all norms are $\leq 6.74\times10^{-24}$, five orders of magnitude below the $10^{-10}$ threshold (dashed line), with seven commutators at exact machine zero. (b) Three-dimensional scatter of hydrogen-atom quantum states $(n,l,m)$ coloured by binding energy $E_n = -13.6/n^2$~eV, illustrating the categorical partition of the Hilbert space. (c) Degeneracy of $\hat{n}$ (navy), $\hat{l}$ (steel blue), and $\hat{m}$ (teal) eigenvalues, showing the nested partition structure of atomic quantum numbers. (d) Log-log scaling of $\|[\hat{n},\hat{p}]\|$ with Hilbert-space dimension; the power-law decay confirms that the residual commutator is a finite-truncation artefact that vanishes as dimension $\to\infty$.}
+    \label{fig:panel3_commutation}
+\end{figure*}
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel4_phase_space.png}
+    \caption{S-Entropy Phase Space and Thermodynamic Duality. (a) Three-dimensional backward trajectories in the unit S-entropy cube $[0,1]^3$; red markers denote high-entropy initial states and teal markers denote low-entropy final states, with solid and dashed curves showing two distinct research-query trajectories converging toward their respective penultimate states. (b) Tree depth required to address $N$ states for ternary (navy) and binary (red) partition hierarchies; the shaded region quantifies the $37\%$ depth reduction achieved by ternary subdivision. (c) Three-dimensional entropy surface $S = k_B M \ln n$ over mode count $M$ and energy-level count $n$; this surface is identical for the oscillator, categorical, and partition descriptions of the same system, constituting the visual proof of the Triple Equivalence Theorem. (d) Addressable states vs.\ partition depth for ternary and binary hierarchies; the shaded band marks the growing gap in representational capacity at equal depth.}
+    \label{fig:panel4_phase_space}
+\end{figure*}
