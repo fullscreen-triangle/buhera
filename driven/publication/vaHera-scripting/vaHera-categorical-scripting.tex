@@ -83,7 +83,8 @@
 
 \author{
 Kundai Farai Sachikonye\\
-\texttt{kundai.sachikonye@wzw.tum.de}
+AIMe Registry for Artificial Intelligence\\
+\texttt{kundai.sachikonye@bitspark.com}
 }
 
 \date{\today}
@@ -957,6 +958,13 @@ The trajectory is the sequence of S-coordinates visited. The hash of the traject
     \text{Address} = \text{Hash}([\Scoord_1, \Scoord_2, \ldots, \Scoord_n])
 \end{equation}
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/vahera_panel1_trajectory.png}
+    \caption{Bidirectional Trajectory Translation. (a) Distance to initial state over 50 translation steps; the trajectory oscillates between $0.15$ and $0.66$, with the mean distance (dashed line) at $0.43$, confirming that the system explores the categorical space without collapsing to the origin. (b) Observable value over translation steps, oscillating between $0.74$ and $2.05$; the trajectory crosses the unity reference (dashed) multiple times, demonstrating genuine bidirectional state evolution rather than monotonic convergence. (c) Three-dimensional scatter of (step, observable, distance) coloured by distance magnitude; the helical structure reveals the coupled oscillation between observable amplitude and proximity to the initial state, characteristic of Poincar\'{e} recurrence in a compact categorical space. (d) Final distance at convergence for four $\varepsilon$-thresholds ($0.05$, $0.1$, $0.2$, $0.3$); all four converge within 503--504 steps (annotated above each bar), confirming that the convergence time is robust to the choice of tolerance.}
+    \label{fig:vahera_panel1_trajectory}
+\end{figure*}
+
 \subsection{Maxwell Demon Operations}
 
 \subsubsection{Demon State}
@@ -1269,6 +1277,13 @@ Proof verification can be parallelized:
 
 On an 8-core system, verification speedup $\approx 6$×.
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/vahera_panel2_penultimate.png}
+    \caption{Penultimate State and Asymptotic Solutions. (a) Distance to initial state for the final 10 positions (494--503) of a 504-step trajectory; positions 494--498 (coral) visit distinct states, while positions 499--503 (teal) all lock onto state~135 at distance $0.649$ (dashed line), demonstrating penultimate-state convergence. (b) Final distances from 20 independent asymptotic-solution runs; the mean distance is $0.628$ (coral dashed) with minimum $0.385$ (teal dotted), and all distances are strictly non-zero, confirming the Poincar\'{e} recurrence property that the system approaches but never exactly reaches the initial state. (c) Three-dimensional surface over $(\varepsilon,\, \text{final distance})$ showing the penultimate distance; the three measured points (coral) lie on a smooth surface where the penultimate distance consistently exceeds the final distance, validating the one-step-closer property of the backward trajectory. (d) Category counts before and after problem perturbation: starting from 101 categories, 50 are added (151 total), then separated into two regions of 51 and 50 categories respectively, demonstrating continuous adaptation of the categorical space under structural changes.}
+    \label{fig:vahera_panel2_penultimate}
+\end{figure*}
+
 %==============================================================================
 \section{Correctness Theorems}
 \label{sec:correctness}
@@ -1330,6 +1345,14 @@ By the Type Soundness theorem (Section~\ref{sec:types}), if $\Gamma \vdash e : D
 
 The type system rejects programs with dimensional mismatches at parse time. Therefore, only well-typed programs execute, and these preserve types. $\square$
 \end{proof}
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/vahera_panel4_unknowable.png}
+    \caption{Unknowable Origin and Incommensurability. (a) Histogram of inference errors from 100 trials attempting to reconstruct the initial state from observations; the mean error is $0.040$ (coral dashed) with range $[0.008, 0.085]$, and zero trials achieve perfect reconstruction, validating the unknowable-origin property of backward trajectory completion. (b) Minimum distance (teal) and final distance (coral) vs.\ trajectory length (100 to 2{,}000 steps); neither metric reaches zero at any length, confirming that the system asymptotically approaches but never exactly returns to the initial state, consistent with the Poincar\'{e} recurrence theorem in a measure-preserving dynamical system. (c) Three-dimensional distance-progression surface over (trajectory index $\times$ sample index); the rugged, non-monotonic topology demonstrates that each trajectory length produces a distinct distance landscape, with no convergence to a flat zero plane. (d) Scatter plot of Turing steps vs.\ Poincar\'{e} completions for 20 problems, coloured by completion count; the moderate correlation ($r = 0.629$) confirms that the two complexity measures capture different structural aspects of computation---high Turing cost does not imply high categorical complexity.}
+    \label{fig:vahera_panel4_unknowable}
+\end{figure*}
+
 
 %==============================================================================
 \section{Examples}
@@ -1460,6 +1483,13 @@ For sorting $n = 10^6$ elements:
 \end{itemize}
 
 Speedup: $\approx 10^6$×.
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/vahera_panel3_time_independence.png}
+    \caption{Time Independence and FLOPS Irrelevance. (a) Poincar\'{e} count across four rate multipliers ($0.5\times$ to $5\times$); all four bars reach exactly 26 with variance $= 0.0$, confirming that categorical complexity is invariant under changes in physical execution speed. (b) Poincar\'{e} complexity vs.\ simulated FLOPS ($10^6$ to $10^{12}$, log scale); the complexity remains constant at 72 across six orders of magnitude of computational throughput, demonstrating that FLOPS measures a fundamentally different quantity than Poincar\'{e} complexity. (c) Three-dimensional distance-progression trajectories for four trajectory lengths (100, 500, 1{,}000, 2{,}000 steps); each coloured line shows 20 distance samples, revealing that longer trajectories explore larger distances without converging to zero---the hallmark of asymptotic return. (d) Chain closure at four $\varepsilon$-thresholds: both Poincar\'{e} complexity (navy) and chain length (teal) remain constant at 50 for all thresholds, confirming that the categorical chain is closed under composition regardless of the recognition tolerance.}
+    \label{fig:vahera_panel3_time_independence}
+\end{figure*}
 
 \subsection{Benchmark Results}
 
