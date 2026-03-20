@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: trajectory-mechanism.aux
+Reallocating 'name_of_file' (item size: 1) to 6 items.
+The style file: unsrt.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Database file #1: references.bib
+Warning--I didn't find a database entry for "maxwell1871theory"
+Warning--can't use both volume and number fields in moggi1991notions
+You've used 36 entries,
+            1791 wiz_defined-function locations,
+            649 strings with 7632 characters,
+and the built_in function-call counts, 7133 in all, are:
+= -- 685
+> -- 193
+< -- 2
++ -- 85
+- -- 49
+* -- 408
+:= -- 1110
+add.period$ -- 108
+call.type$ -- 36
+change.case$ -- 27
+chr.to.int$ -- 0
+cite$ -- 37
+duplicate$ -- 350
+empty$ -- 788
+format.name$ -- 49
+if$ -- 1604
+int.to.chr$ -- 0
+int.to.str$ -- 36
+missing$ -- 52
+newline$ -- 183
+num.names$ -- 36
+pop$ -- 128
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 110
+stack$ -- 0
+substring$ -- 502
+swap$ -- 46
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 77
+width$ -- 38
+write$ -- 390
+(There were 2 warnings)

@@ -1,0 +1,152 @@
+\begin{thebibliography}{10}
+
+\bibitem{hennessy2011computer}
+John~L. Hennessy and David~A. Patterson.
+\newblock {\em Computer Architecture: A Quantitative Approach}.
+\newblock Morgan Kaufmann, 5th edition, 2011.
+
+\bibitem{silberschatz2018operating}
+Abraham Silberschatz, Peter~B. Galvin, and Greg Gagne.
+\newblock {\em Operating System Concepts}.
+\newblock Wiley, 10th edition, 2018.
+
+\bibitem{cover2006elements}
+Thomas~M. Cover and Joy~A. Thomas.
+\newblock {\em Elements of Information Theory}.
+\newblock Wiley-Interscience, 2nd edition, 2006.
+
+\bibitem{maclane1998categories}
+Saunders Mac~Lane.
+\newblock {\em Categories for the Working Mathematician}.
+\newblock Springer, 2nd edition, 1998.
+
+\bibitem{awodey2010category}
+Steve Awodey.
+\newblock {\em Category Theory}.
+\newblock Oxford University Press, 2nd edition, 2010.
+
+\bibitem{cormen2009introduction}
+Thomas~H. Cormen, Charles~E. Leiserson, Ronald~L. Rivest, and Clifford Stein.
+\newblock {\em Introduction to Algorithms}.
+\newblock MIT Press, 3rd edition, 2009.
+
+\bibitem{lawvere2003sets}
+F.~William Lawvere and Robert Rosebrugh.
+\newblock {\em Sets for Mathematics}.
+\newblock Cambridge University Press, 2003.
+
+\bibitem{hoare1969axiomatic}
+C.A.R. Hoare.
+\newblock An axiomatic basis for computer programming.
+\newblock {\em Communications of the ACM}, 12(10):576--580, 1969.
+
+\bibitem{jaynes1957information}
+Edwin~T. Jaynes.
+\newblock Information theory and statistical mechanics.
+\newblock {\em Physical Review}, 106(4):620--630, 1957.
+
+\bibitem{landauer1961irreversibility}
+Rolf Landauer.
+\newblock Irreversibility and heat generation in the computing process.
+\newblock {\em IBM Journal of Research and Development}, 5(3):183--191, 1961.
+
+\bibitem{bennett1973logical}
+Charles~H. Bennett.
+\newblock Logical reversibility of computation.
+\newblock {\em IBM Journal of Research and Development}, 17(6):525--532, 1973.
+
+\bibitem{shannon1949mathematical}
+Claude~E. Shannon and Warren Weaver.
+\newblock {\em The Mathematical Theory of Communication}.
+\newblock University of Illinois Press, 1949.
+
+\bibitem{moura2021lean4}
+Leonardo de~Moura and Sebastian Ullrich.
+\newblock The {Lean 4} theorem prover and programming language.
+\newblock {\em Lecture Notes in Computer Science}, 12699:625--635, 2021.
+
+\bibitem{klein2009sel4}
+Gerwin Klein, Kevin Elphinstone, Gernot Heiser, June Andronick, David Cock,
+  Philip Derrin, Dhammika Elkaduwe, Kai Engelhardt, Rafal Kolanski, Michael
+  Norrish, Thomas Sewell, Harvey Tuch, and Simon Winwood.
+\newblock {seL4}: Formal verification of an {OS} kernel.
+\newblock In {\em Proceedings of the ACM SIGOPS Symposium on Operating Systems
+  Principles}, pages 207--220, 2009.
+
+\bibitem{kocher1999differential}
+Paul Kocher, Joshua Jaffe, and Benjamin Jun.
+\newblock Differential power analysis.
+\newblock In {\em Advances in Cryptology -- CRYPTO '99}, pages 388--397, 1999.
+
+\bibitem{pierce2002types}
+Benjamin~C. Pierce.
+\newblock {\em Types and Programming Languages}.
+\newblock MIT Press, 2002.
+
+\bibitem{lamport1977proving}
+Leslie Lamport.
+\newblock Proving the correctness of multiprocess programs.
+\newblock {\em IEEE Transactions on Software Engineering}, 3(2):125--143, 1977.
+
+\bibitem{mudge2000power}
+Trevor Mudge.
+\newblock Power: A first-class architectural design constraint.
+\newblock {\em IEEE Computer}, 34(4):52--58, 2001.
+
+\bibitem{tanenbaum2015modern}
+Andrew~S. Tanenbaum and Herbert Bos.
+\newblock {\em Modern Operating Systems}.
+\newblock Pearson, 4th edition, 2015.
+
+\bibitem{hicks2016certikos}
+Ronghui Gu, Zhong Shao, Hao Chen, Xiongnan Wu, Jieung Kim, Vilhelm Sjöberg,
+  and David Costanzo.
+\newblock {CertiKOS}: An extensible architecture for building certified
+  concurrent {OS} kernels.
+\newblock {\em Proceedings of the USENIX Symposium on Operating Systems Design
+  and Implementation}, pages 653--669, 2016.
+
+\bibitem{moggi1991notions}
+Eugenio Moggi.
+\newblock Notions of computation and monads.
+\newblock In {\em Information and Computation}, volume~93, pages 55--92, 1991.
+
+\bibitem{fredkin1982conservative}
+Edward Fredkin and Tommaso Toffoli.
+\newblock Conservative logic.
+\newblock {\em International Journal of Theoretical Physics},
+  21(3--4):219--253, 1982.
+
+\bibitem{boltzmann1896vorlesungen}
+Ludwig Boltzmann.
+\newblock {\em Vorlesungen über Gastheorie}.
+\newblock J.A. Barth, 1896.
+
+\bibitem{floyd1967assigning}
+Robert~W. Floyd.
+\newblock Assigning meanings to programs.
+\newblock {\em Mathematical Aspects of Computer Science}, 19:19--32, 1967.
+
+\bibitem{dijkstra1976discipline}
+Edsger~W. Dijkstra.
+\newblock {\em A Discipline of Programming}.
+\newblock Prentice-Hall, 1976.
+
+\bibitem{leroy2009formal}
+Xavier Leroy.
+\newblock Formal verification of a realistic compiler.
+\newblock In {\em Communications of the ACM}, volume~52, pages 107--115, 2009.
+
+\bibitem{sipser2012introduction}
+Michael Sipser.
+\newblock {\em Introduction to the Theory of Computation}.
+\newblock Cengage Learning, 3rd edition, 2012.
+
+\bibitem{turing1936computable}
+Alan~M. Turing.
+\newblock On computable numbers, with an application to the
+  {Entscheidungsproblem}.
+\newblock {\em Proceedings of the London Mathematical Society}, 42:230--265,
+  1936.
+
+\end{thebibliography}
