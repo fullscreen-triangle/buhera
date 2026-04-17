@@ -1,0 +1,1356 @@
+{
+  "experiment_1_latency": {
+    "queries": [
+      {
+        "query": "what is the boiling point of ethanol",
+        "vahera": "describe ethanol_bp with \"boiling point of ethanol\"\nresolve ethanol_bp\nspawn query from ethanol_bp\nnavigate to penultimate\ncomplete trajectory\ncontroller verify",
+        "vahera_lines": 6,
+        "t_translate_ms": 0.022099993657320738,
+        "t_execute_ms": 0.6501000025309622,
+        "t_total_ms": 0.672199996188283,
+        "match": "ethanol",
+        "d_match": 0.0,
+        "query_coord": [
+          0.8563052342395036,
+          0.7387578663347046,
+          0.047364393412337114
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "boiling point of benzene",
+        "vahera": "describe benzene_bp with \"boiling point of benzene\"\nresolve benzene_bp\nspawn query from benzene_bp\nnavigate to penultimate\ncomplete trajectory\ncontroller verify",
+        "vahera_lines": 6,
+        "t_translate_ms": 0.010199990356341004,
+        "t_execute_ms": 0.22299998090602458,
+        "t_total_ms": 0.23319997126236558,
+        "match": "benzene",
+        "d_match": 0.0,
+        "query_coord": [
+          0.033962956033822156,
+          0.12149289477485836,
+          0.48854139472438124
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "density of water",
+        "vahera": "describe query with \"density of water\"\nresolve query\nspawn q from query\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.00790000194683671,
+        "t_execute_ms": 0.1314000110141933,
+        "t_total_ms": 0.13930001296103,
+        "match": "water",
+        "d_match": 0.0,
+        "query_coord": [
+          0.050391495730827796,
+          0.16228614956759202,
+          0.8396282321228441
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "melting point of aspirin",
+        "vahera": "describe query with \"melting point of aspirin\"\nresolve query\nspawn q from query\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006799993570894003,
+        "t_execute_ms": 0.13040000339969993,
+        "t_total_ms": 0.13719999697059393,
+        "match": "aspirin",
+        "d_match": 0.0,
+        "query_coord": [
+          0.22207689682869347,
+          0.40540938434023843,
+          0.10086055341075872
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "what is caffeine",
+        "vahera": "describe caffeine with \"caffeine\"\nresolve caffeine\nspawn query from caffeine\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.007199996616691351,
+        "t_execute_ms": 0.1188000023830682,
+        "t_total_ms": 0.12599999899975955,
+        "match": "caffeine",
+        "d_match": 0.0,
+        "query_coord": [
+          0.5698544042927096,
+          0.6338585249292006,
+          0.25428834409317824
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "what is ibuprofen",
+        "vahera": "describe ibuprofen with \"ibuprofen\"\nresolve ibuprofen\nspawn query from ibuprofen\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.007199996616691351,
+        "t_execute_ms": 0.11889997404068708,
+        "t_total_ms": 0.12609997065737844,
+        "match": "ibuprofen",
+        "d_match": 0.0,
+        "query_coord": [
+          0.5517054900558073,
+          0.711692498960389,
+          0.6109826041455089
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "what is methanol",
+        "vahera": "describe methanol with \"methanol\"\nresolve methanol\nspawn query from methanol\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.008599978173151612,
+        "t_execute_ms": 0.11560000712051988,
+        "t_total_ms": 0.12419998529367149,
+        "match": "methanol",
+        "d_match": 0.0,
+        "query_coord": [
+          0.8082605610655843,
+          0.7161897007879288,
+          0.3969027370957958
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "molecular weight of glucose",
+        "vahera": "describe query with \"molecular weight of glucose\"\nresolve query\nspawn q from query\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006900023436173797,
+        "t_execute_ms": 0.12969999806955457,
+        "t_total_ms": 0.13660002150572836,
+        "match": "glucose",
+        "d_match": 0.0,
+        "query_coord": [
+          0.8270437457334106,
+          0.32492682764955183,
+          0.9768175839165353
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "boiling point of hexane",
+        "vahera": "describe hexane_bp with \"boiling point of hexane\"\nresolve hexane_bp\nspawn query from hexane_bp\nnavigate to penultimate\ncomplete trajectory\ncontroller verify",
+        "vahera_lines": 6,
+        "t_translate_ms": 0.006299989763647318,
+        "t_execute_ms": 0.146100006531924,
+        "t_total_ms": 0.15239999629557133,
+        "match": "hexane",
+        "d_match": 0.0,
+        "query_coord": [
+          0.24106700513006052,
+          0.019353981222610006,
+          0.7453813713690938
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "what is paracetamol",
+        "vahera": "describe paracetamol with \"paracetamol\"\nresolve paracetamol\nspawn query from paracetamol\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006600021151825786,
+        "t_execute_ms": 0.11720001930370927,
+        "t_total_ms": 0.12380004045553505,
+        "match": "paracetamol",
+        "d_match": 0.0,
+        "query_coord": [
+          0.23056473189497328,
+          0.946820258804979,
+          0.14693876259983596
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "density of acetone",
+        "vahera": "describe query with \"density of acetone\"\nresolve query\nspawn q from query\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006099988240748644,
+        "t_execute_ms": 0.12689997674897313,
+        "t_total_ms": 0.13299996498972178,
+        "match": "acetone",
+        "d_match": 0.0,
+        "query_coord": [
+          0.13485561227667486,
+          0.013271944074086939,
+          0.10146015307715661
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "what is toluene",
+        "vahera": "describe toluene with \"toluene\"\nresolve toluene\nspawn query from toluene\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006300018867477775,
+        "t_execute_ms": 0.12129999231547117,
+        "t_total_ms": 0.12760001118294895,
+        "match": "toluene",
+        "d_match": 0.0,
+        "query_coord": [
+          0.5383988076626919,
+          0.5441203608798424,
+          0.03265838377145758
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "melting point of sucrose",
+        "vahera": "describe query with \"melting point of sucrose\"\nresolve query\nspawn q from query\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.008899980457499623,
+        "t_execute_ms": 0.2246999938506633,
+        "t_total_ms": 0.23359997430816293,
+        "match": "sucrose",
+        "d_match": 0.0,
+        "query_coord": [
+          0.3530153096221931,
+          0.11621781844655876,
+          0.13881657740919584
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "what is naphthalene",
+        "vahera": "describe naphthalene with \"naphthalene\"\nresolve naphthalene\nspawn query from naphthalene\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.007399998139590025,
+        "t_execute_ms": 0.15390000771731138,
+        "t_total_ms": 0.1613000058569014,
+        "match": "naphthalene",
+        "d_match": 0.0,
+        "query_coord": [
+          0.36159496072569164,
+          0.3097025025574036,
+          0.5208917615263826
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "what is chloroform",
+        "vahera": "describe chloroform with \"chloroform\"\nresolve chloroform\nspawn query from chloroform\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.00689999433234334,
+        "t_execute_ms": 0.1345000055152923,
+        "t_total_ms": 0.14139999984763563,
+        "match": "chloroform",
+        "d_match": 0.0,
+        "query_coord": [
+          0.8897588507730669,
+          0.7285045918803218,
+          0.3828982633237555
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "boiling point of nicotine",
+        "vahera": "describe nicotine_bp with \"boiling point of nicotine\"\nresolve nicotine_bp\nspawn query from nicotine_bp\nnavigate to penultimate\ncomplete trajectory\ncontroller verify",
+        "vahera_lines": 6,
+        "t_translate_ms": 0.006299989763647318,
+        "t_execute_ms": 0.142400007462129,
+        "t_total_ms": 0.14869999722577631,
+        "match": "nicotine",
+        "d_match": 0.0,
+        "query_coord": [
+          0.7811514265714132,
+          0.6830893727592608,
+          0.7057773075058031
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "what is pentane",
+        "vahera": "describe pentane with \"pentane\"\nresolve pentane\nspawn query from pentane\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006400019628927112,
+        "t_execute_ms": 0.11199997970834374,
+        "t_total_ms": 0.11839999933727086,
+        "match": "pentane",
+        "d_match": 0.0,
+        "query_coord": [
+          0.6569532283978645,
+          0.6698967632640138,
+          0.8348620153116657
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "what is urea",
+        "vahera": "describe urea with \"urea\"\nresolve urea\nspawn query from urea\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006200018106028438,
+        "t_execute_ms": 0.11890000314451754,
+        "t_total_ms": 0.12510002125054598,
+        "match": "urea",
+        "d_match": 0.0,
+        "query_coord": [
+          0.0352047849165249,
+          0.6978979891486923,
+          0.44875985119042994
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "what is glycerol",
+        "vahera": "describe glycerol with \"glycerol\"\nresolve glycerol\nspawn query from glycerol\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.00689999433234334,
+        "t_execute_ms": 0.11890000314451754,
+        "t_total_ms": 0.12579999747686088,
+        "match": "glycerol",
+        "d_match": 0.0,
+        "query_coord": [
+          0.971904021907129,
+          0.29118257041656515,
+          0.9727729909052042
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      },
+      {
+        "query": "what is phenol",
+        "vahera": "describe phenol with \"phenol\"\nresolve phenol\nspawn query from phenol\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.005999987479299307,
+        "t_execute_ms": 0.11470000026747584,
+        "t_total_ms": 0.12069998774677515,
+        "match": "phenol",
+        "d_match": 0.0,
+        "query_coord": [
+          0.9544324016311632,
+          0.6329468115809591,
+          0.4394364800880952
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null
+      }
+    ],
+    "n_queries": 20,
+    "translate_ms_mean": 0.00785999873187393,
+    "translate_ms_median": 0.00689999433234334,
+    "execute_ms_mean": 0.1624699987587519,
+    "execute_ms_median": 0.12829998740926385,
+    "total_ms_mean": 0.17032999749062583,
+    "total_ms_median": 0.13479999324772507,
+    "total_ms_p95": 0.672199996188283
+  },
+  "experiment_2_accuracy": {
+    "queries": [
+      {
+        "query": "boiling point of ethanol",
+        "vahera": "describe ethanol_bp with \"boiling point of ethanol\"\nresolve ethanol_bp\nspawn query from ethanol_bp\nnavigate to penultimate\ncomplete trajectory\ncontroller verify",
+        "vahera_lines": 6,
+        "t_translate_ms": 0.015099998563528061,
+        "t_execute_ms": 0.22410001838579774,
+        "t_total_ms": 0.2392000169493258,
+        "match": "ethanol",
+        "d_match": 0.0,
+        "query_coord": [
+          0.8563052342395036,
+          0.7387578663347046,
+          0.047364393412337114
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "ethanol",
+        "correct": true
+      },
+      {
+        "query": "boiling point of benzene",
+        "vahera": "describe benzene_bp with \"boiling point of benzene\"\nresolve benzene_bp\nspawn query from benzene_bp\nnavigate to penultimate\ncomplete trajectory\ncontroller verify",
+        "vahera_lines": 6,
+        "t_translate_ms": 0.00689999433234334,
+        "t_execute_ms": 0.14519999967887998,
+        "t_total_ms": 0.15209999401122332,
+        "match": "benzene",
+        "d_match": 0.0,
+        "query_coord": [
+          0.033962956033822156,
+          0.12149289477485836,
+          0.48854139472438124
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "benzene",
+        "correct": true
+      },
+      {
+        "query": "boiling point of hexane",
+        "vahera": "describe hexane_bp with \"boiling point of hexane\"\nresolve hexane_bp\nspawn query from hexane_bp\nnavigate to penultimate\ncomplete trajectory\ncontroller verify",
+        "vahera_lines": 6,
+        "t_translate_ms": 0.006300018867477775,
+        "t_execute_ms": 0.1416000013705343,
+        "t_total_ms": 0.14790002023801208,
+        "match": "hexane",
+        "d_match": 0.0,
+        "query_coord": [
+          0.24106700513006052,
+          0.019353981222610006,
+          0.7453813713690938
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "hexane",
+        "correct": true
+      },
+      {
+        "query": "boiling point of toluene",
+        "vahera": "describe toluene_bp with \"boiling point of toluene\"\nresolve toluene_bp\nspawn query from toluene_bp\nnavigate to penultimate\ncomplete trajectory\ncontroller verify",
+        "vahera_lines": 6,
+        "t_translate_ms": 0.006200018106028438,
+        "t_execute_ms": 0.13229998876340687,
+        "t_total_ms": 0.1385000068694353,
+        "match": "toluene",
+        "d_match": 0.0,
+        "query_coord": [
+          0.5383988076626919,
+          0.5441203608798424,
+          0.03265838377145758
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "toluene",
+        "correct": true
+      },
+      {
+        "query": "density of water",
+        "vahera": "describe query with \"density of water\"\nresolve query\nspawn q from query\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006999995093792677,
+        "t_execute_ms": 0.13719999697059393,
+        "t_total_ms": 0.1441999920643866,
+        "match": "water",
+        "d_match": 0.0,
+        "query_coord": [
+          0.050391495730827796,
+          0.16228614956759202,
+          0.8396282321228441
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "water",
+        "correct": true
+      },
+      {
+        "query": "density of acetone",
+        "vahera": "describe query with \"density of acetone\"\nresolve query\nspawn q from query\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006399990525096655,
+        "t_execute_ms": 0.1700000138953328,
+        "t_total_ms": 0.17640000442042947,
+        "match": "acetone",
+        "d_match": 0.0,
+        "query_coord": [
+          0.13485561227667486,
+          0.013271944074086939,
+          0.10146015307715661
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "acetone",
+        "correct": true
+      },
+      {
+        "query": "melting point of aspirin",
+        "vahera": "describe query with \"melting point of aspirin\"\nresolve query\nspawn q from query\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.00890000956133008,
+        "t_execute_ms": 0.13149998267181218,
+        "t_total_ms": 0.14039999223314226,
+        "match": "aspirin",
+        "d_match": 0.0,
+        "query_coord": [
+          0.22207689682869347,
+          0.40540938434023843,
+          0.10086055341075872
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "aspirin",
+        "correct": true
+      },
+      {
+        "query": "melting point of caffeine",
+        "vahera": "describe query with \"melting point of caffeine\"\nresolve query\nspawn q from query\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006500020390376449,
+        "t_execute_ms": 0.12409998453222215,
+        "t_total_ms": 0.1306000049225986,
+        "match": "caffeine",
+        "d_match": 0.0,
+        "query_coord": [
+          0.5698544042927096,
+          0.6338585249292006,
+          0.25428834409317824
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "caffeine",
+        "correct": true
+      },
+      {
+        "query": "what is methanol",
+        "vahera": "describe methanol with \"methanol\"\nresolve methanol\nspawn query from methanol\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006799993570894003,
+        "t_execute_ms": 0.2060999977402389,
+        "t_total_ms": 0.2128999913111329,
+        "match": "methanol",
+        "d_match": 0.0,
+        "query_coord": [
+          0.8082605610655843,
+          0.7161897007879288,
+          0.3969027370957958
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "methanol",
+        "correct": true
+      },
+      {
+        "query": "what is caffeine",
+        "vahera": "describe caffeine with \"caffeine\"\nresolve caffeine\nspawn query from caffeine\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006700021913275123,
+        "t_execute_ms": 0.1230000052601099,
+        "t_total_ms": 0.12970002717338502,
+        "match": "caffeine",
+        "d_match": 0.0,
+        "query_coord": [
+          0.5698544042927096,
+          0.6338585249292006,
+          0.25428834409317824
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "caffeine",
+        "correct": true
+      },
+      {
+        "query": "what is ibuprofen",
+        "vahera": "describe ibuprofen with \"ibuprofen\"\nresolve ibuprofen\nspawn query from ibuprofen\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.00589998671784997,
+        "t_execute_ms": 0.11130000348202884,
+        "t_total_ms": 0.11719999019987881,
+        "match": "ibuprofen",
+        "d_match": 0.0,
+        "query_coord": [
+          0.5517054900558073,
+          0.711692498960389,
+          0.6109826041455089
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "ibuprofen",
+        "correct": true
+      },
+      {
+        "query": "what is glucose",
+        "vahera": "describe glucose with \"glucose\"\nresolve glucose\nspawn query from glucose\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.005700014298781753,
+        "t_execute_ms": 0.1269000058528036,
+        "t_total_ms": 0.13260002015158534,
+        "match": "glucose",
+        "d_match": 0.0,
+        "query_coord": [
+          0.8270437457334106,
+          0.32492682764955183,
+          0.9768175839165353
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "glucose",
+        "correct": true
+      },
+      {
+        "query": "what is nicotine",
+        "vahera": "describe nicotine with \"nicotine\"\nresolve nicotine\nspawn query from nicotine\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006000016583129764,
+        "t_execute_ms": 0.11130000348202884,
+        "t_total_ms": 0.1173000200651586,
+        "match": "nicotine",
+        "d_match": 0.0,
+        "query_coord": [
+          0.7811514265714132,
+          0.6830893727592608,
+          0.7057773075058031
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "nicotine",
+        "correct": true
+      },
+      {
+        "query": "what is paracetamol",
+        "vahera": "describe paracetamol with \"paracetamol\"\nresolve paracetamol\nspawn query from paracetamol\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.006199989002197981,
+        "t_execute_ms": 0.11180000728927553,
+        "t_total_ms": 0.11799999629147351,
+        "match": "paracetamol",
+        "d_match": 0.0,
+        "query_coord": [
+          0.23056473189497328,
+          0.946820258804979,
+          0.14693876259983596
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "paracetamol",
+        "correct": true
+      },
+      {
+        "query": "what is naphthalene",
+        "vahera": "describe naphthalene with \"naphthalene\"\nresolve naphthalene\nspawn query from naphthalene\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.005900015821680427,
+        "t_execute_ms": 0.10550001752562821,
+        "t_total_ms": 0.11140003334730864,
+        "match": "naphthalene",
+        "d_match": 0.0,
+        "query_coord": [
+          0.36159496072569164,
+          0.3097025025574036,
+          0.5208917615263826
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "naphthalene",
+        "correct": true
+      },
+      {
+        "query": "what is morphine",
+        "vahera": "describe morphine with \"morphine\"\nresolve morphine\nspawn query from morphine\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.005900015821680427,
+        "t_execute_ms": 0.10679999832063913,
+        "t_total_ms": 0.11270001414231956,
+        "match": "morphine",
+        "d_match": 0.0,
+        "query_coord": [
+          0.12430080626365747,
+          0.8950661877310211,
+          0.900687310575059
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "morphine",
+        "correct": true
+      },
+      {
+        "query": "what is aniline",
+        "vahera": "describe aniline with \"aniline\"\nresolve aniline\nspawn query from aniline\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.00580001506023109,
+        "t_execute_ms": 0.11650001397356391,
+        "t_total_ms": 0.122300029033795,
+        "match": "aniline",
+        "d_match": 0.0,
+        "query_coord": [
+          0.4305516087982777,
+          0.06932926369506376,
+          0.6511312075254214
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "aniline",
+        "correct": true
+      },
+      {
+        "query": "what is phenol",
+        "vahera": "describe phenol with \"phenol\"\nresolve phenol\nspawn query from phenol\nnavigate to penultimate\ncomplete trajectory",
+        "vahera_lines": 5,
+        "t_translate_ms": 0.005799985956400633,
+        "t_execute_ms": 0.11119997361674905,
+        "t_total_ms": 0.11699995957314968,
+        "match": "phenol",
+        "d_match": 0.0,
+        "query_coord": [
+          0.9544324016311632,
+          0.6329468115809591,
+          0.4394364800880952
+        ],
+        "pve_calls": 3,
+        "pve_rejects": 0,
+        "tem_samples": 3,
+        "error": null,
+        "expected": "phenol",
+        "correct": true
+      }
+    ],
+    "n_queries": 18,
+    "n_correct": 18,
+    "accuracy": 1.0,
+    "mean_d_correct": 0.0,
+    "mean_d_incorrect": 0
+  },
+  "experiment_3_dispatch": {
+    "by_query_type": {
+      "what is X": {
+        "n": 5,
+        "pve_calls_mean": 3,
+        "tem_samples_mean": 3,
+        "vahera_lines_mean": 5,
+        "t_total_mean": 0.24276002077385783
+      },
+      "boiling point": {
+        "n": 5,
+        "pve_calls_mean": 3,
+        "tem_samples_mean": 3,
+        "vahera_lines_mean": 6,
+        "t_total_mean": 0.23095999495126307
+      },
+      "similarity": {
+        "n": 5,
+        "pve_calls_mean": 0,
+        "tem_samples_mean": 0,
+        "vahera_lines_mean": 1,
+        "t_total_mean": 0.35811999696306884
+      }
+    },
+    "final_kernel_stats": {
+      "cmm_objects": 40,
+      "dic": {
+        "bits_retrieved": 35,
+        "bits_available": 105,
+        "compression": 0.6666666666666667
+      },
+      "pve": {
+        "verified": 70,
+        "rejected": 0
+      },
+      "tem": {
+        "samples": 70,
+        "alerts": 70,
+        "max_delta": 0.8366989225818859
+      }
+    }
+  },
+  "experiment_4_scaling": {
+    "scaling": [
+      {
+        "n_compounds": 5,
+        "mean_t_total_ms": 0.2856400009477511,
+        "mean_t_execute_ms": 0.2741799980867654,
+        "queries_per_sec": 3500.9102250455417
+      },
+      {
+        "n_compounds": 10,
+        "mean_t_total_ms": 0.133050000295043,
+        "mean_t_execute_ms": 0.12650999997276813,
+        "queries_per_sec": 7515.971422641604
+      },
+      {
+        "n_compounds": 20,
+        "mean_t_total_ms": 0.13237000384833664,
+        "mean_t_execute_ms": 0.12592000421136618,
+        "queries_per_sec": 7554.581634263252
+      },
+      {
+        "n_compounds": 40,
+        "mean_t_total_ms": 0.2355700038606301,
+        "mean_t_execute_ms": 0.22490999836008996,
+        "queries_per_sec": 4245.022641302109
+      }
+    ]
+  },
+  "experiment_5_empty_dictionary": {
+    "samples": [
+      {
+        "name": "water",
+        "query": "what is water",
+        "original_coord": [
+          0.050391495730827796,
+          0.16228614956759202,
+          0.8396282321228441
+        ],
+        "query_coord": [
+          0.050391495730827796,
+          0.16228614956759202,
+          0.8396282321228441
+        ],
+        "d_query_to_original": 0.0,
+        "match": "water",
+        "correct": true
+      },
+      {
+        "name": "methane",
+        "query": "what is methane",
+        "original_coord": [
+          0.06431590686002298,
+          0.042499347442295,
+          0.9833747571966794
+        ],
+        "query_coord": [
+          0.06431590686002298,
+          0.042499347442295,
+          0.9833747571966794
+        ],
+        "d_query_to_original": 0.0,
+        "match": "methane",
+        "correct": true
+      },
+      {
+        "name": "ethane",
+        "query": "what is ethane",
+        "original_coord": [
+          0.8423401291509294,
+          0.48893508966813565,
+          0.03936374881349769
+        ],
+        "query_coord": [
+          0.8423401291509294,
+          0.48893508966813565,
+          0.03936374881349769
+        ],
+        "d_query_to_original": 0.0,
+        "match": "ethane",
+        "correct": true
+      },
+      {
+        "name": "propane",
+        "query": "what is propane",
+        "original_coord": [
+          0.7960912722948391,
+          0.12433531534920239,
+          0.6837876500365866
+        ],
+        "query_coord": [
+          0.7960912722948391,
+          0.12433531534920239,
+          0.6837876500365866
+        ],
+        "d_query_to_original": 0.0,
+        "match": "propane",
+        "correct": true
+      },
+      {
+        "name": "butane",
+        "query": "what is butane",
+        "original_coord": [
+          0.262920783414371,
+          0.31575906049611935,
+          0.30084996927206203
+        ],
+        "query_coord": [
+          0.262920783414371,
+          0.31575906049611935,
+          0.30084996927206203
+        ],
+        "d_query_to_original": 0.0,
+        "match": "butane",
+        "correct": true
+      },
+      {
+        "name": "pentane",
+        "query": "what is pentane",
+        "original_coord": [
+          0.6569532283978645,
+          0.6698967632640138,
+          0.8348620153116657
+        ],
+        "query_coord": [
+          0.6569532283978645,
+          0.6698967632640138,
+          0.8348620153116657
+        ],
+        "d_query_to_original": 0.0,
+        "match": "pentane",
+        "correct": true
+      },
+      {
+        "name": "hexane",
+        "query": "what is hexane",
+        "original_coord": [
+          0.24106700513006052,
+          0.019353981222610006,
+          0.7453813713690938
+        ],
+        "query_coord": [
+          0.24106700513006052,
+          0.019353981222610006,
+          0.7453813713690938
+        ],
+        "d_query_to_original": 0.0,
+        "match": "hexane",
+        "correct": true
+      },
+      {
+        "name": "heptane",
+        "query": "what is heptane",
+        "original_coord": [
+          0.8824993290822778,
+          0.8306966886513385,
+          0.8486657924225826
+        ],
+        "query_coord": [
+          0.8824993290822778,
+          0.8306966886513385,
+          0.8486657924225826
+        ],
+        "d_query_to_original": 0.0,
+        "match": "heptane",
+        "correct": true
+      },
+      {
+        "name": "octane",
+        "query": "what is octane",
+        "original_coord": [
+          0.16293393408223422,
+          0.64023595661816,
+          0.2585891259605959
+        ],
+        "query_coord": [
+          0.16293393408223422,
+          0.64023595661816,
+          0.2585891259605959
+        ],
+        "d_query_to_original": 0.0,
+        "match": "octane",
+        "correct": true
+      },
+      {
+        "name": "nonane",
+        "query": "what is nonane",
+        "original_coord": [
+          0.44996737716748303,
+          0.9118240133442097,
+          0.1768070817509093
+        ],
+        "query_coord": [
+          0.44996737716748303,
+          0.9118240133442097,
+          0.1768070817509093
+        ],
+        "d_query_to_original": 0.0,
+        "match": "nonane",
+        "correct": true
+      },
+      {
+        "name": "methanol",
+        "query": "what is methanol",
+        "original_coord": [
+          0.8082605610655843,
+          0.7161897007879288,
+          0.3969027370957958
+        ],
+        "query_coord": [
+          0.8082605610655843,
+          0.7161897007879288,
+          0.3969027370957958
+        ],
+        "d_query_to_original": 0.0,
+        "match": "methanol",
+        "correct": true
+      },
+      {
+        "name": "ethanol",
+        "query": "what is ethanol",
+        "original_coord": [
+          0.8563052342395036,
+          0.7387578663347046,
+          0.047364393412337114
+        ],
+        "query_coord": [
+          0.8563052342395036,
+          0.7387578663347046,
+          0.047364393412337114
+        ],
+        "d_query_to_original": 0.0,
+        "match": "ethanol",
+        "correct": true
+      },
+      {
+        "name": "propanol",
+        "query": "what is propanol",
+        "original_coord": [
+          0.37002848574938363,
+          0.15490925849643977,
+          0.7034830515071115
+        ],
+        "query_coord": [
+          0.37002848574938363,
+          0.15490925849643977,
+          0.7034830515071115
+        ],
+        "d_query_to_original": 0.0,
+        "match": "propanol",
+        "correct": true
+      },
+      {
+        "name": "butanol",
+        "query": "what is butanol",
+        "original_coord": [
+          0.8586422999625642,
+          0.6540124521296995,
+          0.3142224472951507
+        ],
+        "query_coord": [
+          0.8586422999625642,
+          0.6540124521296995,
+          0.3142224472951507
+        ],
+        "d_query_to_original": 0.0,
+        "match": "butanol",
+        "correct": true
+      },
+      {
+        "name": "pentanol",
+        "query": "what is pentanol",
+        "original_coord": [
+          0.3092079391836835,
+          0.3286315419321095,
+          0.672327929831696
+        ],
+        "query_coord": [
+          0.3092079391836835,
+          0.3286315419321095,
+          0.672327929831696
+        ],
+        "d_query_to_original": 0.0,
+        "match": "pentanol",
+        "correct": true
+      },
+      {
+        "name": "benzene",
+        "query": "what is benzene",
+        "original_coord": [
+          0.033962956033822156,
+          0.12149289477485836,
+          0.48854139472438124
+        ],
+        "query_coord": [
+          0.033962956033822156,
+          0.12149289477485836,
+          0.48854139472438124
+        ],
+        "d_query_to_original": 0.0,
+        "match": "benzene",
+        "correct": true
+      },
+      {
+        "name": "toluene",
+        "query": "what is toluene",
+        "original_coord": [
+          0.5383988076626919,
+          0.5441203608798424,
+          0.03265838377145758
+        ],
+        "query_coord": [
+          0.5383988076626919,
+          0.5441203608798424,
+          0.03265838377145758
+        ],
+        "d_query_to_original": 0.0,
+        "match": "toluene",
+        "correct": true
+      },
+      {
+        "name": "xylene",
+        "query": "what is xylene",
+        "original_coord": [
+          0.006159512759159824,
+          0.3702457313174594,
+          0.1827635061543873
+        ],
+        "query_coord": [
+          0.006159512759159824,
+          0.3702457313174594,
+          0.1827635061543873
+        ],
+        "d_query_to_original": 0.0,
+        "match": "xylene",
+        "correct": true
+      },
+      {
+        "name": "naphthalene",
+        "query": "what is naphthalene",
+        "original_coord": [
+          0.36159496072569164,
+          0.3097025025574036,
+          0.5208917615263826
+        ],
+        "query_coord": [
+          0.36159496072569164,
+          0.3097025025574036,
+          0.5208917615263826
+        ],
+        "d_query_to_original": 0.0,
+        "match": "naphthalene",
+        "correct": true
+      },
+      {
+        "name": "anthracene",
+        "query": "what is anthracene",
+        "original_coord": [
+          0.3179149654317066,
+          0.6181929983334583,
+          0.7712639306364923
+        ],
+        "query_coord": [
+          0.3179149654317066,
+          0.6181929983334583,
+          0.7712639306364923
+        ],
+        "d_query_to_original": 0.0,
+        "match": "anthracene",
+        "correct": true
+      },
+      {
+        "name": "acetone",
+        "query": "what is acetone",
+        "original_coord": [
+          0.13485561227667486,
+          0.013271944074086939,
+          0.10146015307715661
+        ],
+        "query_coord": [
+          0.13485561227667486,
+          0.013271944074086939,
+          0.10146015307715661
+        ],
+        "d_query_to_original": 0.0,
+        "match": "acetone",
+        "correct": true
+      },
+      {
+        "name": "acetaldehyde",
+        "query": "what is acetaldehyde",
+        "original_coord": [
+          0.12299217637512005,
+          0.049187072249868624,
+          0.2023040292632281
+        ],
+        "query_coord": [
+          0.12299217637512005,
+          0.049187072249868624,
+          0.2023040292632281
+        ],
+        "d_query_to_original": 0.0,
+        "match": "acetaldehyde",
+        "correct": true
+      },
+      {
+        "name": "acetic_acid",
+        "query": "what is acetic_acid",
+        "original_coord": [
+          0.5245647102092523,
+          0.2286627793546594,
+          0.1608313797146237
+        ],
+        "query_coord": [
+          0.5245647102092523,
+          0.2286627793546594,
+          0.1608313797146237
+        ],
+        "d_query_to_original": 0.0,
+        "match": "acetic_acid",
+        "correct": true
+      },
+      {
+        "name": "formic_acid",
+        "query": "what is formic_acid",
+        "original_coord": [
+          0.5836960326883028,
+          0.6875575855077047,
+          0.2908156124145167
+        ],
+        "query_coord": [
+          0.5836960326883028,
+          0.6875575855077047,
+          0.2908156124145167
+        ],
+        "d_query_to_original": 0.0,
+        "match": "formic_acid",
+        "correct": true
+      },
+      {
+        "name": "glucose",
+        "query": "what is glucose",
+        "original_coord": [
+          0.8270437457334106,
+          0.32492682764955183,
+          0.9768175839165353
+        ],
+        "query_coord": [
+          0.8270437457334106,
+          0.32492682764955183,
+          0.9768175839165353
+        ],
+        "d_query_to_original": 0.0,
+        "match": "glucose",
+        "correct": true
+      }
+    ],
+    "n_samples": 25,
+    "n_correct": 25,
+    "recovery_rate": 1.0,
+    "mean_d_to_original": 0.0,
+    "max_d_to_original": 0.0
+  },
+  "experiment_6_robustness": {
+    "edge_cases": [
+      {
+        "label": "empty",
+        "query": "",
+        "completed": true,
+        "t_total_ms": 0.24850000045262277,
+        "match": "acetone",
+        "pve_rejects": 0,
+        "error": null
+      },
+      {
+        "label": "garbage",
+        "query": "asdf xyz qwerty",
+        "completed": true,
+        "t_total_ms": 0.17770001431927085,
+        "match": "sucrose",
+        "pve_rejects": 0,
+        "error": null
+      },
+      {
+        "label": "unknown compound",
+        "query": "what is unobtainium",
+        "completed": true,
+        "t_total_ms": 0.16760002472437918,
+        "match": "sucrose",
+        "pve_rejects": 0,
+        "error": null
+      },
+      {
+        "label": "short",
+        "query": "hi",
+        "completed": true,
+        "t_total_ms": 0.17030001617968082,
+        "match": "acetone",
+        "pve_rejects": 0,
+        "error": null
+      },
+      {
+        "label": "long",
+        "query": "what is very very very very very very very very very very very very very very very very very very very very long query",
+        "completed": true,
+        "t_total_ms": 0.15479998546652496,
+        "match": "acetone",
+        "pve_rejects": 0,
+        "error": null
+      },
+      {
+        "label": "normal",
+        "query": "what is ethanol",
+        "completed": true,
+        "t_total_ms": 0.17019998631440103,
+        "match": "ethanol",
+        "pve_rejects": 0,
+        "error": null
+      }
+    ],
+    "n_tested": 6,
+    "n_completed": 6,
+    "completion_rate": 1.0
+  },
+  "summary": {
+    "n_queries_tested": 63,
+    "accuracy": 1.0,
+    "mean_total_latency_ms": 0.17032999749062583,
+    "p95_total_latency_ms": 0.672199996188283,
+    "scaling_flat": true,
+    "empty_dict_recovery": 1.0,
+    "mean_d_to_original": 0.0,
+    "robustness_completion_rate": 1.0
+  }
+}
