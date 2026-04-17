@@ -1,0 +1,329 @@
+{
+  "experiment_1_embedding_necessity": {
+    "depths": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "N_values": [
+      9,
+      27,
+      81,
+      243,
+      729,
+      2187,
+      6561,
+      19683,
+      59049,
+      177147
+    ],
+    "discrete_queries": [
+      9,
+      27,
+      81,
+      243,
+      729,
+      2187,
+      6561,
+      19683,
+      59049,
+      177147
+    ],
+    "metric_queries": [
+      6,
+      9,
+      12,
+      15,
+      18,
+      21,
+      24,
+      27,
+      30,
+      33
+    ],
+    "speedups": [
+      1.5,
+      3.0,
+      6.75,
+      16.2,
+      40.5,
+      104.14285714285714,
+      273.375,
+      729.0,
+      1968.3,
+      5368.090909090909
+    ],
+    "log3_N": [
+      2.0,
+      3.0,
+      4.0,
+      4.999999999999999,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      9.999999999999998,
+      11.0
+    ],
+    "metric_to_3log3N_ratio_mean": 1.0,
+    "metric_to_3log3N_ratio_std": 9.930136612989092e-17,
+    "metric_scales_as_log3N": true
+  },
+  "experiment_2_navigation_compatibility": {
+    "refinement_monotonicity_pass": 500,
+    "refinement_monotonicity_total": 500,
+    "sibling_separation_pass": 500,
+    "sibling_separation_total": 500,
+    "contraction_pass": 1465,
+    "contraction_total": 1500,
+    "refinement_monotonicity_rate": 1.0,
+    "sibling_separation_rate": 1.0,
+    "contraction_rate": 0.9766666666666667,
+    "mean_contraction_ratio": 0.8563395052574915,
+    "mean_separation_ratio": 0.13809998946148727,
+    "all_pass": true
+  },
+  "experiment_3_self_similarity": {
+    "ordering_preserved": 176,
+    "ordering_total": 178,
+    "metric_structure_matches": 162,
+    "metric_structure_total": 162,
+    "ordering_preservation_rate": 0.9887640449438202,
+    "metric_structure_match_rate": 1.0,
+    "self_similar": true
+  },
+  "experiment_4_miracle_resolution": {
+    "depths": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "miracle_trajectories": [
+      [
+        3,
+        2,
+        1
+      ],
+      [
+        4,
+        3,
+        2,
+        1
+      ],
+      [
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      [
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      [
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      [
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      [
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      [
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ]
+    ],
+    "penultimate_miracle_counts": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "monotone_decrease_rate": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "final_miracle_is_one": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "all_monotone": true,
+    "all_penultimate_is_one": true,
+    "summary": "All trajectories monotone: True; All penultimate states have miracle count 1: True"
+  },
+  "experiment_5_complexity_scaling": {
+    "depths": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "N_values": [
+      9,
+      27,
+      81,
+      243,
+      729,
+      2187,
+      6561,
+      19683,
+      59049,
+      177147,
+      531441,
+      1594323
+    ],
+    "forward_steps": [
+      9,
+      27,
+      81,
+      243,
+      729,
+      2187,
+      6561,
+      19683,
+      59049,
+      177147,
+      531441,
+      1594323
+    ],
+    "backward_steps": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "speedups": [
+      4.5,
+      9.0,
+      20.25,
+      48.6,
+      121.5,
+      312.42857142857144,
+      820.125,
+      2187.0,
+      5904.9,
+      16104.272727272728,
+      44286.75,
+      122640.23076923077
+    ],
+    "backward_steps_vs_log3N": [
+      1.0,
+      1.0,
+      1.0,
+      1.0000000000000002,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0000000000000002,
+      1.0,
+      1.0,
+      1.0000000000000002
+    ],
+    "linear_fit_slope": 1.0,
+    "linear_fit_intercept": 2.2360727232939052e-15,
+    "linear_fit_R2": 1.0,
+    "confirms_log3N": true,
+    "max_speedup": 122640.23076923077
+  },
+  "experiment_6_coordinate_necessity": {
+    "dim_1_accuracy": 0.0,
+    "dim_2_accuracy": 1.0,
+    "dim_3_accuracy": 1.0,
+    "n_trials": 200,
+    "three_coords_best": true,
+    "dim_3_perfect": true,
+    "dim_1_imperfect": true,
+    "three_coords_necessary": true
+  },
+  "summary": {
+    "embedding_necessity": true,
+    "navigation_compatible": true,
+    "self_similar": true,
+    "miracles_monotone_decrease": true,
+    "penultimate_has_one_miracle": true,
+    "backward_is_log3N": true,
+    "three_coords_necessary": true,
+    "max_speedup": 122640.23076923077,
+    "linear_fit_R2": 1.0
+  }
+}

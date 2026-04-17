@@ -1,0 +1,136 @@
+\begin{thebibliography}{10}
+
+\bibitem{turing1936computable}
+Alan~M. Turing.
+\newblock On computable numbers, with an application to the
+  {E}ntscheidungsproblem.
+\newblock {\em Proceedings of the London Mathematical Society}, 2(42):230--265,
+  1936.
+
+\bibitem{shannon1948mathematical}
+Claude~E. Shannon.
+\newblock A mathematical theory of communication.
+\newblock {\em Bell System Technical Journal}, 27(3):379--423, 1948.
+
+\bibitem{landau1980statistical}
+Lev~D. Landau and Evgeny~M. Lifshitz.
+\newblock {\em Statistical Physics, Part 1}.
+\newblock Pergamon Press, 3rd edition, 1980.
+
+\bibitem{whitney1936differentiable}
+Hassler Whitney.
+\newblock Differentiable manifolds.
+\newblock {\em Annals of Mathematics}, 37(3):645--680, 1936.
+
+\bibitem{nash1956imbedding}
+John Nash.
+\newblock The imbedding problem for {R}iemannian manifolds.
+\newblock {\em Annals of Mathematics}, 63(1):20--63, 1956.
+
+\bibitem{takens1981detecting}
+Floris Takens.
+\newblock Detecting strange attractors in turbulence.
+\newblock {\em Lecture Notes in Mathematics}, 898:366--381, 1981.
+
+\bibitem{sauer1991embedology}
+Tim Sauer, James~A. Yorke, and Martin Casdagli.
+\newblock Embedology.
+\newblock {\em Journal of Statistical Physics}, 65(3--4):579--616, 1991.
+
+\bibitem{fisher1922mathematical}
+Ronald~A. Fisher.
+\newblock On the mathematical foundations of theoretical statistics.
+\newblock {\em Philosophical Transactions of the Royal Society A},
+  222:309--368, 1922.
+
+\bibitem{rao1945information}
+C.~Radhakrishna Rao.
+\newblock Information and the accuracy attainable in the estimation of
+  statistical parameters.
+\newblock {\em Bulletin of the Calcutta Mathematical Society}, 37:81--91, 1945.
+
+\bibitem{amari1985differential}
+Shun-ichi Amari.
+\newblock Differential-geometrical methods in statistics.
+\newblock {\em Lecture Notes in Statistics}, 28, 1985.
+
+\bibitem{chentsov1972statistical}
+Nikolai~N. Chentsov.
+\newblock Statistical decision rules and optimal inference.
+\newblock {\em Translations of Mathematical Monographs}, 53, 1972.
+
+\bibitem{jaynes1957information}
+Edwin~T. Jaynes.
+\newblock Information theory and statistical mechanics.
+\newblock {\em Physical Review}, 106(4):620--630, 1957.
+
+\bibitem{cover2006elements}
+Thomas~M. Cover and Joy~A. Thomas.
+\newblock {\em Elements of Information Theory}.
+\newblock Wiley-Interscience, 2nd edition, 2006.
+
+\bibitem{cormen2009introduction}
+Thomas~H. Cormen, Charles~E. Leiserson, Ronald~L. Rivest, and Clifford Stein.
+\newblock {\em Introduction to Algorithms}.
+\newblock MIT Press, 3rd edition, 2009.
+
+\bibitem{docarmo1992riemannian}
+Manfredo~P. do~Carmo.
+\newblock {\em Riemannian Geometry}.
+\newblock Birkh{\"a}user, 1992.
+
+\bibitem{hatfield1992quantum}
+Brian Hatfield.
+\newblock {\em Quantum Field Theory of Point Particles and Strings}.
+\newblock Addison-Wesley, 1992.
+
+\bibitem{mizraji2021biological}
+Eduardo Mizraji.
+\newblock The biological {M}axwell's demons: exploring ideas about the
+  information processing in biological systems.
+\newblock {\em Theory in Biosciences}, 140(3--4):307--318, 2021.
+
+\bibitem{landauer1961irreversibility}
+Rolf Landauer.
+\newblock Irreversibility and heat generation in the computing process.
+\newblock {\em IBM Journal of Research and Development}, 5(3):183--191, 1961.
+
+\bibitem{bennett1982thermodynamics}
+Charles~H. Bennett.
+\newblock The thermodynamics of computation---a review.
+\newblock {\em International Journal of Theoretical Physics}, 21(12):905--940,
+  1982.
+
+\bibitem{maxwell1871theory}
+James~Clerk Maxwell.
+\newblock {\em Theory of Heat}.
+\newblock Longmans, Green, and Co., 1871.
+
+\bibitem{arnold1978mathematical}
+Vladimir~I. Arnold.
+\newblock {\em Mathematical Methods of Classical Mechanics}.
+\newblock Springer, 1978.
+
+\bibitem{poincare1890probleme}
+Henri Poincar{\'e}.
+\newblock Sur le probl{\`e}me des trois corps et les {\'e}quations de la
+  dynamique.
+\newblock {\em Acta Mathematica}, 13:1--270, 1890.
+
+\bibitem{villani2009optimal}
+C{\'e}dric Villani.
+\newblock {\em Optimal Transport: Old and New}.
+\newblock Springer, 2009.
+
+\bibitem{kantorovich1942translocation}
+Leonid~V. Kantorovich.
+\newblock On the translocation of masses.
+\newblock {\em Doklady Akademii Nauk SSSR}, 37(7--8):227--229, 1942.
+
+\bibitem{benamou2000computational}
+Jean-David Benamou and Yann Brenier.
+\newblock A computational fluid mechanics solution to the
+  {M}onge--{K}antorovich mass transfer problem.
+\newblock {\em Numerische Mathematik}, 84(3):375--393, 2000.
+
+\end{thebibliography}

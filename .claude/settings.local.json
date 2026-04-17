@@ -4,7 +4,10 @@
       "Bash(find:*)",
       "Bash(ls:*)",
       "Bash(python run_all_validations.py --mode quick)",
-      "Bash(python -c \":*)"
+      "Bash(python -c \":*)",
+      "Bash(python -m driven.src.embedding.validate_embedding)",
+      "Bash(python -m driven.src.visualizations.generate_embedding_panels)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

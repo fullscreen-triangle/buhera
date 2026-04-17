@@ -235,7 +235,7 @@
     ],
     
     // Workspace specific settings
-    "workbench.colorTheme": "Default Dark+",
+    "workbench.colorTheme": "Dark+",
     "workbench.iconTheme": "vs-seti",
     "workbench.editor.enablePreview": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,
