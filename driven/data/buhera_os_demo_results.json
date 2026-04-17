@@ -1,0 +1,125 @@
+{
+  "backend": "StubTranslator",
+  "n_compounds": 10,
+  "queries": [
+    {
+      "query": "what is the boiling point of ethanol",
+      "vahera": "describe ethanol_bp with \"boiling point of ethanol\"\nresolve ethanol_bp\nspawn query from ethanol_bp\nnavigate to penultimate\ncomplete trajectory\ncontroller verify",
+      "query_coord": "SCoord(k=0.8563052342395036, t=0.7387578663347046, e=0.047364393412337114)",
+      "synthesized": {
+        "matched_compound": "ethanol",
+        "categorical_distance": 0.0,
+        "address": "220100211020",
+        "payload": {
+          "formula": "C2H5OH",
+          "molecular_weight": 46.07,
+          "boiling_point_c": 78.37,
+          "melting_point_c": -114.1,
+          "density_g_cm3": 0.789,
+          "n_atoms": 9
+        }
+      },
+      "timing": {
+        "translate_ms": 0.039700011257082224,
+        "execute_ms": 1.0511000000406057
+      }
+    },
+    {
+      "query": "boiling point of benzene",
+      "vahera": "describe benzene_bp with \"boiling point of benzene\"\nresolve benzene_bp\nspawn query from benzene_bp\nnavigate to penultimate\ncomplete trajectory\ncontroller verify",
+      "query_coord": "SCoord(k=0.033962956033822156, t=0.12149289477485836, e=0.48854139472438124)",
+      "synthesized": {
+        "matched_compound": "benzene",
+        "categorical_distance": 0.0,
+        "address": "001011001200",
+        "payload": {
+          "formula": "C6H6",
+          "molecular_weight": 78.11,
+          "boiling_point_c": 80.1,
+          "melting_point_c": 5.5,
+          "density_g_cm3": 0.879,
+          "n_atoms": 12
+        }
+      },
+      "timing": {
+        "translate_ms": 0.01409999094903469,
+        "execute_ms": 0.20969999604858458
+      }
+    },
+    {
+      "query": "what is caffeine",
+      "vahera": "describe caffeine with \"caffeine\"\nresolve caffeine\nspawn query from caffeine\nnavigate to penultimate\ncomplete trajectory",
+      "query_coord": "SCoord(k=0.5698544042927096, t=0.6338585249292006, e=0.25428834409317824)",
+      "synthesized": {
+        "matched_compound": "caffeine",
+        "categorical_distance": 0.0,
+        "address": "110222020102",
+        "payload": {
+          "formula": "C8H10N4O2",
+          "molecular_weight": 194.19,
+          "boiling_point_c": 178.0,
+          "melting_point_c": 236.0,
+          "density_g_cm3": 1.23,
+          "n_atoms": 24
+        }
+      },
+      "timing": {
+        "translate_ms": 0.009700015652924776,
+        "execute_ms": 0.1514999894425273
+      }
+    },
+    {
+      "query": "find compounds similar to aspirin",
+      "vahera": "memory find nearest \"compounds similar to aspirin\" k=5",
+      "query_coord": null,
+      "synthesized": null,
+      "timing": {
+        "translate_ms": 0.007400027243420482,
+        "execute_ms": 0.3659999929368496
+      }
+    }
+  ],
+  "accuracy": {
+    "correct": 3,
+    "total": 3
+  },
+  "kernel_stats": {
+    "cmm_objects": 10,
+    "dic": {
+      "bits_retrieved": 8,
+      "bits_available": 19,
+      "compression": 0.5789473684210527
+    },
+    "pve": {
+      "verified": 19,
+      "rejected": 0
+    },
+    "tem": {
+      "samples": 19,
+      "alerts": 19,
+      "max_delta": 0.8366989225818859
+    }
+  },
+  "activity_log_sample": [
+    "CMM.allocate addr=002011111112 tier=L1",
+    "CMM.allocate addr=002002112201 tier=L1",
+    "CMM.allocate addr=220100211020 tier=L1",
+    "CMM.allocate addr=001011001200 tier=L1",
+    "CMM.allocate addr=010100212222 tier=RAM",
+    "CMM.allocate addr=110222020102 tier=L1",
+    "CMM.allocate addr=202122122021 tier=L1",
+    "CMM.allocate addr=121102211201 tier=L1",
+    "CMM.allocate addr=000100002112 tier=RAM",
+    "CMM.allocate addr=201022122202 tier=L1",
+    "PSS.spawn pid=1 program=query d_traj=2.250",
+    "PSS.complete pid=1",
+    "PSS.spawn pid=2 program=query d_traj=3.250",
+    "PSS.complete pid=2",
+    "PSS.spawn pid=3 program=query d_traj=2.557",
+    "PSS.complete pid=3",
+    "DIC.retrieve 1/3 (67% compression)",
+    "DIC.retrieve 1/3 (67% compression)",
+    "DIC.retrieve 1/3 (67% compression)",
+    "DIC.retrieve 5/10 (50% compression)"
+  ]
+}
