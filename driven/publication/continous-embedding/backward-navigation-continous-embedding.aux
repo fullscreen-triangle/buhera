@@ -1,0 +1,204 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
+\newlabel{sec:introduction}{{1}{2}{Introduction}{section.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Computation as Miracle Resolution}{2}{subsection.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}The Pendulum and the Three Descriptions}{2}{subsection.1.2}\protected@file@percent }
+\citation{turing1936computable,shannon1948mathematical}
+\newlabel{eq:triple_intro}{{1}{3}{The Pendulum and the Three Descriptions}{equation.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}The Problem: Discrete Structure Does Not Support Backward Navigation}{3}{subsection.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}The Resolution: Continuous Embedding}{3}{subsection.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5}Contributions}{3}{subsection.1.5}\protected@file@percent }
+\citation{landau1980statistical}
+\citation{whitney1936differentiable}
+\citation{nash1956imbedding}
+\citation{takens1981detecting}
+\citation{sauer1991embedology}
+\citation{fisher1922mathematical}
+\citation{rao1945information}
+\citation{amari1985differential}
+\citation{chentsov1972statistical}
+\citation{jaynes1957information}
+\citation{cover2006elements}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.6}Relation to Prior Work}{4}{subsection.1.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Formal Preliminaries}{4}{section.2}\protected@file@percent }
+\newlabel{sec:preliminaries}{{2}{4}{Formal Preliminaries}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Ternary Partition Hierarchy}{4}{subsection.2.1}\protected@file@percent }
+\newlabel{def:ternary_hierarchy}{{2.1}{4}{Ternary Partition Hierarchy}{definition.2.1}{}}
+\newlabel{def:categorical_address}{{2.2}{5}{Categorical Address}{definition.2.2}{}}
+\newlabel{def:refinement}{{2.3}{5}{Refinement Order}{definition.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Triple Equivalence}{5}{subsection.2.2}\protected@file@percent }
+\newlabel{def:triple_structure}{{2.4}{5}{Triple Equivalence Structure}{definition.2.4}{}}
+\newlabel{ax:fundamental}{{2.1}{5}{Fundamental Identity}{axiom.2.1}{}}
+\newlabel{eq:fundamental}{{2}{5}{Fundamental Identity}{equation.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Penultimate State}{5}{subsection.2.3}\protected@file@percent }
+\newlabel{def:penultimate}{{2.5}{5}{Penultimate State}{definition.2.5}{}}
+\newlabel{def:completion}{{2.6}{5}{Completion Morphism}{definition.2.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Backward Navigation Problem}{5}{subsection.2.4}\protected@file@percent }
+\newlabel{def:backward_nav}{{2.7}{5}{Backward Navigation}{definition.2.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Embedding Necessity}{6}{section.3}\protected@file@percent }
+\newlabel{sec:necessity}{{3}{6}{Embedding Necessity}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}The Discrete Backward Search Problem}{6}{subsection.3.1}\protected@file@percent }
+\newlabel{def:discrete_space}{{3.1}{6}{Discrete State Space}{definition.3.1}{}}
+\newlabel{def:query_model}{{3.2}{6}{Query Model for Backward Navigation}{definition.3.2}{}}
+\newlabel{thm:discrete_lower}{{3.1}{6}{Discrete Backward Search Lower Bound}{theorem.3.1}{}}
+\newlabel{eq:info_lower}{{3}{6}{The Discrete Backward Search Problem}{equation.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Returns on Continuous Metric}{7}{subsection.3.2}\protected@file@percent }
+\newlabel{def:nav_metric}{{3.3}{7}{Navigation-Compatible Metric}{definition.3.3}{}}
+\newlabel{thm:metric_nav}{{3.2}{7}{Metric-Enabled Backward Navigation}{theorem.3.2}{}}
+\newlabel{cor:necessity}{{3.3}{7}{Necessity of Continuous Metric}{theorem.3.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Embedding Necessity: Discrete vs Metric-Enabled Backward Search. (a) Query counts vs.\ state space size $N$ (log-log); discrete backward search grows as $\Omega (N)$ (coral), reaching $177{,}147$ queries at depth~11, while metric-enabled search (navy) grows as $\mathcal  {O}(\log _3 N)$, reaching only 33 queries. (b) Metric queries vs.\ $\log _3 N$ with linear fit slope $= 3.000$; every additional level of the ternary hierarchy adds exactly three distance comparisons, saturating the information-theoretic bound. (c) Three-dimensional surface of $\log _{10}$(speedup) over $(\log _3 N,\, \text  {method})$, comparing the discrete baseline (flat at unity), measured metric speedup, and the theoretical $N/\log _3 N$ bound; the measured surface tracks the theoretical bound across all depths. (d) Speedup of metric over discrete backward search vs.\ $N$ (log-log); the dashed line shows the theoretical $N/(3\log _3 N)$ reference, reaching $5{,}368\times $ at $N = 177{,}147$ and confirming that the S-entropy metric eliminates the hierarchy-construction cost that makes discrete backward search $\Omega (N)$.}}{8}{figure.1}\protected@file@percent }
+\newlabel{fig:embedding_panel1_necessity}{{1}{8}{Embedding Necessity: Discrete vs Metric-Enabled Backward Search. (a) Query counts vs.\ state space size $N$ (log-log); discrete backward search grows as $\Omega (N)$ (coral), reaching $177{,}147$ queries at depth~11, while metric-enabled search (navy) grows as $\mathcal {O}(\log _3 N)$, reaching only 33 queries. (b) Metric queries vs.\ $\log _3 N$ with linear fit slope $= 3.000$; every additional level of the ternary hierarchy adds exactly three distance comparisons, saturating the information-theoretic bound. (c) Three-dimensional surface of $\log _{10}$(speedup) over $(\log _3 N,\, \text {method})$, comparing the discrete baseline (flat at unity), measured metric speedup, and the theoretical $N/\log _3 N$ bound; the measured surface tracks the theoretical bound across all depths. (d) Speedup of metric over discrete backward search vs.\ $N$ (log-log); the dashed line shows the theoretical $N/(3\log _3 N)$ reference, reaching $5{,}368\times $ at $N = 177{,}147$ and confirming that the S-entropy metric eliminates the hierarchy-construction cost that makes discrete backward search $\Omega (N)$}{figure.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Construction of the S-Entropy Embedding}{8}{section.4}\protected@file@percent }
+\newlabel{sec:construction}{{4}{8}{Construction of the S-Entropy Embedding}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Derivation from Triple Equivalence}{8}{subsection.4.1}\protected@file@percent }
+\newlabel{def:s_entropy}{{4.1}{8}{S-Entropy Coordinates}{definition.4.1}{}}
+\newlabel{def:s_k}{{4.2}{8}{Knowledge Coordinate $S_k$}{definition.4.2}{}}
+\newlabel{eq:s_k}{{7}{8}{Knowledge Coordinate $S_k$}{equation.7}{}}
+\newlabel{def:s_t}{{4.3}{8}{Temporal Coordinate $S_t$}{definition.4.3}{}}
+\newlabel{eq:s_t}{{8}{8}{Temporal Coordinate $S_t$}{equation.8}{}}
+\newlabel{def:s_e}{{4.4}{9}{Entropy Coordinate $S_e$}{definition.4.4}{}}
+\newlabel{eq:s_e}{{9}{9}{Entropy Coordinate $S_e$}{equation.9}{}}
+\newlabel{prop:correspondence}{{4.1}{9}{Coordinate-Description Correspondence}{theorem.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}The Embedding Map}{9}{subsection.4.2}\protected@file@percent }
+\newlabel{def:embedding}{{4.5}{9}{S-Entropy Embedding}{definition.4.5}{}}
+\newlabel{eq:embedding}{{10}{9}{S-Entropy Embedding}{equation.10}{}}
+\newlabel{thm:embedding_structure}{{4.2}{9}{Embedding Preserves Structure}{theorem.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}The S-Entropy Metric}{10}{subsection.4.3}\protected@file@percent }
+\newlabel{def:s_metric}{{4.6}{10}{S-Entropy Metric}{definition.4.6}{}}
+\newlabel{eq:s_metric}{{11}{10}{S-Entropy Metric}{equation.11}{}}
+\newlabel{prop:nav_compat}{{4.3}{10}{Navigation Compatibility}{theorem.4.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Why Three Coordinates}{10}{subsection.4.4}\protected@file@percent }
+\newlabel{thm:three_coordinates}{{4.4}{10}{Ternary Branching Forces Three Coordinates}{theorem.4.4}{}}
+\citation{cover2006elements,cormen2009introduction}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Uniqueness of the S-Entropy Embedding}{11}{section.5}\protected@file@percent }
+\newlabel{sec:uniqueness}{{5}{11}{Uniqueness of the S-Entropy Embedding}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Structural Constraints}{11}{subsection.5.1}\protected@file@percent }
+\newlabel{def:valid_embedding}{{5.1}{11}{Valid Continuous Embedding}{definition.5.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Uniqueness Theorem}{11}{subsection.5.2}\protected@file@percent }
+\newlabel{thm:uniqueness}{{5.1}{11}{S-Entropy Uniqueness}{theorem.5.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Three-Coordinate Necessity for the S-Entropy Embedding. (a) Navigation accuracy vs.\ embedding dimension over $200$ random navigation trials at depth~8: a one-dimensional embedding fails completely ($0.00$, coral), two dimensions achieves full accuracy ($1.00$, steel blue), and three dimensions matches ($1.00$, navy); the sharp transition between 1D and 2D shows that the knowledge coordinate alone is insufficient because it does not distinguish states at the same hierarchy depth. (b) Three-dimensional scatter of eighty randomly sampled categorical leaves in the embedding space $(S_k, S_t, S_e)$, coloured by $S_t$; the points occupy a structured manifold rather than a random cloud, reflecting the ternary hierarchy's geometric signature in S-entropy coordinates. (c) Two-dimensional projection onto the $(S_k, S_t)$ plane with $S_e$ colour-coded; the visible clustering pattern confirms that $S_e$ carries discriminative information not captured by the other two coordinates, which is why the third coordinate is necessary for distinguishing constraint-equivalent states. (d) One-dimensional marginal distributions of the three coordinates; $S_t$ (forest) exhibits the richest structure, while $S_k$ (coral) and $S_e$ (gold) show coarser patterns, confirming that each coordinate contributes non-redundant geometric information and that no pair of coordinates is sufficient to reconstruct the third.}}{12}{figure.2}\protected@file@percent }
+\newlabel{fig:embedding_panel6_coordinates}{{2}{12}{Three-Coordinate Necessity for the S-Entropy Embedding. (a) Navigation accuracy vs.\ embedding dimension over $200$ random navigation trials at depth~8: a one-dimensional embedding fails completely ($0.00$, coral), two dimensions achieves full accuracy ($1.00$, steel blue), and three dimensions matches ($1.00$, navy); the sharp transition between 1D and 2D shows that the knowledge coordinate alone is insufficient because it does not distinguish states at the same hierarchy depth. (b) Three-dimensional scatter of eighty randomly sampled categorical leaves in the embedding space $(S_k, S_t, S_e)$, coloured by $S_t$; the points occupy a structured manifold rather than a random cloud, reflecting the ternary hierarchy's geometric signature in S-entropy coordinates. (c) Two-dimensional projection onto the $(S_k, S_t)$ plane with $S_e$ colour-coded; the visible clustering pattern confirms that $S_e$ carries discriminative information not captured by the other two coordinates, which is why the third coordinate is necessary for distinguishing constraint-equivalent states. (d) One-dimensional marginal distributions of the three coordinates; $S_t$ (forest) exhibits the richest structure, while $S_k$ (coral) and $S_e$ (gold) show coarser patterns, confirming that each coordinate contributes non-redundant geometric information and that no pair of coordinates is sufficient to reconstruct the third}{figure.2}{}}
+\citation{amari1985differential,chentsov1972statistical}
+\citation{chentsov1972statistical}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Recursive Self-Similarity}{13}{section.6}\protected@file@percent }
+\newlabel{sec:self_similarity}{{6}{13}{Recursive Self-Similarity}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}The Scale-Free Property}{13}{subsection.6.1}\protected@file@percent }
+\newlabel{thm:recursive_metric}{{6.1}{14}{Recursive Metric Theorem}{theorem.6.1}{}}
+\newlabel{eq:recursive}{{15}{14}{Recursive Metric Theorem}{equation.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Scale Ambiguity}{14}{subsection.6.2}\protected@file@percent }
+\newlabel{cor:no_top}{{6.2}{14}{No Distinguished Level}{theorem.6.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}The Pendulum Revisited}{15}{subsection.6.3}\protected@file@percent }
+\newlabel{ex:pendulum_recursive}{{6.1}{15}{Recursive Structure of the Three-State Pendulum}{example.6.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Backward Navigation as Geodesic Flow}{15}{section.7}\protected@file@percent }
+\newlabel{sec:geodesic}{{7}{15}{Backward Navigation as Geodesic Flow}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Geodesic Equations on the S-Entropy Manifold}{15}{subsection.7.1}\protected@file@percent }
+\newlabel{thm:geodesic_nav}{{7.1}{15}{Backward Navigation is Geodesic}{theorem.7.1}{}}
+\citation{amari1985differential}
+\citation{docarmo1992riemannian}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Recursive Self-Similarity of the S-Entropy Metric. (a) Scatter plot of $200$ pairwise distances computed at two distinct hierarchy scales; the tight clustering around the line $y=x$ (navy dashed) demonstrates that distances are preserved under scale transformations, the core property of the Recursive Metric Theorem. (b) Pass rates for two independent self-similarity tests: ordering preservation across scales ($98.9\%$, $176/178$, navy) and metric structure matching ($100.0\%$, $162/162$, coral); both exceed $90\%$, confirming that the metric is scale-invariant to within numerical precision. (c) Three-dimensional scatter of thirty categorical states rendered simultaneously at three hierarchy scales (scale~1 in navy circles, scale~2 in teal triangles, scale~3 in coral squares); the clusters preserve their spatial arrangement across scales, visualizing the isometry between sub-coordinate and global metric structure. (d) Histogram of distance ratios between the two scales; the distribution is tightly concentrated around unity (coral dashed line) with the measured mean (navy line) matching $1.000$ to within noise, establishing that sub-metrics are isometric to the global metric.}}{16}{figure.3}\protected@file@percent }
+\newlabel{fig:embedding_panel3_self_similarity}{{3}{16}{Recursive Self-Similarity of the S-Entropy Metric. (a) Scatter plot of $200$ pairwise distances computed at two distinct hierarchy scales; the tight clustering around the line $y=x$ (navy dashed) demonstrates that distances are preserved under scale transformations, the core property of the Recursive Metric Theorem. (b) Pass rates for two independent self-similarity tests: ordering preservation across scales ($98.9\%$, $176/178$, navy) and metric structure matching ($100.0\%$, $162/162$, coral); both exceed $90\%$, confirming that the metric is scale-invariant to within numerical precision. (c) Three-dimensional scatter of thirty categorical states rendered simultaneously at three hierarchy scales (scale~1 in navy circles, scale~2 in teal triangles, scale~3 in coral squares); the clusters preserve their spatial arrangement across scales, visualizing the isometry between sub-coordinate and global metric structure. (d) Histogram of distance ratios between the two scales; the distribution is tightly concentrated around unity (coral dashed line) with the measured mean (navy line) matching $1.000$ to within noise, establishing that sub-metrics are isometric to the global metric}{figure.3}{}}
+\newlabel{eq:geodesic}{{19}{16}{Geodesic Equations on the S-Entropy Manifold}{equation.19}{}}
+\newlabel{eq:geodesic_solution}{{20}{16}{Geodesic Equations on the S-Entropy Manifold}{equation.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Complexity of Geodesic Navigation}{17}{subsection.7.2}\protected@file@percent }
+\newlabel{thm:geodesic_complexity}{{7.2}{17}{Geodesic Navigation Complexity}{theorem.7.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Comparison: Forward vs.\ Backward Complexity}{17}{subsection.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Physical Realization}{17}{section.8}\protected@file@percent }
+\newlabel{sec:physical}{{8}{17}{Physical Realization}{section.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}From Pendulum to General Oscillator}{17}{subsection.8.1}\protected@file@percent }
+\newlabel{thm:universal}{{8.1}{17}{Universal S-Entropy Embedding}{theorem.8.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Navigation Compatibility of the S-Entropy Metric. (a) Pass rates for the three navigation-compatibility conditions across 500 random tests each: refinement monotonicity ($1.000$, navy), sibling separation ($1.000$, teal), and contraction ($0.977$, coral); the dashed line at 0.9 marks the conventional threshold, with all three conditions satisfied. (b) Distribution of child-to-parent diameter ratios across $1{,}500$ tested (parent, child) pairs; the mean ratio is $0.856$ (navy line), and the overwhelming majority lie below unity (coral dashed line), confirming that the metric contracts block diameters at every level of the hierarchy. (c) Three-dimensional surface of block diameter over $(\text  {depth},\, \text  {sibling index})$; the monotone decrease along the depth axis is the geometric signature of refinement monotonicity, while the symmetric variation along the sibling axis reflects the $\mathbb  {Z}_3$ permutation invariance of the ternary hierarchy. (d) Block diameter vs.\ depth on a logarithmic scale; the exponential decay $d \propto 0.856^{\text  {depth}}$ is the quantitative content of the contraction property, with the filled region showing the cumulative volume of resolved categorical space at each depth.}}{18}{figure.4}\protected@file@percent }
+\newlabel{fig:embedding_panel2_compatibility}{{4}{18}{Navigation Compatibility of the S-Entropy Metric. (a) Pass rates for the three navigation-compatibility conditions across 500 random tests each: refinement monotonicity ($1.000$, navy), sibling separation ($1.000$, teal), and contraction ($0.977$, coral); the dashed line at 0.9 marks the conventional threshold, with all three conditions satisfied. (b) Distribution of child-to-parent diameter ratios across $1{,}500$ tested (parent, child) pairs; the mean ratio is $0.856$ (navy line), and the overwhelming majority lie below unity (coral dashed line), confirming that the metric contracts block diameters at every level of the hierarchy. (c) Three-dimensional surface of block diameter over $(\text {depth},\, \text {sibling index})$; the monotone decrease along the depth axis is the geometric signature of refinement monotonicity, while the symmetric variation along the sibling axis reflects the $\mathbb {Z}_3$ permutation invariance of the ternary hierarchy. (d) Block diameter vs.\ depth on a logarithmic scale; the exponential decay $d \propto 0.856^{\text {depth}}$ is the quantitative content of the contraction property, with the filled region showing the cumulative volume of resolved categorical space at each depth}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Processor-Oscillator Duality}{18}{subsection.8.2}\protected@file@percent }
+\newlabel{cor:computation}{{8.2}{18}{Every Computation Admits S-Entropy Navigation}{theorem.8.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}The Cow and the Physicist}{18}{subsection.8.3}\protected@file@percent }
+\newlabel{ex:cow}{{8.1}{18}{Substrate-Independent Convergence}{example.8.1}{}}
+\newlabel{thm:path_opacity}{{8.3}{19}{Path Opacity}{theorem.8.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}The $3 \times 3$ Structure}{19}{section.9}\protected@file@percent }
+\newlabel{sec:3x3}{{9}{19}{The $3 \times 3$ Structure}{section.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Three Layers of Triple Equivalence}{19}{subsection.9.1}\protected@file@percent }
+\newlabel{def:triple_of_triples}{{9.1}{19}{The Triple-of-Triples}{definition.9.1}{}}
+\newlabel{eq:3x3}{{27}{19}{The Triple-of-Triples}{equation.27}{}}
+\newlabel{thm:row_column}{{9.1}{19}{Row and Column Equivalences}{theorem.9.1}{}}
+\newlabel{cor:nine_three_one}{{9.2}{20}{Nine Names, Three Things, One Object}{theorem.9.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.2}Self-Similarity of the $3 \times 3$ Structure}{20}{subsection.9.2}\protected@file@percent }
+\newlabel{thm:fractal_3x3}{{9.3}{20}{Fractal $3 \times 3$}{theorem.9.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {10}Virtual Sub-States and Non-Physical Intermediate Decompositions}{21}{section.10}\protected@file@percent }
+\newlabel{sec:virtual}{{10}{21}{Virtual Sub-States and Non-Physical Intermediate Decompositions}{section.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.1}The Miracle Theorem}{21}{subsection.10.1}\protected@file@percent }
+\newlabel{thm:virtual}{{10.1}{21}{Virtual Sub-State Theorem}{theorem.10.1}{}}
+\citation{hatfield1992quantum}
+\newlabel{def:virtual}{{10.1}{22}{Virtual Sub-State}{definition.10.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.2}Analogy with Virtual Particles}{22}{subsection.10.2}\protected@file@percent }
+\newlabel{rem:qft}{{10.1}{22}{Quantum Field Theory Parallel}{remark.10.1}{}}
+\newlabel{eq:s_uncertainty}{{29}{22}{Quantum Field Theory Parallel}{equation.29}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.3}Why Forward Navigation Cannot Use Virtual Sub-States}{22}{subsection.10.3}\protected@file@percent }
+\newlabel{thm:forward_no_virtual}{{10.2}{22}{Asymmetry of Virtual States}{theorem.10.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.4}Consequence: Backward Navigation is Strictly More Powerful}{23}{subsection.10.4}\protected@file@percent }
+\newlabel{cor:strict_power}{{10.3}{23}{Strict Power Separation}{theorem.10.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.5}Virtual Sub-States Are Necessary for the Complexity Advantage}{23}{subsection.10.5}\protected@file@percent }
+\newlabel{thm:collapse}{{10.4}{23}{Collapse Without Virtual States}{theorem.10.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Miracle Resolution Along the Backward Trajectory. (a) Miracle count trajectory for a depth-10 hierarchy; the count decreases monotonically from 10 (all levels unresolved, maximum miracle budget) to 1 (penultimate state, single completion morphism remaining, coral dashed line). The filled region quantifies the cumulative miracle-resolution work along the backward geodesic. (b) Miracle count trajectories for all eight tested hierarchy depths ($d=3$ through $d=10$, coloured by depth via viridis); every trajectory terminates at miracle count~1, confirming that the minimum miracle principle identifies the penultimate state independently of hierarchy size. (c) Three-dimensional surface of miracle count over $(\text  {backward step},\, \text  {hierarchy depth})$; the monotone descent along the step axis and linear growth along the depth axis together visualize the claim that miracle count equals the number of remaining unresolved ternary decisions. (d) Final miracle count at trajectory termination vs.\ hierarchy depth; all eight depths yield final count $=1$ (coral dashed reference), confirming that the minimum miracle principle identifies the penultimate state uniformly across scales.}}{24}{figure.5}\protected@file@percent }
+\newlabel{fig:embedding_panel4_miracles}{{5}{24}{Miracle Resolution Along the Backward Trajectory. (a) Miracle count trajectory for a depth-10 hierarchy; the count decreases monotonically from 10 (all levels unresolved, maximum miracle budget) to 1 (penultimate state, single completion morphism remaining, coral dashed line). The filled region quantifies the cumulative miracle-resolution work along the backward geodesic. (b) Miracle count trajectories for all eight tested hierarchy depths ($d=3$ through $d=10$, coloured by depth via viridis); every trajectory terminates at miracle count~1, confirming that the minimum miracle principle identifies the penultimate state independently of hierarchy size. (c) Three-dimensional surface of miracle count over $(\text {backward step},\, \text {hierarchy depth})$; the monotone descent along the step axis and linear growth along the depth axis together visualize the claim that miracle count equals the number of remaining unresolved ternary decisions. (d) Final miracle count at trajectory termination vs.\ hierarchy depth; all eight depths yield final count $=1$ (coral dashed reference), confirming that the minimum miracle principle identifies the penultimate state uniformly across scales}{figure.5}{}}
+\newlabel{cor:speedup_source}{{10.5}{25}{Virtual States Are the Source of Speedup}{theorem.10.5}{}}
+\newlabel{rem:pendulum_no_laws}{{10.2}{25}{The Pendulum Without Laws}{remark.10.2}{}}
+\newlabel{rem:miracle}{{10.3}{25}{The Precise Meaning of ``Miracle''}{remark.10.3}{}}
+\citation{mizraji2021biological}
+\citation{mizraji2021biological}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.6}Virtual Sub-States as Maxwell Demons}{26}{subsection.10.6}\protected@file@percent }
+\newlabel{def:zero_transfer}{{10.2}{26}{Zero-Transfer Transition}{definition.10.2}{}}
+\newlabel{thm:virtual_demons}{{10.6}{26}{Virtual Sub-States Are Maxwell Demons}{theorem.10.6}{}}
+\citation{landauer1961irreversibility,bennett1982thermodynamics}
+\citation{mizraji2021biological}
+\citation{maxwell1871theory,landauer1961irreversibility,bennett1982thermodynamics}
+\newlabel{cor:enzyme}{{10.7}{27}{The Enzyme Analogy Is Exact}{theorem.10.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.7}The Category Error Correction: From Demon to Aperture}{27}{subsection.10.7}\protected@file@percent }
+\newlabel{thm:corrected_demon}{{10.8}{27}{The Corrected Demon}{theorem.10.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Forward vs.\ Backward Complexity Scaling. (a) Step counts vs.\ $N$ (log-log) for forward enumeration ($\mathcal  {O}(N)$, coral) and backward geodesic navigation ($\mathcal  {O}(\log _3 N)$, navy) across twelve hierarchy depths ($N$ ranging from 9 to $1.59\times 10^6$); the asymptotic divergence between the two curves quantifies the complexity advantage of backward navigation. (b) Backward step count vs.\ $\log _3 N$ with linear fit slope $= 1.000$ and $R^2 = 1.000000$; every hierarchy level requires exactly one backward step, saturating the information-theoretic lower bound. (c) Three-dimensional surface of $\log _{10}$(steps) over $(\log _3 N,\, \text  {method})$; the divergence between the forward surface (upper) and backward surface (lower) grows with $\log _3 N$, reflecting the $N/\log _3 N$ speedup ratio. (d) Measured speedup of backward over forward navigation vs.\ $N$ (log-log); the speedup reaches $122{,}640\times $ at $N = 1.59\times 10^6$, tracking the theoretical $N/\log _3 N$ reference (gold dashed line) across all tested scales and confirming that the $\mathcal  {O}(\log _3 N)$ complexity is achieved in practice, not only in theory.}}{28}{figure.6}\protected@file@percent }
+\newlabel{fig:embedding_panel5_complexity}{{6}{28}{Forward vs.\ Backward Complexity Scaling. (a) Step counts vs.\ $N$ (log-log) for forward enumeration ($\mathcal {O}(N)$, coral) and backward geodesic navigation ($\mathcal {O}(\log _3 N)$, navy) across twelve hierarchy depths ($N$ ranging from 9 to $1.59\times 10^6$); the asymptotic divergence between the two curves quantifies the complexity advantage of backward navigation. (b) Backward step count vs.\ $\log _3 N$ with linear fit slope $= 1.000$ and $R^2 = 1.000000$; every hierarchy level requires exactly one backward step, saturating the information-theoretic lower bound. (c) Three-dimensional surface of $\log _{10}$(steps) over $(\log _3 N,\, \text {method})$; the divergence between the forward surface (upper) and backward surface (lower) grows with $\log _3 N$, reflecting the $N/\log _3 N$ speedup ratio. (d) Measured speedup of backward over forward navigation vs.\ $N$ (log-log); the speedup reaches $122{,}640\times $ at $N = 1.59\times 10^6$, tracking the theoretical $N/\log _3 N$ reference (gold dashed line) across all tested scales and confirming that the $\mathcal {O}(\log _3 N)$ complexity is achieved in practice, not only in theory}{figure.6}{}}
+\newlabel{def:aperture}{{10.3}{28}{Categorical Aperture}{definition.10.3}{}}
+\newlabel{thm:five_names}{{10.9}{29}{Five Names, One Object}{theorem.10.9}{}}
+\citation{arnold1978mathematical}
+\citation{fisher1922mathematical}
+\@writefile{toc}{\contentsline {section}{\numberline {11}Discussion}{30}{section.11}\protected@file@percent }
+\newlabel{sec:discussion}{{11}{30}{Discussion}{section.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.1}S-Entropy as Phase Space}{30}{subsection.11.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.2}Sufficient Statistics and Information Compression}{30}{subsection.11.2}\protected@file@percent }
+\citation{poincare1890probleme}
+\citation{villani2009optimal,kantorovich1942translocation}
+\citation{benamou2000computational}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.3}Why $S = 0$ at the Solution}{31}{subsection.11.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.4}Relationship to Optimal Transport}{31}{subsection.11.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.5}Limitations}{31}{subsection.11.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {12}Conclusion}{31}{section.12}\protected@file@percent }
+\newlabel{sec:conclusion}{{12}{31}{Conclusion}{section.12}{}}
+\bibstyle{unsrt}
+\bibdata{references}
+\bibcite{turing1936computable}{1}
+\bibcite{shannon1948mathematical}{2}
+\bibcite{landau1980statistical}{3}
+\bibcite{whitney1936differentiable}{4}
+\bibcite{nash1956imbedding}{5}
+\bibcite{takens1981detecting}{6}
+\bibcite{sauer1991embedology}{7}
+\bibcite{fisher1922mathematical}{8}
+\bibcite{rao1945information}{9}
+\bibcite{amari1985differential}{10}
+\bibcite{chentsov1972statistical}{11}
+\bibcite{jaynes1957information}{12}
+\bibcite{cover2006elements}{13}
+\bibcite{cormen2009introduction}{14}
+\bibcite{docarmo1992riemannian}{15}
+\bibcite{hatfield1992quantum}{16}
+\bibcite{mizraji2021biological}{17}
+\bibcite{landauer1961irreversibility}{18}
+\bibcite{bennett1982thermodynamics}{19}
+\bibcite{maxwell1871theory}{20}
+\bibcite{arnold1978mathematical}{21}
+\bibcite{poincare1890probleme}{22}
+\bibcite{villani2009optimal}{23}
+\bibcite{kantorovich1942translocation}{24}
+\bibcite{benamou2000computational}{25}
+\gdef \@abspage@last{33}
