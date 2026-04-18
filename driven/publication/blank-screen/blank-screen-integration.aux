@@ -1,0 +1,181 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{wilson2014best,kanza2017electronic}
+\citation{tanenbaum2015modern,silberschatz2018operating,ritchie1974unix}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
+\newlabel{sec:introduction}{{1}{2}{Introduction}{section.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}The Problem with Conventional Research Computing}{2}{subsection.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}The Blank Screen}{3}{subsection.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Contributions}{3}{subsection.1.3}\protected@file@percent }
+\citation{shannon1948mathematical,jaynes1957information}
+\citation{fisher1922mathematical,rao1945information,amari1985differential,chentsov1972statistical}
+\citation{poincare1890probleme,birkhoff1931proof}
+\citation{moura2021lean4}
+\citation{hoare1969axiomatic}
+\citation{pierce2002types,moggi1991notions}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}What This Paper Is Not}{4}{subsection.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Background and Prerequisites}{4}{section.2}\protected@file@percent }
+\newlabel{sec:background}{{2}{4}{Background and Prerequisites}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}The Triple Equivalence}{4}{subsection.2.1}\protected@file@percent }
+\newlabel{eq:triple}{{1}{4}{The Triple Equivalence}{equation.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}S-Entropy Coordinates}{4}{subsection.2.2}\protected@file@percent }
+\newlabel{eq:metric}{{3}{4}{S-Entropy Coordinates}{equation.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Backward Trajectory Completion}{4}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}The Microkernel}{4}{subsection.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}vaHera as Internal Language}{4}{subsection.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}The Integrated Architecture}{5}{section.3}\protected@file@percent }
+\newlabel{sec:architecture}{{3}{5}{The Integrated Architecture}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}The Four Layers}{5}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Layer 1: The Substrate}{5}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Layer 2: The Microkernel}{5}{subsection.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Microkernel subsystem graph. PVE verifies; TEM monitors; CMM, PSS, and DIC participate in the primary data path. All consume substrate primitives.}}{5}{figure.caption.3}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:subsystems}{{1}{5}{Microkernel subsystem graph. PVE verifies; TEM monitors; CMM, PSS, and DIC participate in the primary data path. All consume substrate primitives}{figure.caption.3}{}}
+\citation{hu2021lora}
+\@writefile{toc}{\contentsline {paragraph}{CMM.allocate.}{6}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{PSS.spawn.}{6}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Subsystem communication.}{6}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Layer 3: vaHera Interpreter}{6}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Layer 4: Intent Translator}{6}{subsection.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}The Dispatch Protocol}{6}{section.4}\protected@file@percent }
+\newlabel{sec:dispatch}{{4}{6}{The Dispatch Protocol}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}The Dispatch Table}{6}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Protocol Invariants}{6}{subsection.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces The vaHera dispatch protocol. Each row specifies, for a statement type, the ordered sequence of subsystem calls and the substrate primitives they consume.}}{7}{table.caption.7}\protected@file@percent }
+\newlabel{tab:dispatch}{{1}{7}{The vaHera dispatch protocol. Each row specifies, for a statement type, the ordered sequence of subsystem calls and the substrate primitives they consume}{table.caption.7}{}}
+\citation{hennessy2011computer}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Blocking versus Asynchronous Verification}{8}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Worked Dispatch Example}{8}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Boot and Run-Time Model}{8}{section.5}\protected@file@percent }
+\newlabel{sec:boot}{{5}{8}{Boot and Run-Time Model}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Boot Sequence}{8}{subsection.5.1}\protected@file@percent }
+\citation{ritchie1974unix}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Dispatch Protocol Activity. (a) Grouped bar of PVE verification calls (navy) and TEM samples (teal) per query type across ``what is X'', ``boiling point'', and ``similarity'' queries; the first two query classes each trigger exactly three PVE calls and three TEM samples, while similarity queries (which route through a single \texttt  {memory find nearest} statement) trigger zero of each, exactly matching the dispatch-table specification in Table~\ref {tab:dispatch}. (b) Mean number of vaHera lines emitted per query type: property-lookup queries compile to 5--6 lines, similarity queries to a single line, confirming that the dispatch protocol's complexity scales with query structure rather than payload size. (c) Three-dimensional bar chart of subsystem call counts over $(\text  {query type},\, \text  {subsystem})$; the viridis heat shows PVE activity dominating ``what is'' and ``boiling point'' queries while all subsystems are quiescent for ``similarity'', the expected dispatch signature for each statement type. (d) Mean total latency per query type; the similarity query's higher mean ($0.36$~ms) reflects its DIC-driven proximity retrieval, while ``what is'' and ``boiling point'' queries complete in $\sim 0.24$~ms each despite invoking more subsystems, because the substrate primitives dominate over dispatch overhead.}}{9}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:integration_panel3_dispatch}{{2}{9}{Dispatch Protocol Activity. (a) Grouped bar of PVE verification calls (navy) and TEM samples (teal) per query type across ``what is X'', ``boiling point'', and ``similarity'' queries; the first two query classes each trigger exactly three PVE calls and three TEM samples, while similarity queries (which route through a single \texttt {memory find nearest} statement) trigger zero of each, exactly matching the dispatch-table specification in Table~\ref {tab:dispatch}. (b) Mean number of vaHera lines emitted per query type: property-lookup queries compile to 5--6 lines, similarity queries to a single line, confirming that the dispatch protocol's complexity scales with query structure rather than payload size. (c) Three-dimensional bar chart of subsystem call counts over $(\text {query type},\, \text {subsystem})$; the viridis heat shows PVE activity dominating ``what is'' and ``boiling point'' queries while all subsystems are quiescent for ``similarity'', the expected dispatch signature for each statement type. (d) Mean total latency per query type; the similarity query's higher mean ($0.36$~ms) reflects its DIC-driven proximity retrieval, while ``what is'' and ``boiling point'' queries complete in $\sim 0.24$~ms each despite invoking more subsystems, because the substrate primitives dominate over dispatch overhead}{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}The Main Loop}{9}{subsection.5.2}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Buhera main loop}}{9}{algorithm.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Persistence}{9}{subsection.5.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces End-to-End Latency of the Integrated Stack. (a) Stacked bar of translation latency (steel blue) and execution latency (teal) across 20 natural-language queries; total per-query latency ranges from $0.12$ to $0.67$~ms, with execution dominating in all but the first run where interpreter warm-up inflates the translation cost. (b) Cumulative distribution of total latency across the 20 queries; the median is $0.14$~ms and the $95$th percentile is $0.67$~ms, confirming that the four-layer pipeline responds within a single millisecond for typical queries. (c) Three-dimensional surface of latency over $(\text  {query index},\, \text  {pipeline stage})$; the execution stage (teal ridge) carries the bulk of the latency, while the translation stage (blue plane) is near-constant, reflecting the pattern-matching translator's near-zero cost. (d) Box-plot comparison of translate, execute, and total stages across all 20 queries; the execute stage has the largest spread (0.1--0.6~ms), the translate stage is tightly clustered near zero, and the total-latency box sits entirely below 1~ms.}}{10}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:integration_panel1_latency}{{3}{10}{End-to-End Latency of the Integrated Stack. (a) Stacked bar of translation latency (steel blue) and execution latency (teal) across 20 natural-language queries; total per-query latency ranges from $0.12$ to $0.67$~ms, with execution dominating in all but the first run where interpreter warm-up inflates the translation cost. (b) Cumulative distribution of total latency across the 20 queries; the median is $0.14$~ms and the $95$th percentile is $0.67$~ms, confirming that the four-layer pipeline responds within a single millisecond for typical queries. (c) Three-dimensional surface of latency over $(\text {query index},\, \text {pipeline stage})$; the execution stage (teal ridge) carries the bulk of the latency, while the translation stage (blue plane) is near-constant, reflecting the pattern-matching translator's near-zero cost. (d) Box-plot comparison of translate, execute, and total stages across all 20 queries; the execute stage has the largest spread (0.1--0.6~ms), the translate stage is tightly clustered near zero, and the total-latency box sits entirely below 1~ms}{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Retrieval Without Filenames}{10}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}The Empty Dictionary Principle}{10}{section.6}\protected@file@percent }
+\newlabel{sec:empty_dict}{{6}{10}{The Empty Dictionary Principle}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Statement of the Principle}{10}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Synthesis vs.\ Retrieval}{11}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}The Blank-Screen Interface}{11}{section.7}\protected@file@percent }
+\newlabel{sec:blank}{{7}{11}{The Blank-Screen Interface}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}No Applications}{11}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}The User Surface}{11}{subsection.7.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The Empty Dictionary Principle in Practice. (a) Histogram of the distance $d(\text  {query coord},\, \text  {original coord})$ across 25 compounds; every distance is exactly $0.0000$ (recovery rate $100\%$), confirming that the query-time embedding of \texttt  {describe X with "X"} reproduces the original molecule coordinate without any lookup, the operational content of the empty-dictionary theorem. (b) Scatter of original coord (abscissa) vs.\ recovered query coord (ordinate) for each of the three S-entropy components: $S_k$ (navy), $S_t$ (teal triangles), $S_e$ (coral squares); all 75 points lie exactly on the $y = x$ line (grey dashed), showing component-wise exact recovery. (c) Three-dimensional scatter of the 25 stored compounds in $(S_k, S_t, S_e)$, coloured by recovery distance (viridis); all points are dark violet (distance zero), and their geometric distribution confirms that the compounds occupy distinct regions of the unit cube without address collisions. (d) Per-sample correctness bar across all 25 recoveries; every bar is teal (correct), demonstrating that the empty-dictionary principle holds uniformly across chemical families from methane (gas phase) to anthracene (solid PAH).}}{12}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:integration_panel5_empty_dict}{{4}{12}{The Empty Dictionary Principle in Practice. (a) Histogram of the distance $d(\text {query coord},\, \text {original coord})$ across 25 compounds; every distance is exactly $0.0000$ (recovery rate $100\%$), confirming that the query-time embedding of \texttt {describe X with "X"} reproduces the original molecule coordinate without any lookup, the operational content of the empty-dictionary theorem. (b) Scatter of original coord (abscissa) vs.\ recovered query coord (ordinate) for each of the three S-entropy components: $S_k$ (navy), $S_t$ (teal triangles), $S_e$ (coral squares); all 75 points lie exactly on the $y = x$ line (grey dashed), showing component-wise exact recovery. (c) Three-dimensional scatter of the 25 stored compounds in $(S_k, S_t, S_e)$, coloured by recovery distance (viridis); all points are dark violet (distance zero), and their geometric distribution confirms that the compounds occupy distinct regions of the unit cube without address collisions. (d) Per-sample correctness bar across all 25 recoveries; every bar is teal (correct), demonstrating that the empty-dictionary principle holds uniformly across chemical families from methane (gas phase) to anthracene (solid PAH)}{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}What the Blank Screen Buys}{12}{subsection.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Epistemic Externality: The Third Preparation Strategy}{12}{section.8}\protected@file@percent }
+\newlabel{sec:epistemology}{{8}{12}{Epistemic Externality: The Third Preparation Strategy}{section.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Content-Based Preparation}{12}{subsection.8.1}\protected@file@percent }
+\newlabel{def:content_system}{{8.1}{12}{Content System}{theorem.8.1}{}}
+\citation{kuhn1962structure}
+\citation{quine1951two}
+\newlabel{def:content_prep}{{8.2}{13}{Content-Based Preparation}{theorem.8.2}{}}
+\newlabel{prop:content_symmetry}{{8.3}{13}{Symmetry of Content-Preparation}{theorem.8.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}The Circularity Theorem}{13}{subsection.8.2}\protected@file@percent }
+\newlabel{thm:circularity}{{8.4}{13}{Content-Circular Direction}{theorem.8.4}{}}
+\newlabel{cor:kuhn}{{8.5}{13}{Incommensurability of Content Systems}{theorem.8.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Geometric Externality}{13}{subsection.8.3}\protected@file@percent }
+\newlabel{def:geometric_substrate}{{8.6}{13}{Geometric Substrate}{theorem.8.6}{}}
+\newlabel{def:geometric_prep}{{8.7}{13}{Geometric Preparation}{theorem.8.7}{}}
+\newlabel{prop:geometry_not_content}{{8.8}{13}{Geometry Is Not a Content System}{theorem.8.8}{}}
+\newlabel{thm:geometric_direction}{{8.9}{13}{Non-Circular Geometric Direction}{theorem.8.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}The Choice Problem and Its Closure}{14}{subsection.8.4}\protected@file@percent }
+\newlabel{prop:constraint_forcing}{{8.10}{14}{Physical Constraint Forcing}{theorem.8.10}{}}
+\newlabel{thm:forced_substrate}{{8.11}{14}{Forced Geometric Substrate}{theorem.8.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.5}Cross-Domain Transfer}{14}{subsection.8.5}\protected@file@percent }
+\newlabel{thm:cross_domain}{{8.12}{14}{Cross-Domain Geometric Transfer}{theorem.8.12}{}}
+\newlabel{cor:buhera_agnostic}{{8.13}{14}{Domain Agnosticism of Buhera}{theorem.8.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.6}Structural Preparation}{14}{subsection.8.6}\protected@file@percent }
+\newlabel{def:structural_prep}{{8.14}{14}{Structural Preparation}{theorem.8.14}{}}
+\newlabel{prop:third_strategy}{{8.15}{15}{The Third Strategy}{theorem.8.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.7}Why Knowledge Cannot Be Good or Bad Within a Content System}{15}{subsection.8.7}\protected@file@percent }
+\newlabel{cor:no_absolute}{{8.17}{15}{No Absolute Evaluation of Knowledge}{theorem.8.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.8}Summary}{15}{subsection.8.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9}Correctness}{15}{section.9}\protected@file@percent }
+\newlabel{sec:correctness}{{9}{15}{Correctness}{section.9}{}}
+\citation{cover2006elements}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Robustness and Integrated Summary. (a) Completion rate across six edge cases (empty input, garbage tokens, unknown compound, short query, very long query, normal query); all six complete ($100\%$), with no PVE rejection or runtime error, validating that the pipeline degrades gracefully rather than catastrophically on out-of-distribution input. (b) Per-edge-case latency; normal and short queries complete in $\sim 0.1$~ms, while garbage and empty queries cost slightly more due to unsuccessful coord-matching, but never exceed $0.4$~ms. (c) Three-dimensional bar chart of integration scores across the six experiments (latency, accuracy, dispatch, scaling, empty-dictionary, robustness); each bar reaches score $1.0$ (viridis yellow) for a fully-passing integration, with the heights visualizing the uniform success of the stack as a whole. (d) Summary of the five headline integration metrics: accuracy ($1.00$, navy), empty-dictionary recovery ($1.00$, teal), robustness completion ($1.00$, coral), scaling flatness ($1.00$, steel blue), and PVE pass rate ($1.00$, purple); the integrated architecture passes all five tests at unit rate, confirming that the four-layer composition delivers the theoretical guarantees end-to-end.}}{16}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:integration_panel6_summary}{{5}{16}{Robustness and Integrated Summary. (a) Completion rate across six edge cases (empty input, garbage tokens, unknown compound, short query, very long query, normal query); all six complete ($100\%$), with no PVE rejection or runtime error, validating that the pipeline degrades gracefully rather than catastrophically on out-of-distribution input. (b) Per-edge-case latency; normal and short queries complete in $\sim 0.1$~ms, while garbage and empty queries cost slightly more due to unsuccessful coord-matching, but never exceed $0.4$~ms. (c) Three-dimensional bar chart of integration scores across the six experiments (latency, accuracy, dispatch, scaling, empty-dictionary, robustness); each bar reaches score $1.0$ (viridis yellow) for a fully-passing integration, with the heights visualizing the uniform success of the stack as a whole. (d) Summary of the five headline integration metrics: accuracy ($1.00$, navy), empty-dictionary recovery ($1.00$, teal), robustness completion ($1.00$, coral), scaling flatness ($1.00$, steel blue), and PVE pass rate ($1.00$, purple); the integrated architecture passes all five tests at unit rate, confirming that the four-layer composition delivers the theoretical guarantees end-to-end}{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Global Invariants}{16}{subsection.9.1}\protected@file@percent }
+\newlabel{thm:triple_preserved}{{9.1}{16}{Triple Equivalence preserved by dispatch}{theorem.9.1}{}}
+\newlabel{cor:addr_unique}{{9.2}{16}{Address uniqueness}{theorem.9.2}{}}
+\newlabel{thm:termination}{{9.3}{16}{Termination}{theorem.9.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.2}Layer Protocol Correctness}{17}{subsection.9.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.3}What PVE Actually Verifies}{17}{subsection.9.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {10}Reference Implementation}{17}{section.10}\protected@file@percent }
+\newlabel{sec:implementation}{{10}{17}{Reference Implementation}{section.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.1}Structure}{17}{subsection.10.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {11}End-to-End Validation}{17}{section.11}\protected@file@percent }
+\newlabel{sec:validation}{{11}{17}{End-to-End Validation}{section.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.1}Test Setup}{17}{subsection.11.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Accuracy and Coordinate Proximity. (a) Per-query correctness across 18 property-retrieval and identification queries; every bar is teal (pass) for a final accuracy of $100\%$ ($18/18$) under the stub translator, confirming that the integrated stack routes natural-language intent to the correct stored compound without a name-to-property lookup table. (b) Histogram of categorical distance between each query's coordinate and its matched compound's coordinate; all 18 distances are exactly $0.0000$ (mean $d = 0.00000$), meaning the query and match coordinates coincide in S-entropy space. (c) Three-dimensional scatter of all query coordinates in the S-entropy unit cube, coloured teal (correct) or coral (incorrect); all points are teal and distributed across the cube, demonstrating that correct retrieval is not localized to any subregion of the coordinate space. (d) Summary bar chart: recall@1, fraction of matches with $d = 0$, and PVE pass rate are each $1.000$, confirming that correctness, exact coordinate recovery, and verification pass rate are simultaneously perfect across the validation set.}}{18}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:integration_panel2_accuracy}{{6}{18}{Accuracy and Coordinate Proximity. (a) Per-query correctness across 18 property-retrieval and identification queries; every bar is teal (pass) for a final accuracy of $100\%$ ($18/18$) under the stub translator, confirming that the integrated stack routes natural-language intent to the correct stored compound without a name-to-property lookup table. (b) Histogram of categorical distance between each query's coordinate and its matched compound's coordinate; all 18 distances are exactly $0.0000$ (mean $d = 0.00000$), meaning the query and match coordinates coincide in S-entropy space. (c) Three-dimensional scatter of all query coordinates in the S-entropy unit cube, coloured teal (correct) or coral (incorrect); all points are teal and distributed across the cube, demonstrating that correct retrieval is not localized to any subregion of the coordinate space. (d) Summary bar chart: recall@1, fraction of matches with $d = 0$, and PVE pass rate are each $1.000$, confirming that correctness, exact coordinate recovery, and verification pass rate are simultaneously perfect across the validation set}{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.2}Results}{18}{subsection.11.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.3}What This Validates}{18}{subsection.11.3}\protected@file@percent }
+\citation{ritchie1974unix,tanenbaum2015modern}
+\citation{pike1995plan9}
+\citation{knight1974cons,bawden1977lisp}
+\citation{klein2009sel4}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Scaling With Number of Stored Compounds. (a) Mean latency vs.\ compound count (log $x$-axis) across boot sizes $N \in \{5, 10, 20, 40\}$; total latency (navy) and execute-only latency (teal, dashed) track each other closely and remain below $0.3$~ms across the entire range, demonstrating that the coordinate-addressed CMM does not scale linearly with the number of stored objects. (b) Queries per second vs.\ $N$; throughput ranges from $3{,}500$ to $7{,}500$~qps, with the local maximum at $N = 20$ reflecting cache warmup rather than any algorithmic cost growth; the filled region quantifies the total query capacity at each boot size. (c) Three-dimensional surface of execution latency over $(N,\, k)$ for top-$k$ retrieval; the surface is essentially flat along the $N$ axis, confirming that O(log~$N$) proximity queries plus O($k$) surgical retrieval produce a weak joint dependence on database size and result count. (d) CMM object count bar chart across boot sizes; the linear growth $\{5, 10, 20, 40\}$ is the expected storage-side trajectory, with no additional overhead beyond one S-entropy embedding per compound.}}{19}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:integration_panel4_scaling}{{7}{19}{Scaling With Number of Stored Compounds. (a) Mean latency vs.\ compound count (log $x$-axis) across boot sizes $N \in \{5, 10, 20, 40\}$; total latency (navy) and execute-only latency (teal, dashed) track each other closely and remain below $0.3$~ms across the entire range, demonstrating that the coordinate-addressed CMM does not scale linearly with the number of stored objects. (b) Queries per second vs.\ $N$; throughput ranges from $3{,}500$ to $7{,}500$~qps, with the local maximum at $N = 20$ reflecting cache warmup rather than any algorithmic cost growth; the filled region quantifies the total query capacity at each boot size. (c) Three-dimensional surface of execution latency over $(N,\, k)$ for top-$k$ retrieval; the surface is essentially flat along the $N$ axis, confirming that O(log~$N$) proximity queries plus O($k$) surgical retrieval produce a weak joint dependence on database size and result count. (d) CMM object count bar chart across boot sizes; the linear growth $\{5, 10, 20, 40\}$ is the expected storage-side trajectory, with no additional overhead beyond one S-entropy embedding per compound}{figure.caption.13}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {12}Comparison to Conventional Architectures}{19}{section.12}\protected@file@percent }
+\newlabel{sec:comparison}{{12}{19}{Comparison to Conventional Architectures}{section.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {12.1}Unix}{19}{subsection.12.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {12.2}Plan 9}{19}{subsection.12.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {12.3}Lisp Machines}{19}{subsection.12.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {12.4}seL4 and Formally Verified Kernels}{19}{subsection.12.4}\protected@file@percent }
+\citation{levy1984capability,miller2006robust}
+\citation{demoura2015lean,moura2021lean4}
+\@writefile{toc}{\contentsline {subsection}{\numberline {12.5}Summary}{20}{subsection.12.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {13}Discussion}{20}{section.13}\protected@file@percent }
+\newlabel{sec:discussion}{{13}{20}{Discussion}{section.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {13.1}Scope and Limitations}{20}{subsection.13.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {13.2}Dependence on the Translator}{20}{subsection.13.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {13.3}The Fragility of Synthesis}{20}{subsection.13.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {13.4}Security}{20}{subsection.13.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {13.5}Hardware Compatibility}{20}{subsection.13.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {14}Future Work}{20}{section.14}\protected@file@percent }
+\newlabel{sec:future}{{14}{20}{Future Work}{section.14}{}}
+\bibstyle{unsrt}
+\bibdata{references}
+\bibcite{wilson2014best}{{1}{}{{}}{{}}}
+\bibcite{kanza2017electronic}{{2}{}{{}}{{}}}
+\bibcite{tanenbaum2015modern}{{3}{}{{}}{{}}}
+\bibcite{silberschatz2018operating}{{4}{}{{}}{{}}}
+\bibcite{ritchie1974unix}{{5}{}{{}}{{}}}
+\bibcite{shannon1948mathematical}{{6}{}{{}}{{}}}
+\bibcite{jaynes1957information}{{7}{}{{}}{{}}}
+\bibcite{fisher1922mathematical}{{8}{}{{}}{{}}}
+\bibcite{rao1945information}{{9}{}{{}}{{}}}
+\bibcite{amari1985differential}{{10}{}{{}}{{}}}
+\@writefile{toc}{\contentsline {section}{\numberline {15}Conclusion}{21}{section.15}\protected@file@percent }
+\newlabel{sec:conclusion}{{15}{21}{Conclusion}{section.15}{}}
+\bibcite{chentsov1972statistical}{{11}{}{{}}{{}}}
+\bibcite{poincare1890probleme}{{12}{}{{}}{{}}}
+\bibcite{birkhoff1931proof}{{13}{}{{}}{{}}}
+\bibcite{moura2021lean4}{{14}{}{{}}{{}}}
+\bibcite{hoare1969axiomatic}{{15}{}{{}}{{}}}
+\bibcite{pierce2002types}{{16}{}{{}}{{}}}
+\bibcite{moggi1991notions}{{17}{}{{}}{{}}}
+\bibcite{hu2021lora}{{18}{}{{}}{{}}}
+\bibcite{hennessy2011computer}{{19}{}{{}}{{}}}
+\bibcite{kuhn1962structure}{{20}{}{{}}{{}}}
+\bibcite{quine1951two}{{21}{}{{}}{{}}}
+\bibcite{cover2006elements}{{22}{}{{}}{{}}}
+\bibcite{pike1995plan9}{{23}{}{{}}{{}}}
+\bibcite{knight1974cons}{{24}{}{{}}{{}}}
+\bibcite{bawden1977lisp}{{25}{}{{}}{{}}}
+\bibcite{klein2009sel4}{{26}{}{{}}{{}}}
+\bibcite{levy1984capability}{{27}{}{{}}{{}}}
+\bibcite{miller2006robust}{{28}{}{{}}{{}}}
+\bibcite{demoura2015lean}{{29}{}{{}}{{}}}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\gdef \@abspage@last{22}

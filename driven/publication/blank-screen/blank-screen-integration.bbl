@@ -1,0 +1,164 @@
+\begin{thebibliography}{10}
+
+\bibitem{wilson2014best}
+Greg Wilson, D.~A. Aruliah, C.~Titus Brown, Neil~P. Chue~Hong, Matt Davis,
+  Richard~T. Guy, Steven H.~D. Haddock, Kathryn~D. Huff, Ian~M. Mitchell,
+  Mark~D. Plumbley, Ben Waugh, Ethan~P. White, and Paul Wilson.
+\newblock Best practices for scientific computing.
+\newblock {\em PLOS Biology}, 12(1):e1001745, 2014.
+
+\bibitem{kanza2017electronic}
+Samantha Kanza, Cerys Willoughby, Nicholas Gibbins, Richard~J. Whitby,
+  Jeremy~G. Frey, Jana Erjavec, Klemen Zupan{\v c}i{\v c}, Matja{\v z} Hren,
+  and Katarina Kovac.
+\newblock Electronic lab notebooks: can they replace paper?
+\newblock {\em Journal of Cheminformatics}, 9(1), 2017.
+
+\bibitem{tanenbaum2015modern}
+Andrew~S. Tanenbaum and Herbert Bos.
+\newblock {\em Modern Operating Systems}.
+\newblock Pearson, 4th edition, 2015.
+
+\bibitem{silberschatz2018operating}
+Abraham Silberschatz, Peter~B. Galvin, and Greg Gagne.
+\newblock {\em Operating System Concepts}.
+\newblock Wiley, 10th edition, 2018.
+
+\bibitem{ritchie1974unix}
+Dennis~M. Ritchie and Ken Thompson.
+\newblock {\em The {UNIX} time-sharing system}, volume~17.
+\newblock 1974.
+
+\bibitem{shannon1948mathematical}
+Claude~E. Shannon.
+\newblock A mathematical theory of communication.
+\newblock {\em Bell System Technical Journal}, 27(3):379--423, 1948.
+
+\bibitem{jaynes1957information}
+Edwin~T. Jaynes.
+\newblock Information theory and statistical mechanics.
+\newblock {\em Physical Review}, 106(4):620--630, 1957.
+
+\bibitem{fisher1922mathematical}
+Ronald~A. Fisher.
+\newblock On the mathematical foundations of theoretical statistics.
+\newblock {\em Philosophical Transactions of the Royal Society A},
+  222:309--368, 1922.
+
+\bibitem{rao1945information}
+C.~Radhakrishna Rao.
+\newblock Information and the accuracy attainable in the estimation of
+  statistical parameters.
+\newblock {\em Bulletin of the Calcutta Mathematical Society}, 37:81--91, 1945.
+
+\bibitem{amari1985differential}
+Shun-ichi Amari.
+\newblock {\em Differential-Geometrical Methods in Statistics}.
+\newblock Springer, 1985.
+
+\bibitem{chentsov1972statistical}
+Nikolai~N. Chentsov.
+\newblock Statistical decision rules and optimal inference.
+\newblock {\em Translations of Mathematical Monographs}, 53, 1972.
+
+\bibitem{poincare1890probleme}
+Henri Poincar{\'e}.
+\newblock Sur le probl{\`e}me des trois corps et les {\'e}quations de la
+  dynamique.
+\newblock {\em Acta Mathematica}, 13:1--270, 1890.
+
+\bibitem{birkhoff1931proof}
+George~David Birkhoff.
+\newblock Proof of the ergodic theorem.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  17(12):656--660, 1931.
+
+\bibitem{moura2021lean4}
+Leonardo de~Moura and Sebastian Ullrich.
+\newblock The {Lean 4} theorem prover and programming language.
+\newblock {\em Proceedings of CADE}, pages 625--635, 2021.
+
+\bibitem{hoare1969axiomatic}
+C.~A.~R. Hoare.
+\newblock An axiomatic basis for computer programming.
+\newblock {\em Communications of the ACM}, 12(10):576--580, 1969.
+
+\bibitem{pierce2002types}
+Benjamin~C. Pierce.
+\newblock {\em Types and Programming Languages}.
+\newblock MIT Press, 2002.
+
+\bibitem{moggi1991notions}
+Eugenio Moggi.
+\newblock Notions of computation and monads.
+\newblock {\em Information and Computation}, 93(1):55--92, 1991.
+
+\bibitem{hu2021lora}
+Edward~J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean
+  Wang, Lu~Wang, and Weizhu Chen.
+\newblock {LoRA}: Low-rank adaptation of large language models.
+\newblock {\em arXiv preprint arXiv:2106.09685}, 2021.
+
+\bibitem{hennessy2011computer}
+John~L. Hennessy and David~A. Patterson.
+\newblock Computer architecture: A quantitative approach.
+\newblock 2011.
+
+\bibitem{kuhn1962structure}
+Thomas~S. Kuhn.
+\newblock {\em The Structure of Scientific Revolutions}.
+\newblock University of Chicago Press, 1962.
+
+\bibitem{quine1951two}
+Willard Van~Orman Quine.
+\newblock {\em Two dogmas of empiricism}, volume~60.
+\newblock 1951.
+
+\bibitem{cover2006elements}
+Thomas~M. Cover and Joy~A. Thomas.
+\newblock {\em Elements of Information Theory}.
+\newblock Wiley-Interscience, 2nd edition, 2006.
+
+\bibitem{pike1995plan9}
+Rob Pike, Dave Presotto, Sean Dorward, Bob Flandrena, Ken Thompson, Howard
+  Trickey, and Phil Winterbottom.
+\newblock {Plan 9} from {Bell Labs}.
+\newblock {\em Computing Systems}, 8(3):221--254, 1995.
+
+\bibitem{knight1974cons}
+Thomas Knight.
+\newblock The {CONS} microprocessor.
+\newblock Technical report, MIT AI Lab Memo 444, 1974.
+
+\bibitem{bawden1977lisp}
+Alan Bawden, Richard Greenblatt, Jack Holloway, Thomas Knight, David Moon, and
+  Daniel Weinreb.
+\newblock Lisp machine progress report.
+\newblock {\em MIT AI Lab Memo 444}, 1977.
+
+\bibitem{klein2009sel4}
+Gerwin Klein, Kevin Elphinstone, Gernot Heiser, June Andronick, David Cock,
+  Philip Derrin, Dhammika Elkaduwe, Kai Engelhardt, Rafal Kolanski, Michael
+  Norrish, Thomas Sewell, Harvey Tuch, and Simon Winwood.
+\newblock {seL4}: formal verification of an {OS} kernel.
+\newblock {\em Proceedings of the ACM SIGOPS Symposium on Operating Systems
+  Principles (SOSP)}, pages 207--220, 2009.
+
+\bibitem{levy1984capability}
+Henry~M. Levy.
+\newblock Capability-based computer systems.
+\newblock 1984.
+
+\bibitem{miller2006robust}
+Mark~S. Miller.
+\newblock Robust composition: Towards a unified approach to access control and
+  concurrency control.
+\newblock {\em Ph.D. thesis, Johns Hopkins University}, 2006.
+
+\bibitem{demoura2015lean}
+Leonardo de~Moura, Soonho Kong, Jeremy Avigad, Floris van Doorn, and Jakob von
+  Raumer.
+\newblock The {Lean} theorem prover.
+\newblock {\em Proceedings of CADE}, pages 378--388, 2015.
+
+\end{thebibliography}

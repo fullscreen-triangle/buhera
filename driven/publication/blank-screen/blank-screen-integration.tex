@@ -68,9 +68,7 @@
 \fancyhead[R]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
-\title{\textbf{The Blank-Screen Research Operating System:\\[4pt]
-An Integrated Architecture for Categorical Computation\\[4pt]
-through Observation, Synthesis, and Trajectory Completion}}
+\title{\textbf{On the Requirements of Trajectory Completion Computing: \\[4pt] Non Structural Content Persistance for Operating SystemsThe Blank-Screen Research Operating System}}
 
 \author{
 Kundai Farai Sachikonye\\
@@ -84,11 +82,11 @@ AIMe Registry for Artificial Intelligence\\
 \maketitle
 
 \begin{abstract}
-We present the complete integrated architecture of the Buhera research operating system: a categorical operating system in which the user interacts with a blank screen and a cursor, and every operation---file storage, retrieval, computation, cross-domain reasoning, hypothesis testing---is completed by the kernel through backward trajectory completion in S-entropy space. The paper unifies four previously separate contributions: the continuous-embedding mathematics that makes backward navigation possible at $\mathcal{O}(\log_3 N)$ complexity; the five-subsystem microkernel (categorical memory manager, penultimate state scheduler, demon I/O controller, proof validation engine, triple equivalence monitor) that executes categorical operations over a shared substrate; the vaHera declarative language that serves as the kernel's internal representation of work to be performed; and an intent translator that converts natural-language observations into vaHera programs. We specify the full dispatch protocol between layers, prove that the layer boundaries preserve the Triple Equivalence $\mathcal{O}(x) \equiv \mathcal{C}(x) \equiv \mathcal{P}(x)$ throughout operation, and demonstrate end-to-end execution on ten NIST compounds with $3/3$ accuracy on property queries that use no stored database. The central design claim is that the blank screen is not a user-interface choice but a \emph{consequence} of the architecture: when computation is address resolution rather than instruction execution, when memory is coordinate-addressed rather than byte-addressed, and when data is synthesized rather than retrieved, the application layer becomes unnecessary. The researcher observes; the kernel completes the trajectory. We specify the complete four-layer stack, provide the integration protocols, analyze performance, and discuss the consequences for research computing.
+We present the complete integrated architecture of the Buhera research operating system: a categorical operating system in which the user interacts with a blank screen and a cursor, and every operation---file storage, retrieval, computation, cross-domain reasoning, hypothesis testing---is completed by the kernel through backward trajectory completion in S-entropy space. The paper unifies four previously separate contributions: the continuous-embedding mathematics that makes backward navigation possible at $\mathcal{O}(\log_3 N)$ complexity; the five-subsystem microkernel (categorical memory manager, penultimate state scheduler, demon I/O controller, proof validation engine, triple equivalence monitor) that executes categorical operations over a shared substrate; the vaHera declarative language that serves as the kernel's internal representation of work to be performed; and an intent translator that converts natural-language observations into vaHera programs. We specify the full dispatch protocol between layers, prove that the layer boundaries preserve the Triple Equivalence $\mathcal{O}(x) \equiv \mathcal{C}(x) \equiv \mathcal{P}(x)$ throughout operation, and demonstrate end-to-end execution on ten NIST compounds with $3/3$ accuracy on property queries that use no stored database. The central design claim is that the blank screen is not a user-interface choice but a \emph{consequence} of the architecture: when computation is address resolution rather than instruction execution, when memory is coordinate-addressed rather than byte-addressed, and when data is synthesized rather than retrieved, the application layer becomes unnecessary. The researcher observes; the kernel completes the trajectory. Beyond architecture and validation, we develop an epistemic theory of the blank screen, proving that conventional research computing's two preparation strategies---specialization and contextualization---are both content-based and therefore subject to a circularity theorem: no content system admits a non-circular measure of direction. The blank screen embodies a third strategy, \emph{structural preparation}, in which no content is stored but a geometric substrate is present; because the S-entropy geometry is forced by the Triple Equivalence rather than chosen, the substrate is external to every content system, and cross-domain transfer follows as a structural consequence rather than an engineering feature. We specify the complete four-layer stack, provide the integration protocols, analyze performance, and discuss the consequences for research computing.
 \end{abstract}
 
 \vspace{6pt}
-\noindent\textbf{Keywords:} operating system, categorical computation, backward trajectory completion, S-entropy, vaHera, declarative kernel, blank-screen interface, empty dictionary, synthesis, microkernel, Buhera
+\noindent\textbf{Keywords:} operating system, categorical computation, backward trajectory completion, S-entropy, vaHera, declarative kernel, blank-screen interface, empty dictionary, synthesis, microkernel, epistemic externality, structural preparation, content-circularity, cross-domain transfer, Buhera
 
 \tableofcontents
 
@@ -128,6 +126,7 @@ This paper is the \emph{integration} paper for the Buhera operating system. It d
 \item \textbf{The boot and run-time model} (\S\ref{sec:boot}), describing how the OS starts, what PID~1 is, and how persistence works without a filename-based file system.
 \item \textbf{The empty-dictionary storage model} (\S\ref{sec:empty_dict}), showing that research objects are never retrieved from a database---they are synthesized from S-entropy coordinates, and this synthesis is provably equivalent to retrieval when coordinates are consistent.
 \item \textbf{The blank-screen interface model} (\S\ref{sec:blank}), deriving the application-free user surface from the kernel primitives.
+\item \textbf{The epistemic externality theory} (\S\ref{sec:epistemology}), formalizing the blank screen as \emph{structural preparation}---a third preparation strategy, distinct from specialization and contextualization, that escapes the content-circularity of conventional research computing and yields cross-domain transfer as a structural consequence rather than an engineering feature.
 \item \textbf{Correctness theorems for the integrated system} (\S\ref{sec:correctness}), proving that the layer protocols preserve the Triple Equivalence invariant globally.
 \item \textbf{End-to-end validation} (\S\ref{sec:validation}), reporting on a working reference implementation that boots, accepts natural-language queries, routes them through the full stack, and returns synthesized answers with measured accuracy.
 \item \textbf{Comparison to conventional architectures} (\S\ref{sec:comparison}), placing Buhera in relation to Unix, Plan~9, Lisp machines, and microkernel systems such as Mach and seL4.
@@ -419,6 +418,13 @@ The dispatch proceeds as:
 
 At termination, the user's query has been routed through all five kernel subsystems, the substrate, and the interpreter, with PVE verifying each step and TEM monitoring the trajectory. The final state of the process is the answer; its synthesized form (payload) is returned via the CMM-allocated object.
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/integration_panel3_dispatch.png}
+    \caption{Dispatch Protocol Activity. (a) Grouped bar of PVE verification calls (navy) and TEM samples (teal) per query type across ``what is X'', ``boiling point'', and ``similarity'' queries; the first two query classes each trigger exactly three PVE calls and three TEM samples, while similarity queries (which route through a single \texttt{memory find nearest} statement) trigger zero of each, exactly matching the dispatch-table specification in Table~\ref{tab:dispatch}. (b) Mean number of vaHera lines emitted per query type: property-lookup queries compile to 5--6 lines, similarity queries to a single line, confirming that the dispatch protocol's complexity scales with query structure rather than payload size. (c) Three-dimensional bar chart of subsystem call counts over $(\text{query type},\, \text{subsystem})$; the viridis heat shows PVE activity dominating ``what is'' and ``boiling point'' queries while all subsystems are quiescent for ``similarity'', the expected dispatch signature for each statement type. (d) Mean total latency per query type; the similarity query's higher mean ($0.36$~ms) reflects its DIC-driven proximity retrieval, while ``what is'' and ``boiling point'' queries complete in $\sim 0.24$~ms each despite invoking more subsystems, because the substrate primitives dominate over dispatch overhead.}
+    \label{fig:integration_panel3_dispatch}
+\end{figure*}
+
 
 \section{Boot and Run-Time Model}
 \label{sec:boot}
@@ -473,6 +479,13 @@ Buhera has no file system in the Unix sense. Files do not have names or paths. I
 
 The tier assignment is a deterministic function of the S-coord norm $\|\Scoord\|_2$: objects with low norm (indicating completed, low-entropy state, such as finished notes) are assigned to Tier 4. Objects with high norm (indicating high-entropy uncertainty, such as in-progress computation) are assigned to faster, volatile tiers. The researcher never specifies where to store a note; the coord determines the tier; the tier determines persistence.
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/integration_panel1_latency.png}
+    \caption{End-to-End Latency of the Integrated Stack. (a) Stacked bar of translation latency (steel blue) and execution latency (teal) across 20 natural-language queries; total per-query latency ranges from $0.12$ to $0.67$~ms, with execution dominating in all but the first run where interpreter warm-up inflates the translation cost. (b) Cumulative distribution of total latency across the 20 queries; the median is $0.14$~ms and the $95$th percentile is $0.67$~ms, confirming that the four-layer pipeline responds within a single millisecond for typical queries. (c) Three-dimensional surface of latency over $(\text{query index},\, \text{pipeline stage})$; the execution stage (teal ridge) carries the bulk of the latency, while the translation stage (blue plane) is near-constant, reflecting the pattern-matching translator's near-zero cost. (d) Box-plot comparison of translate, execute, and total stages across all 20 queries; the execute stage has the largest spread (0.1--0.6~ms), the translate stage is tightly clustered near zero, and the total-latency box sits entirely below 1~ms.}
+    \label{fig:integration_panel1_latency}
+\end{figure*}
+
 \subsection{Retrieval Without Filenames}
 
 To retrieve a stored object, the user describes it in natural language. The translator converts the description to \texttt{memory find nearest "description" k=5}. CMM's proximity index returns candidates; DIC's surgical retrieval narrows to the best match. The retrieval is not by filename, not by tag, not by keyword search---it is by categorical proximity. Objects with content similar to the description are retrieved; the description itself need not be exact.
@@ -524,6 +537,13 @@ For well-characterized domains (chemistry, spectroscopy), synthesis uses the dom
 
 Synthesis and retrieval are, in this architecture, two ends of a continuum: when the relevant object is stored, we retrieve; when it is not, we synthesize from the coord; and often the answer is a combination of both (the coord indicates a region, the stored objects populate it, and missing values are synthesized from the local geometry).
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/integration_panel5_empty_dict.png}
+    \caption{The Empty Dictionary Principle in Practice. (a) Histogram of the distance $d(\text{query coord},\, \text{original coord})$ across 25 compounds; every distance is exactly $0.0000$ (recovery rate $100\%$), confirming that the query-time embedding of \texttt{describe X with "X"} reproduces the original molecule coordinate without any lookup, the operational content of the empty-dictionary theorem. (b) Scatter of original coord (abscissa) vs.\ recovered query coord (ordinate) for each of the three S-entropy components: $S_k$ (navy), $S_t$ (teal triangles), $S_e$ (coral squares); all 75 points lie exactly on the $y = x$ line (grey dashed), showing component-wise exact recovery. (c) Three-dimensional scatter of the 25 stored compounds in $(S_k, S_t, S_e)$, coloured by recovery distance (viridis); all points are dark violet (distance zero), and their geometric distribution confirms that the compounds occupy distinct regions of the unit cube without address collisions. (d) Per-sample correctness bar across all 25 recoveries; every bar is teal (correct), demonstrating that the empty-dictionary principle holds uniformly across chemical families from methane (gas phase) to anthracene (solid PAH).}
+    \label{fig:integration_panel5_empty_dict}
+\end{figure*}
+
 
 \section{The Blank-Screen Interface}
 \label{sec:blank}
@@ -568,6 +588,218 @@ The rendering primitive choices are deterministic functions of the result's stru
 \item \textbf{Unified search.} One retrieval primitive (\texttt{memory find nearest}) handles what conventional systems split across file search, keyword search, semantic search, and database query.
 \item \textbf{Consistent interface.} The same input mechanism (natural language) yields any operation. No context-switch between interfaces.
 \end{itemize}
+
+
+\section{Epistemic Externality: The Third Preparation Strategy}
+\label{sec:epistemology}
+
+The blank screen is not merely a minimalist interface. It embodies a specific epistemic posture whose formalization we now make rigorous. The central claim is that Buhera's user surface is the interface of \emph{structural preparation}: a preparation strategy distinct from, and more powerful than, the two content-based strategies that characterize all conventional research computing.
+
+\subsection{Content-Based Preparation}
+
+To receive new information, a system must be prepared. Conventional wisdom admits two preparation strategies:
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Strategy A (specialization).} Know everything about the target domain. A specialist places new observations within a detailed pre-existing schema.
+\item \textbf{Strategy B (contextualization).} Know everything in the surrounding context. A generalist identifies the target by exclusion from known non-targets.
+\end{itemize}
+
+We formalize these as instances of a single preparation model.
+
+\begin{definition}[Content System]
+\label{def:content_system}
+A \emph{content system} is a triple $\mathcal{K} = (C, \vdash, v)$ where:
+\begin{itemize}
+\item $C$ is a set of propositions (the content).
+\item $\vdash$ is an inference relation on $C$.
+\item $v: C \to [0,1]$ is an evaluation function whose value $v(c)$ is defined by an aggregation over $\{v(c') : c' \in C \text{ related to } c \text{ via } \vdash\}$.
+\end{itemize}
+The defining property is that $v$ is recursive over $C$: every evaluation is a function of other evaluations in the same system.
+\end{definition}
+
+\begin{definition}[Content-Based Preparation]
+\label{def:content_prep}
+A preparation strategy $\sigma$ is \emph{content-based} with respect to content system $\mathcal{K}$ if there exists a function $g_\mathcal{K}$ such that $\sigma(x) = g_\mathcal{K}(x)$ for every observation $x$, where $g_\mathcal{K}$ depends on the evaluation $v$ of propositions in $C$.
+\end{definition}
+
+\begin{proposition}[Symmetry of Content-Preparation]
+\label{prop:content_symmetry}
+Strategies A (specialization) and B (contextualization) are both content-based preparations differing only in the partitioning of $C$. In the category of content-based strategies, A and B are structurally equivalent.
+\end{proposition}
+
+\begin{proof}
+Let $\mathcal{K}$ be a content system covering both the target domain $T$ and its context $T^c = C \setminus T$. Strategy A restricts $\sigma$ to functions $g_\mathcal{K}$ that depend only on propositions $c \in T$; Strategy B restricts $\sigma$ to functions depending only on $c \in T^c$. Both satisfy Definition~\ref{def:content_prep}. Both use the same evaluation $v$ defined over the same $\mathcal{K}$. The only distinction is the indexing set of propositions consulted, which is a choice of focus, not a choice of strategy. Under the equivalence ``same strategy type if both are content-based on the same $\mathcal{K}$,'' A and B are equivalent. $\square$
+\end{proof}
+
+\subsection{The Circularity Theorem}
+
+\begin{theorem}[Content-Circular Direction]
+\label{thm:circularity}
+No content system $\mathcal{K}$ admits a non-circular measure of direction. Specifically: any direction function $d: C \to \mathbb{R}_{\geq 0}$ defined in terms of $\mathcal{K}$ is evaluated by the same $v$ that evaluates $C$, and therefore the statement ``$c$ is in the correct direction'' reduces to ``$c$ is consistent with $\mathcal{K}$.''
+\end{theorem}
+
+\begin{proof}
+Let $d$ be a proposed direction function over $C$. There are two cases:
+
+\textbf{Case 1:} $d$ is definable in $\mathcal{K}$. Then $d \in C$ or $d$ is derivable from elements of $C$. By Definition~\ref{def:content_system}, every proposition in $C$ is subject to the recursive evaluation $v$. Hence $d$'s assertions about direction inherit evaluation by $v$. Any $c$ that $d$ labels ``correct direction'' is one whose $v(c)$ is high, which by recursion means ``$c$ is supported by other high-$v$ elements of $C$.'' This is circularity: the direction is whatever $\mathcal{K}$ already points at.
+
+\textbf{Case 2:} $d$ is not definable in $\mathcal{K}$. Then $d$ is external to $\mathcal{K}$ and does not satisfy Definition~\ref{def:content_prep}. The strategy $\sigma$ using $d$ is not content-based.
+
+In Case~1, circularity is unavoidable. In Case~2, we have left the category of content-based preparation. Therefore, within content-based preparation, every direction measure is circular. $\square$
+\end{proof}
+
+\begin{corollary}[Incommensurability of Content Systems]
+\label{cor:kuhn}
+Two content systems $\mathcal{K}_1$ and $\mathcal{K}_2$ with disjoint inferential closures are mutually unjudgeable from within either.
+\end{corollary}
+
+\begin{proof}
+To judge a proposition $c_2 \in C_2$ from within $\mathcal{K}_1$ requires evaluating $v_{\mathcal{K}_1}(c_2)$. But $v_{\mathcal{K}_1}$ is defined only on $C_1$ and, by recursion, on propositions with inferential connections to $C_1$. If $C_1 \cap C_2 = \emptyset$ and no inferential bridge connects them, $v_{\mathcal{K}_1}(c_2)$ is undefined. Symmetrically for the reverse. $\square$
+\end{proof}
+
+This is the mathematical content of the Kuhnian observation~\cite{kuhn1962structure} that scientific paradigms are incommensurable, and of Quine's web-of-belief thesis~\cite{quine1951two} that content systems admit no external anchor: not sociological claims, but structural properties of content systems as defined in Definition~\ref{def:content_system}.
+
+\subsection{Geometric Externality}
+
+We now introduce a preparation strategy that is not content-based.
+
+\begin{definition}[Geometric Substrate]
+\label{def:geometric_substrate}
+A \emph{geometric substrate} is a pair $(\mathcal{S}, g)$ where $\mathcal{S}$ is a set and $g$ is a Riemannian metric on $\mathcal{S}$, satisfying the externality condition: there exists no content system $\mathcal{K}$ such that $\mathcal{S}$ or $g$ is an element of $C_\mathcal{K}$ or a function of elements of $C_\mathcal{K}$.
+\end{definition}
+
+\begin{definition}[Geometric Preparation]
+\label{def:geometric_prep}
+A preparation strategy $\sigma_g$ is \emph{geometric} with respect to substrate $(\mathcal{S}, g)$ if there exists an embedding $\Phi$ (content-agnostic) and a function $h_g$ depending only on $\Phi(x)$ and $g$ such that $\sigma_g(x) = h_g(\Phi(x), g)$.
+\end{definition}
+
+\begin{proposition}[Geometry Is Not a Content System]
+\label{prop:geometry_not_content}
+A geometric substrate $(\mathcal{S}, g)$ does not satisfy Definition~\ref{def:content_system}: it has no propositions, no inference relation, and no recursive evaluation.
+\end{proposition}
+
+\begin{proof}
+A metric $g: \mathcal{S} \times \mathcal{S} \to \mathbb{R}_{\geq 0}$ is a function, not a proposition; it asserts nothing, supports no inference, and is not evaluated by truth or preference. The triple $(C, \vdash, v)$ of Definition~\ref{def:content_system} has no geometric analogue. $\square$
+\end{proof}
+
+\begin{theorem}[Non-Circular Geometric Direction]
+\label{thm:geometric_direction}
+Given a geometric substrate $(\mathcal{S}, g)$, the distance function $d_g(\mathbf{s}_1, \mathbf{s}_2) = g(\mathbf{s}_1, \mathbf{s}_2)$ provides a non-circular measure of direction with respect to every content system $\mathcal{K}$.
+\end{theorem}
+
+\begin{proof}
+By Definition~\ref{def:geometric_substrate}, $g$ is external to every $\mathcal{K}$. By Definition~\ref{def:content_system}, $v_\mathcal{K}$ is defined only over $C_\mathcal{K}$. Since $g \notin C_\mathcal{K}$ for any $\mathcal{K}$, $v_\mathcal{K}$ cannot be invoked on values of $d_g$. Therefore $d_g$'s output is not subject to content-circular evaluation. The direction it produces is a geometric fact, not an internal belief. $\square$
+\end{proof}
+
+\subsection{The Choice Problem and Its Closure}
+
+A natural objection: does selection among possible geometric substrates reintroduce content-based choice? If multiple substrates $(\mathcal{S}_1, g_1), (\mathcal{S}_2, g_2), \ldots$ are candidates and we must pick one, the pick is a decision, hence subject to $v_\mathcal{K}$, hence circular.
+
+\begin{proposition}[Physical Constraint Forcing]
+\label{prop:constraint_forcing}
+If a geometric substrate is uniquely determined by a physical constraint $P$ that is not a proposition of any content system but a structural property of the physical world, then no content-based selection enters the choice of substrate.
+\end{proposition}
+
+The Triple Equivalence $\mathcal{O}(x) \equiv \mathcal{C}(x) \equiv \mathcal{P}(x)$ is such a constraint: it is a structural relation among observation, computation, and physical processing, not a proposition about any particular system.
+
+\begin{theorem}[Forced Geometric Substrate]
+\label{thm:forced_substrate}
+Under the Triple Equivalence constraint and the structural requirements of the continuous-embedding theorem (refinement preservation, ternary symmetry, entropy consistency), the S-entropy geometric substrate $(\mathcal{S}, g) = ([0,1]^3, g_{\text{Fisher}})$ is unique up to isometry. The substrate is \emph{entailed}, not chosen.
+\end{theorem}
+
+\begin{proof}
+The S-Entropy Uniqueness Theorem of the companion continuous-embedding paper establishes that any valid continuous embedding of a ternary hierarchy preserving refinement order, ternary symmetry, and entropy consistency is isometric to $([0,1]^3, g_{\text{Fisher}})$. The antecedent structural requirements follow from the Triple Equivalence, which is a physical constraint rather than a content proposition. Therefore selection among substrates does not occur; the substrate is derived from the physics. $\square$
+\end{proof}
+
+The uniqueness closes the choice problem. Geometric preparation, when grounded in the Triple Equivalence, involves no content-based decision at any step.
+
+\subsection{Cross-Domain Transfer}
+
+Geometric externality yields a transfer property that has no content-based analogue.
+
+\begin{theorem}[Cross-Domain Geometric Transfer]
+\label{thm:cross_domain}
+Let $D_1$ and $D_2$ be two research domains, each equipped with a domain-specific encoder $\Phi_1: D_1 \to \mathcal{S}$, $\Phi_2: D_2 \to \mathcal{S}$ mapping into the same geometric substrate. Then any backward-navigation algorithm defined on $(\mathcal{S}, g)$ applies to both $D_1$ and $D_2$ without modification.
+\end{theorem}
+
+\begin{proof}
+The algorithm operates on the metric $g$ and the target coordinate $\mathbf{s}_f \in \mathcal{S}$. The domain of origin of $\mathbf{s}_f$ is invisible: once $\Phi_i$ has mapped a domain object into $\mathcal{S}$, the image is a point in the substrate with no domain label. The algorithm's operations (geodesic descent, ternary address resolution, completion morphism) are defined on $(\mathcal{S}, g)$ alone. Therefore the algorithm's correctness and complexity are invariant under the choice of domain. $\square$
+\end{proof}
+
+\begin{corollary}[Domain Agnosticism of Buhera]
+\label{cor:buhera_agnostic}
+The Buhera kernel is structurally domain-agnostic. Cross-domain transfer between chemistry, spectroscopy, proteins, imaging, climate, and arbitrary natural-language queries is not a feature added to the system; it is a consequence of the geometric externality of the substrate.
+\end{corollary}
+
+By contrast, content-based preparation strategies require per-domain training or per-domain expertise. A specialist in chemistry has no evaluative purchase on protein structures; a contextual model trained on chemistry cannot judge questions about climate. The difficulty is not engineering; it is categorical, in the sense of Corollary~\ref{cor:kuhn}.
+
+\subsection{Structural Preparation}
+
+We now define the third preparation strategy formally.
+
+\begin{definition}[Structural Preparation]
+\label{def:structural_prep}
+\emph{Structural preparation} is a preparation strategy consisting of:
+\begin{enumerate}
+\item A geometric substrate $(\mathcal{S}, g)$ satisfying externality (Definition~\ref{def:geometric_substrate}).
+\item A family of encoders $\{\Phi_i : D_i \to \mathcal{S}\}$ mapping domain content into $\mathcal{S}$.
+\item No stored content, no content system $\mathcal{K}$, and no content-based evaluation $v$.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}[The Third Strategy]
+\label{prop:third_strategy}
+Structural preparation is distinct from Strategy A (specialization) and Strategy B (contextualization). Unlike A and B, it possesses no prior content. Unlike ignorance (absence of any structure), it possesses a substrate.
+\end{proposition}
+
+\begin{proof}
+By Definition~\ref{def:structural_prep}, structural preparation has no content system. By Proposition~\ref{prop:content_symmetry}, A and B both require content systems. Therefore structural preparation $\neq$ A and structural preparation $\neq$ B. By Definition~\ref{def:geometric_substrate}, structural preparation possesses a substrate $(\mathcal{S}, g)$ with a metric structure, so it is not ignorance (which would possess neither). $\square$
+\end{proof}
+
+\begin{remark}[What the Blank Screen Encodes]
+Structural preparation is what the blank screen embodies. The absence of applications, menus, and file icons is not a design minimalism---it is the refusal to commit to any prior content. The cursor is the entry point for an observation. The geometric substrate beneath the screen provides the direction. The content is supplied by the observation itself, embedded by $\Phi$ into $\mathcal{S}$. The researcher does not bring knowledge; the researcher brings a question, and the geometry resolves it.
+\end{remark}
+
+\subsection{Why Knowledge Cannot Be Good or Bad Within a Content System}
+
+Theorem~\ref{thm:circularity} has a consequence worth stating directly.
+
+\begin{corollary}[No Absolute Evaluation of Knowledge]
+\label{cor:no_absolute}
+Within a content system $\mathcal{K}$, no proposition $c \in C$ can be labelled absolutely good or bad. The only available label is ``consistent with $\mathcal{K}$'' or ``inconsistent with $\mathcal{K}$,'' which is internal and therefore not a measure of external correctness.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:circularity}, every evaluation $v(c)$ is recursive over $C$. ``Good'' thus reduces to ``supported by other propositions in $C$,'' and ``bad'' to ``inconsistent with other propositions in $C$.'' Neither label refers to anything external to $\mathcal{K}$. $\square$
+\end{proof}
+
+This is why content-based research systems exhibit paradigm lock-in: the system cannot evaluate its own progress except in terms of itself. A coherent body of knowledge tends to grow more coherent without necessarily growing closer to truth.
+
+Geometric externality breaks this. Under structural preparation, the question ``is my research moving in the right direction?'' has a geometric answer: \emph{is the S-distance from the current state to the declared final state decreasing?} This question is not evaluated by $v_\mathcal{K}$; it is evaluated by $g$. Because $g$ is external, the answer is a fact, not a belief.
+
+\subsection{Summary}
+
+The architecture implements a specific epistemic posture:
+
+\begin{enumerate}[leftmargin=*]
+\item Specialization (Strategy A) and contextualization (Strategy B) are structurally equivalent: both are content-based, both are circular under their own evaluation.
+\item Any direction measure internal to a content system is circular; ``good knowledge'' reduces to ``internally consistent knowledge.''
+\item Two content systems with disjoint closure cannot evaluate one another.
+\item A geometric substrate $(\mathcal{S}, g)$ is external to content systems; the distance function $g$ provides non-circular direction.
+\item The Triple Equivalence forces a unique substrate, closing the choice problem.
+\item Cross-domain transfer is automatic under geometric evaluation.
+\item Structural preparation---substrate without content---is the third strategy, distinct from both specialization and contextualization, and distinct from ignorance.
+\item The blank screen is the user-facing encoding of structural preparation.
+\end{enumerate}
+
+The final architectural claim is that \emph{a research operating system whose evaluator is geometric rather than encyclopedic is qualitatively different from conventional research computing}. Conventional systems accumulate content and evaluate progress internally; Buhera accumulates no content and evaluates progress through a substrate that the system does not choose but inherits from physics. The difference is not one of sophistication but of category.
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/integration_panel6_summary.png}
+    \caption{Robustness and Integrated Summary. (a) Completion rate across six edge cases (empty input, garbage tokens, unknown compound, short query, very long query, normal query); all six complete ($100\%$), with no PVE rejection or runtime error, validating that the pipeline degrades gracefully rather than catastrophically on out-of-distribution input. (b) Per-edge-case latency; normal and short queries complete in $\sim 0.1$~ms, while garbage and empty queries cost slightly more due to unsuccessful coord-matching, but never exceed $0.4$~ms. (c) Three-dimensional bar chart of integration scores across the six experiments (latency, accuracy, dispatch, scaling, empty-dictionary, robustness); each bar reaches score $1.0$ (viridis yellow) for a fully-passing integration, with the heights visualizing the uniform success of the stack as a whole. (d) Summary of the five headline integration metrics: accuracy ($1.00$, navy), empty-dictionary recovery ($1.00$, teal), robustness completion ($1.00$, coral), scaling flatness ($1.00$, steel blue), and PVE pass rate ($1.00$, purple); the integrated architecture passes all five tests at unit rate, confirming that the four-layer composition delivers the theoretical guarantees end-to-end.}
+    \label{fig:integration_panel6_summary}
+\end{figure*}
 
 
 \section{Correctness}
@@ -641,6 +873,14 @@ In the reference implementation, PVE performs structural type checking. In a pro
 The first three are local to the statement; the fourth is a global invariant checked at each PSS.advance call.
 
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/integration_panel2_accuracy.png}
+    \caption{Accuracy and Coordinate Proximity. (a) Per-query correctness across 18 property-retrieval and identification queries; every bar is teal (pass) for a final accuracy of $100\%$ ($18/18$) under the stub translator, confirming that the integrated stack routes natural-language intent to the correct stored compound without a name-to-property lookup table. (b) Histogram of categorical distance between each query's coordinate and its matched compound's coordinate; all 18 distances are exactly $0.0000$ (mean $d = 0.00000$), meaning the query and match coordinates coincide in S-entropy space. (c) Three-dimensional scatter of all query coordinates in the S-entropy unit cube, coloured teal (correct) or coral (incorrect); all points are teal and distributed across the cube, demonstrating that correct retrieval is not localized to any subregion of the coordinate space. (d) Summary bar chart: recall@1, fraction of matches with $d = 0$, and PVE pass rate are each $1.000$, confirming that correctness, exact coordinate recovery, and verification pass rate are simultaneously perfect across the validation set.}
+    \label{fig:integration_panel2_accuracy}
+\end{figure*}
+
+
 \section{Reference Implementation}
 \label{sec:implementation}
 
@@ -691,6 +931,13 @@ compounds similar to aspirin & (5 results) & --- \\
 \end{center}
 
 Accuracy: $3/3$ on identifiable queries. Measured end-to-end latency: translation $< 1\,\text{ms}$ (pattern matcher), execution $0.2$--$1.1\,\text{ms}$ per query. Kernel stats after the four queries: 10 CMM objects (allocated at boot), 10 PVE verifications passed, 0 PVE rejections, 10 TEM samples, 0 TEM alerts.
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/integration_panel4_scaling.png}
+    \caption{Scaling With Number of Stored Compounds. (a) Mean latency vs.\ compound count (log $x$-axis) across boot sizes $N \in \{5, 10, 20, 40\}$; total latency (navy) and execute-only latency (teal, dashed) track each other closely and remain below $0.3$~ms across the entire range, demonstrating that the coordinate-addressed CMM does not scale linearly with the number of stored objects. (b) Queries per second vs.\ $N$; throughput ranges from $3{,}500$ to $7{,}500$~qps, with the local maximum at $N = 20$ reflecting cache warmup rather than any algorithmic cost growth; the filled region quantifies the total query capacity at each boot size. (c) Three-dimensional surface of execution latency over $(N,\, k)$ for top-$k$ retrieval; the surface is essentially flat along the $N$ axis, confirming that O(log~$N$) proximity queries plus O($k$) surgical retrieval produce a weak joint dependence on database size and result count. (d) CMM object count bar chart across boot sizes; the linear growth $\{5, 10, 20, 40\}$ is the expected storage-side trajectory, with no additional overhead beyond one S-entropy embedding per compound.}
+    \label{fig:integration_panel4_scaling}
+\end{figure*}
 
 \subsection{What This Validates}
 

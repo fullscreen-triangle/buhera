@@ -8,7 +8,9 @@
       "Bash(python -m driven.src.embedding.validate_embedding)",
       "Bash(python -m driven.src.visualizations.generate_embedding_panels)",
       "WebFetch(domain:github.com)",
-      "Bash(python -m driven.src.visualizations.generate_integration_panels)"
+      "Bash(python -m driven.src.visualizations.generate_integration_panels)",
+      "Bash(npm install *)",
+      "Bash(npm run *)"
     ]
   }
 }
