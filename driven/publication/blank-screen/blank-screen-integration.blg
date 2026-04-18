@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: blank-screen-integration.aux
+Reallocating 'name_of_file' (item size: 1) to 6 items.
+The style file: unsrt.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Database file #1: references.bib
+Warning--can't use both volume and number fields in ritchie1974unix
+Warning--empty publisher in ritchie1974unix
+Warning--empty journal in hennessy2011computer
+Warning--can't use both volume and number fields in quine1951two
+Warning--empty publisher in quine1951two
+Warning--empty journal in levy1984capability
+You've used 29 entries,
+            1791 wiz_defined-function locations,
+            617 strings with 7860 characters,
+and the built_in function-call counts, 6227 in all, are:
+= -- 530
+> -- 312
+< -- 5
++ -- 119
+- -- 90
+* -- 403
+:= -- 1028
+add.period$ -- 87
+call.type$ -- 29
+change.case$ -- 25
+chr.to.int$ -- 0
+cite$ -- 35
+duplicate$ -- 286
+empty$ -- 583
+format.name$ -- 90
+if$ -- 1356
+int.to.chr$ -- 0
+int.to.str$ -- 29
+missing$ -- 36
+newline$ -- 148
+num.names$ -- 29
+pop$ -- 93
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 121
+stack$ -- 0
+substring$ -- 327
+swap$ -- 57
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 6
+while$ -- 57
+width$ -- 31
+write$ -- 309
+(There were 6 warnings)

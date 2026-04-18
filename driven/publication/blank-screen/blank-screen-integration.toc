@@ -1,0 +1,70 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}The Problem with Conventional Research Computing}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}The Blank Screen}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Contributions}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}What This Paper Is Not}{4}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Background and Prerequisites}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}The Triple Equivalence}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}S-Entropy Coordinates}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Backward Trajectory Completion}{4}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}The Microkernel}{4}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}vaHera as Internal Language}{4}{subsection.2.5}%
+\contentsline {section}{\numberline {3}The Integrated Architecture}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}The Four Layers}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Layer 1: The Substrate}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Layer 2: The Microkernel}{5}{subsection.3.3}%
+\contentsline {paragraph}{CMM.allocate.}{6}{section*.4}%
+\contentsline {paragraph}{PSS.spawn.}{6}{section*.5}%
+\contentsline {paragraph}{Subsystem communication.}{6}{section*.6}%
+\contentsline {subsection}{\numberline {3.4}Layer 3: vaHera Interpreter}{6}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Layer 4: Intent Translator}{6}{subsection.3.5}%
+\contentsline {section}{\numberline {4}The Dispatch Protocol}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}The Dispatch Table}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Protocol Invariants}{6}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Blocking versus Asynchronous Verification}{8}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Worked Dispatch Example}{8}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Boot and Run-Time Model}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Boot Sequence}{8}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}The Main Loop}{9}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Persistence}{9}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Retrieval Without Filenames}{10}{subsection.5.4}%
+\contentsline {section}{\numberline {6}The Empty Dictionary Principle}{10}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Statement of the Principle}{10}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Synthesis vs.\ Retrieval}{11}{subsection.6.2}%
+\contentsline {section}{\numberline {7}The Blank-Screen Interface}{11}{section.7}%
+\contentsline {subsection}{\numberline {7.1}No Applications}{11}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}The User Surface}{11}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}What the Blank Screen Buys}{12}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Epistemic Externality: The Third Preparation Strategy}{12}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Content-Based Preparation}{12}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}The Circularity Theorem}{13}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Geometric Externality}{13}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}The Choice Problem and Its Closure}{14}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Cross-Domain Transfer}{14}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}Structural Preparation}{14}{subsection.8.6}%
+\contentsline {subsection}{\numberline {8.7}Why Knowledge Cannot Be Good or Bad Within a Content System}{15}{subsection.8.7}%
+\contentsline {subsection}{\numberline {8.8}Summary}{15}{subsection.8.8}%
+\contentsline {section}{\numberline {9}Correctness}{15}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Global Invariants}{16}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Layer Protocol Correctness}{17}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}What PVE Actually Verifies}{17}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Reference Implementation}{17}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Structure}{17}{subsection.10.1}%
+\contentsline {section}{\numberline {11}End-to-End Validation}{17}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Test Setup}{17}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Results}{18}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}What This Validates}{18}{subsection.11.3}%
+\contentsline {section}{\numberline {12}Comparison to Conventional Architectures}{19}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Unix}{19}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Plan 9}{19}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}Lisp Machines}{19}{subsection.12.3}%
+\contentsline {subsection}{\numberline {12.4}seL4 and Formally Verified Kernels}{19}{subsection.12.4}%
+\contentsline {subsection}{\numberline {12.5}Summary}{20}{subsection.12.5}%
+\contentsline {section}{\numberline {13}Discussion}{20}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Scope and Limitations}{20}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Dependence on the Translator}{20}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}The Fragility of Synthesis}{20}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}Security}{20}{subsection.13.4}%
+\contentsline {subsection}{\numberline {13.5}Hardware Compatibility}{20}{subsection.13.5}%
+\contentsline {section}{\numberline {14}Future Work}{20}{section.14}%
+\contentsline {section}{\numberline {15}Conclusion}{21}{section.15}%
