@@ -1,7 +1,7 @@
 # Buhera: A Categorical Research Operating System
 
 <p align="center">
-  <img src="assets/img/right-rabbit.png" alt="Buhera Logo" width="200"/>
+  <img src="assets/img/Muszynski_Baptism_of_king_Siti_of_Mutapa.jpg" alt="Buhera Logo" width="300"/>
 </p>
 
 **Author**: Kundai Farai Sachikonye
