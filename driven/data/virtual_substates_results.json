@@ -1,0 +1,123 @@
+{
+  "test_name": "virtual_substates_and_path_opacity",
+  "paper": "continuous-embedding",
+  "theorems": [
+    "Virtual Sub-State Theorem",
+    "Forward Navigation Restriction",
+    "Collapse Without Virtual States",
+    "Path Opacity Theorem"
+  ],
+  "summary": {
+    "test_1_virtual_existence": true,
+    "test_2_forward_path_feasible": true,
+    "test_3_backward_advantage_requires_virtual": true,
+    "test_4_path_opacity": true,
+    "all_passed": true
+  },
+  "test_1_existence": {
+    "n_trials": 1000,
+    "n_decompositions_with_virtual": 905,
+    "virtual_fraction": 0.905,
+    "example_decompositions": [
+      {
+        "global_coord": 0.6366382624887261,
+        "sub_coords": [
+          -0.44997848955466613,
+          0.050058636738238516,
+          2.309834640282606
+        ],
+        "mean_recovers": true
+      },
+      {
+        "global_coord": 0.2287465233858463,
+        "sub_coords": [
+          0.9729424283280248,
+          0.8533989748458226,
+          -1.1401018330163084
+        ],
+        "mean_recovers": true
+      },
+      {
+        "global_coord": 0.8843359763507485,
+        "sub_coords": [
+          -0.3261223347411677,
+          0.34384363937054085,
+          2.6352866244228723
+        ],
+        "mean_recovers": true
+      },
+      {
+        "global_coord": 0.03920127504930894,
+        "sub_coords": [
+          -0.06272405039279327,
+          0.5107105762067248,
+          -0.33038270066600467
+        ],
+        "mean_recovers": true
+      },
+      {
+        "global_coord": 0.03600525029018635,
+        "sub_coords": [
+          -0.10232469862670301,
+          0.7997688755590464,
+          -0.5894284260617844
+        ],
+        "mean_recovers": true
+      }
+    ],
+    "virtual_sub_states_exist": true
+  },
+  "test_2_forward_restriction": {
+    "n_trials": 500,
+    "n_success": 500,
+    "success_rate": 1.0,
+    "forward_restricted_feasible": true
+  },
+  "test_3_backward_advantage": {
+    "scaling": [
+      {
+        "depth": 3,
+        "N": 27,
+        "backward_with_virtual_steps": 3,
+        "backward_physical_only_steps": 40,
+        "virtual_speedup": 13.333333333333334
+      },
+      {
+        "depth": 5,
+        "N": 243,
+        "backward_with_virtual_steps": 5,
+        "backward_physical_only_steps": 364,
+        "virtual_speedup": 72.8
+      },
+      {
+        "depth": 7,
+        "N": 2187,
+        "backward_with_virtual_steps": 7,
+        "backward_physical_only_steps": 3280,
+        "virtual_speedup": 468.57142857142856
+      },
+      {
+        "depth": 9,
+        "N": 19683,
+        "backward_with_virtual_steps": 9,
+        "backward_physical_only_steps": 29524,
+        "virtual_speedup": 3280.4444444444443
+      },
+      {
+        "depth": 11,
+        "N": 177147,
+        "backward_with_virtual_steps": 11,
+        "backward_physical_only_steps": 265720,
+        "virtual_speedup": 24156.363636363636
+      }
+    ],
+    "mean_depth_over_depth_ratio": 6.565279111245298,
+    "virtual_substates_strictly_necessary": true
+  },
+  "test_4_path_opacity": {
+    "n_trials": 100,
+    "n_indistinguishable": 100,
+    "opacity_rate": 1.0,
+    "path_opacity_holds": true
+  }
+}

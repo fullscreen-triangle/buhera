@@ -10,7 +10,9 @@
       "WebFetch(domain:github.com)",
       "Bash(python -m driven.src.visualizations.generate_integration_panels)",
       "Bash(npm install *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(python -m driven.src.trajectory.run_all_trajectory)",
+      "Bash(python -c ' *)"
     ]
   }
 }

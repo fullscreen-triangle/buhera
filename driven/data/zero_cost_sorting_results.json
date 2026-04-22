@@ -1,0 +1,69 @@
+{
+  "test_name": "zero_cost_sorting",
+  "paper": "trajectory-mechanism",
+  "theorem": "Theorem 7.1 (Zero-Cost Sorting)",
+  "summary": {
+    "claim": "[O_cat, O_phys] = 0 implies W_sort = 0",
+    "commuting_pair_zero_work": true,
+    "correlation_comm_to_work": 1.0,
+    "theorem_confirmed": true
+  },
+  "commutation_tests": [
+    {
+      "name": "commuting_diagonal_pair",
+      "commutator_norm": 0.0,
+      "commutes": true,
+      "work_J": 0.0,
+      "work_close_to_zero": true,
+      "diagnostics": {
+        "forward_order_norm": 48.35286961494633,
+        "reverse_order_norm": 48.35286961494633,
+        "order_dependence_norm": 0.0
+      }
+    },
+    {
+      "name": "noncommuting_hermitian_pair",
+      "commutator_norm": 20.05206350709622,
+      "commutes": false,
+      "work_J": 1.6232791179513483e-20,
+      "work_zero": false,
+      "diagnostics": {
+        "forward_order_norm": 2.956348138354797,
+        "reverse_order_norm": 2.1343968974424428,
+        "order_dependence_norm": 3.9191209302083014
+      }
+    }
+  ],
+  "correlation_scan": [
+    {
+      "epsilon": 0.0,
+      "commutator_norm": 0.0,
+      "work_J": 0.0,
+      "work_ratio_kT": 0.0
+    },
+    {
+      "epsilon": 0.01,
+      "commutator_norm": 0.12777756138285526,
+      "work_J": 2.267469844818523e-22,
+      "work_ratio_kT": 0.05474405744010058
+    },
+    {
+      "epsilon": 0.1,
+      "commutator_norm": 1.2777756138285525,
+      "work_J": 2.267469844818553e-21,
+      "work_ratio_kT": 0.5474405744010131
+    },
+    {
+      "epsilon": 0.5,
+      "commutator_norm": 6.388878069142763,
+      "work_J": 1.1337349224092803e-20,
+      "work_ratio_kT": 2.7372028720050747
+    },
+    {
+      "epsilon": 1.0,
+      "commutator_norm": 12.777756138285525,
+      "work_J": 2.2674698448185574e-20,
+      "work_ratio_kT": 5.4744057440101415
+    }
+  ]
+}

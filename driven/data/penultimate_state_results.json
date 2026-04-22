@@ -1,0 +1,183 @@
+{
+  "test_name": "penultimate_state",
+  "paper": "trajectory-mechanism",
+  "theorem": "Theorem 5.1 (Existence + Uniqueness of Penultimate State)",
+  "summary": {
+    "claims": [
+      "Existence: every non-root node has a parent",
+      "Uniqueness: the parent is unique (ternary tree)",
+      "Backward navigation from any leaf takes exactly log_3(N) steps"
+    ],
+    "depths_tested": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "all_existence_passed": true,
+    "all_complexity_exact": true,
+    "overall_pass": true
+  },
+  "existence_records": [
+    {
+      "depth": 2,
+      "N": 9,
+      "nodes_checked": 12,
+      "parent_relation_violations": 0,
+      "all_parents_unique": true
+    },
+    {
+      "depth": 3,
+      "N": 27,
+      "nodes_checked": 39,
+      "parent_relation_violations": 0,
+      "all_parents_unique": true
+    },
+    {
+      "depth": 4,
+      "N": 81,
+      "nodes_checked": 120,
+      "parent_relation_violations": 0,
+      "all_parents_unique": true
+    },
+    {
+      "depth": 5,
+      "N": 243,
+      "nodes_checked": 363,
+      "parent_relation_violations": 0,
+      "all_parents_unique": true
+    },
+    {
+      "depth": 6,
+      "N": 729,
+      "nodes_checked": 1092,
+      "parent_relation_violations": 0,
+      "all_parents_unique": true
+    },
+    {
+      "depth": 7,
+      "N": 2187,
+      "nodes_checked": 3279,
+      "parent_relation_violations": 0,
+      "all_parents_unique": true
+    },
+    {
+      "depth": 8,
+      "N": 6561,
+      "nodes_checked": 9840,
+      "parent_relation_violations": 0,
+      "all_parents_unique": true
+    },
+    {
+      "depth": 9,
+      "N": 19683,
+      "nodes_checked": 29523,
+      "parent_relation_violations": 0,
+      "all_parents_unique": true
+    },
+    {
+      "depth": 10,
+      "N": 59049,
+      "nodes_checked": 88572,
+      "parent_relation_violations": 0,
+      "all_parents_unique": true
+    }
+  ],
+  "complexity_records": [
+    {
+      "N": 9,
+      "depth": 2,
+      "log3_N": 2.0,
+      "expected_steps": 2,
+      "samples_tested": 9,
+      "all_exactly_log3_N": true,
+      "min_steps": 2,
+      "max_steps": 2
+    },
+    {
+      "N": 27,
+      "depth": 3,
+      "log3_N": 3.0,
+      "expected_steps": 3,
+      "samples_tested": 27,
+      "all_exactly_log3_N": true,
+      "min_steps": 3,
+      "max_steps": 3
+    },
+    {
+      "N": 81,
+      "depth": 4,
+      "log3_N": 4.0,
+      "expected_steps": 4,
+      "samples_tested": 81,
+      "all_exactly_log3_N": true,
+      "min_steps": 4,
+      "max_steps": 4
+    },
+    {
+      "N": 243,
+      "depth": 5,
+      "log3_N": 4.999999999999999,
+      "expected_steps": 5,
+      "samples_tested": 100,
+      "all_exactly_log3_N": true,
+      "min_steps": 5,
+      "max_steps": 5
+    },
+    {
+      "N": 729,
+      "depth": 6,
+      "log3_N": 6.0,
+      "expected_steps": 6,
+      "samples_tested": 100,
+      "all_exactly_log3_N": true,
+      "min_steps": 6,
+      "max_steps": 6
+    },
+    {
+      "N": 2187,
+      "depth": 7,
+      "log3_N": 7.0,
+      "expected_steps": 7,
+      "samples_tested": 100,
+      "all_exactly_log3_N": true,
+      "min_steps": 7,
+      "max_steps": 7
+    },
+    {
+      "N": 6561,
+      "depth": 8,
+      "log3_N": 8.0,
+      "expected_steps": 8,
+      "samples_tested": 100,
+      "all_exactly_log3_N": true,
+      "min_steps": 8,
+      "max_steps": 8
+    },
+    {
+      "N": 19683,
+      "depth": 9,
+      "log3_N": 9.0,
+      "expected_steps": 9,
+      "samples_tested": 100,
+      "all_exactly_log3_N": true,
+      "min_steps": 9,
+      "max_steps": 9
+    },
+    {
+      "N": 59049,
+      "depth": 10,
+      "log3_N": 9.999999999999998,
+      "expected_steps": 10,
+      "samples_tested": 100,
+      "all_exactly_log3_N": true,
+      "min_steps": 10,
+      "max_steps": 10
+    }
+  ]
+}

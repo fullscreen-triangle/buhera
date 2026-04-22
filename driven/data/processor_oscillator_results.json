@@ -1,0 +1,494 @@
+{
+  "test_name": "processor_oscillator_duality",
+  "paper": "trajectory-mechanism",
+  "theorem": "Theorem 4.1 (Processor-Oscillator Duality)",
+  "summary": {
+    "claims": [
+      "processor entropy == oscillator entropy (S = k_B w ln n)",
+      "dM/dt = M*omega/(2*pi) = 1/<tau_p>"
+    ],
+    "n_processor_tests": 35,
+    "processor_tests_passed": 35,
+    "n_unified_tests": 16,
+    "unified_tests_passed": 16,
+    "processor_duality_holds": true,
+    "unified_equation_holds": true,
+    "overall_pass": true
+  },
+  "processor_entropy_tests": [
+    {
+      "w": 1,
+      "n": 2,
+      "S_processor": 9.569929616929079e-24,
+      "S_oscillator": 9.569929616929079e-24,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 1,
+      "n": 4,
+      "S_processor": 1.9139859233858158e-23,
+      "S_oscillator": 1.9139859233858158e-23,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 1,
+      "n": 8,
+      "S_processor": 2.8709788850787235e-23,
+      "S_oscillator": 2.8709788850787235e-23,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 1,
+      "n": 16,
+      "S_processor": 3.8279718467716317e-23,
+      "S_oscillator": 3.8279718467716317e-23,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 1,
+      "n": 256,
+      "S_processor": 7.655943693543263e-23,
+      "S_oscillator": 7.655943693543263e-23,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 4,
+      "n": 2,
+      "S_processor": 3.8279718467716317e-23,
+      "S_oscillator": 3.8279718467716317e-23,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 4,
+      "n": 4,
+      "S_processor": 7.655943693543263e-23,
+      "S_oscillator": 7.655943693543263e-23,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 4,
+      "n": 8,
+      "S_processor": 1.1483915540314894e-22,
+      "S_oscillator": 1.1483915540314894e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 4,
+      "n": 16,
+      "S_processor": 1.5311887387086527e-22,
+      "S_oscillator": 1.5311887387086527e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 4,
+      "n": 256,
+      "S_processor": 3.0623774774173053e-22,
+      "S_oscillator": 3.0623774774173053e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 8,
+      "n": 2,
+      "S_processor": 7.655943693543263e-23,
+      "S_oscillator": 7.655943693543263e-23,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 8,
+      "n": 4,
+      "S_processor": 1.5311887387086527e-22,
+      "S_oscillator": 1.5311887387086527e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 8,
+      "n": 8,
+      "S_processor": 2.296783108062979e-22,
+      "S_oscillator": 2.296783108062979e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 8,
+      "n": 16,
+      "S_processor": 3.0623774774173053e-22,
+      "S_oscillator": 3.0623774774173053e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 8,
+      "n": 256,
+      "S_processor": 6.124754954834611e-22,
+      "S_oscillator": 6.124754954834611e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 16,
+      "n": 2,
+      "S_processor": 1.5311887387086527e-22,
+      "S_oscillator": 1.5311887387086527e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 16,
+      "n": 4,
+      "S_processor": 3.0623774774173053e-22,
+      "S_oscillator": 3.0623774774173053e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 16,
+      "n": 8,
+      "S_processor": 4.593566216125958e-22,
+      "S_oscillator": 4.593566216125958e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 16,
+      "n": 16,
+      "S_processor": 6.124754954834611e-22,
+      "S_oscillator": 6.124754954834611e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 16,
+      "n": 256,
+      "S_processor": 1.2249509909669221e-21,
+      "S_oscillator": 1.2249509909669221e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 32,
+      "n": 2,
+      "S_processor": 3.0623774774173053e-22,
+      "S_oscillator": 3.0623774774173053e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 32,
+      "n": 4,
+      "S_processor": 6.124754954834611e-22,
+      "S_oscillator": 6.124754954834611e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 32,
+      "n": 8,
+      "S_processor": 9.187132432251915e-22,
+      "S_oscillator": 9.187132432251915e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 32,
+      "n": 16,
+      "S_processor": 1.2249509909669221e-21,
+      "S_oscillator": 1.2249509909669221e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 32,
+      "n": 256,
+      "S_processor": 2.4499019819338443e-21,
+      "S_oscillator": 2.4499019819338443e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 64,
+      "n": 2,
+      "S_processor": 6.124754954834611e-22,
+      "S_oscillator": 6.124754954834611e-22,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 64,
+      "n": 4,
+      "S_processor": 1.2249509909669221e-21,
+      "S_oscillator": 1.2249509909669221e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 64,
+      "n": 8,
+      "S_processor": 1.837426486450383e-21,
+      "S_oscillator": 1.837426486450383e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 64,
+      "n": 16,
+      "S_processor": 2.4499019819338443e-21,
+      "S_oscillator": 2.4499019819338443e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 64,
+      "n": 256,
+      "S_processor": 4.8998039638676885e-21,
+      "S_oscillator": 4.8998039638676885e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 128,
+      "n": 2,
+      "S_processor": 1.2249509909669221e-21,
+      "S_oscillator": 1.2249509909669221e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 128,
+      "n": 4,
+      "S_processor": 2.4499019819338443e-21,
+      "S_oscillator": 2.4499019819338443e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 128,
+      "n": 8,
+      "S_processor": 3.674852972900766e-21,
+      "S_oscillator": 3.674852972900766e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 128,
+      "n": 16,
+      "S_processor": 4.8998039638676885e-21,
+      "S_oscillator": 4.8998039638676885e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    },
+    {
+      "w": 128,
+      "n": 256,
+      "S_processor": 9.799607927735377e-21,
+      "S_oscillator": 9.799607927735377e-21,
+      "relative_diff": 0.0,
+      "identical": true
+    }
+  ],
+  "unified_equation_tests": [
+    {
+      "M": 1,
+      "frequency_hz": 1000.0,
+      "omega_rad_s": 6283.185307179586,
+      "tau_p_s": 0.001,
+      "dM_dt": 999.9999999999999,
+      "M_omega_over_2pi": 999.9999999999999,
+      "one_over_tau_p": 1000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 1.1368683772161603e-16,
+      "identity_holds": true
+    },
+    {
+      "M": 1,
+      "frequency_hz": 1000000.0,
+      "omega_rad_s": 6283185.307179586,
+      "tau_p_s": 1e-06,
+      "dM_dt": 1000000.0,
+      "M_omega_over_2pi": 1000000.0,
+      "one_over_tau_p": 1000000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 0.0,
+      "identity_holds": true
+    },
+    {
+      "M": 1,
+      "frequency_hz": 1000000000.0,
+      "omega_rad_s": 6283185307.179586,
+      "tau_p_s": 1e-09,
+      "dM_dt": 1000000000.0,
+      "M_omega_over_2pi": 1000000000.0,
+      "one_over_tau_p": 999999999.9999999,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 1.1920928955078126e-16,
+      "identity_holds": true
+    },
+    {
+      "M": 1,
+      "frequency_hz": 3000000000.0,
+      "omega_rad_s": 18849555921.538757,
+      "tau_p_s": 3.333333333333333e-10,
+      "dM_dt": 3000000000.0,
+      "M_omega_over_2pi": 3000000000.0,
+      "one_over_tau_p": 3000000000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 0.0,
+      "identity_holds": true
+    },
+    {
+      "M": 10,
+      "frequency_hz": 1000.0,
+      "omega_rad_s": 6283.185307179586,
+      "tau_p_s": 0.0001,
+      "dM_dt": 9999.999999999998,
+      "M_omega_over_2pi": 9999.999999999998,
+      "one_over_tau_p": 10000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 1.8189894035458568e-16,
+      "identity_holds": true
+    },
+    {
+      "M": 10,
+      "frequency_hz": 1000000.0,
+      "omega_rad_s": 6283185.307179586,
+      "tau_p_s": 1e-07,
+      "dM_dt": 10000000.0,
+      "M_omega_over_2pi": 10000000.0,
+      "one_over_tau_p": 10000000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 0.0,
+      "identity_holds": true
+    },
+    {
+      "M": 10,
+      "frequency_hz": 1000000000.0,
+      "omega_rad_s": 6283185307.179586,
+      "tau_p_s": 1e-10,
+      "dM_dt": 10000000000.0,
+      "M_omega_over_2pi": 10000000000.0,
+      "one_over_tau_p": 10000000000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 0.0,
+      "identity_holds": true
+    },
+    {
+      "M": 10,
+      "frequency_hz": 3000000000.0,
+      "omega_rad_s": 18849555921.538757,
+      "tau_p_s": 3.3333333333333335e-11,
+      "dM_dt": 29999999999.999996,
+      "M_omega_over_2pi": 29999999999.999996,
+      "one_over_tau_p": 30000000000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 1.2715657552083334e-16,
+      "identity_holds": true
+    },
+    {
+      "M": 100,
+      "frequency_hz": 1000.0,
+      "omega_rad_s": 6283.185307179586,
+      "tau_p_s": 1e-05,
+      "dM_dt": 100000.0,
+      "M_omega_over_2pi": 100000.0,
+      "one_over_tau_p": 99999.99999999999,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 1.4551915228366853e-16,
+      "identity_holds": true
+    },
+    {
+      "M": 100,
+      "frequency_hz": 1000000.0,
+      "omega_rad_s": 6283185.307179586,
+      "tau_p_s": 1e-08,
+      "dM_dt": 99999999.99999999,
+      "M_omega_over_2pi": 99999999.99999999,
+      "one_over_tau_p": 100000000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 1.490116119384766e-16,
+      "identity_holds": true
+    },
+    {
+      "M": 100,
+      "frequency_hz": 1000000000.0,
+      "omega_rad_s": 6283185307.179586,
+      "tau_p_s": 1e-11,
+      "dM_dt": 100000000000.0,
+      "M_omega_over_2pi": 100000000000.0,
+      "one_over_tau_p": 100000000000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 0.0,
+      "identity_holds": true
+    },
+    {
+      "M": 100,
+      "frequency_hz": 3000000000.0,
+      "omega_rad_s": 18849555921.538757,
+      "tau_p_s": 3.333333333333333e-12,
+      "dM_dt": 300000000000.0,
+      "M_omega_over_2pi": 300000000000.0,
+      "one_over_tau_p": 300000000000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 0.0,
+      "identity_holds": true
+    },
+    {
+      "M": 1000,
+      "frequency_hz": 1000.0,
+      "omega_rad_s": 6283.185307179586,
+      "tau_p_s": 1e-06,
+      "dM_dt": 1000000.0,
+      "M_omega_over_2pi": 1000000.0,
+      "one_over_tau_p": 1000000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 0.0,
+      "identity_holds": true
+    },
+    {
+      "M": 1000,
+      "frequency_hz": 1000000.0,
+      "omega_rad_s": 6283185.307179586,
+      "tau_p_s": 1e-09,
+      "dM_dt": 1000000000.0,
+      "M_omega_over_2pi": 1000000000.0,
+      "one_over_tau_p": 999999999.9999999,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 1.1920928955078126e-16,
+      "identity_holds": true
+    },
+    {
+      "M": 1000,
+      "frequency_hz": 1000000000.0,
+      "omega_rad_s": 6283185307.179586,
+      "tau_p_s": 1e-12,
+      "dM_dt": 1000000000000.0,
+      "M_omega_over_2pi": 1000000000000.0,
+      "one_over_tau_p": 1000000000000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 0.0,
+      "identity_holds": true
+    },
+    {
+      "M": 1000,
+      "frequency_hz": 3000000000.0,
+      "omega_rad_s": 18849555921.538757,
+      "tau_p_s": 3.3333333333333334e-13,
+      "dM_dt": 3000000000000.0,
+      "M_omega_over_2pi": 3000000000000.0,
+      "one_over_tau_p": 3000000000000.0,
+      "err_dM_vs_expected": 0.0,
+      "err_tau_vs_expected": 0.0,
+      "identity_holds": true
+    }
+  ]
+}
