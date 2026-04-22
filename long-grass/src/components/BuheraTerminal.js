@@ -1,47 +1,124 @@
 import { useEffect, useRef, useState } from "react";
 import { Kernel } from "@/lib/kernel";
-import { embedMolecule } from "@/lib/substrate";
+import { embedProtein, embedText } from "@/lib/substrate";
 import { translate } from "@/lib/translator";
 import { executeVahera } from "@/lib/vahera";
-import { COMPOUNDS } from "@/lib/compounds";
+import { PROTEINS } from "@/lib/proteins";
 
-const PROP_LABELS = {
-  molecular_weight: "mw",
-  boiling_point_c: "bp (°C)",
-  melting_point_c: "mp (°C)",
-  density_g_cm3: "density (g/cm³)",
-  n_atoms: "atoms",
-};
+// ────────────────────────────────────────────────────────────
+//  Boot the kernel with proteins.
+// ────────────────────────────────────────────────────────────
 
 function bootKernel() {
   const k = new Kernel(12);
-  for (const name of Object.keys(COMPOUNDS)) {
-    const coord = embedMolecule(name, COMPOUNDS[name]);
-    k.allocate(coord, COMPOUNDS[name], { name, formula: COMPOUNDS[name].formula });
+  for (const name of Object.keys(PROTEINS)) {
+    const coord = embedProtein(name, PROTEINS[name]);
+    k.allocate(coord, PROTEINS[name], { name, gene: PROTEINS[name].gene });
   }
   return k;
 }
 
-function ArtifactMolecule({ compound }) {
+// ────────────────────────────────────────────────────────────
+//  Artifact renderers.
+// ────────────────────────────────────────────────────────────
+
+function ProteinHeader({ name, p }) {
   return (
-    <div className="text-gray-300">
-      <div className="mb-1">
-        <span className="text-white">{compound.name}</span>
-        {compound.formula && (
-          <span className="ml-4 text-gray-500">{compound.formula}</span>
-        )}
+    <div className="flex items-baseline gap-6 mb-3">
+      <span className="text-white text-base">{name}</span>
+      <span className="text-gray-500 text-xs">{p.gene}</span>
+      <span className="text-gray-600 text-xs">{p.uniprot}</span>
+      <span className="text-gray-600 text-xs">{p.length} aa</span>
+      <span className="text-gray-500 text-xs italic">{p.role}</span>
+    </div>
+  );
+}
+
+function Field({ label, value }) {
+  if (!value || (Array.isArray(value) && value.length === 0)) return null;
+  return (
+    <div className="flex mb-1">
+      <span className="text-gray-500 w-28 shrink-0">{label}</span>
+      <span className="text-gray-300 flex-1">
+        {Array.isArray(value) ? value.join(", ") : value}
+      </span>
+    </div>
+  );
+}
+
+function ArtifactProtein({ name, payload, aspect }) {
+  const p = payload;
+
+  if (aspect === "function") {
+    return (
+      <div>
+        <ProteinHeader name={name} p={p} />
+        <Field label="function" value={p.function} />
       </div>
-      <div className="text-sm">
-        {Object.keys(PROP_LABELS).map((key) => {
-          if (compound.payload[key] === undefined) return null;
-          return (
-            <div key={key}>
-              <span className="text-gray-500">{PROP_LABELS[key]}</span>
-              <span className="ml-3 text-gray-300">{String(compound.payload[key])}</span>
-            </div>
-          );
-        })}
+    );
+  }
+  if (aspect === "diseases") {
+    return (
+      <div>
+        <ProteinHeader name={name} p={p} />
+        <Field label="diseases" value={p.diseases} />
       </div>
+    );
+  }
+  if (aspect === "interacts") {
+    return (
+      <div>
+        <ProteinHeader name={name} p={p} />
+        <Field label="interacts" value={p.interacts} />
+      </div>
+    );
+  }
+  if (aspect === "domains") {
+    return (
+      <div>
+        <ProteinHeader name={name} p={p} />
+        <Field label="domains" value={p.domains} />
+      </div>
+    );
+  }
+
+  // full record
+  return (
+    <div>
+      <ProteinHeader name={name} p={p} />
+      <Field label="function" value={p.function} />
+      <Field label="domains" value={p.domains} />
+      <Field label="diseases" value={p.diseases} />
+      <Field label="interacts" value={p.interacts} />
+      <Field label="pathway" value={p.pathway} />
+      <Field label="location" value={p.localization} />
+    </div>
+  );
+}
+
+function ArtifactCompare({ a, b }) {
+  const rows = [
+    ["role", a.payload.role, b.payload.role],
+    ["length", `${a.payload.length} aa`, `${b.payload.length} aa`],
+    ["function", a.payload.function, b.payload.function],
+    ["domains", a.payload.domains?.join(", "), b.payload.domains?.join(", ")],
+    ["diseases", a.payload.diseases?.join(", "), b.payload.diseases?.join(", ")],
+    ["pathway", a.payload.pathway, b.payload.pathway],
+  ];
+  return (
+    <div>
+      <div className="flex items-baseline gap-6 mb-4">
+        <span className="text-white text-base">{a.name}</span>
+        <span className="text-gray-500 text-xs">vs</span>
+        <span className="text-white text-base">{b.name}</span>
+      </div>
+      {rows.map(([label, va, vb]) => (
+        <div key={label} className="grid grid-cols-[7rem_1fr_1fr] gap-4 mb-2 text-xs">
+          <span className="text-gray-500">{label}</span>
+          <span className="text-gray-300">{va || "—"}</span>
+          <span className="text-gray-300">{vb || "—"}</span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -49,12 +126,21 @@ function ArtifactMolecule({ compound }) {
 function ArtifactList({ items }) {
   return (
     <ul className="text-gray-300">
-      {items.map((it, i) => (
-        <li key={i} className="py-0.5 flex">
-          <span className="flex-1">{it.name}</span>
-          <span className="text-gray-600 ml-6">d={it.distance.toFixed(3)}</span>
-        </li>
-      ))}
+      {items.map((it, i) => {
+        const p = it.payload;
+        return (
+          <li key={i} className="py-1 flex items-baseline gap-4">
+            <span className="w-24 text-gray-200">{it.name}</span>
+            {p && p.role && (
+              <span className="text-gray-500 italic text-xs w-40">{p.role}</span>
+            )}
+            {p && p.function && (
+              <span className="text-gray-400 text-xs flex-1 truncate">{p.function}</span>
+            )}
+            <span className="text-gray-600 text-xs">d={it.distance.toFixed(3)}</span>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -72,12 +158,22 @@ function ArtifactText({ lines }) {
 function Artifact({ result }) {
   if (!result) return null;
   switch (result.kind) {
-    case "molecule": return <ArtifactMolecule compound={result.compound} />;
-    case "list":     return <ArtifactList items={result.items} />;
-    case "text":     return <ArtifactText lines={result.lines} />;
-    default:         return null;
+    case "protein":
+      return <ArtifactProtein name={result.name} payload={result.payload} aspect={result.aspect} />;
+    case "protein_compare":
+      return <ArtifactCompare a={result.a} b={result.b} />;
+    case "list":
+      return <ArtifactList items={result.items} />;
+    case "text":
+      return <ArtifactText lines={result.lines} />;
+    default:
+      return null;
   }
 }
+
+// ────────────────────────────────────────────────────────────
+//  Terminal component.
+// ────────────────────────────────────────────────────────────
 
 export default function BuheraTerminal() {
   const kernelRef = useRef(null);
@@ -111,11 +207,11 @@ export default function BuheraTerminal() {
     setEntries((e) => [...e, { id: eId, obs: text, result: null, thinking: true, error: null }]);
     setDraft("");
 
-    await new Promise((r) => setTimeout(r, 120 + Math.random() * 160));
+    await new Promise((r) => setTimeout(r, 140 + Math.random() * 180));
 
     try {
       const vahera = translate(text);
-      const result = executeVahera(vahera, kernelRef.current, COMPOUNDS);
+      const result = executeVahera(vahera, kernelRef.current);
       setEntries((e) =>
         e.map((x) => (x.id === eId ? { ...x, result, thinking: false } : x))
       );
@@ -151,8 +247,8 @@ export default function BuheraTerminal() {
         style={{ scrollbarWidth: "none" }}
       >
         {entries.map((e) => (
-          <div key={e.id} className="mb-7 animate-fade">
-            <div className="text-gray-200 whitespace-pre-wrap mb-1">{e.obs}</div>
+          <div key={e.id} className="mb-8 animate-fade">
+            <div className="text-gray-200 whitespace-pre-wrap mb-2">{e.obs}</div>
             {e.thinking && <span className="text-gray-600 italic">...</span>}
             {e.error && <p className="text-gray-500">[{e.error}]</p>}
             {e.result && <Artifact result={e.result} />}

@@ -1,0 +1,246 @@
+{
+  "test_name": "categorical_complexity_hierarchy",
+  "paper": "trajectory-mechanism",
+  "theorem": "Theorem 6.1 (Strict Hierarchy)",
+  "summary": {
+    "claim": "C_0 \u228a C_1 \u228a C_poly \u228a C_nav \u228a C_hard",
+    "N_values_tested": [
+      27,
+      243,
+      2187,
+      19683,
+      177147
+    ],
+    "all_strict_order": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "N": 27,
+      "C_0": {
+        "class": "C_0",
+        "N": 27,
+        "traversals": 0,
+        "time_s": 6.00004568696022e-07,
+        "answer": 20,
+        "predicted_complexity": "O(1)"
+      },
+      "C_1": {
+        "class": "C_1",
+        "N": 27,
+        "traversals": 3,
+        "time_s": 1.3199984095990658e-05,
+        "predicted_complexity": "O(log_3 N)"
+      },
+      "C_poly": {
+        "class": "C_poly",
+        "N": 27,
+        "k_traversals": 3,
+        "traversals": 9,
+        "time_s": 1.1399970389902592e-05,
+        "predicted_complexity": "O(k log_3 N)"
+      },
+      "C_nav": {
+        "class": "C_nav",
+        "N": 27,
+        "traversals": 9,
+        "time_s": 9.999959729611874e-06,
+        "predicted_complexity": "super-polynomial but terminating"
+      },
+      "C_hard": {
+        "class": "C_hard",
+        "N": 27,
+        "traversals": 27,
+        "time_s": 4.100031219422817e-06,
+        "predicted_complexity": "O(N)",
+        "answer": 19
+      }
+    },
+    {
+      "N": 243,
+      "C_0": {
+        "class": "C_0",
+        "N": 243,
+        "traversals": 0,
+        "time_s": 5.00003807246685e-07,
+        "answer": 6,
+        "predicted_complexity": "O(1)"
+      },
+      "C_1": {
+        "class": "C_1",
+        "N": 243,
+        "traversals": 5,
+        "time_s": 6.09993003308773e-06,
+        "predicted_complexity": "O(log_3 N)"
+      },
+      "C_poly": {
+        "class": "C_poly",
+        "N": 243,
+        "k_traversals": 3,
+        "traversals": 15,
+        "time_s": 1.610000617802143e-05,
+        "predicted_complexity": "O(k log_3 N)"
+      },
+      "C_nav": {
+        "class": "C_nav",
+        "N": 243,
+        "traversals": 25,
+        "time_s": 9.240000508725643e-05,
+        "predicted_complexity": "super-polynomial but terminating"
+      },
+      "C_hard": {
+        "class": "C_hard",
+        "N": 243,
+        "traversals": 243,
+        "time_s": 2.550007775425911e-05,
+        "predicted_complexity": "O(N)",
+        "answer": 169
+      }
+    },
+    {
+      "N": 2187,
+      "C_0": {
+        "class": "C_0",
+        "N": 2187,
+        "traversals": 0,
+        "time_s": 3.00002284348011e-07,
+        "answer": 933,
+        "predicted_complexity": "O(1)"
+      },
+      "C_1": {
+        "class": "C_1",
+        "N": 2187,
+        "traversals": 7,
+        "time_s": 1.3499986380338669e-05,
+        "predicted_complexity": "O(log_3 N)"
+      },
+      "C_poly": {
+        "class": "C_poly",
+        "N": 2187,
+        "k_traversals": 3,
+        "traversals": 21,
+        "time_s": 3.2100011594593525e-05,
+        "predicted_complexity": "O(k log_3 N)"
+      },
+      "C_nav": {
+        "class": "C_nav",
+        "N": 2187,
+        "traversals": 49,
+        "time_s": 0.0002492999192327261,
+        "predicted_complexity": "super-polynomial but terminating"
+      },
+      "C_hard": {
+        "class": "C_hard",
+        "N": 2187,
+        "traversals": 2187,
+        "time_s": 0.000139000010676682,
+        "predicted_complexity": "O(N)",
+        "answer": 1729
+      }
+    },
+    {
+      "N": 19683,
+      "C_0": {
+        "class": "C_0",
+        "N": 19683,
+        "traversals": 0,
+        "time_s": 3.00002284348011e-07,
+        "answer": 19543,
+        "predicted_complexity": "O(1)"
+      },
+      "C_1": {
+        "class": "C_1",
+        "N": 19683,
+        "traversals": 9,
+        "time_s": 9.399955160915852e-06,
+        "predicted_complexity": "O(log_3 N)"
+      },
+      "C_poly": {
+        "class": "C_poly",
+        "N": 19683,
+        "k_traversals": 3,
+        "traversals": 27,
+        "time_s": 6.879994180053473e-05,
+        "predicted_complexity": "O(k log_3 N)"
+      },
+      "C_nav": {
+        "class": "C_nav",
+        "N": 19683,
+        "traversals": 81,
+        "time_s": 0.00010259996633976698,
+        "predicted_complexity": "super-polynomial but terminating"
+      },
+      "C_hard": {
+        "class": "C_hard",
+        "N": 19683,
+        "traversals": 19683,
+        "time_s": 0.0015034000389277935,
+        "predicted_complexity": "O(N)",
+        "answer": 15498
+      }
+    },
+    {
+      "N": 177147,
+      "C_0": {
+        "class": "C_0",
+        "N": 177147,
+        "traversals": 0,
+        "time_s": 3.00002284348011e-07,
+        "answer": 106708,
+        "predicted_complexity": "O(1)"
+      },
+      "C_1": {
+        "class": "C_1",
+        "N": 177147,
+        "traversals": 11,
+        "time_s": 9.240000508725643e-05,
+        "predicted_complexity": "O(log_3 N)"
+      },
+      "C_poly": {
+        "class": "C_poly",
+        "N": 177147,
+        "k_traversals": 3,
+        "traversals": 33,
+        "time_s": 4.8600020818412304e-05,
+        "predicted_complexity": "O(k log_3 N)"
+      },
+      "C_nav": {
+        "class": "C_nav",
+        "N": 177147,
+        "traversals": 121,
+        "time_s": 0.00014020001981407404,
+        "predicted_complexity": "super-polynomial but terminating"
+      },
+      "C_hard": {
+        "class": "C_hard",
+        "N": 177147,
+        "traversals": 177147,
+        "time_s": 0.006986099993810058,
+        "predicted_complexity": "O(N)",
+        "answer": 69201
+      }
+    }
+  ],
+  "hierarchy_order_checks": [
+    {
+      "N": 27,
+      "strict_order": true
+    },
+    {
+      "N": 243,
+      "strict_order": true
+    },
+    {
+      "N": 2187,
+      "strict_order": true
+    },
+    {
+      "N": 19683,
+      "strict_order": true
+    },
+    {
+      "N": 177147,
+      "strict_order": true
+    }
+  ]
+}

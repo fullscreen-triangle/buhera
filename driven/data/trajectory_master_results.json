@@ -1,0 +1,156 @@
+{
+  "total_time_seconds": 0.8900848999619484,
+  "overall_pass": true,
+  "results_summary": {
+    "triple_equivalence": {
+      "paper": "trajectory-mechanism",
+      "theorem": "Theorem 3.2 (Triple Equivalence)",
+      "summary": {
+        "claim": "S_O = S_C = S_P = k_B M ln n",
+        "n_test_points": 60,
+        "n_exact_agreement": 20,
+        "exact_rate": 0.3333333333333333,
+        "max_relative_error": 7.231003297824889e-09,
+        "test_passed": true,
+        "grid_M": [
+          1,
+          2,
+          3,
+          5,
+          10,
+          20,
+          50,
+          100,
+          500,
+          1000
+        ],
+        "grid_n": [
+          2,
+          3,
+          5,
+          10,
+          100,
+          1000
+        ]
+      },
+      "passed": true
+    },
+    "processor_oscillator": {
+      "paper": "trajectory-mechanism",
+      "theorem": "Theorem 4.1 (Processor-Oscillator Duality)",
+      "summary": {
+        "claims": [
+          "processor entropy == oscillator entropy (S = k_B w ln n)",
+          "dM/dt = M*omega/(2*pi) = 1/<tau_p>"
+        ],
+        "n_processor_tests": 35,
+        "processor_tests_passed": 35,
+        "n_unified_tests": 16,
+        "unified_tests_passed": 16,
+        "processor_duality_holds": true,
+        "unified_equation_holds": true,
+        "overall_pass": true
+      },
+      "passed": true
+    },
+    "penultimate_state": {
+      "paper": "trajectory-mechanism",
+      "theorem": "Theorem 5.1 (Existence + Uniqueness of Penultimate State)",
+      "summary": {
+        "claims": [
+          "Existence: every non-root node has a parent",
+          "Uniqueness: the parent is unique (ternary tree)",
+          "Backward navigation from any leaf takes exactly log_3(N) steps"
+        ],
+        "depths_tested": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "all_existence_passed": true,
+        "all_complexity_exact": true,
+        "overall_pass": true
+      },
+      "passed": true
+    },
+    "complexity_hierarchy": {
+      "paper": "trajectory-mechanism",
+      "theorem": "Theorem 6.1 (Strict Hierarchy)",
+      "summary": {
+        "claim": "C_0 \u228a C_1 \u228a C_poly \u228a C_nav \u228a C_hard",
+        "N_values_tested": [
+          27,
+          243,
+          2187,
+          19683,
+          177147
+        ],
+        "all_strict_order": true,
+        "overall_pass": true
+      },
+      "passed": true
+    },
+    "zero_cost_sorting": {
+      "paper": "trajectory-mechanism",
+      "theorem": "Theorem 7.1 (Zero-Cost Sorting)",
+      "summary": {
+        "claim": "[O_cat, O_phys] = 0 implies W_sort = 0",
+        "commuting_pair_zero_work": true,
+        "correlation_comm_to_work": 1.0,
+        "theorem_confirmed": true
+      },
+      "passed": true
+    },
+    "lunar_mechanics": {
+      "paper": "trajectory-mechanism",
+      "theorem": "Section 8 (Physical Validation)",
+      "summary": {
+        "claim": "Sixteen Earth-Moon properties derivable from partition geometry",
+        "n_properties": 16,
+        "mean_relative_error": 0.0052203816983544095,
+        "max_relative_error": 0.05263157894736842,
+        "mean_error_percent": 0.5220381698354409,
+        "max_error_percent": 5.263157894736842,
+        "all_under_1_percent": false,
+        "all_under_5_percent": false,
+        "all_under_10_percent": true,
+        "scale_range_ratio": 10982857142.857141,
+        "orders_of_magnitude_spanned": 10.04,
+        "overall_pass": true
+      },
+      "passed": true
+    },
+    "virtual_substates": {
+      "paper": "continuous-embedding",
+      "theorem": [
+        "Virtual Sub-State Theorem",
+        "Forward Navigation Restriction",
+        "Collapse Without Virtual States",
+        "Path Opacity Theorem"
+      ],
+      "summary": {
+        "test_1_virtual_existence": true,
+        "test_2_forward_path_feasible": true,
+        "test_3_backward_advantage_requires_virtual": true,
+        "test_4_path_opacity": true,
+        "all_passed": true
+      },
+      "passed": true
+    }
+  },
+  "result_files": [
+    "driven/data/triple_equivalence_results.json",
+    "driven/data/processor_oscillator_results.json",
+    "driven/data/penultimate_state_results.json",
+    "driven/data/complexity_hierarchy_results.json",
+    "driven/data/zero_cost_sorting_results.json",
+    "driven/data/lunar_mechanics_results.json",
+    "driven/data/virtual_substates_results.json"
+  ]
+}
