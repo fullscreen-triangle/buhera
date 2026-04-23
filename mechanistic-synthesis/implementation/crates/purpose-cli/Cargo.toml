@@ -1,0 +1,21 @@
+[package]
+name = "purpose-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Command-line driver for the Purpose MVP: compile an utterance, execute its fragment, emit the Value."
+
+[[bin]]
+name = "purpose"
+path = "src/main.rs"
+
+[dependencies]
+purpose-core = { workspace = true }
+purpose-operations = { workspace = true }
+purpose-domains-protein = { workspace = true }
+tokio = { workspace = true }
+clap = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }

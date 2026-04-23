@@ -12,7 +12,13 @@
       "Bash(npm install *)",
       "Bash(npm run *)",
       "Bash(python -m driven.src.trajectory.run_all_trajectory)",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(cargo build *)",
+      "PowerShell(cargo --version)",
+      "PowerShell(rustc --version)",
+      "PowerShell(Test-Path \"$env:USERPROFILE\\\\.cargo\\\\bin\\\\cargo.exe\"; if \\(Test-Path \"$env:USERPROFILE\\\\.cargo\\\\bin\\\\cargo.exe\"\\) { & \"$env:USERPROFILE\\\\.cargo\\\\bin\\\\cargo.exe\" --version })",
+      "PowerShell(node --version)",
+      "PowerShell(npm --version)"
     ]
   }
 }

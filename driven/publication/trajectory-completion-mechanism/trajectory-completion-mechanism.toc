@@ -1,0 +1,87 @@
+\contentsline {part}{I\hspace {1em}Foundations}{3}{part.1}%
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}The Direction of Computation}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}What the Framework Claims}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}What the Framework Does Not Claim}{4}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Structure of the Paper}{4}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Bounded Phase Space}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}The Axiom}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Poincar\'e Recurrence as Computational Completeness}{4}{subsection.2.2}%
+\contentsline {section}{\numberline {3}The Triple Equivalence}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Three Descriptions of One System}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}The Fundamental Identity}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Empirical Verification}{6}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Processor--Oscillator Duality}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Statement}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Implications for Computational Architecture}{6}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Empirical Verification}{8}{subsection.4.3}%
+\contentsline {part}{II\hspace {1em}The Continuous Embedding}{8}{part.2}%
+\contentsline {section}{\numberline {5}The Embedding Necessity Theorem}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Backward Navigation through Discrete Structure Fails}{8}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Metric-Enabled Navigation Saturates the Information Bound}{8}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Empirical Verification}{8}{subsection.5.3}%
+\contentsline {section}{\numberline {6}The S-Entropy Embedding}{10}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Construction from the Triple Equivalence}{10}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Three Coordinates Are Necessary}{10}{subsection.6.2}%
+\contentsline {section}{\numberline {7}The S-Entropy Uniqueness Theorem}{10}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Structural Constraints}{10}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Physical Constraint Forcing}{10}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Self-Similarity and the Recursive Metric}{13}{section.8}%
+\contentsline {subsection}{\numberline {8.1}The Recursive Metric Theorem}{13}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Scale Ambiguity}{13}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Empirical Verification}{13}{subsection.8.3}%
+\contentsline {part}{III\hspace {1em}Virtual Sub-States and the Mechanism of Speedup}{13}{part.3}%
+\contentsline {section}{\numberline {9}Virtual Sub-States}{13}{section.9}%
+\contentsline {subsection}{\numberline {9.1}The Non-Physical Intermediate}{13}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}The Quantum-Field-Theoretic Analogue}{13}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Forward Navigation Cannot Use Virtual Sub-States}{14}{subsection.9.3}%
+\contentsline {section}{\numberline {10}The Collapse Theorem}{14}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Virtual Sub-States Are Necessary for the Speedup}{14}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Empirical Verification}{14}{subsection.10.2}%
+\contentsline {section}{\numberline {11}Path Opacity}{16}{section.11}%
+\contentsline {subsection}{\numberline {11.1}The Theorem}{16}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}The Precise Meaning of "Miracle"}{16}{subsection.11.2}%
+\contentsline {section}{\numberline {12}Categorical Apertures and Maxwell's Demon}{16}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Five Names, One Object}{16}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}The Corrected Demon}{16}{subsection.12.2}%
+\contentsline {section}{\numberline {13}The Zero-Cost Sorting Theorem}{16}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Statement}{16}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Empirical Verification}{17}{subsection.13.2}%
+\contentsline {part}{IV\hspace {1em}The Architectural Consequences}{17}{part.4}%
+\contentsline {section}{\numberline {14}The Empty Dictionary Principle}{17}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Storage without Keys}{17}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Synthesis versus Retrieval}{17}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.3}Empirical Verification}{19}{subsection.14.3}%
+\contentsline {section}{\numberline {15}The Penultimate State and Backward Navigation}{19}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Existence and Uniqueness}{19}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Backward Navigation Complexity}{19}{subsection.15.2}%
+\contentsline {section}{\numberline {16}The Categorical Complexity Hierarchy}{19}{section.16}%
+\contentsline {subsection}{\numberline {16.1}Five Classes}{19}{subsection.16.1}%
+\contentsline {subsection}{\numberline {16.2}Research Problems in the Hierarchy}{19}{subsection.16.2}%
+\contentsline {part}{V\hspace {1em}The Architectural and Learning Consequences}{19}{part.5}%
+\contentsline {section}{\numberline {17}The Blank Screen}{19}{section.17}%
+\contentsline {subsection}{\numberline {17.1}Structural Preparation}{19}{subsection.17.1}%
+\contentsline {subsection}{\numberline {17.2}The Interface Consequence}{21}{subsection.17.2}%
+\contentsline {subsection}{\numberline {17.3}Cross-Domain Transfer Is Structural}{21}{subsection.17.3}%
+\contentsline {section}{\numberline {18}The Backward Training Principle}{21}{section.18}%
+\contentsline {subsection}{\numberline {18.1}Skill Domains and Feasibility Regions}{21}{subsection.18.1}%
+\contentsline {subsection}{\numberline {18.2}The Main Result}{21}{subsection.18.2}%
+\contentsline {subsection}{\numberline {18.3}Canonical Examples}{22}{subsection.18.3}%
+\contentsline {section}{\numberline {19}The Universal Principle}{22}{section.19}%
+\contentsline {subsection}{\numberline {19.1}One Mechanism, Three Domains}{22}{subsection.19.1}%
+\contentsline {part}{VI\hspace {1em}The Integrated System}{22}{part.6}%
+\contentsline {section}{\numberline {20}The Buhera Operating System Architecture}{22}{section.20}%
+\contentsline {subsection}{\numberline {20.1}Four Layers}{22}{subsection.20.1}%
+\contentsline {subsection}{\numberline {20.2}The Five Microkernel Subsystems}{22}{subsection.20.2}%
+\contentsline {subsection}{\numberline {20.3}vaHera: The Internal Language}{23}{subsection.20.3}%
+\contentsline {subsection}{\numberline {20.4}Reference Implementations}{23}{subsection.20.4}%
+\contentsline {section}{\numberline {21}Experimental Validation}{23}{section.21}%
+\contentsline {subsection}{\numberline {21.1}Complete Validation Suite}{23}{subsection.21.1}%
+\contentsline {subsection}{\numberline {21.2}Headline Results}{23}{subsection.21.2}%
+\contentsline {section}{\numberline {22}Reproducibility}{24}{section.22}%
+\contentsline {part}{VII\hspace {1em}Discussion}{24}{part.7}%
+\contentsline {section}{\numberline {23}Scope and Limitations}{24}{section.23}%
+\contentsline {subsection}{\numberline {23.1}What the Framework Covers}{24}{subsection.23.1}%
+\contentsline {subsection}{\numberline {23.2}What the Framework Does Not Cover}{24}{subsection.23.2}%
+\contentsline {subsection}{\numberline {23.3}Open Problems}{26}{subsection.23.3}%
+\contentsline {section}{\numberline {24}Conclusion}{26}{section.24}%

@@ -1,0 +1,85 @@
+\begin{thebibliography}{14}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Turing(1936)]{turing1936computable}
+Alan~M. Turing.
+\newblock On computable numbers, with an application to the
+  {E}ntscheidungsproblem.
+\newblock \emph{Proceedings of the London Mathematical Society}, 42\penalty0
+  (2):\penalty0 230--265, 1936.
+
+\bibitem[Chentsov(1972)]{chentsov1972statistical}
+Nikolai~N. Chentsov.
+\newblock Statistical decision rules and optimal inference.
+\newblock \emph{Translations of Mathematical Monographs}, 53, 1972.
+
+\bibitem[Poincar{\'e}(1890)]{poincare1890probleme}
+Henri Poincar{\'e}.
+\newblock Sur le probl{\`e}me des trois corps et les {\'e}quations de la
+  dynamique.
+\newblock \emph{Acta Mathematica}, 13:\penalty0 1--270, 1890.
+
+\bibitem[Sipser(2012)]{sipser2012introduction}
+Michael Sipser.
+\newblock \emph{Introduction to the Theory of Computation}.
+\newblock Cengage Learning, 3rd edition, 2012.
+
+\bibitem[Hennessy and Patterson(2011)]{hennessy2011computer}
+John~L. Hennessy and David~A. Patterson.
+\newblock \emph{Computer Architecture: A Quantitative Approach}.
+\newblock Morgan Kaufmann, 5th edition, 2011.
+
+\bibitem[Amari(1985)]{amari1985differential}
+Shun-ichi Amari.
+\newblock \emph{Differential-Geometrical Methods in Statistics}.
+\newblock Springer, 1985.
+
+\bibitem[Maxwell(1871)]{maxwell1871theory}
+James~Clerk Maxwell.
+\newblock \emph{Theory of Heat}.
+\newblock Longmans, Green, and Co., 1871.
+
+\bibitem[Leff and Rex(2014)]{leff2014maxwell}
+Harvey~S. Leff and Andrew~F. Rex, editors.
+\newblock \emph{Maxwell's Demon 2: Entropy, Classical and Quantum Information,
+  Computing}.
+\newblock CRC Press, 2014.
+
+\bibitem[Landauer(1961)]{landauer1961irreversibility}
+Rolf Landauer.
+\newblock Irreversibility and heat generation in the computing process.
+\newblock \emph{IBM Journal of Research and Development}, 5\penalty0
+  (3):\penalty0 183--191, 1961.
+
+\bibitem[Bennett(1982)]{bennett1982thermodynamics}
+Charles~H. Bennett.
+\newblock The thermodynamics of computation---a review.
+\newblock \emph{International Journal of Theoretical Physics}, 21\penalty0
+  (12):\penalty0 905--940, 1982.
+
+\bibitem[Kuhn(1962)]{kuhn1962structure}
+Thomas~S. Kuhn.
+\newblock \emph{The Structure of Scientific Revolutions}.
+\newblock University of Chicago Press, 1962.
+
+\bibitem[Quine(1951)]{quine1951two}
+Willard Van~Orman Quine.
+\newblock Two dogmas of empiricism.
+\newblock \emph{The Philosophical Review}, 60\penalty0 (1):\penalty0 20--43,
+  1951.
+
+\bibitem[de~Moura and Ullrich(2021)]{moura2021lean4}
+Leonardo de~Moura and Sebastian Ullrich.
+\newblock The {Lean 4} theorem prover and programming language.
+\newblock \emph{Proceedings of CADE}, pages 625--635, 2021.
+
+\bibitem[Arora and Barak(2009)]{arora2009computational}
+Sanjeev Arora and Boaz Barak.
+\newblock \emph{Computational Complexity: A Modern Approach}.
+\newblock Cambridge University Press, 2009.
+
+\end{thebibliography}
