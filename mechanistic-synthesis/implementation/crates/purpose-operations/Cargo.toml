@@ -1,0 +1,20 @@
+[package]
+name = "purpose-operations"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Provider trait, OperationRegistry, Executor, and reference providers (UniProt, ProteinSummary)."
+
+[dependencies]
+purpose-core = { workspace = true }
+async-trait = { workspace = true }
+thiserror = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+reqwest = { workspace = true }
+urlencoding = { workspace = true }
+futures = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
