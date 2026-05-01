@@ -1,0 +1,134 @@
+{
+  "suite": "unconstrained-subtasks-trajectory-completion",
+  "n_experiments": 14,
+  "n_pass": 14,
+  "overall_pass": true,
+  "elapsed_seconds": 0.10103170000365935,
+  "per_experiment": {
+    "01_floor": true,
+    "02_info_bound": true,
+    "03_triple_equiv": true,
+    "04_optimal_rep": true,
+    "05_comp_mult": true,
+    "06_unconstrained_subtask": true,
+    "07_lg_decoupling": true,
+    "08_backward_nav": true,
+    "09_virtual_substates": true,
+    "10_path_opacity": true,
+    "11_multiplicativity": true,
+    "12_cascade_saturation": true,
+    "13_recursive_mult": true,
+    "14_strict_hierarchy": true
+  },
+  "summaries": {
+    "01_floor": {
+      "claim": "S_floor(R) > 0 for every bounded R, monotone decreasing in |K|",
+      "n_capacities": 12,
+      "all_positive": true,
+      "monotone_decreasing": true,
+      "min_floor": 0.0244140625,
+      "max_floor": 50.0,
+      "overall_pass": true
+    },
+    "02_info_bound": {
+      "claim": "I_eps(R) <= log_2((100 - S_flat) / eps)",
+      "n_pairs": 20,
+      "max_abs_error": 0.0,
+      "machine_precision": true,
+      "overall_pass": true
+    },
+    "03_triple_equiv": {
+      "claim": "Round-trip O -> C -> P -> C -> O recovers input up to discretisation",
+      "n_round_trips": 40,
+      "max_freq_rel_err": 0.4982517805361108,
+      "max_phase_abs_err": 0.0028625785232749834,
+      "freq_within_cell": 1.0,
+      "phase_within_cell": 1.0,
+      "overall_pass": 1.0
+    },
+    "04_optimal_rep": {
+      "claim": "Cost^*(f) = min over R [Cost_R(f) + min_{R'} Cost_{R->R'}]",
+      "n_instances": 27,
+      "n_matches": 27,
+      "match_rate": 1.0,
+      "overall_pass": true
+    },
+    "05_comp_mult": {
+      "claim": "Compositions of size n >= 2^(n-1)",
+      "n_sizes": 12,
+      "all_match_exact": true,
+      "overall_pass": true
+    },
+    "06_unconstrained_subtask": {
+      "claim": "All 19 syntactically distinct expressions evaluate to 3",
+      "n_expressions": 19,
+      "n_matches": 19,
+      "all_match": true,
+      "overall_pass": true
+    },
+    "07_lg_decoupling": {
+      "claim": "Global value preserved across arbitrary local subtask extremes",
+      "n_extremes": 8,
+      "n_global_preserved": 8,
+      "all_preserved": true,
+      "overall_pass": true
+    },
+    "08_backward_nav": {
+      "claim": "Backward navigation takes exactly log_3(N) = depth steps",
+      "n_depths_tested": 9,
+      "all_exact": true,
+      "overall_pass": true
+    },
+    "09_virtual_substates": {
+      "claim": "Virtual sub-state fraction -> 1 as decomposition magnitude grows",
+      "M_grid": [
+        1.0,
+        2.0,
+        5.0,
+        10.0
+      ],
+      "fractions": [
+        0.917,
+        0.975,
+        0.996,
+        0.998
+      ],
+      "monotone": true,
+      "saturates_above_85_percent": true,
+      "max_virtual_fraction": 0.998,
+      "overall_pass": true
+    },
+    "10_path_opacity": {
+      "claim": "Distinct decomposition paths sharing endpoint produce identical endpoint invariants",
+      "n_trials": 100,
+      "n_indistinguishable": 100,
+      "opacity_rate": 1.0,
+      "overall_pass": true
+    },
+    "11_multiplicativity": {
+      "claim": "kappa(g1 * g2) = 1 - (1 - kappa_1)(1 - kappa_2)",
+      "n_pairs": 81,
+      "max_abs_error": 0.0,
+      "machine_precision": true,
+      "overall_pass": true
+    },
+    "12_cascade_saturation": {
+      "claim": "Cascade saturates (residual -> 0) iff sum of catalytic powers diverges",
+      "n_cascades": 4,
+      "n_match": 4,
+      "overall_pass": true
+    },
+    "13_recursive_mult": {
+      "claim": "Recursive triple count at depth d >= 3 * 4^(d-1)",
+      "n_depths": 7,
+      "all_satisfy_bound": true,
+      "overall_pass": true
+    },
+    "14_strict_hierarchy": {
+      "claim": "C_0 < C_1 < C_poly < C_nav < C_hard at every N",
+      "n_problem_sizes": 5,
+      "all_strict": true,
+      "overall_pass": true
+    }
+  }
+}

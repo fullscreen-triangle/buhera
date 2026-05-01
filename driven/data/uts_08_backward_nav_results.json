@@ -1,0 +1,100 @@
+{
+  "summary": {
+    "claim": "Backward navigation takes exactly log_3(N) = depth steps",
+    "n_depths_tested": 9,
+    "all_exact": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "depth": 2,
+      "N": 9,
+      "log3_N": 2.0,
+      "expected_steps": 2,
+      "min_steps_observed": 2,
+      "max_steps_observed": 2,
+      "n_samples": 9,
+      "exact": true
+    },
+    {
+      "depth": 3,
+      "N": 27,
+      "log3_N": 3.0,
+      "expected_steps": 3,
+      "min_steps_observed": 3,
+      "max_steps_observed": 3,
+      "n_samples": 27,
+      "exact": true
+    },
+    {
+      "depth": 4,
+      "N": 81,
+      "log3_N": 4.0,
+      "expected_steps": 4,
+      "min_steps_observed": 4,
+      "max_steps_observed": 4,
+      "n_samples": 81,
+      "exact": true
+    },
+    {
+      "depth": 5,
+      "N": 243,
+      "log3_N": 4.999999999999999,
+      "expected_steps": 5,
+      "min_steps_observed": 5,
+      "max_steps_observed": 5,
+      "n_samples": 100,
+      "exact": true
+    },
+    {
+      "depth": 6,
+      "N": 729,
+      "log3_N": 6.0,
+      "expected_steps": 6,
+      "min_steps_observed": 6,
+      "max_steps_observed": 6,
+      "n_samples": 100,
+      "exact": true
+    },
+    {
+      "depth": 7,
+      "N": 2187,
+      "log3_N": 7.0,
+      "expected_steps": 7,
+      "min_steps_observed": 7,
+      "max_steps_observed": 7,
+      "n_samples": 100,
+      "exact": true
+    },
+    {
+      "depth": 8,
+      "N": 6561,
+      "log3_N": 8.0,
+      "expected_steps": 8,
+      "min_steps_observed": 8,
+      "max_steps_observed": 8,
+      "n_samples": 100,
+      "exact": true
+    },
+    {
+      "depth": 9,
+      "N": 19683,
+      "log3_N": 9.0,
+      "expected_steps": 9,
+      "min_steps_observed": 9,
+      "max_steps_observed": 9,
+      "n_samples": 100,
+      "exact": true
+    },
+    {
+      "depth": 10,
+      "N": 59049,
+      "log3_N": 9.999999999999998,
+      "expected_steps": 10,
+      "min_steps_observed": 10,
+      "max_steps_observed": 10,
+      "n_samples": 100,
+      "exact": true
+    }
+  ]
+}

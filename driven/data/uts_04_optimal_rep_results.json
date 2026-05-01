@@ -1,0 +1,362 @@
+{
+  "summary": {
+    "claim": "Cost^*(f) = min over R [Cost_R(f) + min_{R'} Cost_{R->R'}]",
+    "n_instances": 27,
+    "n_matches": 27,
+    "match_rate": 1.0,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "computation": "fft",
+      "output_rep": "O",
+      "costs": {
+        "O": 10.0,
+        "C": 84.0,
+        "P": 66.0
+      },
+      "optimal_rep": "O",
+      "optimal_cost": 10.0,
+      "predicted_cost": 10.0,
+      "match": true
+    },
+    {
+      "computation": "fft",
+      "output_rep": "C",
+      "costs": {
+        "O": 15.0,
+        "C": 80.0,
+        "P": 62.0
+      },
+      "optimal_rep": "O",
+      "optimal_cost": 15.0,
+      "predicted_cost": 15.0,
+      "match": true
+    },
+    {
+      "computation": "fft",
+      "output_rep": "P",
+      "costs": {
+        "O": 17.0,
+        "C": 83.0,
+        "P": 60.0
+      },
+      "optimal_rep": "O",
+      "optimal_cost": 17.0,
+      "predicted_cost": 17.0,
+      "match": true
+    },
+    {
+      "computation": "lookup",
+      "output_rep": "O",
+      "costs": {
+        "O": 80.0,
+        "C": 9.0,
+        "P": 56.0
+      },
+      "optimal_rep": "C",
+      "optimal_cost": 9.0,
+      "predicted_cost": 9.0,
+      "match": true
+    },
+    {
+      "computation": "lookup",
+      "output_rep": "C",
+      "costs": {
+        "O": 85.0,
+        "C": 5.0,
+        "P": 52.0
+      },
+      "optimal_rep": "C",
+      "optimal_cost": 5.0,
+      "predicted_cost": 5.0,
+      "match": true
+    },
+    {
+      "computation": "lookup",
+      "output_rep": "P",
+      "costs": {
+        "O": 87.0,
+        "C": 8.0,
+        "P": 50.0
+      },
+      "optimal_rep": "C",
+      "optimal_cost": 8.0,
+      "predicted_cost": 8.0,
+      "match": true
+    },
+    {
+      "computation": "density",
+      "output_rep": "O",
+      "costs": {
+        "O": 70.0,
+        "C": 54.0,
+        "P": 14.0
+      },
+      "optimal_rep": "P",
+      "optimal_cost": 14.0,
+      "predicted_cost": 14.0,
+      "match": true
+    },
+    {
+      "computation": "density",
+      "output_rep": "C",
+      "costs": {
+        "O": 75.0,
+        "C": 50.0,
+        "P": 10.0
+      },
+      "optimal_rep": "P",
+      "optimal_cost": 10.0,
+      "predicted_cost": 10.0,
+      "match": true
+    },
+    {
+      "computation": "density",
+      "output_rep": "P",
+      "costs": {
+        "O": 77.0,
+        "C": 53.0,
+        "P": 8.0
+      },
+      "optimal_rep": "P",
+      "optimal_cost": 8.0,
+      "predicted_cost": 8.0,
+      "match": true
+    },
+    {
+      "computation": "convolve",
+      "output_rep": "O",
+      "costs": {
+        "O": 15.0,
+        "C": 104.0,
+        "P": 96.0
+      },
+      "optimal_rep": "O",
+      "optimal_cost": 15.0,
+      "predicted_cost": 15.0,
+      "match": true
+    },
+    {
+      "computation": "convolve",
+      "output_rep": "C",
+      "costs": {
+        "O": 20.0,
+        "C": 100.0,
+        "P": 92.0
+      },
+      "optimal_rep": "O",
+      "optimal_cost": 20.0,
+      "predicted_cost": 20.0,
+      "match": true
+    },
+    {
+      "computation": "convolve",
+      "output_rep": "P",
+      "costs": {
+        "O": 22.0,
+        "C": 103.0,
+        "P": 90.0
+      },
+      "optimal_rep": "O",
+      "optimal_cost": 22.0,
+      "predicted_cost": 22.0,
+      "match": true
+    },
+    {
+      "computation": "search",
+      "output_rep": "O",
+      "costs": {
+        "O": 90.0,
+        "C": 16.0,
+        "P": 76.0
+      },
+      "optimal_rep": "C",
+      "optimal_cost": 16.0,
+      "predicted_cost": 16.0,
+      "match": true
+    },
+    {
+      "computation": "search",
+      "output_rep": "C",
+      "costs": {
+        "O": 95.0,
+        "C": 12.0,
+        "P": 72.0
+      },
+      "optimal_rep": "C",
+      "optimal_cost": 12.0,
+      "predicted_cost": 12.0,
+      "match": true
+    },
+    {
+      "computation": "search",
+      "output_rep": "P",
+      "costs": {
+        "O": 97.0,
+        "C": 15.0,
+        "P": 70.0
+      },
+      "optimal_rep": "C",
+      "optimal_cost": 15.0,
+      "predicted_cost": 15.0,
+      "match": true
+    },
+    {
+      "computation": "integrate",
+      "output_rep": "O",
+      "costs": {
+        "O": 40.0,
+        "C": 34.0,
+        "P": 11.0
+      },
+      "optimal_rep": "P",
+      "optimal_cost": 11.0,
+      "predicted_cost": 11.0,
+      "match": true
+    },
+    {
+      "computation": "integrate",
+      "output_rep": "C",
+      "costs": {
+        "O": 45.0,
+        "C": 30.0,
+        "P": 7.0
+      },
+      "optimal_rep": "P",
+      "optimal_cost": 7.0,
+      "predicted_cost": 7.0,
+      "match": true
+    },
+    {
+      "computation": "integrate",
+      "output_rep": "P",
+      "costs": {
+        "O": 47.0,
+        "C": 33.0,
+        "P": 5.0
+      },
+      "optimal_rep": "P",
+      "optimal_cost": 5.0,
+      "predicted_cost": 5.0,
+      "match": true
+    },
+    {
+      "computation": "compose",
+      "output_rep": "O",
+      "costs": {
+        "O": 50.0,
+        "C": 29.0,
+        "P": 31.0
+      },
+      "optimal_rep": "C",
+      "optimal_cost": 29.0,
+      "predicted_cost": 29.0,
+      "match": true
+    },
+    {
+      "computation": "compose",
+      "output_rep": "C",
+      "costs": {
+        "O": 55.0,
+        "C": 25.0,
+        "P": 27.0
+      },
+      "optimal_rep": "C",
+      "optimal_cost": 25.0,
+      "predicted_cost": 25.0,
+      "match": true
+    },
+    {
+      "computation": "compose",
+      "output_rep": "P",
+      "costs": {
+        "O": 57.0,
+        "C": 28.0,
+        "P": 25.0
+      },
+      "optimal_rep": "P",
+      "optimal_cost": 25.0,
+      "predicted_cost": 25.0,
+      "match": true
+    },
+    {
+      "computation": "filter",
+      "output_rep": "O",
+      "costs": {
+        "O": 20.0,
+        "C": 34.0,
+        "P": 106.0
+      },
+      "optimal_rep": "O",
+      "optimal_cost": 20.0,
+      "predicted_cost": 20.0,
+      "match": true
+    },
+    {
+      "computation": "filter",
+      "output_rep": "C",
+      "costs": {
+        "O": 25.0,
+        "C": 30.0,
+        "P": 102.0
+      },
+      "optimal_rep": "O",
+      "optimal_cost": 25.0,
+      "predicted_cost": 25.0,
+      "match": true
+    },
+    {
+      "computation": "filter",
+      "output_rep": "P",
+      "costs": {
+        "O": 27.0,
+        "C": 33.0,
+        "P": 100.0
+      },
+      "optimal_rep": "O",
+      "optimal_cost": 27.0,
+      "predicted_cost": 27.0,
+      "match": true
+    },
+    {
+      "computation": "sample",
+      "output_rep": "O",
+      "costs": {
+        "O": 60.0,
+        "C": 74.0,
+        "P": 16.0
+      },
+      "optimal_rep": "P",
+      "optimal_cost": 16.0,
+      "predicted_cost": 16.0,
+      "match": true
+    },
+    {
+      "computation": "sample",
+      "output_rep": "C",
+      "costs": {
+        "O": 65.0,
+        "C": 70.0,
+        "P": 12.0
+      },
+      "optimal_rep": "P",
+      "optimal_cost": 12.0,
+      "predicted_cost": 12.0,
+      "match": true
+    },
+    {
+      "computation": "sample",
+      "output_rep": "P",
+      "costs": {
+        "O": 67.0,
+        "C": 73.0,
+        "P": 10.0
+      },
+      "optimal_rep": "P",
+      "optimal_cost": 10.0,
+      "predicted_cost": 10.0,
+      "match": true
+    }
+  ]
+}

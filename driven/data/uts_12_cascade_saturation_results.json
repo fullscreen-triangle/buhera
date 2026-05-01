@@ -1,0 +1,46 @@
+{
+  "summary": {
+    "claim": "Cascade saturates (residual -> 0) iff sum of catalytic powers diverges",
+    "n_cascades": 4,
+    "n_match": 4,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "cascade": "divergent_constant_0.1",
+      "n_stages": 10000,
+      "sum_kappas": 1000.0,
+      "analytic_diverges": true,
+      "residual_n": 2.5e-323,
+      "residual_n_over_100": 2.6561398887587544e-05,
+      "satisfies_theorem": true
+    },
+    {
+      "cascade": "divergent_harmonic_1/i",
+      "n_stages": 10000,
+      "sum_kappas": 8.787706026045383,
+      "analytic_diverges": true,
+      "residual_n": 9.999000099990008e-05,
+      "residual_n_over_100": 0.009900990099009908,
+      "satisfies_theorem": true
+    },
+    {
+      "cascade": "convergent_geometric_2^-i",
+      "n_stages": 10000,
+      "sum_kappas": 0.5,
+      "analytic_diverges": false,
+      "residual_n": 0.5775761901732048,
+      "residual_n_over_100": 0.5775761901732048,
+      "satisfies_theorem": true
+    },
+    {
+      "cascade": "zero",
+      "n_stages": 10000,
+      "sum_kappas": 0.0,
+      "analytic_diverges": false,
+      "residual_n": 1.0,
+      "residual_n_over_100": 1.0,
+      "satisfies_theorem": true
+    }
+  ]
+}

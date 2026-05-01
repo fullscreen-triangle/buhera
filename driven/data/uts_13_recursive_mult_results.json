@@ -1,0 +1,52 @@
+{
+  "summary": {
+    "claim": "Recursive triple count at depth d >= 3 * 4^(d-1)",
+    "n_depths": 7,
+    "all_satisfy_bound": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "depth": 1,
+      "lower_bound": 3,
+      "measured_count": 3,
+      "saturates_or_exceeds": true
+    },
+    {
+      "depth": 2,
+      "lower_bound": 12,
+      "measured_count": 12,
+      "saturates_or_exceeds": true
+    },
+    {
+      "depth": 3,
+      "lower_bound": 48,
+      "measured_count": 48,
+      "saturates_or_exceeds": true
+    },
+    {
+      "depth": 4,
+      "lower_bound": 192,
+      "measured_count": 192,
+      "saturates_or_exceeds": true
+    },
+    {
+      "depth": 5,
+      "lower_bound": 768,
+      "measured_count": 768,
+      "saturates_or_exceeds": true
+    },
+    {
+      "depth": 6,
+      "lower_bound": 3072,
+      "measured_count": 3072,
+      "saturates_or_exceeds": true
+    },
+    {
+      "depth": 7,
+      "lower_bound": 12288,
+      "measured_count": 12288,
+      "saturates_or_exceeds": true
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "summary": {
+    "claim": "C_0 < C_1 < C_poly < C_nav < C_hard at every N",
+    "n_problem_sizes": 5,
+    "all_strict": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "N": 27,
+      "traversals": {
+        "C_0": 0,
+        "C_1": 3,
+        "C_poly": 6,
+        "C_nav": 12,
+        "C_hard": 27
+      },
+      "strict_order": true
+    },
+    {
+      "N": 243,
+      "traversals": {
+        "C_0": 0,
+        "C_1": 4,
+        "C_poly": 8,
+        "C_nav": 20,
+        "C_hard": 243
+      },
+      "strict_order": true
+    },
+    {
+      "N": 2187,
+      "traversals": {
+        "C_0": 0,
+        "C_1": 7,
+        "C_poly": 14,
+        "C_nav": 56,
+        "C_hard": 2187
+      },
+      "strict_order": true
+    },
+    {
+      "N": 19683,
+      "traversals": {
+        "C_0": 0,
+        "C_1": 9,
+        "C_poly": 18,
+        "C_nav": 90,
+        "C_hard": 19683
+      },
+      "strict_order": true
+    },
+    {
+      "N": 177147,
+      "traversals": {
+        "C_0": 0,
+        "C_1": 11,
+        "C_poly": 22,
+        "C_nav": 132,
+        "C_hard": 177147
+      },
+      "strict_order": true
+    }
+  ]
+}

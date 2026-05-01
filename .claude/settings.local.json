@@ -18,7 +18,14 @@
       "PowerShell(rustc --version)",
       "PowerShell(Test-Path \"$env:USERPROFILE\\\\.cargo\\\\bin\\\\cargo.exe\"; if \\(Test-Path \"$env:USERPROFILE\\\\.cargo\\\\bin\\\\cargo.exe\"\\) { & \"$env:USERPROFILE\\\\.cargo\\\\bin\\\\cargo.exe\" --version })",
       "PowerShell(node --version)",
-      "PowerShell(npm --version)"
+      "PowerShell(npm --version)",
+      "Bash(grep -n \"^\\\\\\\\\\\\\\\\section\\\\|^\\\\\\\\\\\\\\\\part\\\\|^\\\\\\\\\\\\\\\\subsection\\\\|^\\\\\\\\\\\\\\\\begin{theorem}\\\\|^\\\\\\\\\\\\\\\\begin{definition}\" \"c:/Users/kunda/Documents/architecture/buhera/long-grass/docs/sources/unconstrained-subtasks-recursion.tex\")",
+      "Bash(grep -nE \"^\\\\\\\\\\\\\\\\\\(section|part|subsection\\)\\\\b|^\\\\\\\\\\\\\\\\begin\\\\{theorem\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{definition\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{axiom\\\\}\" \"c:/Users/kunda/Documents/architecture/buhera/long-grass/docs/sources/unconstrained-subtasks-recursion.tex\")",
+      "Bash(python -m driven.src.uts.run_all_uts)",
+      "Bash(python -m driven.src.uts.validate_06_unconstrained_subtask)",
+      "Bash(python -m driven.src.uts.validate_12_cascade_saturation)",
+      "Bash(python driven/src/visualizations/generate_uts_panels.py)",
+      "Bash(python driven/src/uts/fix_close_tags.py)"
     ]
   }
 }
