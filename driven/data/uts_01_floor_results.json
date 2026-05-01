@@ -1,0 +1,73 @@
+{
+  "summary": {
+    "claim": "S_floor(R) > 0 for every bounded R, monotone decreasing in |K|",
+    "n_capacities": 12,
+    "all_positive": true,
+    "monotone_decreasing": true,
+    "min_floor": 0.0244140625,
+    "max_floor": 50.0,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "K": 2,
+      "S_floor": 50.0,
+      "positive": true
+    },
+    {
+      "K": 4,
+      "S_floor": 25.0,
+      "positive": true
+    },
+    {
+      "K": 8,
+      "S_floor": 12.5,
+      "positive": true
+    },
+    {
+      "K": 16,
+      "S_floor": 6.25,
+      "positive": true
+    },
+    {
+      "K": 32,
+      "S_floor": 3.125,
+      "positive": true
+    },
+    {
+      "K": 64,
+      "S_floor": 1.5625,
+      "positive": true
+    },
+    {
+      "K": 128,
+      "S_floor": 0.78125,
+      "positive": true
+    },
+    {
+      "K": 256,
+      "S_floor": 0.390625,
+      "positive": true
+    },
+    {
+      "K": 512,
+      "S_floor": 0.1953125,
+      "positive": true
+    },
+    {
+      "K": 1024,
+      "S_floor": 0.09765625,
+      "positive": true
+    },
+    {
+      "K": 2048,
+      "S_floor": 0.048828125,
+      "positive": true
+    },
+    {
+      "K": 4096,
+      "S_floor": 0.0244140625,
+      "positive": true
+    }
+  ]
+}

@@ -1,0 +1,1111 @@
+{
+  "summary": {
+    "claim": "Distinct decomposition paths sharing endpoint produce identical endpoint invariants",
+    "n_trials": 100,
+    "n_indistinguishable": 100,
+    "opacity_rate": 1.0,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "trial": 0,
+      "endpoint": [
+        0.7191648388447707,
+        0.45110275180164183,
+        0.7868783359291059
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 1,
+      "endpoint": [
+        0.5436678296126679,
+        0.15105380488334028,
+        0.7621049375940657
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 2,
+      "endpoint": [
+        0.3498933131056329,
+        0.7658078411161608,
+        0.7438114859974415
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 3,
+      "endpoint": [
+        0.32510711361759725,
+        0.33487500621334687,
+        0.629533211781516
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 4,
+      "endpoint": [
+        0.34120967131830127,
+        0.6042260744951108,
+        0.38945008844271234
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 5,
+      "endpoint": [
+        0.3638889698662283,
+        0.21561935109283753,
+        0.18272237417804132
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 6,
+      "endpoint": [
+        0.4925655954836168,
+        0.8502611639799863,
+        0.5573824419008603
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 7,
+      "endpoint": [
+        0.396737827089951,
+        0.7638317945059305,
+        0.7466011776514415
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 8,
+      "endpoint": [
+        0.6974316890792208,
+        0.3099684127382918,
+        0.8494505204270234
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 9,
+      "endpoint": [
+        0.3407589534247518,
+        0.49086723628122664,
+        0.6302913702108659
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 10,
+      "endpoint": [
+        0.18731519741258795,
+        0.7635428919061891,
+        0.7374536706601295
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 11,
+      "endpoint": [
+        0.21509754637691414,
+        0.8367763779899602,
+        0.23242537818822254
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 12,
+      "endpoint": [
+        0.28939589688351686,
+        0.29951006066576946,
+        0.5569861213942182
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 13,
+      "endpoint": [
+        0.39311395986099795,
+        0.36199645153003635,
+        0.4035712637815432
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 14,
+      "endpoint": [
+        0.6805725026171415,
+        0.1675945750588162,
+        0.8487518581605008
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 15,
+      "endpoint": [
+        0.43488664063230364,
+        0.7194571329134746,
+        0.6369851306468741
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 16,
+      "endpoint": [
+        0.54239445220232,
+        0.8489119894707698,
+        0.7242411951275137
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 17,
+      "endpoint": [
+        0.1851356254971063,
+        0.8992837843793909,
+        0.6325477888852296
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 18,
+      "endpoint": [
+        0.7176867192835045,
+        0.6584966271829098,
+        0.7703841749243064
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 19,
+      "endpoint": [
+        0.2468265831042552,
+        0.8840217436433541,
+        0.46684851396679183
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 20,
+      "endpoint": [
+        0.4232275125926128,
+        0.4793349835860945,
+        0.1953740209581957
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 21,
+      "endpoint": [
+        0.8368457578361533,
+        0.5029063401464794,
+        0.5162200917924553
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 22,
+      "endpoint": [
+        0.6941540533800685,
+        0.11174627484805662,
+        0.7617387396165491
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 23,
+      "endpoint": [
+        0.45859649060348084,
+        0.41405817267353595,
+        0.164039426916948
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 24,
+      "endpoint": [
+        0.8276417950970799,
+        0.5696991524295845,
+        0.7802194390669774
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 25,
+      "endpoint": [
+        0.6624267725591141,
+        0.6070158184554104,
+        0.8854447580340284
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 26,
+      "endpoint": [
+        0.6870027979503329,
+        0.6999868303482149,
+        0.37719428905043906
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 27,
+      "endpoint": [
+        0.7580664724939453,
+        0.1295765817609394,
+        0.3981618730453874
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 28,
+      "endpoint": [
+        0.10360009995172731,
+        0.5117034736930799,
+        0.6418299194915178
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 29,
+      "endpoint": [
+        0.20945702242370104,
+        0.5598975436984269,
+        0.8980640298103338
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 30,
+      "endpoint": [
+        0.37463396990312625,
+        0.43630541720422167,
+        0.8673674182756608
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 31,
+      "endpoint": [
+        0.1815153258516359,
+        0.6223377012511987,
+        0.8642795425502489
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 32,
+      "endpoint": [
+        0.5065338846503001,
+        0.49160160520576646,
+        0.3664753288085103
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 33,
+      "endpoint": [
+        0.18850357404976262,
+        0.5961194293026371,
+        0.2933111269912686
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 34,
+      "endpoint": [
+        0.4312208750313892,
+        0.3541085074908493,
+        0.1624867144642911
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 35,
+      "endpoint": [
+        0.6308968373282815,
+        0.768996141474081,
+        0.11452843513149125
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 36,
+      "endpoint": [
+        0.43541791032064414,
+        0.5116664415084248,
+        0.1099759023529706
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 37,
+      "endpoint": [
+        0.26971792601864114,
+        0.4758407105398623,
+        0.6867959236502639
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 38,
+      "endpoint": [
+        0.5814198046941668,
+        0.8483050956531958,
+        0.4741122053012772
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 39,
+      "endpoint": [
+        0.2616704813163824,
+        0.24861290789686974,
+        0.5176098410932098
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 40,
+      "endpoint": [
+        0.8213134828531508,
+        0.8876548866006033,
+        0.8858933464836259
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 41,
+      "endpoint": [
+        0.42388397154122703,
+        0.7080119773952279,
+        0.7178823901396545
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 42,
+      "endpoint": [
+        0.2005310822948288,
+        0.8617997726765466,
+        0.48562460766908044
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 43,
+      "endpoint": [
+        0.4503916823362981,
+        0.6112109194113317,
+        0.10184701806939361
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 44,
+      "endpoint": [
+        0.8580284797327938,
+        0.39306839084522904,
+        0.6908085701493029
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 45,
+      "endpoint": [
+        0.2582478778073576,
+        0.7225211380352099,
+        0.7885043211169042
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 46,
+      "endpoint": [
+        0.4200491569078043,
+        0.8000860906580093,
+        0.5881819555465967
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 47,
+      "endpoint": [
+        0.46516175561141737,
+        0.2921810209192025,
+        0.6158553554874324
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 48,
+      "endpoint": [
+        0.5957348207758891,
+        0.8463206259306026,
+        0.8846569164264274
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 49,
+      "endpoint": [
+        0.3826701560547743,
+        0.7299710997052018,
+        0.7656960602255889
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 50,
+      "endpoint": [
+        0.15401478414993203,
+        0.14224568112008829,
+        0.10041499533256443
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 51,
+      "endpoint": [
+        0.6902380448850983,
+        0.3059615674591707,
+        0.7018631315468422
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 52,
+      "endpoint": [
+        0.798287167019343,
+        0.25384054322810645,
+        0.27663833696714724
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 53,
+      "endpoint": [
+        0.6413219060077101,
+        0.15286336873551587,
+        0.10085397201819779
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 54,
+      "endpoint": [
+        0.31184574185726377,
+        0.5883880538734308,
+        0.26431223813792537
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 55,
+      "endpoint": [
+        0.1826267832856397,
+        0.7929156850648161,
+        0.5714649329019809
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 56,
+      "endpoint": [
+        0.1420607922584443,
+        0.8564159128175252,
+        0.4139877874119551
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 57,
+      "endpoint": [
+        0.3645728533968844,
+        0.8030108958260317,
+        0.39844847004644246
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 58,
+      "endpoint": [
+        0.11917628442236437,
+        0.5163659550137821,
+        0.4709405717452009
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 59,
+      "endpoint": [
+        0.44322089708593015,
+        0.4448610861103507,
+        0.12871910880588713
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 60,
+      "endpoint": [
+        0.8714985559131831,
+        0.1754288427904056,
+        0.7938424324009451
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 61,
+      "endpoint": [
+        0.46512308632147625,
+        0.40907316577854547,
+        0.38927922365813017
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 62,
+      "endpoint": [
+        0.2614938012876329,
+        0.7404668965390802,
+        0.5942311268044665
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 63,
+      "endpoint": [
+        0.8958519142636867,
+        0.48902449013646554,
+        0.4823572645918648
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 64,
+      "endpoint": [
+        0.27239611345016035,
+        0.6961630742248086,
+        0.20492413534776796
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 65,
+      "endpoint": [
+        0.2179407627884687,
+        0.318743761701338,
+        0.3466665631622754
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 66,
+      "endpoint": [
+        0.24108446113424106,
+        0.4739876315428575,
+        0.4136480179323546
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 67,
+      "endpoint": [
+        0.5545338810330916,
+        0.5417301626435417,
+        0.7692904328261544
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 68,
+      "endpoint": [
+        0.25614842385492453,
+        0.14635627563050396,
+        0.859434818407406
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 69,
+      "endpoint": [
+        0.8952622179619029,
+        0.1309154478615077,
+        0.2663984589667685
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 70,
+      "endpoint": [
+        0.17823039795635448,
+        0.47458512455486723,
+        0.26044997705724326
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 71,
+      "endpoint": [
+        0.7773368404065949,
+        0.41935624212623235,
+        0.12809344888773327
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 72,
+      "endpoint": [
+        0.707973506960584,
+        0.20263460680889614,
+        0.7246706836152383
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 73,
+      "endpoint": [
+        0.5661154794516301,
+        0.41608147003831275,
+        0.7295131051600222
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 74,
+      "endpoint": [
+        0.7636763272685639,
+        0.11956067270561191,
+        0.27612631292183976
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 75,
+      "endpoint": [
+        0.2612279803139066,
+        0.8104469560118958,
+        0.7494018969754122
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 76,
+      "endpoint": [
+        0.37685105832378774,
+        0.47412196196017,
+        0.23577128407884854
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 77,
+      "endpoint": [
+        0.20806383377401927,
+        0.6548323756693757,
+        0.6398002851041786
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 78,
+      "endpoint": [
+        0.4948052643490729,
+        0.4746564277554648,
+        0.8697599908277617
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 79,
+      "endpoint": [
+        0.7048745181702823,
+        0.7797841531209817,
+        0.899062888763844
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 80,
+      "endpoint": [
+        0.3153044005782446,
+        0.35668005925375,
+        0.5378262729638997
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 81,
+      "endpoint": [
+        0.5431849006534876,
+        0.11692480913863479,
+        0.3530891658693721
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 82,
+      "endpoint": [
+        0.2622323620873271,
+        0.6279889953896913,
+        0.6798534577974984
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 83,
+      "endpoint": [
+        0.5883232873394458,
+        0.7213187487109728,
+        0.7484157725278381
+      ],
+      "depth": 5,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 84,
+      "endpoint": [
+        0.8247217750542227,
+        0.8765681289569704,
+        0.5402588045581115
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 85,
+      "endpoint": [
+        0.7813777462020149,
+        0.29335967838490473,
+        0.5949284895490541
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 86,
+      "endpoint": [
+        0.3680375020041078,
+        0.7765595205175777,
+        0.5160575298091905
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 87,
+      "endpoint": [
+        0.12563487150254177,
+        0.5915088852281486,
+        0.3989744023058811
+      ],
+      "depth": 7,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 88,
+      "endpoint": [
+        0.21739458656612198,
+        0.3690286643418894,
+        0.8901179582051694
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 89,
+      "endpoint": [
+        0.438924096440484,
+        0.8440844154000993,
+        0.5019303949047508
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 90,
+      "endpoint": [
+        0.12485568005587196,
+        0.41347016792804225,
+        0.26014674446788766
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 91,
+      "endpoint": [
+        0.894246365816356,
+        0.3732306097612983,
+        0.230285240994162
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 92,
+      "endpoint": [
+        0.503375484430215,
+        0.5254590846223474,
+        0.3516652552286741
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 93,
+      "endpoint": [
+        0.6249837184840005,
+        0.12734352874260813,
+        0.7161495595553463
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 94,
+      "endpoint": [
+        0.7591298888406371,
+        0.305377409228133,
+        0.8758172630648081
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 95,
+      "endpoint": [
+        0.14707882986594545,
+        0.5782848265649629,
+        0.7527209723704753
+      ],
+      "depth": 6,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 96,
+      "endpoint": [
+        0.38413190959509746,
+        0.46196018786780646,
+        0.43292934405383265
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 97,
+      "endpoint": [
+        0.33749478840593145,
+        0.1485045937515241,
+        0.39510270458997654
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 98,
+      "endpoint": [
+        0.5175840912944406,
+        0.8278380612140356,
+        0.7349380994051415
+      ],
+      "depth": 4,
+      "paths_distinct": true,
+      "invariants_match": true
+    },
+    {
+      "trial": 99,
+      "endpoint": [
+        0.12914415654630665,
+        0.5449522374382315,
+        0.27301544783804116
+      ],
+      "depth": 3,
+      "paths_distinct": true,
+      "invariants_match": true
+    }
+  ]
+}

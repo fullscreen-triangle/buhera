@@ -1,0 +1,106 @@
+{
+  "summary": {
+    "claim": "All 19 syntactically distinct expressions evaluate to 3",
+    "n_expressions": 19,
+    "n_matches": 19,
+    "all_match": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "expr": "1 + 1 + 1",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "2 + 1",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "1 + 2",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "3",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "4 - 1",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "-1 + 4",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "(11 - 10) + (-1 - (-1)) + 2",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "6 / 2",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "3 * 1",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "log_e e^3",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "sin(3*pi/2) + 4",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "3 * 4 / 4",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "9 - 6",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "e^ln3",
+      "value": 3.0000000000000004,
+      "matches_target": true
+    },
+    {
+      "expr": "sqrt(9)",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "1 + sqrt(4)",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "1000000 - 999997",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "3 + 0",
+      "value": 3.0,
+      "matches_target": true
+    },
+    {
+      "expr": "0 - (-3)",
+      "value": 3.0,
+      "matches_target": true
+    }
+  ]
+}

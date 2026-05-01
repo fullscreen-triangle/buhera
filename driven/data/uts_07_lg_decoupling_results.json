@@ -1,0 +1,59 @@
+{
+  "summary": {
+    "claim": "Global value preserved across arbitrary local subtask extremes",
+    "n_extremes": 8,
+    "n_global_preserved": 8,
+    "all_preserved": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "eta_local": -1000.0,
+      "global_value": 3.0,
+      "global_target": 3.0,
+      "global_preserved": true
+    },
+    {
+      "eta_local": -100.0,
+      "global_value": 3.0,
+      "global_target": 3.0,
+      "global_preserved": true
+    },
+    {
+      "eta_local": -50.0,
+      "global_value": 3.0,
+      "global_target": 3.0,
+      "global_preserved": true
+    },
+    {
+      "eta_local": -10.0,
+      "global_value": 3.0,
+      "global_target": 3.0,
+      "global_preserved": true
+    },
+    {
+      "eta_local": 0.0,
+      "global_value": 3.0,
+      "global_target": 3.0,
+      "global_preserved": true
+    },
+    {
+      "eta_local": 100.0,
+      "global_value": 3.0,
+      "global_target": 3.0,
+      "global_preserved": true
+    },
+    {
+      "eta_local": 1000.0,
+      "global_value": 3.0,
+      "global_target": 3.0,
+      "global_preserved": true
+    },
+    {
+      "eta_local": 10000.0,
+      "global_value": 3.0,
+      "global_target": 3.0,
+      "global_preserved": true
+    }
+  ]
+}
