@@ -1,0 +1,99 @@
+\begin{thebibliography}{15}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Borceux(1994)]{borceux1994handbook}
+Francis Borceux.
+\newblock \emph{Handbook of Categorical Algebra (Volume 1: Basic Category
+  Theory)}.
+\newblock Cambridge University Press, 1994.
+
+\bibitem[Borel(1909)]{borel1909probabilites}
+{\'E}mile Borel.
+\newblock Les probabilit{\'e}s d{\'e}nombrables et leurs applications
+  arithm{\'e}tiques.
+\newblock \emph{Rendiconti del Circolo Matematico di Palermo}, 27:\penalty0
+  247--271, 1909.
+
+\bibitem[Cantelli(1917)]{cantelli1917somma}
+Francesco~P. Cantelli.
+\newblock Sulla probabilit{\`a} come limite della frequenza.
+\newblock \emph{Atti della Accademia Nazionale dei Lincei}, 26:\penalty0
+  39--45, 1917.
+
+\bibitem[Cencov(2000)]{cencov2000statistical}
+Nikolai~N. Cencov.
+\newblock \emph{Statistical Decision Rules and Optimal Inference}, volume~53 of
+  \emph{Translations of Mathematical Monographs}.
+\newblock American Mathematical Society, 2000.
+
+\bibitem[Gigerenzer and Goldstein(1996)]{gigerenzer1996reasoning}
+Gerd Gigerenzer and Daniel~G. Goldstein.
+\newblock Reasoning the fast and frugal way: Models of bounded rationality.
+\newblock \emph{Psychological Review}, 103\penalty0 (4):\penalty0 650--669,
+  1996.
+
+\bibitem[ichi Amari(2016)]{amari2016information}
+Shun ichi Amari.
+\newblock \emph{Information Geometry and Its Applications}, volume 194 of
+  \emph{Applied Mathematical Sciences}.
+\newblock Springer, 2016.
+
+\bibitem[Liedtke(1995)]{liedtke1995microkernel}
+Jochen Liedtke.
+\newblock On micro-kernel construction.
+\newblock In \emph{Proceedings of the 15th ACM Symposium on Operating Systems
+  Principles (SOSP)}, pages 237--250, 1995.
+
+\bibitem[Lipman(1995)]{lipman1995information}
+Barton~L. Lipman.
+\newblock Information processing and bounded rationality: A survey.
+\newblock \emph{Canadian Journal of Economics}, 28\penalty0 (1):\penalty0
+  42--67, 1995.
+
+\bibitem[{Mac Lane}(1998)]{maclane1998categories}
+Saunders {Mac Lane}.
+\newblock \emph{Categories for the Working Mathematician}, volume~5 of
+  \emph{Graduate Texts in Mathematics}.
+\newblock Springer, 2 edition, 1998.
+
+\bibitem[Pierce(2002)]{pierce2002types}
+Benjamin~C. Pierce.
+\newblock \emph{Types and Programming Languages}.
+\newblock MIT Press, 2002.
+
+\bibitem[Plotkin(1977)]{plotkin1977lcf}
+Gordon~D. Plotkin.
+\newblock Lcf considered as a programming language.
+\newblock \emph{Theoretical Computer Science}, 5\penalty0 (3):\penalty0
+  223--255, 1977.
+
+\bibitem[Rondon et~al.(2008)Rondon, Kawaguchi, and Jhala]{rondon2008liquid}
+Patrick~M. Rondon, Ming Kawaguchi, and Ranjit Jhala.
+\newblock Liquid types.
+\newblock In \emph{Proceedings of the 29th ACM SIGPLAN Conference on
+  Programming Language Design and Implementation (PLDI)}, pages 159--169, 2008.
+
+\bibitem[Simon(1955)]{simon1955behavioral}
+Herbert~A. Simon.
+\newblock A behavioral model of rational choice.
+\newblock \emph{Quarterly Journal of Economics}, 69\penalty0 (1):\penalty0
+  99--118, 1955.
+
+\bibitem[Tanenbaum and Bos(2014)]{tanenbaum2014modern}
+Andrew~S. Tanenbaum and Herbert Bos.
+\newblock \emph{Modern Operating Systems}.
+\newblock Pearson, 4 edition, 2014.
+
+\bibitem[Vazou et~al.(2014)Vazou, Seidel, Jhala, Vytiniotis, and
+  Jones]{vazou2014refinement}
+Niki Vazou, Eric~L. Seidel, Ranjit Jhala, Dimitrios Vytiniotis, and
+  Simon~Peyton Jones.
+\newblock Refinement types for haskell.
+\newblock In \emph{Proceedings of the 19th ACM SIGPLAN International Conference
+  on Functional Programming (ICFP)}, pages 269--282, 2014.
+
+\end{thebibliography}
