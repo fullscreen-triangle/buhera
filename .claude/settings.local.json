@@ -25,7 +25,10 @@
       "Bash(python -m driven.src.uts.validate_06_unconstrained_subtask)",
       "Bash(python -m driven.src.uts.validate_12_cascade_saturation)",
       "Bash(python driven/src/visualizations/generate_uts_panels.py)",
-      "Bash(python driven/src/uts/fix_close_tags.py)"
+      "Bash(python driven/src/uts/fix_close_tags.py)",
+      "Bash(grep -nE \"^\\\\\\\\\\\\\\\\\\(section|subsection|part\\)\\\\b|^\\\\\\\\\\\\\\\\begin\\\\{theorem\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{definition\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{axiom\\\\}|^\\\\\\\\\\\\\\\\title\\\\b|^\\\\\\\\\\\\\\\\begin\\\\{abstract\\\\}|^\\\\\\\\\\\\\\\\end\\\\{abstract\\\\}\" \"c:/Users/kunda/Documents/architecture/buhera/long-grass/docs/sources/epistemological-methodology.tex\")",
+      "Bash(python driven/src/uts/fix_kt.py)",
+      "Bash(rm driven/src/uts/fix_kt.py)"
     ]
   }
 }
