@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: knowledge-thermodynamics.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: plainnat.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Database file #1: references.bib
+You've used 16 entries,
+            2773 wiz_defined-function locations,
+            677 strings with 6824 characters,
+and the built_in function-call counts, 6536 in all, are:
+= -- 563
+> -- 322
+< -- 14
++ -- 112
+- -- 96
+* -- 459
+:= -- 1011
+add.period$ -- 48
+call.type$ -- 16
+change.case$ -- 75
+chr.to.int$ -- 16
+cite$ -- 32
+duplicate$ -- 348
+empty$ -- 590
+format.name$ -- 122
+if$ -- 1378
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 25
+newline$ -- 88
+num.names$ -- 64
+pop$ -- 186
+preamble$ -- 1
+purify$ -- 64
+quote$ -- 0
+skip$ -- 252
+stack$ -- 0
+substring$ -- 209
+swap$ -- 36
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 131
+warning$ -- 0
+while$ -- 64
+width$ -- 0
+write$ -- 210

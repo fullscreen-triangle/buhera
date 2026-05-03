@@ -1,0 +1,88 @@
+{
+  "summary": {
+    "claim": "states within action-cell are S-indistinguishable (S = beta)",
+    "n_cells": 4,
+    "n_expressions": 50,
+    "beta": 1.0,
+    "all_indistinguishable": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "cell": "positive",
+      "n_members": 38,
+      "members_sample": [
+        66,
+        48,
+        15,
+        14,
+        78
+      ],
+      "S_values_sample": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "all_indistinguishable": true
+    },
+    {
+      "cell": "non_positive",
+      "n_members": 12,
+      "members_sample": [
+        -37,
+        -38,
+        -20,
+        -36,
+        -31
+      ],
+      "S_values_sample": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "all_indistinguishable": true
+    },
+    {
+      "cell": "even",
+      "n_members": 24,
+      "members_sample": [
+        66,
+        48,
+        14,
+        78,
+        -38
+      ],
+      "S_values_sample": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "all_indistinguishable": true
+    },
+    {
+      "cell": "prime",
+      "n_members": 11,
+      "members_sample": [
+        67,
+        17,
+        5,
+        89,
+        67
+      ],
+      "S_values_sample": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "all_indistinguishable": true
+    }
+  ]
+}

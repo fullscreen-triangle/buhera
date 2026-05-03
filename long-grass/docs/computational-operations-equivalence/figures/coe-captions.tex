@@ -1,0 +1,105 @@
+% =====================================================================
+%  Extended captions for the six COE validation panels.
+%  Included via \input from the main paper inside a figure float.
+% =====================================================================
+
+\newcommand{\captionCOEpanelone}{%
+\textbf{Time-Count Identity and count linearity.}
+(a) Recovered reference frequency $\hat f = M(t)/t$ across $50$ trials at
+$f_\mathrm{ref} = 10^6\,\mathrm{Hz}$; the dashed red line marks the reference
+frequency. The measurement and the operational definition $t = \Mcount/f$
+agree to within sub-permille precision across the full range.
+(b) Per-trial relative error $|\hat f - f_\mathrm{ref}|/f_\mathrm{ref}$ on a
+log scale; all trials lie at least three orders of magnitude below the
+$10^{-3}$ tolerance line.
+(c) Linearity test: $M(\op_1 \cup \op_2)$ versus $M(\op_1) + M(\op_2)$
+across $50$ randomly chosen non-overlapping operation pairs; points fall
+exactly on the identity line, confirming that the count is additive
+on disjoint operation unions.
+(d) Three-dimensional surface of the conversion law $t = Q/f$ over
+$Q \in [1, 200]$ and $\log_{10} f \in [3, 7]$. The surface visualises
+how a single underlying $Q$ projects to different $(t, M)$ pairs through
+the kernel's reference frequency.}
+
+\newcommand{\captionCOEpaneltwo}{%
+\textbf{Three independent routes to operation weight.}
+(a) Route I (residue): $Q_\mathrm{I}$ measured by an instrumented
+decision-counter against the ground-truth weight $Q_\mathrm{true}$; the
+match is exact across $30$ trials with $Q_\mathrm{true} \in [1, 10^4]$.
+(b) Route II (confinement): $Q_\mathrm{II}$ measured by an
+address-space-cell-counter against $Q_\mathrm{true}$; same exact match.
+(c) Route III (negation fixed point): $Q_\mathrm{III}$ measured by an
+iterated-negation-depth instrument against $Q_\mathrm{true}$; same exact match.
+(d) Three-dimensional point cloud of the triples
+$(Q_\mathrm{I}, Q_\mathrm{II}, Q_\mathrm{III})$ for $30$ trials; every point
+lies on the diagonal $Q_\mathrm{I} = Q_\mathrm{II} = Q_\mathrm{III}$
+(red dashed line), demonstrating that the three computationally distinct
+instruments converge to a single underlying invariant.}
+
+\newcommand{\captionCOEpanelthree}{%
+\textbf{Three-route equivalence and Mass-Time-Identity-Count.}
+(a) Pairwise differences $Q_\mathrm{I} - Q_\mathrm{II}$,
+$Q_\mathrm{II} - Q_\mathrm{III}$, $Q_\mathrm{I} - Q_\mathrm{III}$ across $50$
+trials; all curves lie identically on zero, confirming Theorem~\ref{thm:three-route}
+to machine precision.
+(b) $Q_\mathrm{I}$ versus $Q_\mathrm{II}$ coloured by $Q_\mathrm{III}$
+intensity; the colour gradient runs along the diagonal,
+demonstrating that all three quantities co-vary perfectly.
+(c) Mass-Time-Identity-Count Equivalence: $t = Q/f$ recovered both directly
+(blue) and from $Q_\mathrm{from\,t}/f$ (amber crosses), showing that the
+four-way unit conversion is consistent in both directions.
+(d) Three-dimensional locus of $(Q, M, t)$ points, lying on the
+one-parameter curve $Q = M$, $t = Q/f$. The MTIC theorem states that this
+curve is the only locus a kernel can occupy: any divergence between
+$Q$, $M$, and $tf$ is a measurement artefact, not a degree of freedom.}
+
+\newcommand{\captionCOEpanelfour}{%
+\textbf{Reproducibility, sliding-endpoint, and monotone log growth.}
+(a) Reproducibility: $1000$ runs of an identical operation produce a single
+distinct output, weight, and hash; all three identical-flags read $1$,
+confirming the reproducibility property.
+(b) Sliding-endpoint theorem: the baseline configuration is reproducible
+(green bar at $1$), and externally truncating the kernel's accumulated count
+breaks reproducibility (amber bar at $1$), confirming
+Theorem~\ref{thm:sliding}: reproducibility $\iff$ irreversibility of $\Mcount$.
+(c) Rewind-as-Forward Principle: $\Mcount$ after rollback (y-axis) versus
+$\Mcount$ before rollback (x-axis) across $30$ trials; every point lies above
+the equality line, demonstrating that rollback strictly increases the count.
+(d) Monotone log growth: 3D bars showing $\Delta \Mcount$ at each operation
+step over the first $50$ ops of a $1000$-op workload mixing forwards and
+rollbacks. Every bar has nonnegative height, demonstrating that the log
+grows monotonically by structural force, not by engineering choice.}
+
+\newcommand{\captionCOEpanelfive}{%
+\textbf{API substitutability and cell stability.}
+(a) Two cascade chains $A$ and $B$, internally distinct, produce identical
+outputs across $50$ trials; points lie exactly on the identity line.
+The fixed-point semantics of the API boundary make the chains
+operationally indistinguishable from any external observer.
+(b) Cell-stability test: existing operations remain unaffected when a
+cell-disjoint operation is added; all $30$ trials read $1$ (stable).
+(c) Cell-collision detection: confusion matrix with $50$ trials
+(half disjoint, half colliding additions). All decisions land on
+the diagonal --- no false positives, no false negatives ---
+demonstrating perfect collision detection.
+(d) Disjoint cell ownership: 3D bar chart of operation weights $Q$
+across cell indices and kernel identities. Each kernel owns a disjoint
+subset of cells; the absence of vertical bars at non-owned cells
+visualises the cell-stability invariant.}
+
+\newcommand{\captionCOEpanelsix}{%
+\textbf{Cross-architecture invariance.}
+(a) The relation $t = Q/f$ holds simultaneously for four kernel
+architectures (microkernel, monolithic, exokernel, unikernel),
+each operating at its own reference frequency. Each architecture's points
+follow the conversion law with no architecture-specific corrections.
+(b) Reference-frequency hierarchy: bar chart on a logarithmic axis
+showing the four architecture-local frequencies, spanning over a decade.
+(c) Per-architecture recovery error $|Q - Q_\mathrm{recovered}|$ across
+$10$ trials per architecture; all curves lie at the floor of the log
+plot ($+10^{-3}$ for visualisation), confirming that the four-way
+unit conversion is exact independent of $f$.
+(d) Three-dimensional view of $(Q, t)$ stratified by architecture; the
+four point clouds lie on architecture-specific lines through the origin,
+visualising that $f$ is the only architecture-dependent quantity in the
+MTIC framework.}

@@ -1,0 +1,8 @@
+{
+  "summary": {
+    "claim": "Truncating M breaks reproducibility (sliding endpoint)",
+    "baseline_reproducible": true,
+    "truncated_breaks_reproducibility": true,
+    "overall_pass": true
+  }
+}

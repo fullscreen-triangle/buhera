@@ -1,0 +1,73 @@
+{
+  "summary": {
+    "claim": "beta(R) > 0 and monotone decreasing in |K|",
+    "n_capacities": 12,
+    "all_positive": true,
+    "monotone": true,
+    "min_beta": 0.0244140625,
+    "max_beta": 50.0,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "K": 2,
+      "beta": 50.0,
+      "positive": true
+    },
+    {
+      "K": 4,
+      "beta": 25.0,
+      "positive": true
+    },
+    {
+      "K": 8,
+      "beta": 12.5,
+      "positive": true
+    },
+    {
+      "K": 16,
+      "beta": 6.25,
+      "positive": true
+    },
+    {
+      "K": 32,
+      "beta": 3.125,
+      "positive": true
+    },
+    {
+      "K": 64,
+      "beta": 1.5625,
+      "positive": true
+    },
+    {
+      "K": 128,
+      "beta": 0.78125,
+      "positive": true
+    },
+    {
+      "K": 256,
+      "beta": 0.390625,
+      "positive": true
+    },
+    {
+      "K": 512,
+      "beta": 0.1953125,
+      "positive": true
+    },
+    {
+      "K": 1024,
+      "beta": 0.09765625,
+      "positive": true
+    },
+    {
+      "K": 2048,
+      "beta": 0.048828125,
+      "positive": true
+    },
+    {
+      "K": 4096,
+      "beta": 0.0244140625,
+      "positive": true
+    }
+  ]
+}

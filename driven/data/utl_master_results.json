@@ -1,0 +1,136 @@
+{
+  "suite": "universal-os-transport-law",
+  "n_experiments": 15,
+  "n_pass": 15,
+  "overall_pass": true,
+  "elapsed_seconds": 3.7458055000170134,
+  "per_experiment": {
+    "01_universal_law": true,
+    "02_mm1": true,
+    "03_jackson": true,
+    "04_cascade": true,
+    "05_cache_extinction": true,
+    "06_phase_coherence": true,
+    "07_five_regimes": true,
+    "08_bifurcation": true,
+    "09_critical_slowing": true,
+    "10_load_indicator": true,
+    "11_federation": true,
+    "12_saturation": true,
+    "13_lag_estimator": true,
+    "14_coupling_estimator": true,
+    "15_cross_arch": true
+  },
+  "summaries": {
+    "01_universal_law": {
+      "claim": "TP^-1 = N^-1 sum tau*g matches simulated throughput",
+      "n_trials": 20,
+      "max_rel_error": 0.007120893674135828,
+      "mean_rel_error": 0.0026445003459125197,
+      "overall_pass": 1.0
+    },
+    "02_mm1": {
+      "claim": "Universal law reduces to M/M/1 (TP^-1 = rho/mu) for N=1",
+      "n_pairs": 27,
+      "max_abs_error": 2.7755575615628914e-17,
+      "machine_precision": 1.0,
+      "overall_pass": 1.0
+    },
+    "03_jackson": {
+      "claim": "Universal law reduces to Jackson independence with diagonal g",
+      "n_trials": 15,
+      "max_abs_error": 2.220446049250313e-16,
+      "overall_pass": 1.0
+    },
+    "04_cascade": {
+      "claim": "Cascade form: TP^-1 ~ sum_i tau_i g_i over stages",
+      "n_trials": 15,
+      "all_match": true,
+      "overall_pass": true
+    },
+    "05_cache_extinction": {
+      "claim": "Cache hit => tau structurally 0 => TP jump",
+      "n_trials": 20,
+      "all_speedup_positive": true,
+      "min_speedup": 1.0701248827480179,
+      "max_speedup": 1.297892949103098,
+      "median_speedup": 1.1588060862214387,
+      "overall_pass": true
+    },
+    "06_phase_coherence": {
+      "claim": "R in [0,1], increases with concentration",
+      "n_K_values": 11,
+      "all_in_unit": true,
+      "monotone": true,
+      "overall_pass": true
+    },
+    "07_five_regimes": {
+      "claim": "R partitions [0,1] into 5 regimes at {0.3, 0.5, 0.8, 0.95}",
+      "n_R_values": 1001,
+      "regime_counts": {
+        "turbulent": 300,
+        "aperture": 200,
+        "cascade": 300,
+        "coherent": 150,
+        "phase_locked": 51
+      },
+      "monotone_ordering": true,
+      "all_classified": true,
+      "overall_pass": true
+    },
+    "08_bifurcation": {
+      "claim": "R* = sqrt(1 - Kc/K) for K > Kc, R* = 0 below",
+      "n_K_values": 50,
+      "max_abs_error": 0.0,
+      "overall_pass": true
+    },
+    "09_critical_slowing": {
+      "claim": "tau_relax(R) ~ |R - R_b|^-1 near regime boundaries",
+      "n_measurements": 24,
+      "matches_inverse_scaling": true,
+      "overall_pass": true
+    },
+    "10_load_indicator": {
+      "claim": "Distance estimator from tau_relax matches true distance to boundary",
+      "n_trials": 50,
+      "n_correct": 50,
+      "accuracy": 1.0,
+      "overall_pass": true
+    },
+    "11_federation": {
+      "claim": "Federation composition: 1 - tp_inv_fed/Sigma = prod(1 - tp_inv_i/Sigma)",
+      "n_trials": 40,
+      "max_abs_error": 0.0,
+      "overall_pass": true
+    },
+    "12_saturation": {
+      "claim": "Composite tp_inv saturates at Sigma; marginal benefit diminishes",
+      "n_kernels_max": 20,
+      "monotone_increasing": true,
+      "diminishing_returns": true,
+      "final_tp_inv": 99.9202077337024,
+      "asymptote_gap": 0.07979226629760205,
+      "overall_pass": true
+    },
+    "13_lag_estimator": {
+      "claim": "tau >= 1/f_max",
+      "n_trials": 30,
+      "all_satisfy": true,
+      "overall_pass": true
+    },
+    "14_coupling_estimator": {
+      "claim": "Empirical g recovers injected coupling",
+      "n_trials": 20,
+      "max_err": 0.04246173089105809,
+      "mean_correlation": 0.9873178648652233,
+      "overall_pass": true
+    },
+    "15_cross_arch": {
+      "claim": "Universal law holds across kernel architectures",
+      "n_architectures": 4,
+      "n_trials_per_arch": 5,
+      "all_match": true,
+      "overall_pass": true
+    }
+  }
+}

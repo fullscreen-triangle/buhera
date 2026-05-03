@@ -1,0 +1,360 @@
+{
+  "summary": {
+    "claim": "M(o1 \u222a o2) = M(o1) + M(o2) for non-overlapping ops",
+    "n_trials": 50,
+    "all_match": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "trial": 0,
+      "m1": 893,
+      "m2": 7739,
+      "m_union": 8632,
+      "match": true
+    },
+    {
+      "trial": 1,
+      "m1": 6546,
+      "m2": 4389,
+      "m_union": 10935,
+      "match": true
+    },
+    {
+      "trial": 2,
+      "m1": 4330,
+      "m2": 8586,
+      "m_union": 12916,
+      "match": true
+    },
+    {
+      "trial": 3,
+      "m1": 860,
+      "m2": 6973,
+      "m_union": 7833,
+      "match": true
+    },
+    {
+      "trial": 4,
+      "m1": 2015,
+      "m2": 942,
+      "m_union": 2957,
+      "match": true
+    },
+    {
+      "trial": 5,
+      "m1": 5265,
+      "m2": 9756,
+      "m_union": 15021,
+      "match": true
+    },
+    {
+      "trial": 6,
+      "m1": 7357,
+      "m2": 7611,
+      "m_union": 14968,
+      "match": true
+    },
+    {
+      "trial": 7,
+      "m1": 7175,
+      "m2": 7860,
+      "m_union": 15035,
+      "match": true
+    },
+    {
+      "trial": 8,
+      "m1": 5132,
+      "m2": 1282,
+      "m_union": 6414,
+      "match": true
+    },
+    {
+      "trial": 9,
+      "m1": 8397,
+      "m2": 4504,
+      "m_union": 12901,
+      "match": true
+    },
+    {
+      "trial": 10,
+      "m1": 5004,
+      "m2": 3708,
+      "m_union": 8712,
+      "match": true
+    },
+    {
+      "trial": 11,
+      "m1": 1826,
+      "m2": 9267,
+      "m_union": 11093,
+      "match": true
+    },
+    {
+      "trial": 12,
+      "m1": 7815,
+      "m2": 6439,
+      "m_union": 14254,
+      "match": true
+    },
+    {
+      "trial": 13,
+      "m1": 4024,
+      "m2": 8227,
+      "m_union": 12251,
+      "match": true
+    },
+    {
+      "trial": 14,
+      "m1": 5454,
+      "m2": 4434,
+      "m_union": 9888,
+      "match": true
+    },
+    {
+      "trial": 15,
+      "m1": 4505,
+      "m2": 2273,
+      "m_union": 6778,
+      "match": true
+    },
+    {
+      "trial": 16,
+      "m1": 922,
+      "m2": 5546,
+      "m_union": 6468,
+      "match": true
+    },
+    {
+      "trial": 17,
+      "m1": 8879,
+      "m2": 639,
+      "m_union": 9518,
+      "match": true
+    },
+    {
+      "trial": 18,
+      "m1": 8583,
+      "m2": 8276,
+      "m_union": 16859,
+      "match": true
+    },
+    {
+      "trial": 19,
+      "m1": 2768,
+      "m2": 6317,
+      "m_union": 9085,
+      "match": true
+    },
+    {
+      "trial": 20,
+      "m1": 1653,
+      "m2": 7581,
+      "m_union": 9234,
+      "match": true
+    },
+    {
+      "trial": 21,
+      "m1": 7005,
+      "m2": 3545,
+      "m_union": 10550,
+      "match": true
+    },
+    {
+      "trial": 22,
+      "m1": 680,
+      "m2": 9707,
+      "m_union": 10387,
+      "match": true
+    },
+    {
+      "trial": 23,
+      "m1": 4457,
+      "m2": 8931,
+      "m_union": 13388,
+      "match": true
+    },
+    {
+      "trial": 24,
+      "m1": 6779,
+      "m2": 7784,
+      "m_union": 14563,
+      "match": true
+    },
+    {
+      "trial": 25,
+      "m1": 7599,
+      "m2": 1947,
+      "m_union": 9546,
+      "match": true
+    },
+    {
+      "trial": 26,
+      "m1": 3639,
+      "m2": 4667,
+      "m_union": 8306,
+      "match": true
+    },
+    {
+      "trial": 27,
+      "m1": 4978,
+      "m2": 438,
+      "m_union": 5416,
+      "match": true
+    },
+    {
+      "trial": 28,
+      "m1": 5466,
+      "m2": 1543,
+      "m_union": 7009,
+      "match": true
+    },
+    {
+      "trial": 29,
+      "m1": 7434,
+      "m2": 6830,
+      "m_union": 14264,
+      "match": true
+    },
+    {
+      "trial": 30,
+      "m1": 9225,
+      "m2": 7447,
+      "m_union": 16672,
+      "match": true
+    },
+    {
+      "trial": 31,
+      "m1": 3667,
+      "m2": 9675,
+      "m_union": 13342,
+      "match": true
+    },
+    {
+      "trial": 32,
+      "m1": 4109,
+      "m2": 3258,
+      "m_union": 7367,
+      "match": true
+    },
+    {
+      "trial": 33,
+      "m1": 9055,
+      "m2": 3705,
+      "m_union": 12760,
+      "match": true
+    },
+    {
+      "trial": 34,
+      "m1": 764,
+      "m2": 4696,
+      "m_union": 5460,
+      "match": true
+    },
+    {
+      "trial": 35,
+      "m1": 7957,
+      "m2": 1895,
+      "m_union": 9852,
+      "match": true
+    },
+    {
+      "trial": 36,
+      "m1": 4629,
+      "m2": 1300,
+      "m_union": 5929,
+      "match": true
+    },
+    {
+      "trial": 37,
+      "m1": 6865,
+      "m2": 4757,
+      "m_union": 11622,
+      "match": true
+    },
+    {
+      "trial": 38,
+      "m1": 3302,
+      "m2": 2269,
+      "m_union": 5571,
+      "match": true
+    },
+    {
+      "trial": 39,
+      "m1": 5645,
+      "m2": 6698,
+      "m_union": 12343,
+      "match": true
+    },
+    {
+      "trial": 40,
+      "m1": 9403,
+      "m2": 4372,
+      "m_union": 13775,
+      "match": true
+    },
+    {
+      "trial": 41,
+      "m1": 1607,
+      "m2": 8326,
+      "m_union": 9933,
+      "match": true
+    },
+    {
+      "trial": 42,
+      "m1": 6298,
+      "m2": 7002,
+      "m_union": 13300,
+      "match": true
+    },
+    {
+      "trial": 43,
+      "m1": 973,
+      "m2": 3124,
+      "m_union": 4097,
+      "match": true
+    },
+    {
+      "trial": 44,
+      "m1": 7678,
+      "m2": 8322,
+      "m_union": 16000,
+      "match": true
+    },
+    {
+      "trial": 45,
+      "m1": 4352,
+      "m2": 8047,
+      "m_union": 12399,
+      "match": true
+    },
+    {
+      "trial": 46,
+      "m1": 8417,
+      "m2": 3875,
+      "m_union": 12292,
+      "match": true
+    },
+    {
+      "trial": 47,
+      "m1": 8980,
+      "m2": 2883,
+      "m_union": 11863,
+      "match": true
+    },
+    {
+      "trial": 48,
+      "m1": 2396,
+      "m2": 6825,
+      "m_union": 9221,
+      "match": true
+    },
+    {
+      "trial": 49,
+      "m1": 6367,
+      "m2": 1398,
+      "m_union": 7765,
+      "match": true
+    }
+  ]
+}

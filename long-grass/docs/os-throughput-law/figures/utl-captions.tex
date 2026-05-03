@@ -1,0 +1,114 @@
+% =====================================================================
+%  Extended captions for the six UTL validation panels.
+%  Included via \input from the main paper inside a figure float.
+% =====================================================================
+
+\newcommand{\captionUTLpanelone}{%
+\textbf{Calibration of the Universal Transport Law.}
+(a) Predicted versus measured $TP^{-1}$ across $20$ randomly drawn synthetic
+kernels with $N \in \{2,\ldots,5\}$ decision classes. Each point is a single
+trial; the dashed red line is the identity $y=x$. The Monte Carlo estimator
+recovers $TP^{-1} = N^{-2} \sum_{i,j} \tau^{(ij)} g^{(ij)}$ to within
+floating-point tolerance ($\max$ rel.\ err.\ $<10^{-2}$ at $n_\mathrm{dec} = 2 \times 10^4$).
+(b) Per-trial residual; the tolerance threshold of $0.10$ is shown for
+reference, but every trial lies far below it.
+(c) Histogram of relative errors across all trials.
+(d) Three-dimensional view of the integrand surface
+$\tau \cdot g$ over the parameter range $\tau \in [0.5, 5.0]$,
+$g \in [0.1, 1.0]$. The volume under this surface, divided by $N^2$, is the
+universal-law prediction; the simulator estimates the same quantity by
+uniform Monte Carlo sampling, providing an independent cross-check.}
+
+\newcommand{\captionUTLpaneltwo}{%
+\textbf{Queueing-theoretic specialisations.}
+(a) M/M/1 case: the universal law (amber crosses) reproduces the classical
+$TP^{-1}_{M/M/1} = \rho/(\mu(1-\rho))$ formula (blue line) across the full
+range of utilisation $\rho \in [0,1)$, recovering the well-known divergence
+as $\rho \to 1$.
+(b) Jackson-network independence: composite throughput inverse via the
+universal law (x-axis) versus the Jackson-network formula (y-axis); points
+fall exactly on the identity line, confirming that for product-form networks
+$TP^{-1}$ decomposes additively across stations.
+(c) Cascade serialisation: as the cascade depth $k$ grows, the cascade-sum
+formula and the universal law remain in agreement, validating that the
+universal law subsumes the serial-composition rule
+$TP^{-1}_\mathrm{cascade} = \sum_k TP^{-1}_k$.
+(d) Surface plot of $\log_{10}(W)$ over the joint
+$(\rho, \mu)$ parameter space; the steep ridge along $\rho \to 1$ visualises
+the M/M/1 saturation regime predicted by the universal law.}
+
+\newcommand{\captionUTLpanelthree}{%
+\textbf{Five operating regimes.}
+(a) Partition of the load coordinate $R \in [0,1]$ into the five regimes
+\textsc{turbulent} ($R < 0.3$), \textsc{aperture-dominated} ($0.3 \le R < 0.5$),
+\textsc{cascade} ($0.5 \le R < 0.8$), \textsc{coherent} ($0.8 \le R < 0.95$),
+and \textsc{phase-locked} ($R \ge 0.95$). The boundary points $\{0.3, 0.5, 0.8, 0.95\}$
+are inherited from the underlying Lagrangian formulation and validated
+across heterogeneous domains.
+(b) Histogram of regime occupancy under uniform sampling of $R$, confirming
+the analytical width of each regime.
+(c) Bifurcation curve $R(K)$ as the coupling strength $K$ varies; the
+predicted (line) and measured (markers) curves agree to within numerical
+tolerance, with the four regime boundaries marked by horizontal dotted lines.
+(d) The \emph{regime cone}: a 3D surface of phase coherence over the
+$(R, \epsilon)$ plane, where $\epsilon$ is an external perturbation amplitude.
+The cone collapses toward zero coherence as $\epsilon$ grows, recovering the
+classical perturbed-oscillator result.}
+
+\newcommand{\captionUTLpanelfour}{%
+\textbf{Critical slowing as a load indicator.}
+(a) Log-log plot of measured relaxation time $\tau_\mathrm{relax}$ versus
+distance $|R - R_b|$ from the nearest regime boundary $R_b$. The dashed
+red line shows the universal scaling $\tau_\mathrm{relax} \propto |R - R_b|^{-1}$;
+both measured (circles) and predicted (crosses) values follow this law over
+several decades.
+(b) Estimated distance-to-boundary $\hat d$ versus true distance $d$;
+points coloured blue (correct) or red (incorrect) show the load-indicator's
+classification accuracy. The estimator recovers the correct distance to
+within tolerance for all trials.
+(c) Per-trial relative error of the load indicator; the mean residual is
+shown in the title.
+(d) Three-dimensional surface of $\log_{10}(\tau_\mathrm{relax})$ over the
+$(R, \epsilon)$ plane, demonstrating that the divergence of relaxation time
+near regime boundaries is the structural signature exploited by the
+load-indicator estimator.}
+
+\newcommand{\captionUTLpanelfive}{%
+\textbf{Cache extinction and federation composition.}
+(a) Effective $TP^{-1}$ after cache deployment versus uncached $TP^{-1}$;
+the dashed line marks the no-cache reference. The structural drop --- not
+an asymptotic speedup --- corresponds to the cache extinguishing decision
+classes whose lookups are constant-time. The mean speedup factor is shown
+in the title.
+(b) Federation composition: composite $TP^{-1}_\mathrm{fed}$ as the
+number of federated kernels grows from $1$ to $20$. The curve saturates at
+$\Sigma$ from below, confirming the multiplicative composition law
+$1 - TP^{-1}_\mathrm{fed}/\Sigma = \prod_i (1 - TP^{-1}_i/\Sigma)$.
+The maximum absolute residual against the closed-form formula is
+recorded in the panel title.
+(c) Marginal benefit of adding the $n$-th kernel; bars decrease
+monotonically, demonstrating the diminishing-returns property
+predicted by the federation law.
+(d) Composition surface over $(n, TP^{-1}_\mathrm{per\;kernel})$ at fixed
+$\Sigma = 100$; the upper plateau visualises the asymptotic ceiling
+that no finite federation can exceed.}
+
+\newcommand{\captionUTLpanelsix}{%
+\textbf{Estimators and architecture invariance.}
+(a) Phase-coherence estimator: empirical $R$ as a function of the input
+concentration parameter $K$; the estimator recovers the expected
+monotone increase from uniform ($R \approx 0$) to fully concentrated
+($R \approx 1$).
+(b) Lag estimator lower bound: measured $\min \tau$ versus the
+theoretical lower bound $1/f_\mathrm{max}$; points lie above the dashed
+identity line, confirming the kinematic constraint
+$\tau \ge 1/f_\mathrm{max}$ across $30$ trials spanning seven orders of
+magnitude in $f_\mathrm{max}$.
+(c) Coupling estimator recovery correlation as a function of decision-class
+count $N$; the dashed red line marks the $0.5$ acceptance threshold.
+The mean recovery correlation is shown in the title.
+(d) Cross-architecture invariance: predicted $TP^{-1}$ for four kernel
+architectures (microkernel, monolithic, exokernel, unikernel) across
+$5$ trials each. The universal law produces consistent predictions
+under the architecture-specific normalisation, confirming that the
+formula is architecture-agnostic up to choice of $\mathcal{N}$.}

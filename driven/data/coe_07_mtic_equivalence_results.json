@@ -1,0 +1,280 @@
+{
+  "summary": {
+    "claim": "t = Q/f, M = Q, identity == fixed point at depth Q (4-way)",
+    "n_trials": 30,
+    "all_match": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "trial": 0,
+      "Q": 447,
+      "t": 0.000447,
+      "M": 447,
+      "Q_from_t": 447,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 1,
+      "Q": 3870,
+      "t": 0.00387,
+      "M": 3870,
+      "Q_from_t": 3870,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 2,
+      "Q": 3273,
+      "t": 0.003273,
+      "M": 3273,
+      "Q_from_t": 3273,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 3,
+      "Q": 2194,
+      "t": 0.002194,
+      "M": 2194,
+      "Q_from_t": 2194,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 4,
+      "Q": 2165,
+      "t": 0.002165,
+      "M": 2165,
+      "Q_from_t": 2165,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 5,
+      "Q": 4293,
+      "t": 0.004293,
+      "M": 4293,
+      "Q_from_t": 4293,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 6,
+      "Q": 430,
+      "t": 0.00043,
+      "M": 430,
+      "Q_from_t": 430,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 7,
+      "Q": 3487,
+      "t": 0.003487,
+      "M": 3487,
+      "Q_from_t": 3487,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 8,
+      "Q": 1008,
+      "t": 0.001008,
+      "M": 1008,
+      "Q_from_t": 1008,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 9,
+      "Q": 471,
+      "t": 0.000471,
+      "M": 471,
+      "Q_from_t": 471,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 10,
+      "Q": 2632,
+      "t": 0.002632,
+      "M": 2632,
+      "Q_from_t": 2632,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 11,
+      "Q": 4878,
+      "t": 0.004878,
+      "M": 4878,
+      "Q_from_t": 4878,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 12,
+      "Q": 3679,
+      "t": 0.003679,
+      "M": 3679,
+      "Q_from_t": 3679,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 13,
+      "Q": 3805,
+      "t": 0.003805,
+      "M": 3805,
+      "Q_from_t": 3805,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 14,
+      "Q": 3587,
+      "t": 0.003587,
+      "M": 3587,
+      "Q_from_t": 3587,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 15,
+      "Q": 3930,
+      "t": 0.00393,
+      "M": 3930,
+      "Q_from_t": 3930,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 16,
+      "Q": 2566,
+      "t": 0.002566,
+      "M": 2566,
+      "Q_from_t": 2566,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 17,
+      "Q": 641,
+      "t": 0.000641,
+      "M": 641,
+      "Q_from_t": 641,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 18,
+      "Q": 4198,
+      "t": 0.004198,
+      "M": 4198,
+      "Q_from_t": 4198,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 19,
+      "Q": 2252,
+      "t": 0.002252,
+      "M": 2252,
+      "Q_from_t": 2252,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 20,
+      "Q": 2502,
+      "t": 0.002502,
+      "M": 2502,
+      "Q_from_t": 2502,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 21,
+      "Q": 1854,
+      "t": 0.001854,
+      "M": 1854,
+      "Q_from_t": 1854,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 22,
+      "Q": 913,
+      "t": 0.000913,
+      "M": 913,
+      "Q_from_t": 913,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 23,
+      "Q": 4633,
+      "t": 0.004633,
+      "M": 4633,
+      "Q_from_t": 4633,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 24,
+      "Q": 3908,
+      "t": 0.003908,
+      "M": 3908,
+      "Q_from_t": 3908,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 25,
+      "Q": 3219,
+      "t": 0.003219,
+      "M": 3219,
+      "Q_from_t": 3219,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 26,
+      "Q": 2012,
+      "t": 0.002012,
+      "M": 2012,
+      "Q_from_t": 2012,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 27,
+      "Q": 4113,
+      "t": 0.004113,
+      "M": 4113,
+      "Q_from_t": 4113,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 28,
+      "Q": 2727,
+      "t": 0.002727,
+      "M": 2727,
+      "Q_from_t": 2727,
+      "identity_stable": true,
+      "match": true
+    },
+    {
+      "trial": 29,
+      "Q": 2217,
+      "t": 0.002217,
+      "M": 2217,
+      "Q_from_t": 2217,
+      "identity_stable": true,
+      "match": true
+    }
+  ]
+}

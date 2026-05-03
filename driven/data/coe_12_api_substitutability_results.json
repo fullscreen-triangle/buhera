@@ -1,0 +1,360 @@
+{
+  "summary": {
+    "claim": "Different chains with same fixed-point are indistinguishable at API boundary",
+    "n_trials": 50,
+    "indistinguishable": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "trial": 0,
+      "x": 892,
+      "out_A": 892,
+      "out_B": 892,
+      "hash_match": true
+    },
+    {
+      "trial": 1,
+      "x": 7739,
+      "out_A": 7739,
+      "out_B": 7739,
+      "hash_match": true
+    },
+    {
+      "trial": 2,
+      "x": 6545,
+      "out_A": 6545,
+      "out_B": 6545,
+      "hash_match": true
+    },
+    {
+      "trial": 3,
+      "x": 4388,
+      "out_A": 4388,
+      "out_B": 4388,
+      "hash_match": true
+    },
+    {
+      "trial": 4,
+      "x": 4330,
+      "out_A": 4330,
+      "out_B": 4330,
+      "hash_match": true
+    },
+    {
+      "trial": 5,
+      "x": 8585,
+      "out_A": 8585,
+      "out_B": 8585,
+      "hash_match": true
+    },
+    {
+      "trial": 6,
+      "x": 859,
+      "out_A": 859,
+      "out_B": 859,
+      "hash_match": true
+    },
+    {
+      "trial": 7,
+      "x": 6973,
+      "out_A": 6973,
+      "out_B": 6973,
+      "hash_match": true
+    },
+    {
+      "trial": 8,
+      "x": 2014,
+      "out_A": 2014,
+      "out_B": 2014,
+      "hash_match": true
+    },
+    {
+      "trial": 9,
+      "x": 941,
+      "out_A": 941,
+      "out_B": 941,
+      "hash_match": true
+    },
+    {
+      "trial": 10,
+      "x": 5264,
+      "out_A": 5264,
+      "out_B": 5264,
+      "hash_match": true
+    },
+    {
+      "trial": 11,
+      "x": 9756,
+      "out_A": 9756,
+      "out_B": 9756,
+      "hash_match": true
+    },
+    {
+      "trial": 12,
+      "x": 7357,
+      "out_A": 7357,
+      "out_B": 7357,
+      "hash_match": true
+    },
+    {
+      "trial": 13,
+      "x": 7611,
+      "out_A": 7611,
+      "out_B": 7611,
+      "hash_match": true
+    },
+    {
+      "trial": 14,
+      "x": 7174,
+      "out_A": 7174,
+      "out_B": 7174,
+      "hash_match": true
+    },
+    {
+      "trial": 15,
+      "x": 7860,
+      "out_A": 7860,
+      "out_B": 7860,
+      "hash_match": true
+    },
+    {
+      "trial": 16,
+      "x": 5132,
+      "out_A": 5132,
+      "out_B": 5132,
+      "hash_match": true
+    },
+    {
+      "trial": 17,
+      "x": 1281,
+      "out_A": 1281,
+      "out_B": 1281,
+      "hash_match": true
+    },
+    {
+      "trial": 18,
+      "x": 8397,
+      "out_A": 8397,
+      "out_B": 8397,
+      "hash_match": true
+    },
+    {
+      "trial": 19,
+      "x": 4503,
+      "out_A": 4503,
+      "out_B": 4503,
+      "hash_match": true
+    },
+    {
+      "trial": 20,
+      "x": 5003,
+      "out_A": 5003,
+      "out_B": 5003,
+      "hash_match": true
+    },
+    {
+      "trial": 21,
+      "x": 3707,
+      "out_A": 3707,
+      "out_B": 3707,
+      "hash_match": true
+    },
+    {
+      "trial": 22,
+      "x": 1825,
+      "out_A": 1825,
+      "out_B": 1825,
+      "hash_match": true
+    },
+    {
+      "trial": 23,
+      "x": 9267,
+      "out_A": 9267,
+      "out_B": 9267,
+      "hash_match": true
+    },
+    {
+      "trial": 24,
+      "x": 7815,
+      "out_A": 7815,
+      "out_B": 7815,
+      "hash_match": true
+    },
+    {
+      "trial": 25,
+      "x": 6438,
+      "out_A": 6438,
+      "out_B": 6438,
+      "hash_match": true
+    },
+    {
+      "trial": 26,
+      "x": 4024,
+      "out_A": 4024,
+      "out_B": 4024,
+      "hash_match": true
+    },
+    {
+      "trial": 27,
+      "x": 8227,
+      "out_A": 8227,
+      "out_B": 8227,
+      "hash_match": true
+    },
+    {
+      "trial": 28,
+      "x": 5454,
+      "out_A": 5454,
+      "out_B": 5454,
+      "hash_match": true
+    },
+    {
+      "trial": 29,
+      "x": 4434,
+      "out_A": 4434,
+      "out_B": 4434,
+      "hash_match": true
+    },
+    {
+      "trial": 30,
+      "x": 4504,
+      "out_A": 4504,
+      "out_B": 4504,
+      "hash_match": true
+    },
+    {
+      "trial": 31,
+      "x": 2272,
+      "out_A": 2272,
+      "out_B": 2272,
+      "hash_match": true
+    },
+    {
+      "trial": 32,
+      "x": 921,
+      "out_A": 921,
+      "out_B": 921,
+      "hash_match": true
+    },
+    {
+      "trial": 33,
+      "x": 5545,
+      "out_A": 5545,
+      "out_B": 5545,
+      "hash_match": true
+    },
+    {
+      "trial": 34,
+      "x": 8878,
+      "out_A": 8878,
+      "out_B": 8878,
+      "hash_match": true
+    },
+    {
+      "trial": 35,
+      "x": 638,
+      "out_A": 638,
+      "out_B": 638,
+      "hash_match": true
+    },
+    {
+      "trial": 36,
+      "x": 8582,
+      "out_A": 8582,
+      "out_B": 8582,
+      "hash_match": true
+    },
+    {
+      "trial": 37,
+      "x": 8276,
+      "out_A": 8276,
+      "out_B": 8276,
+      "hash_match": true
+    },
+    {
+      "trial": 38,
+      "x": 2767,
+      "out_A": 2767,
+      "out_B": 2767,
+      "hash_match": true
+    },
+    {
+      "trial": 39,
+      "x": 6316,
+      "out_A": 6316,
+      "out_B": 6316,
+      "hash_match": true
+    },
+    {
+      "trial": 40,
+      "x": 1652,
+      "out_A": 1652,
+      "out_B": 1652,
+      "hash_match": true
+    },
+    {
+      "trial": 41,
+      "x": 7580,
+      "out_A": 7580,
+      "out_B": 7580,
+      "hash_match": true
+    },
+    {
+      "trial": 42,
+      "x": 7005,
+      "out_A": 7005,
+      "out_B": 7005,
+      "hash_match": true
+    },
+    {
+      "trial": 43,
+      "x": 3545,
+      "out_A": 3545,
+      "out_B": 3545,
+      "hash_match": true
+    },
+    {
+      "trial": 44,
+      "x": 679,
+      "out_A": 679,
+      "out_B": 679,
+      "hash_match": true
+    },
+    {
+      "trial": 45,
+      "x": 9706,
+      "out_A": 9706,
+      "out_B": 9706,
+      "hash_match": true
+    },
+    {
+      "trial": 46,
+      "x": 4456,
+      "out_A": 4456,
+      "out_B": 4456,
+      "hash_match": true
+    },
+    {
+      "trial": 47,
+      "x": 8931,
+      "out_A": 8931,
+      "out_B": 8931,
+      "hash_match": true
+    },
+    {
+      "trial": 48,
+      "x": 6779,
+      "out_A": 6779,
+      "out_B": 6779,
+      "hash_match": true
+    },
+    {
+      "trial": 49,
+      "x": 7783,
+      "out_A": 7783,
+      "out_B": 7783,
+      "hash_match": true
+    }
+  ]
+}

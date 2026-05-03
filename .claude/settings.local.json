@@ -28,7 +28,26 @@
       "Bash(python driven/src/uts/fix_close_tags.py)",
       "Bash(grep -nE \"^\\\\\\\\\\\\\\\\\\(section|subsection|part\\)\\\\b|^\\\\\\\\\\\\\\\\begin\\\\{theorem\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{definition\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{axiom\\\\}|^\\\\\\\\\\\\\\\\title\\\\b|^\\\\\\\\\\\\\\\\begin\\\\{abstract\\\\}|^\\\\\\\\\\\\\\\\end\\\\{abstract\\\\}\" \"c:/Users/kunda/Documents/architecture/buhera/long-grass/docs/sources/epistemological-methodology.tex\")",
       "Bash(python driven/src/uts/fix_kt.py)",
-      "Bash(rm driven/src/uts/fix_kt.py)"
+      "Bash(rm driven/src/uts/fix_kt.py)",
+      "Bash(python -m driven.src.kt.run_all_kt)",
+      "Bash(python driven/src/visualizations/generate_kt_panels.py)",
+      "Bash(grep -nE \"^\\\\\\\\\\\\\\\\\\(section|subsection|part|chapter\\)\\\\b|^\\\\\\\\\\\\\\\\title|^\\\\\\\\\\\\\\\\begin\\\\{abstract\\\\}|^\\\\\\\\\\\\\\\\end\\\\{abstract\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{theorem\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{definition\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{axiom\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{principle\\\\}\" \"c:/Users/kunda/Documents/architecture/buhera/long-grass/docs/sources/finite-agents-coordination.tex\")",
+      "Bash(grep -nE \"^\\\\\\\\\\\\\\\\\\(section|subsection|part\\)\\\\b|^\\\\\\\\\\\\\\\\title|^\\\\\\\\\\\\\\\\begin\\\\{abstract\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{theorem\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{definition\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{axiom\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{principle\\\\}\" \"c:/Users/kunda/Documents/architecture/buhera/long-grass/docs/sources/synchronized-agent-coordination.tex\")",
+      "Bash(grep -nE \"^\\\\\\\\\\\\\\\\\\(section|subsection|part\\)\\\\b|^\\\\\\\\\\\\\\\\title|^\\\\\\\\\\\\\\\\begin\\\\{abstract\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{theorem\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{definition\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{axiom\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{principle\\\\}\" \"c:/Users/kunda/Documents/architecture/buhera/long-grass/docs/sources/partition-extinction.tex\")",
+      "Bash(grep -nE \"^\\\\\\\\\\\\\\\\\\(section|subsection|part\\)\\\\b|^\\\\\\\\\\\\\\\\title|^\\\\\\\\\\\\\\\\begin\\\\{abstract\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{theorem\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{definition\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{axiom\\\\}\" \"c:/Users/kunda/Documents/architecture/buhera/long-grass/docs/sources/mass-transfer-mechanisms.tex\")",
+      "Bash(grep -nE \"^\\\\\\\\\\\\\\\\\\(section|subsection|part\\)\\\\b|^\\\\\\\\\\\\\\\\title|^\\\\\\\\\\\\\\\\begin\\\\{abstract\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{theorem\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{definition\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{axiom\\\\}\" \"c:/Users/kunda/Documents/architecture/buhera/long-grass/docs/sources/loschmidt-paradox.tex\")",
+      "Bash(grep -nE \"^\\\\\\\\\\\\\\\\\\(section|subsection|part\\)\\\\b|^\\\\\\\\\\\\\\\\title|^\\\\\\\\\\\\\\\\begin\\\\{abstract\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{theorem\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{definition\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{axiom\\\\}\" \"c:/Users/kunda/Documents/architecture/buhera/long-grass/docs/sources/ion-trajectory-completion-mechanism.tex\")",
+      "Bash(grep -nE \"^\\\\\\\\\\\\\\\\\\(section|subsection|part\\)\\\\b|^\\\\\\\\\\\\\\\\title|^\\\\\\\\\\\\\\\\begin\\\\{abstract\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{theorem\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{definition\\\\}|^\\\\\\\\\\\\\\\\begin\\\\{axiom\\\\}\" \"c:/Users/kunda/Documents/architecture/buhera/long-grass/docs/sources/loschmidt-paradox-mass-spec.tex\")",
+      "Bash(python driven/src/fixup_close_tags_papers.py)",
+      "Bash(rm driven/src/fixup_close_tags_papers.py)",
+      "Bash(python -m driven.src.utl.run_all_utl)",
+      "Bash(python -m src.utl.run_all_utl)",
+      "Bash(python fix_tags.py)",
+      "Bash(python -m src.coe.run_all_coe)",
+      "Bash(python -m src.utl.panels.generate)",
+      "Bash(python -m src.coe.panels.generate)",
+      "Bash(pdflatex -interaction=nonstopmode -halt-on-error universal-os-transport-law.tex)",
+      "Bash(grep -c \"\\\\\\\\\\\\\\\\ker\\\\b\" universal-os-transport-law.tex)"
     ]
   }
 }

@@ -1,0 +1,411 @@
+{
+  "summary": {
+    "claim": "Equivalences hold across architectures with their own f",
+    "n_architectures": 4,
+    "n_trials_total": 40,
+    "all_match": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "architecture": "microkernel",
+      "f": 1000000.0,
+      "trial": 0,
+      "Q": 447,
+      "M": 447,
+      "t": 0.000447,
+      "Q_recovered": 447,
+      "match": true
+    },
+    {
+      "architecture": "microkernel",
+      "f": 1000000.0,
+      "trial": 1,
+      "Q": 3870,
+      "M": 3870,
+      "t": 0.00387,
+      "Q_recovered": 3870,
+      "match": true
+    },
+    {
+      "architecture": "microkernel",
+      "f": 1000000.0,
+      "trial": 2,
+      "Q": 3273,
+      "M": 3273,
+      "t": 0.003273,
+      "Q_recovered": 3273,
+      "match": true
+    },
+    {
+      "architecture": "microkernel",
+      "f": 1000000.0,
+      "trial": 3,
+      "Q": 2194,
+      "M": 2194,
+      "t": 0.002194,
+      "Q_recovered": 2194,
+      "match": true
+    },
+    {
+      "architecture": "microkernel",
+      "f": 1000000.0,
+      "trial": 4,
+      "Q": 2165,
+      "M": 2165,
+      "t": 0.002165,
+      "Q_recovered": 2165,
+      "match": true
+    },
+    {
+      "architecture": "microkernel",
+      "f": 1000000.0,
+      "trial": 5,
+      "Q": 4293,
+      "M": 4293,
+      "t": 0.004293,
+      "Q_recovered": 4293,
+      "match": true
+    },
+    {
+      "architecture": "microkernel",
+      "f": 1000000.0,
+      "trial": 6,
+      "Q": 430,
+      "M": 430,
+      "t": 0.00043,
+      "Q_recovered": 430,
+      "match": true
+    },
+    {
+      "architecture": "microkernel",
+      "f": 1000000.0,
+      "trial": 7,
+      "Q": 3487,
+      "M": 3487,
+      "t": 0.003487,
+      "Q_recovered": 3487,
+      "match": true
+    },
+    {
+      "architecture": "microkernel",
+      "f": 1000000.0,
+      "trial": 8,
+      "Q": 1008,
+      "M": 1008,
+      "t": 0.001008,
+      "Q_recovered": 1008,
+      "match": true
+    },
+    {
+      "architecture": "microkernel",
+      "f": 1000000.0,
+      "trial": 9,
+      "Q": 471,
+      "M": 471,
+      "t": 0.000471,
+      "Q_recovered": 471,
+      "match": true
+    },
+    {
+      "architecture": "monolithic",
+      "f": 2500000.0,
+      "trial": 0,
+      "Q": 2632,
+      "M": 2632,
+      "t": 0.0010528,
+      "Q_recovered": 2632,
+      "match": true
+    },
+    {
+      "architecture": "monolithic",
+      "f": 2500000.0,
+      "trial": 1,
+      "Q": 4878,
+      "M": 4878,
+      "t": 0.0019512,
+      "Q_recovered": 4878,
+      "match": true
+    },
+    {
+      "architecture": "monolithic",
+      "f": 2500000.0,
+      "trial": 2,
+      "Q": 3679,
+      "M": 3679,
+      "t": 0.0014716,
+      "Q_recovered": 3679,
+      "match": true
+    },
+    {
+      "architecture": "monolithic",
+      "f": 2500000.0,
+      "trial": 3,
+      "Q": 3805,
+      "M": 3805,
+      "t": 0.001522,
+      "Q_recovered": 3805,
+      "match": true
+    },
+    {
+      "architecture": "monolithic",
+      "f": 2500000.0,
+      "trial": 4,
+      "Q": 3587,
+      "M": 3587,
+      "t": 0.0014348,
+      "Q_recovered": 3587,
+      "match": true
+    },
+    {
+      "architecture": "monolithic",
+      "f": 2500000.0,
+      "trial": 5,
+      "Q": 3930,
+      "M": 3930,
+      "t": 0.001572,
+      "Q_recovered": 3930,
+      "match": true
+    },
+    {
+      "architecture": "monolithic",
+      "f": 2500000.0,
+      "trial": 6,
+      "Q": 2566,
+      "M": 2566,
+      "t": 0.0010264,
+      "Q_recovered": 2566,
+      "match": true
+    },
+    {
+      "architecture": "monolithic",
+      "f": 2500000.0,
+      "trial": 7,
+      "Q": 641,
+      "M": 641,
+      "t": 0.0002564,
+      "Q_recovered": 641,
+      "match": true
+    },
+    {
+      "architecture": "monolithic",
+      "f": 2500000.0,
+      "trial": 8,
+      "Q": 4198,
+      "M": 4198,
+      "t": 0.0016792,
+      "Q_recovered": 4198,
+      "match": true
+    },
+    {
+      "architecture": "monolithic",
+      "f": 2500000.0,
+      "trial": 9,
+      "Q": 2252,
+      "M": 2252,
+      "t": 0.0009008,
+      "Q_recovered": 2252,
+      "match": true
+    },
+    {
+      "architecture": "exokernel",
+      "f": 500000.0,
+      "trial": 0,
+      "Q": 2502,
+      "M": 2502,
+      "t": 0.005004,
+      "Q_recovered": 2502,
+      "match": true
+    },
+    {
+      "architecture": "exokernel",
+      "f": 500000.0,
+      "trial": 1,
+      "Q": 1854,
+      "M": 1854,
+      "t": 0.003708,
+      "Q_recovered": 1854,
+      "match": true
+    },
+    {
+      "architecture": "exokernel",
+      "f": 500000.0,
+      "trial": 2,
+      "Q": 913,
+      "M": 913,
+      "t": 0.001826,
+      "Q_recovered": 913,
+      "match": true
+    },
+    {
+      "architecture": "exokernel",
+      "f": 500000.0,
+      "trial": 3,
+      "Q": 4633,
+      "M": 4633,
+      "t": 0.009266,
+      "Q_recovered": 4633,
+      "match": true
+    },
+    {
+      "architecture": "exokernel",
+      "f": 500000.0,
+      "trial": 4,
+      "Q": 3908,
+      "M": 3908,
+      "t": 0.007816,
+      "Q_recovered": 3908,
+      "match": true
+    },
+    {
+      "architecture": "exokernel",
+      "f": 500000.0,
+      "trial": 5,
+      "Q": 3219,
+      "M": 3219,
+      "t": 0.006438,
+      "Q_recovered": 3219,
+      "match": true
+    },
+    {
+      "architecture": "exokernel",
+      "f": 500000.0,
+      "trial": 6,
+      "Q": 2012,
+      "M": 2012,
+      "t": 0.004024,
+      "Q_recovered": 2012,
+      "match": true
+    },
+    {
+      "architecture": "exokernel",
+      "f": 500000.0,
+      "trial": 7,
+      "Q": 4113,
+      "M": 4113,
+      "t": 0.008226,
+      "Q_recovered": 4113,
+      "match": true
+    },
+    {
+      "architecture": "exokernel",
+      "f": 500000.0,
+      "trial": 8,
+      "Q": 2727,
+      "M": 2727,
+      "t": 0.005454,
+      "Q_recovered": 2727,
+      "match": true
+    },
+    {
+      "architecture": "exokernel",
+      "f": 500000.0,
+      "trial": 9,
+      "Q": 2217,
+      "M": 2217,
+      "t": 0.004434,
+      "Q_recovered": 2217,
+      "match": true
+    },
+    {
+      "architecture": "unikernel",
+      "f": 10000000.0,
+      "trial": 0,
+      "Q": 2252,
+      "M": 2252,
+      "t": 0.0002252,
+      "Q_recovered": 2252,
+      "match": true
+    },
+    {
+      "architecture": "unikernel",
+      "f": 10000000.0,
+      "trial": 1,
+      "Q": 1136,
+      "M": 1136,
+      "t": 0.0001136,
+      "Q_recovered": 1136,
+      "match": true
+    },
+    {
+      "architecture": "unikernel",
+      "f": 10000000.0,
+      "trial": 2,
+      "Q": 461,
+      "M": 461,
+      "t": 4.61e-05,
+      "Q_recovered": 461,
+      "match": true
+    },
+    {
+      "architecture": "unikernel",
+      "f": 10000000.0,
+      "trial": 3,
+      "Q": 2773,
+      "M": 2773,
+      "t": 0.0002773,
+      "Q_recovered": 2773,
+      "match": true
+    },
+    {
+      "architecture": "unikernel",
+      "f": 10000000.0,
+      "trial": 4,
+      "Q": 4439,
+      "M": 4439,
+      "t": 0.0004439,
+      "Q_recovered": 4439,
+      "match": true
+    },
+    {
+      "architecture": "unikernel",
+      "f": 10000000.0,
+      "trial": 5,
+      "Q": 320,
+      "M": 320,
+      "t": 3.2e-05,
+      "Q_recovered": 320,
+      "match": true
+    },
+    {
+      "architecture": "unikernel",
+      "f": 10000000.0,
+      "trial": 6,
+      "Q": 4291,
+      "M": 4291,
+      "t": 0.0004291,
+      "Q_recovered": 4291,
+      "match": true
+    },
+    {
+      "architecture": "unikernel",
+      "f": 10000000.0,
+      "trial": 7,
+      "Q": 4138,
+      "M": 4138,
+      "t": 0.0004138,
+      "Q_recovered": 4138,
+      "match": true
+    },
+    {
+      "architecture": "unikernel",
+      "f": 10000000.0,
+      "trial": 8,
+      "Q": 1384,
+      "M": 1384,
+      "t": 0.0001384,
+      "Q_recovered": 1384,
+      "match": true
+    },
+    {
+      "architecture": "unikernel",
+      "f": 10000000.0,
+      "trial": 9,
+      "Q": 3158,
+      "M": 3158,
+      "t": 0.0003158,
+      "Q_recovered": 3158,
+      "match": true
+    }
+  ]
+}

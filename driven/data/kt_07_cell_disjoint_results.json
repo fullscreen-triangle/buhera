@@ -1,0 +1,221 @@
+{
+  "summary": {
+    "claim": "cell-disjointness iff predicates logically disjoint",
+    "n_pairs": 30,
+    "n_correct": 30,
+    "match_rate": 1.0,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "predicate_1": "positive",
+      "predicate_2": "negative",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "positive",
+      "predicate_2": "zero",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "negative",
+      "predicate_2": "zero",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "positive",
+      "predicate_2": "even",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "positive",
+      "predicate_2": "odd",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "even",
+      "predicate_2": "odd",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "small",
+      "predicate_2": "large",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "zero",
+      "predicate_2": "non_zero",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "is_zero",
+      "predicate_2": "is_one",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "is_zero",
+      "predicate_2": "even",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "is_one",
+      "predicate_2": "odd",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "is_one",
+      "predicate_2": "positive",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "positive",
+      "predicate_2": "small",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "negative",
+      "predicate_2": "even",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "zero",
+      "predicate_2": "small",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "positive",
+      "predicate_2": "negative",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "even",
+      "predicate_2": "odd",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "zero",
+      "predicate_2": "non_zero",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "small",
+      "predicate_2": "large",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "is_zero",
+      "predicate_2": "is_one",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "positive",
+      "predicate_2": "negative",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "even",
+      "predicate_2": "odd",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "small",
+      "predicate_2": "large",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "zero",
+      "predicate_2": "non_zero",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "is_zero",
+      "predicate_2": "is_one",
+      "expected_disjoint": true,
+      "measured_disjoint": true,
+      "match": true
+    },
+    {
+      "predicate_1": "positive",
+      "predicate_2": "even",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "positive",
+      "predicate_2": "odd",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "is_zero",
+      "predicate_2": "even",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "is_one",
+      "predicate_2": "positive",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    },
+    {
+      "predicate_1": "zero",
+      "predicate_2": "small",
+      "expected_disjoint": false,
+      "measured_disjoint": false,
+      "match": true
+    }
+  ]
+}
