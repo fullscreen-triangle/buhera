@@ -1,0 +1,171 @@
+{
+  "summary": {
+    "claim": "Universal law holds across kernel architectures",
+    "n_architectures": 4,
+    "n_trials_per_arch": 5,
+    "all_match": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "architecture": "microkernel",
+      "trial": 0,
+      "N": 4,
+      "tp_inv_predicted": 0.4339262867492387,
+      "tp_inv_measured": 0.4339262867492387,
+      "err": 0.0
+    },
+    {
+      "architecture": "microkernel",
+      "trial": 1,
+      "N": 4,
+      "tp_inv_predicted": 0.3300522383946172,
+      "tp_inv_measured": 0.3300522383946172,
+      "err": 0.0
+    },
+    {
+      "architecture": "microkernel",
+      "trial": 2,
+      "N": 4,
+      "tp_inv_predicted": 0.29707855638738623,
+      "tp_inv_measured": 0.29707855638738623,
+      "err": 0.0
+    },
+    {
+      "architecture": "microkernel",
+      "trial": 3,
+      "N": 4,
+      "tp_inv_predicted": 0.3588232360801882,
+      "tp_inv_measured": 0.3588232360801882,
+      "err": 0.0
+    },
+    {
+      "architecture": "microkernel",
+      "trial": 4,
+      "N": 4,
+      "tp_inv_predicted": 0.3455809066614962,
+      "tp_inv_measured": 0.3455809066614962,
+      "err": 0.0
+    },
+    {
+      "architecture": "monolithic",
+      "trial": 0,
+      "N": 6,
+      "tp_inv_predicted": 1.7299964553933793,
+      "tp_inv_measured": 1.7299964553933793,
+      "err": 0.0
+    },
+    {
+      "architecture": "monolithic",
+      "trial": 1,
+      "N": 6,
+      "tp_inv_predicted": 1.61617781445184,
+      "tp_inv_measured": 1.61617781445184,
+      "err": 0.0
+    },
+    {
+      "architecture": "monolithic",
+      "trial": 2,
+      "N": 6,
+      "tp_inv_predicted": 1.811969067704615,
+      "tp_inv_measured": 1.811969067704615,
+      "err": 0.0
+    },
+    {
+      "architecture": "monolithic",
+      "trial": 3,
+      "N": 6,
+      "tp_inv_predicted": 1.9929813434638943,
+      "tp_inv_measured": 1.9929813434638943,
+      "err": 0.0
+    },
+    {
+      "architecture": "monolithic",
+      "trial": 4,
+      "N": 6,
+      "tp_inv_predicted": 1.6360746329359332,
+      "tp_inv_measured": 1.6360746329359332,
+      "err": 0.0
+    },
+    {
+      "architecture": "exokernel",
+      "trial": 0,
+      "N": 3,
+      "tp_inv_predicted": 0.6894717881946725,
+      "tp_inv_measured": 0.6894717881946725,
+      "err": 0.0
+    },
+    {
+      "architecture": "exokernel",
+      "trial": 1,
+      "N": 3,
+      "tp_inv_predicted": 0.712733784956707,
+      "tp_inv_measured": 0.712733784956707,
+      "err": 0.0
+    },
+    {
+      "architecture": "exokernel",
+      "trial": 2,
+      "N": 3,
+      "tp_inv_predicted": 0.7167319979319664,
+      "tp_inv_measured": 0.7167319979319664,
+      "err": 0.0
+    },
+    {
+      "architecture": "exokernel",
+      "trial": 3,
+      "N": 3,
+      "tp_inv_predicted": 0.7449478614404159,
+      "tp_inv_measured": 0.7449478614404159,
+      "err": 0.0
+    },
+    {
+      "architecture": "exokernel",
+      "trial": 4,
+      "N": 3,
+      "tp_inv_predicted": 0.88610898799164,
+      "tp_inv_measured": 0.88610898799164,
+      "err": 0.0
+    },
+    {
+      "architecture": "unikernel",
+      "trial": 0,
+      "N": 2,
+      "tp_inv_predicted": 0.2745330767065213,
+      "tp_inv_measured": 0.2745330767065213,
+      "err": 0.0
+    },
+    {
+      "architecture": "unikernel",
+      "trial": 1,
+      "N": 2,
+      "tp_inv_predicted": 0.16015114771182518,
+      "tp_inv_measured": 0.16015114771182518,
+      "err": 0.0
+    },
+    {
+      "architecture": "unikernel",
+      "trial": 2,
+      "N": 2,
+      "tp_inv_predicted": 0.2123462610781854,
+      "tp_inv_measured": 0.2123462610781854,
+      "err": 0.0
+    },
+    {
+      "architecture": "unikernel",
+      "trial": 3,
+      "N": 2,
+      "tp_inv_predicted": 0.19254782292713535,
+      "tp_inv_measured": 0.19254782292713535,
+      "err": 0.0
+    },
+    {
+      "architecture": "unikernel",
+      "trial": 4,
+      "N": 2,
+      "tp_inv_predicted": 0.1274585830707956,
+      "tp_inv_measured": 0.1274585830707956,
+      "err": 0.0
+    }
+  ]
+}

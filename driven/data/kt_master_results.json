@@ -1,0 +1,145 @@
+{
+  "suite": "knowledge-thermodynamics",
+  "n_experiments": 15,
+  "n_pass": 15,
+  "overall_pass": true,
+  "elapsed_seconds": 0.06302609998965636,
+  "per_experiment": {
+    "01_floor": true,
+    "02_method_floor": true,
+    "03_uncertainty": true,
+    "04_saturating_alloc": true,
+    "05_phase_lock": true,
+    "06_cell_type": true,
+    "07_cell_disjoint": true,
+    "08_domain_lattice": true,
+    "09_floor_monotone": true,
+    "10_mult_composition": true,
+    "11_cascade_switching": true,
+    "12_replication_bifurcation": true,
+    "13_know_entropy": true,
+    "14_federation": true,
+    "15_marginal_reduction": true
+  },
+  "summaries": {
+    "01_floor": {
+      "claim": "beta(R) > 0 and monotone decreasing in |K|",
+      "n_capacities": 12,
+      "all_positive": true,
+      "monotone": true,
+      "min_beta": 0.0244140625,
+      "max_beta": 50.0,
+      "overall_pass": true
+    },
+    "02_method_floor": {
+      "claim": "s_n -> sigma*kappa/(1-kappa) (Banach fixed point)",
+      "n_pairs": 9,
+      "max_rel_error": 1.3816108750890835e-15,
+      "machine_precision": true,
+      "overall_pass": true
+    },
+    "03_uncertainty": {
+      "claim": "sigma_K * sigma_Y >= hbar_R = beta * tau",
+      "n_methodologies": 100,
+      "beta": 1.0,
+      "tau": 1.5,
+      "hbar_R": 1.5,
+      "n_violations": 0,
+      "min_product": 1.5757113245516063,
+      "median_product": 4.664854603976405,
+      "max_product": 8.94639264356638,
+      "overall_pass": true
+    },
+    "04_saturating_alloc": {
+      "claim": "min(sigma) over saturating curve at sigma_K = sigma_Y = sqrt(hbar_R)",
+      "hbar_R": 4.0,
+      "optimal_sigma_K": 2.0,
+      "optimal_joint": 2.8284271247461903,
+      "measured_min_joint": 2.8284271247461903,
+      "measured_argmin": [
+        2.0,
+        2.0
+      ],
+      "rel_error": 0.0,
+      "n_grid_points": 25,
+      "overall_pass": true
+    },
+    "05_phase_lock": {
+      "claim": "kernel always in exactly one of COMPILE / EXECUTE; no concurrence",
+      "n_traces": 100,
+      "n_violations": 0,
+      "total_transitions": 2008,
+      "overall_pass": true
+    },
+    "06_cell_type": {
+      "claim": "states within action-cell are S-indistinguishable (S = beta)",
+      "n_cells": 4,
+      "n_expressions": 50,
+      "beta": 1.0,
+      "all_indistinguishable": true,
+      "overall_pass": true
+    },
+    "07_cell_disjoint": {
+      "claim": "cell-disjointness iff predicates logically disjoint",
+      "n_pairs": 30,
+      "n_correct": 30,
+      "match_rate": 1.0,
+      "overall_pass": true
+    },
+    "08_domain_lattice": {
+      "claim": "partition lattice satisfies idempotency, commutativity, absorption",
+      "n_pairs": 15,
+      "n_axioms_pass": 15,
+      "overall_pass": true
+    },
+    "09_floor_monotone": {
+      "claim": "D1 refines D2 implies beta(D1) <= beta(D2)",
+      "n_chains": 20,
+      "n_monotone": 20,
+      "overall_pass": true
+    },
+    "10_mult_composition": {
+      "claim": "beta_12 = beta_1 + beta_2 - beta_1*beta_2/Sigma",
+      "n_pairs": 81,
+      "max_abs_error": 1.4210854715202004e-14,
+      "machine_precision": 1.0,
+      "overall_pass": 1.0
+    },
+    "11_cascade_switching": {
+      "claim": "greedy value-density knapsack approximates optimal cascade selection",
+      "n_instances": 40,
+      "n_match_within_5pct": 37,
+      "match_rate": 0.925,
+      "overall_pass": true
+    },
+    "12_replication_bifurcation": {
+      "claim": "weak replication floor < best individual floor for n >= 2 (counterintuitive!)",
+      "n_tests": 19,
+      "n_dominate": 0,
+      "interpretation_note": "weak_floor = composite floor under multiplicative law; strong = single best",
+      "overall_pass": true
+    },
+    "13_know_entropy": {
+      "claim": "H_know(R) > 0; H -> infinity as beta -> 0",
+      "n_receivers": 25,
+      "all_positive": true,
+      "diverges_as_beta_to_zero": true,
+      "min_H": 0.6931471805599453,
+      "max_H": 9.210340371976184,
+      "overall_pass": true
+    },
+    "14_federation": {
+      "claim": "federation floor is the minimum of individual floors (min-aggregation)",
+      "n_federations": 30,
+      "n_satisfy": 30,
+      "overall_pass": true
+    },
+    "15_marginal_reduction": {
+      "claim": "marginal Knowledge increment from adding R* is non-negative",
+      "n_increments": 50,
+      "n_non_negative": 50,
+      "n_strict_increase": 13,
+      "overall_pass": true
+    }
+  }
+}

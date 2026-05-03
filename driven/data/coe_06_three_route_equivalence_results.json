@@ -1,0 +1,411 @@
+{
+  "summary": {
+    "claim": "Q_I = Q_II = Q_III for every operation",
+    "n_trials": 50,
+    "max_disagreement": 0,
+    "all_match": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "trial": 0,
+      "Q_true": 893,
+      "Q_I": 893,
+      "Q_II": 893,
+      "Q_III": 893,
+      "all_equal": true
+    },
+    {
+      "trial": 1,
+      "Q_true": 7739,
+      "Q_I": 7739,
+      "Q_II": 7739,
+      "Q_III": 7739,
+      "all_equal": true
+    },
+    {
+      "trial": 2,
+      "Q_true": 6546,
+      "Q_I": 6546,
+      "Q_II": 6546,
+      "Q_III": 6546,
+      "all_equal": true
+    },
+    {
+      "trial": 3,
+      "Q_true": 4389,
+      "Q_I": 4389,
+      "Q_II": 4389,
+      "Q_III": 4389,
+      "all_equal": true
+    },
+    {
+      "trial": 4,
+      "Q_true": 4330,
+      "Q_I": 4330,
+      "Q_II": 4330,
+      "Q_III": 4330,
+      "all_equal": true
+    },
+    {
+      "trial": 5,
+      "Q_true": 8586,
+      "Q_I": 8586,
+      "Q_II": 8586,
+      "Q_III": 8586,
+      "all_equal": true
+    },
+    {
+      "trial": 6,
+      "Q_true": 860,
+      "Q_I": 860,
+      "Q_II": 860,
+      "Q_III": 860,
+      "all_equal": true
+    },
+    {
+      "trial": 7,
+      "Q_true": 6973,
+      "Q_I": 6973,
+      "Q_II": 6973,
+      "Q_III": 6973,
+      "all_equal": true
+    },
+    {
+      "trial": 8,
+      "Q_true": 2015,
+      "Q_I": 2015,
+      "Q_II": 2015,
+      "Q_III": 2015,
+      "all_equal": true
+    },
+    {
+      "trial": 9,
+      "Q_true": 942,
+      "Q_I": 942,
+      "Q_II": 942,
+      "Q_III": 942,
+      "all_equal": true
+    },
+    {
+      "trial": 10,
+      "Q_true": 5265,
+      "Q_I": 5265,
+      "Q_II": 5265,
+      "Q_III": 5265,
+      "all_equal": true
+    },
+    {
+      "trial": 11,
+      "Q_true": 9756,
+      "Q_I": 9756,
+      "Q_II": 9756,
+      "Q_III": 9756,
+      "all_equal": true
+    },
+    {
+      "trial": 12,
+      "Q_true": 7357,
+      "Q_I": 7357,
+      "Q_II": 7357,
+      "Q_III": 7357,
+      "all_equal": true
+    },
+    {
+      "trial": 13,
+      "Q_true": 7611,
+      "Q_I": 7611,
+      "Q_II": 7611,
+      "Q_III": 7611,
+      "all_equal": true
+    },
+    {
+      "trial": 14,
+      "Q_true": 7175,
+      "Q_I": 7175,
+      "Q_II": 7175,
+      "Q_III": 7175,
+      "all_equal": true
+    },
+    {
+      "trial": 15,
+      "Q_true": 7860,
+      "Q_I": 7860,
+      "Q_II": 7860,
+      "Q_III": 7860,
+      "all_equal": true
+    },
+    {
+      "trial": 16,
+      "Q_true": 5132,
+      "Q_I": 5132,
+      "Q_II": 5132,
+      "Q_III": 5132,
+      "all_equal": true
+    },
+    {
+      "trial": 17,
+      "Q_true": 1282,
+      "Q_I": 1282,
+      "Q_II": 1282,
+      "Q_III": 1282,
+      "all_equal": true
+    },
+    {
+      "trial": 18,
+      "Q_true": 8397,
+      "Q_I": 8397,
+      "Q_II": 8397,
+      "Q_III": 8397,
+      "all_equal": true
+    },
+    {
+      "trial": 19,
+      "Q_true": 4504,
+      "Q_I": 4504,
+      "Q_II": 4504,
+      "Q_III": 4504,
+      "all_equal": true
+    },
+    {
+      "trial": 20,
+      "Q_true": 5004,
+      "Q_I": 5004,
+      "Q_II": 5004,
+      "Q_III": 5004,
+      "all_equal": true
+    },
+    {
+      "trial": 21,
+      "Q_true": 3708,
+      "Q_I": 3708,
+      "Q_II": 3708,
+      "Q_III": 3708,
+      "all_equal": true
+    },
+    {
+      "trial": 22,
+      "Q_true": 1826,
+      "Q_I": 1826,
+      "Q_II": 1826,
+      "Q_III": 1826,
+      "all_equal": true
+    },
+    {
+      "trial": 23,
+      "Q_true": 9267,
+      "Q_I": 9267,
+      "Q_II": 9267,
+      "Q_III": 9267,
+      "all_equal": true
+    },
+    {
+      "trial": 24,
+      "Q_true": 7815,
+      "Q_I": 7815,
+      "Q_II": 7815,
+      "Q_III": 7815,
+      "all_equal": true
+    },
+    {
+      "trial": 25,
+      "Q_true": 6439,
+      "Q_I": 6439,
+      "Q_II": 6439,
+      "Q_III": 6439,
+      "all_equal": true
+    },
+    {
+      "trial": 26,
+      "Q_true": 4024,
+      "Q_I": 4024,
+      "Q_II": 4024,
+      "Q_III": 4024,
+      "all_equal": true
+    },
+    {
+      "trial": 27,
+      "Q_true": 8227,
+      "Q_I": 8227,
+      "Q_II": 8227,
+      "Q_III": 8227,
+      "all_equal": true
+    },
+    {
+      "trial": 28,
+      "Q_true": 5454,
+      "Q_I": 5454,
+      "Q_II": 5454,
+      "Q_III": 5454,
+      "all_equal": true
+    },
+    {
+      "trial": 29,
+      "Q_true": 4434,
+      "Q_I": 4434,
+      "Q_II": 4434,
+      "Q_III": 4434,
+      "all_equal": true
+    },
+    {
+      "trial": 30,
+      "Q_true": 4505,
+      "Q_I": 4505,
+      "Q_II": 4505,
+      "Q_III": 4505,
+      "all_equal": true
+    },
+    {
+      "trial": 31,
+      "Q_true": 2273,
+      "Q_I": 2273,
+      "Q_II": 2273,
+      "Q_III": 2273,
+      "all_equal": true
+    },
+    {
+      "trial": 32,
+      "Q_true": 922,
+      "Q_I": 922,
+      "Q_II": 922,
+      "Q_III": 922,
+      "all_equal": true
+    },
+    {
+      "trial": 33,
+      "Q_true": 5546,
+      "Q_I": 5546,
+      "Q_II": 5546,
+      "Q_III": 5546,
+      "all_equal": true
+    },
+    {
+      "trial": 34,
+      "Q_true": 8879,
+      "Q_I": 8879,
+      "Q_II": 8879,
+      "Q_III": 8879,
+      "all_equal": true
+    },
+    {
+      "trial": 35,
+      "Q_true": 639,
+      "Q_I": 639,
+      "Q_II": 639,
+      "Q_III": 639,
+      "all_equal": true
+    },
+    {
+      "trial": 36,
+      "Q_true": 8583,
+      "Q_I": 8583,
+      "Q_II": 8583,
+      "Q_III": 8583,
+      "all_equal": true
+    },
+    {
+      "trial": 37,
+      "Q_true": 8276,
+      "Q_I": 8276,
+      "Q_II": 8276,
+      "Q_III": 8276,
+      "all_equal": true
+    },
+    {
+      "trial": 38,
+      "Q_true": 2768,
+      "Q_I": 2768,
+      "Q_II": 2768,
+      "Q_III": 2768,
+      "all_equal": true
+    },
+    {
+      "trial": 39,
+      "Q_true": 6317,
+      "Q_I": 6317,
+      "Q_II": 6317,
+      "Q_III": 6317,
+      "all_equal": true
+    },
+    {
+      "trial": 40,
+      "Q_true": 1653,
+      "Q_I": 1653,
+      "Q_II": 1653,
+      "Q_III": 1653,
+      "all_equal": true
+    },
+    {
+      "trial": 41,
+      "Q_true": 7581,
+      "Q_I": 7581,
+      "Q_II": 7581,
+      "Q_III": 7581,
+      "all_equal": true
+    },
+    {
+      "trial": 42,
+      "Q_true": 7005,
+      "Q_I": 7005,
+      "Q_II": 7005,
+      "Q_III": 7005,
+      "all_equal": true
+    },
+    {
+      "trial": 43,
+      "Q_true": 3545,
+      "Q_I": 3545,
+      "Q_II": 3545,
+      "Q_III": 3545,
+      "all_equal": true
+    },
+    {
+      "trial": 44,
+      "Q_true": 680,
+      "Q_I": 680,
+      "Q_II": 680,
+      "Q_III": 680,
+      "all_equal": true
+    },
+    {
+      "trial": 45,
+      "Q_true": 9707,
+      "Q_I": 9707,
+      "Q_II": 9707,
+      "Q_III": 9707,
+      "all_equal": true
+    },
+    {
+      "trial": 46,
+      "Q_true": 4457,
+      "Q_I": 4457,
+      "Q_II": 4457,
+      "Q_III": 4457,
+      "all_equal": true
+    },
+    {
+      "trial": 47,
+      "Q_true": 8931,
+      "Q_I": 8931,
+      "Q_II": 8931,
+      "Q_III": 8931,
+      "all_equal": true
+    },
+    {
+      "trial": 48,
+      "Q_true": 6779,
+      "Q_I": 6779,
+      "Q_II": 6779,
+      "Q_III": 6779,
+      "all_equal": true
+    },
+    {
+      "trial": 49,
+      "Q_true": 7784,
+      "Q_I": 7784,
+      "Q_II": 7784,
+      "Q_III": 7784,
+      "all_equal": true
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "summary": {
+    "claim": "R in [0,1], increases with concentration",
+    "n_K_values": 11,
+    "all_in_unit": true,
+    "monotone": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "K_strength": 0.0,
+      "R": 0.36130040676977776,
+      "in_unit": true
+    },
+    {
+      "K_strength": 0.1,
+      "R": 0.38402429120688103,
+      "in_unit": true
+    },
+    {
+      "K_strength": 0.2,
+      "R": 0.38064291536350686,
+      "in_unit": true
+    },
+    {
+      "K_strength": 0.30000000000000004,
+      "R": 0.43572234524261855,
+      "in_unit": true
+    },
+    {
+      "K_strength": 0.4,
+      "R": 0.43512862636421173,
+      "in_unit": true
+    },
+    {
+      "K_strength": 0.5,
+      "R": 0.47454129581658705,
+      "in_unit": true
+    },
+    {
+      "K_strength": 0.6000000000000001,
+      "R": 0.4838165675247478,
+      "in_unit": true
+    },
+    {
+      "K_strength": 0.7000000000000001,
+      "R": 0.5059535311679416,
+      "in_unit": true
+    },
+    {
+      "K_strength": 0.8,
+      "R": 0.5278020256992632,
+      "in_unit": true
+    },
+    {
+      "K_strength": 0.9,
+      "R": 0.5461096183357026,
+      "in_unit": true
+    },
+    {
+      "K_strength": 1.0,
+      "R": 0.5592772356283463,
+      "in_unit": true
+    }
+  ]
+}

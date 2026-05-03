@@ -1,0 +1,175 @@
+{
+  "summary": {
+    "claim": "partition lattice satisfies idempotency, commutativity, absorption",
+    "n_pairs": 15,
+    "n_axioms_pass": 15,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "P_idx": 0,
+      "Q_idx": 1,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 0,
+      "Q_idx": 2,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 0,
+      "Q_idx": 3,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 0,
+      "Q_idx": 4,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 0,
+      "Q_idx": 5,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 1,
+      "Q_idx": 2,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 1,
+      "Q_idx": 3,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 1,
+      "Q_idx": 4,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 1,
+      "Q_idx": 5,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 2,
+      "Q_idx": 3,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 2,
+      "Q_idx": 4,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 2,
+      "Q_idx": 5,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 3,
+      "Q_idx": 4,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 3,
+      "Q_idx": 5,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    },
+    {
+      "P_idx": 4,
+      "Q_idx": 5,
+      "idempotent_meet": true,
+      "idempotent_join": true,
+      "commutative_meet": true,
+      "commutative_join": true,
+      "absorption_meet_join": true,
+      "absorption_join_meet": true,
+      "all_axioms_pass": true
+    }
+  ]
+}

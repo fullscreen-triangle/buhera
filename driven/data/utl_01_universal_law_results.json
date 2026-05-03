@@ -1,0 +1,151 @@
+{
+  "summary": {
+    "claim": "TP^-1 = N^-1 sum tau*g matches simulated throughput",
+    "n_trials": 20,
+    "max_rel_error": 0.007120893674135828,
+    "mean_rel_error": 0.0026445003459125197,
+    "overall_pass": 1.0
+  },
+  "records": [
+    {
+      "trial": 0,
+      "N": 2,
+      "predicted_tp_inv": 2.2477383801748014,
+      "measured_tp_inv": 2.2418668398695574,
+      "rel_err": 0.002612199158510362
+    },
+    {
+      "trial": 1,
+      "N": 5,
+      "predicted_tp_inv": 1.326288750384964,
+      "measured_tp_inv": 1.3320788310168097,
+      "rel_err": 0.004365625984662086
+    },
+    {
+      "trial": 2,
+      "N": 5,
+      "predicted_tp_inv": 1.29488332404582,
+      "measured_tp_inv": 1.285662597574878,
+      "rel_err": 0.007120893674135828
+    },
+    {
+      "trial": 3,
+      "N": 5,
+      "predicted_tp_inv": 1.4082620233671221,
+      "measured_tp_inv": 1.412013078674889,
+      "rel_err": 0.0026636060942680138
+    },
+    {
+      "trial": 4,
+      "N": 2,
+      "predicted_tp_inv": 1.4528378165637181,
+      "measured_tp_inv": 1.4534805140127145,
+      "rel_err": 0.0004423738435694679
+    },
+    {
+      "trial": 5,
+      "N": 2,
+      "predicted_tp_inv": 0.9236229667672518,
+      "measured_tp_inv": 0.9225318391550933,
+      "rel_err": 0.0011813560851323208
+    },
+    {
+      "trial": 6,
+      "N": 4,
+      "predicted_tp_inv": 2.3681999897911763,
+      "measured_tp_inv": 2.372166171080728,
+      "rel_err": 0.0016747661965412126
+    },
+    {
+      "trial": 7,
+      "N": 3,
+      "predicted_tp_inv": 1.8108562460479978,
+      "measured_tp_inv": 1.8143349987999706,
+      "rel_err": 0.0019210540646530372
+    },
+    {
+      "trial": 8,
+      "N": 5,
+      "predicted_tp_inv": 1.5270137274019389,
+      "measured_tp_inv": 1.524592127474274,
+      "rel_err": 0.0015858403131614252
+    },
+    {
+      "trial": 9,
+      "N": 2,
+      "predicted_tp_inv": 1.2194892983603303,
+      "measured_tp_inv": 1.2201567419652004,
+      "rel_err": 0.0005473140320030344
+    },
+    {
+      "trial": 10,
+      "N": 2,
+      "predicted_tp_inv": 0.6295423262052758,
+      "measured_tp_inv": 0.6313088498889359,
+      "rel_err": 0.0028060443438461106
+    },
+    {
+      "trial": 11,
+      "N": 4,
+      "predicted_tp_inv": 1.3124373897240655,
+      "measured_tp_inv": 1.3114472641598973,
+      "rel_err": 0.0007544173702460506
+    },
+    {
+      "trial": 12,
+      "N": 2,
+      "predicted_tp_inv": 2.1058649628077344,
+      "measured_tp_inv": 2.107823162612625,
+      "rel_err": 0.0009298790945643939
+    },
+    {
+      "trial": 13,
+      "N": 3,
+      "predicted_tp_inv": 2.0390271629512777,
+      "measured_tp_inv": 2.04449557346961,
+      "rel_err": 0.0026818723250441132
+    },
+    {
+      "trial": 14,
+      "N": 4,
+      "predicted_tp_inv": 1.5825246825010955,
+      "measured_tp_inv": 1.588589438369446,
+      "rel_err": 0.0038323294008695175
+    },
+    {
+      "trial": 15,
+      "N": 5,
+      "predicted_tp_inv": 1.3966818965780499,
+      "measured_tp_inv": 1.3908828759823622,
+      "rel_err": 0.004151998110590278
+    },
+    {
+      "trial": 16,
+      "N": 2,
+      "predicted_tp_inv": 1.2850700452233776,
+      "measured_tp_inv": 1.2800927636639918,
+      "rel_err": 0.0038731597377796153
+    },
+    {
+      "trial": 17,
+      "N": 2,
+      "predicted_tp_inv": 0.9521664991503598,
+      "measured_tp_inv": 0.9546543134011112,
+      "rel_err": 0.002612793301351529
+    },
+    {
+      "trial": 18,
+      "N": 5,
+      "predicted_tp_inv": 1.3851181972111568,
+      "measured_tp_inv": 1.382539700089179,
+      "rel_err": 0.001861571905682422
+    },
+    {
+      "trial": 19,
+      "N": 2,
+      "predicted_tp_inv": 2.2179771988751176,
+      "measured_tp_inv": 2.206286436504361,
+      "rel_err": 0.005270911881639567
+    }
+  ]
+}

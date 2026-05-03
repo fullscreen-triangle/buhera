@@ -1,0 +1,115 @@
+{
+  "summary": {
+    "claim": "Universal law reduces to Jackson independence with diagonal g",
+    "n_trials": 15,
+    "max_abs_error": 2.220446049250313e-16,
+    "overall_pass": 1.0
+  },
+  "records": [
+    {
+      "trial": 0,
+      "N": 3,
+      "universal": 1.1621718796819447,
+      "jackson": 1.1621718796819447,
+      "abs_err": 0.0
+    },
+    {
+      "trial": 1,
+      "N": 6,
+      "universal": 0.5235758018213795,
+      "jackson": 0.5235758018213794,
+      "abs_err": 1.1102230246251565e-16
+    },
+    {
+      "trial": 2,
+      "N": 7,
+      "universal": 0.47907287090363776,
+      "jackson": 0.47907287090363776,
+      "abs_err": 0.0
+    },
+    {
+      "trial": 3,
+      "N": 4,
+      "universal": 0.6783111528257897,
+      "jackson": 0.6783111528257897,
+      "abs_err": 0.0
+    },
+    {
+      "trial": 4,
+      "N": 6,
+      "universal": 0.4809306303179625,
+      "jackson": 0.4809306303179625,
+      "abs_err": 0.0
+    },
+    {
+      "trial": 5,
+      "N": 4,
+      "universal": 0.6134219455812286,
+      "jackson": 0.6134219455812285,
+      "abs_err": 1.1102230246251565e-16
+    },
+    {
+      "trial": 6,
+      "N": 5,
+      "universal": 0.7898012292159515,
+      "jackson": 0.7898012292159515,
+      "abs_err": 0.0
+    },
+    {
+      "trial": 7,
+      "N": 4,
+      "universal": 0.7360005025935041,
+      "jackson": 0.7360005025935041,
+      "abs_err": 0.0
+    },
+    {
+      "trial": 8,
+      "N": 3,
+      "universal": 0.5345181812648454,
+      "jackson": 0.5345181812648454,
+      "abs_err": 0.0
+    },
+    {
+      "trial": 9,
+      "N": 6,
+      "universal": 0.40764299663088915,
+      "jackson": 0.40764299663088915,
+      "abs_err": 0.0
+    },
+    {
+      "trial": 10,
+      "N": 5,
+      "universal": 0.4553508103023999,
+      "jackson": 0.4553508103023999,
+      "abs_err": 0.0
+    },
+    {
+      "trial": 11,
+      "N": 4,
+      "universal": 0.8419027832666119,
+      "jackson": 0.8419027832666118,
+      "abs_err": 1.1102230246251565e-16
+    },
+    {
+      "trial": 12,
+      "N": 7,
+      "universal": 0.5099345524002697,
+      "jackson": 0.5099345524002697,
+      "abs_err": 0.0
+    },
+    {
+      "trial": 13,
+      "N": 7,
+      "universal": 0.5099001988659689,
+      "jackson": 0.5099001988659689,
+      "abs_err": 0.0
+    },
+    {
+      "trial": 14,
+      "N": 5,
+      "universal": 0.8427724900873198,
+      "jackson": 0.84277249008732,
+      "abs_err": 2.220446049250313e-16
+    }
+  ]
+}

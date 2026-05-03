@@ -1,0 +1,125 @@
+{
+  "suite": "computational-operations-equivalence",
+  "n_experiments": 15,
+  "n_pass": 15,
+  "overall_pass": true,
+  "elapsed_seconds": 2.522480599989649,
+  "per_experiment": {
+    "01_time_count_identity": true,
+    "02_linearity": true,
+    "03_route_residue": true,
+    "04_route_confinement": true,
+    "05_route_negation": true,
+    "06_three_route_equiv": true,
+    "07_mtic_equivalence": true,
+    "08_reproducibility": true,
+    "09_sliding_endpoint": true,
+    "10_rewind_as_forward": true,
+    "11_monotone_log": true,
+    "12_api_substitutability": true,
+    "13_cell_stability": true,
+    "14_cell_collision": true,
+    "15_cross_arch": true
+  },
+  "summaries": {
+    "01_time_count_identity": {
+      "claim": "M(t)/t == f at floating-point precision",
+      "f_ref": 1000000.0,
+      "n_trials": 50,
+      "max_rel_error": 4.00893202284351e-07,
+      "overall_pass": true
+    },
+    "02_linearity": {
+      "claim": "M(o1 \u222a o2) = M(o1) + M(o2) for non-overlapping ops",
+      "n_trials": 50,
+      "all_match": true,
+      "overall_pass": true
+    },
+    "03_route_residue": {
+      "claim": "Q_I (residue route) = ground-truth weight",
+      "n_trials": 30,
+      "all_match": true,
+      "overall_pass": true
+    },
+    "04_route_confinement": {
+      "claim": "Q_II (confinement route) = ground-truth weight",
+      "n_trials": 30,
+      "all_match": true,
+      "overall_pass": true
+    },
+    "05_route_negation": {
+      "claim": "Q_III (negation depth) = ground-truth weight",
+      "n_trials": 30,
+      "all_match": true,
+      "overall_pass": true
+    },
+    "06_three_route_equiv": {
+      "claim": "Q_I = Q_II = Q_III for every operation",
+      "n_trials": 50,
+      "max_disagreement": 0,
+      "all_match": true,
+      "overall_pass": true
+    },
+    "07_mtic_equivalence": {
+      "claim": "t = Q/f, M = Q, identity == fixed point at depth Q (4-way)",
+      "n_trials": 30,
+      "all_match": true,
+      "overall_pass": true
+    },
+    "08_reproducibility": {
+      "claim": "Same input + same conditions => identical output and Q",
+      "n_runs": 1000,
+      "Q": 1024,
+      "identical_outputs": true,
+      "identical_weights": true,
+      "identical_hashes": true,
+      "overall_pass": true
+    },
+    "09_sliding_endpoint": {
+      "claim": "Truncating M breaks reproducibility (sliding endpoint)",
+      "baseline_reproducible": true,
+      "truncated_breaks_reproducibility": true,
+      "overall_pass": true
+    },
+    "10_rewind_as_forward": {
+      "claim": "Rollback strictly increases M (rewind is forward)",
+      "n_trials": 30,
+      "all_increase": true,
+      "overall_pass": true
+    },
+    "11_monotone_log": {
+      "claim": "Log M grows monotonically across forward + rollback ops",
+      "n_ops": 1000,
+      "M_initial": 0,
+      "M_final": 4980,
+      "min_diff": 1,
+      "monotone": true,
+      "overall_pass": true
+    },
+    "12_api_substitutability": {
+      "claim": "Different chains with same fixed-point are indistinguishable at API boundary",
+      "n_trials": 50,
+      "indistinguishable": true,
+      "overall_pass": true
+    },
+    "13_cell_stability": {
+      "claim": "Cell-disjoint addition leaves existing ops unaffected",
+      "n_trials": 30,
+      "all_stable": true,
+      "overall_pass": true
+    },
+    "14_cell_collision": {
+      "claim": "Cell collisions are correctly identified",
+      "n_trials": 50,
+      "all_correct": true,
+      "overall_pass": true
+    },
+    "15_cross_arch": {
+      "claim": "Equivalences hold across architectures with their own f",
+      "n_architectures": 4,
+      "n_trials_total": 40,
+      "all_match": true,
+      "overall_pass": true
+    }
+  }
+}

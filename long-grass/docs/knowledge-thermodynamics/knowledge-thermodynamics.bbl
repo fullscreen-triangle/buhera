@@ -1,0 +1,97 @@
+\begin{thebibliography}{16}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Birkhoff(1948)]{birkhoff1948lattice}
+Garrett Birkhoff.
+\newblock \emph{Lattice Theory}.
+\newblock American Mathematical Society, 2 edition, 1948.
+
+\bibitem[Boyd and Vandenberghe(2004)]{boyd2004convex}
+Stephen Boyd and Lieven Vandenberghe.
+\newblock \emph{Convex Optimization}.
+\newblock Cambridge University Press, 2004.
+
+\bibitem[Cormen et~al.(2009)Cormen, Leiserson, Rivest, and
+  Stein]{cormen2009introduction}
+Thomas~H. Cormen, Charles~E. Leiserson, Ronald~L. Rivest, and Clifford Stein.
+\newblock \emph{Introduction to Algorithms}.
+\newblock MIT Press, 3 edition, 2009.
+
+\bibitem[Cover and Thomas(2006)]{cover2006elements}
+Thomas~M. Cover and Joy~A. Thomas.
+\newblock \emph{Elements of Information Theory}.
+\newblock Wiley, 2 edition, 2006.
+
+\bibitem[Cram{\'e}r(1946)]{cramer1946mathematical}
+Harald Cram{\'e}r.
+\newblock \emph{Mathematical Methods of Statistics}.
+\newblock Princeton University Press, 1946.
+
+\bibitem[Davey and Priestley(2002)]{davey2002introduction}
+B.~A. Davey and H.~A. Priestley.
+\newblock \emph{Introduction to Lattices and Order}.
+\newblock Cambridge University Press, 2 edition, 2002.
+
+\bibitem[Heisenberg(1927)]{heisenberg1927}
+Werner Heisenberg.
+\newblock {\"U}ber den anschaulichen inhalt der quantentheoretischen kinematik
+  und mechanik.
+\newblock \emph{Zeitschrift f{\"u}r Physik}, 43:\penalty0 172--198, 1927.
+
+\bibitem[Kellerer et~al.(2004)Kellerer, Pferschy, and
+  Pisinger]{kellerer2004knapsack}
+Hans Kellerer, Ulrich Pferschy, and David Pisinger.
+\newblock \emph{Knapsack Problems}.
+\newblock Springer, 2004.
+
+\bibitem[Kennard(1927)]{kennard1927}
+Earle~H. Kennard.
+\newblock Zur quantenmechanik einfacher bewegungstypen.
+\newblock \emph{Zeitschrift f{\"u}r Physik}, 44:\penalty0 326--352, 1927.
+
+\bibitem[Kullback and Leibler(1951)]{kullback1951information}
+Solomon Kullback and Richard~A. Leibler.
+\newblock On information and sufficiency.
+\newblock \emph{Annals of Mathematical Statistics}, 22:\penalty0 79--86, 1951.
+
+\bibitem[Martello and Toth(1990)]{martello1990knapsack}
+Silvano Martello and Paolo Toth.
+\newblock \emph{Knapsack Problems: Algorithms and Computer Implementations}.
+\newblock Wiley, 1990.
+
+\bibitem[Pierce(2002)]{pierce2002types}
+Benjamin~C. Pierce.
+\newblock \emph{Types and Programming Languages}.
+\newblock MIT Press, 2002.
+
+\bibitem[Rao(1945)]{rao1945information}
+C.~Radhakrishna Rao.
+\newblock Information and the accuracy attainable in the estimation of
+  statistical parameters.
+\newblock \emph{Bulletin of the Calcutta Mathematical Society}, 37:\penalty0
+  81--91, 1945.
+
+\bibitem[Robertson(1929)]{robertson1929}
+Howard~P. Robertson.
+\newblock The uncertainty principle.
+\newblock \emph{Physical Review}, 34:\penalty0 163--164, 1929.
+
+\bibitem[Rondon et~al.(2008)Rondon, Kawaguchi, and Jhala]{rondon2008liquid}
+Patrick~M. Rondon, Ming Kawaguchi, and Ranjit Jhala.
+\newblock Liquid types.
+\newblock In \emph{Proceedings of the 29th ACM SIGPLAN Conference on
+  Programming Language Design and Implementation (PLDI)}, pages 159--169, 2008.
+
+\bibitem[Vazou et~al.(2014)Vazou, Seidel, Jhala, Vytiniotis, and
+  Jones]{vazou2014refinement}
+Niki Vazou, Eric~L. Seidel, Ranjit Jhala, Dimitrios Vytiniotis, and
+  Simon~Peyton Jones.
+\newblock Refinement types for haskell.
+\newblock In \emph{Proceedings of the 19th ACM SIGPLAN International Conference
+  on Functional Programming (ICFP)}, pages 269--282, 2014.
+
+\end{thebibliography}

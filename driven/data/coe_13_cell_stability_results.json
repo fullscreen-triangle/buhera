@@ -1,0 +1,190 @@
+{
+  "summary": {
+    "claim": "Cell-disjoint addition leaves existing ops unaffected",
+    "n_trials": 30,
+    "all_stable": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "trial": 0,
+      "N_existing": 7,
+      "new_cell": 7,
+      "stable": true
+    },
+    {
+      "trial": 1,
+      "N_existing": 10,
+      "new_cell": 10,
+      "stable": true
+    },
+    {
+      "trial": 2,
+      "N_existing": 16,
+      "new_cell": 16,
+      "stable": true
+    },
+    {
+      "trial": 3,
+      "N_existing": 26,
+      "new_cell": 26,
+      "stable": true
+    },
+    {
+      "trial": 4,
+      "N_existing": 29,
+      "new_cell": 29,
+      "stable": true
+    },
+    {
+      "trial": 5,
+      "N_existing": 14,
+      "new_cell": 14,
+      "stable": true
+    },
+    {
+      "trial": 6,
+      "N_existing": 16,
+      "new_cell": 16,
+      "stable": true
+    },
+    {
+      "trial": 7,
+      "N_existing": 19,
+      "new_cell": 19,
+      "stable": true
+    },
+    {
+      "trial": 8,
+      "N_existing": 26,
+      "new_cell": 26,
+      "stable": true
+    },
+    {
+      "trial": 9,
+      "N_existing": 24,
+      "new_cell": 24,
+      "stable": true
+    },
+    {
+      "trial": 10,
+      "N_existing": 7,
+      "new_cell": 7,
+      "stable": true
+    },
+    {
+      "trial": 11,
+      "N_existing": 11,
+      "new_cell": 11,
+      "stable": true
+    },
+    {
+      "trial": 12,
+      "N_existing": 7,
+      "new_cell": 7,
+      "stable": true
+    },
+    {
+      "trial": 13,
+      "N_existing": 12,
+      "new_cell": 12,
+      "stable": true
+    },
+    {
+      "trial": 14,
+      "N_existing": 12,
+      "new_cell": 12,
+      "stable": true
+    },
+    {
+      "trial": 15,
+      "N_existing": 17,
+      "new_cell": 17,
+      "stable": true
+    },
+    {
+      "trial": 16,
+      "N_existing": 19,
+      "new_cell": 19,
+      "stable": true
+    },
+    {
+      "trial": 17,
+      "N_existing": 16,
+      "new_cell": 16,
+      "stable": true
+    },
+    {
+      "trial": 18,
+      "N_existing": 12,
+      "new_cell": 12,
+      "stable": true
+    },
+    {
+      "trial": 19,
+      "N_existing": 24,
+      "new_cell": 24,
+      "stable": true
+    },
+    {
+      "trial": 20,
+      "N_existing": 27,
+      "new_cell": 27,
+      "stable": true
+    },
+    {
+      "trial": 21,
+      "N_existing": 15,
+      "new_cell": 15,
+      "stable": true
+    },
+    {
+      "trial": 22,
+      "N_existing": 27,
+      "new_cell": 27,
+      "stable": true
+    },
+    {
+      "trial": 23,
+      "N_existing": 29,
+      "new_cell": 29,
+      "stable": true
+    },
+    {
+      "trial": 24,
+      "N_existing": 12,
+      "new_cell": 12,
+      "stable": true
+    },
+    {
+      "trial": 25,
+      "N_existing": 7,
+      "new_cell": 7,
+      "stable": true
+    },
+    {
+      "trial": 26,
+      "N_existing": 19,
+      "new_cell": 19,
+      "stable": true
+    },
+    {
+      "trial": 27,
+      "N_existing": 18,
+      "new_cell": 18,
+      "stable": true
+    },
+    {
+      "trial": 28,
+      "N_existing": 18,
+      "new_cell": 18,
+      "stable": true
+    },
+    {
+      "trial": 29,
+      "N_existing": 12,
+      "new_cell": 12,
+      "stable": true
+    }
+  ]
+}

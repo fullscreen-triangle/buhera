@@ -1,0 +1,153 @@
+{
+  "summary": {
+    "claim": "Cache hit => tau structurally 0 => TP jump",
+    "n_trials": 20,
+    "all_speedup_positive": true,
+    "min_speedup": 1.0701248827480179,
+    "max_speedup": 1.297892949103098,
+    "median_speedup": 1.1588060862214387,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "trial": 0,
+      "tp_inv_uncached": 2.316099519002912,
+      "tp_inv_cached": 2.1643263850246193,
+      "speedup": 1.0701248827480179,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 1,
+      "tp_inv_uncached": 1.821177809357222,
+      "tp_inv_cached": 1.6650340829285373,
+      "speedup": 1.093778096214134,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 2,
+      "tp_inv_uncached": 1.6478848341479173,
+      "tp_inv_cached": 1.525840092905565,
+      "speedup": 1.0799852761831352,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 3,
+      "tp_inv_uncached": 1.9364398693886766,
+      "tp_inv_cached": 1.6490855322030131,
+      "speedup": 1.1742507174881263,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 4,
+      "tp_inv_uncached": 1.8894206130837872,
+      "tp_inv_cached": 1.661199870651982,
+      "speedup": 1.137383072599346,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 5,
+      "tp_inv_uncached": 2.058937996411618,
+      "tp_inv_cached": 1.5863696600204478,
+      "speedup": 1.297892949103098,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 6,
+      "tp_inv_uncached": 1.8290255189275135,
+      "tp_inv_cached": 1.5649641669334802,
+      "speedup": 1.1687331618023287,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 7,
+      "tp_inv_uncached": 1.997061049817126,
+      "tp_inv_cached": 1.5899409701544975,
+      "speedup": 1.2560598709668245,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 8,
+      "tp_inv_uncached": 1.2608948520837406,
+      "tp_inv_cached": 1.144758572291369,
+      "speedup": 1.1014504565446592,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 9,
+      "tp_inv_uncached": 2.0660176803641352,
+      "tp_inv_cached": 1.854121563674437,
+      "speedup": 1.114283831675939,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 10,
+      "tp_inv_uncached": 2.234378849566811,
+      "tp_inv_cached": 1.959000829106592,
+      "speedup": 1.140570650286966,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 11,
+      "tp_inv_uncached": 2.136968791024686,
+      "tp_inv_cached": 1.7963731175824118,
+      "speedup": 1.1896018539292403,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 12,
+      "tp_inv_uncached": 2.078501686651828,
+      "tp_inv_cached": 1.6890952320964647,
+      "speedup": 1.2305414444110656,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 13,
+      "tp_inv_uncached": 1.9534374664856755,
+      "tp_inv_cached": 1.645593419224866,
+      "speedup": 1.1870717539729925,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 14,
+      "tp_inv_uncached": 1.7984019972458989,
+      "tp_inv_cached": 1.5259452797548718,
+      "speedup": 1.178549467733728,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 15,
+      "tp_inv_uncached": 1.9742196709724547,
+      "tp_inv_cached": 1.8278248718359058,
+      "speedup": 1.0800923553411914,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 16,
+      "tp_inv_uncached": 2.010001667990676,
+      "tp_inv_cached": 1.8609900042382916,
+      "speedup": 1.0800711790031217,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 17,
+      "tp_inv_uncached": 1.750960868704027,
+      "tp_inv_cached": 1.4901068841820768,
+      "speedup": 1.1750572306530438,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 18,
+      "tp_inv_uncached": 2.0575092618310453,
+      "tp_inv_cached": 1.7579532834831935,
+      "speedup": 1.1704004202855234,
+      "extinction_ok": 1.0
+    },
+    {
+      "trial": 19,
+      "tp_inv_uncached": 2.352492221502854,
+      "tp_inv_cached": 2.0476413962783084,
+      "speedup": 1.1488790106405484,
+      "extinction_ok": 1.0
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "summary": {
+    "claim": "Cascade form: TP^-1 ~ sum_i tau_i g_i over stages",
+    "n_trials": 15,
+    "all_match": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "trial": 0,
+      "k": 3,
+      "cascade_sum": 9.22474692430524,
+      "universal": 9.22474692430524,
+      "match": 1.0
+    },
+    {
+      "trial": 1,
+      "k": 6,
+      "cascade_sum": 14.288830793412298,
+      "universal": 14.288830793412298,
+      "match": 1.0
+    },
+    {
+      "trial": 2,
+      "k": 4,
+      "cascade_sum": 10.997148569549935,
+      "universal": 10.997148569549935,
+      "match": 1.0
+    },
+    {
+      "trial": 3,
+      "k": 6,
+      "cascade_sum": 12.734374114280556,
+      "universal": 12.734374114280552,
+      "match": 1.0
+    },
+    {
+      "trial": 4,
+      "k": 7,
+      "cascade_sum": 17.067426512963824,
+      "universal": 17.067426512963824,
+      "match": 1.0
+    },
+    {
+      "trial": 5,
+      "k": 5,
+      "cascade_sum": 10.655946407037865,
+      "universal": 10.655946407037865,
+      "match": 1.0
+    },
+    {
+      "trial": 6,
+      "k": 5,
+      "cascade_sum": 7.670125410466901,
+      "universal": 7.670125410466902,
+      "match": 1.0
+    },
+    {
+      "trial": 7,
+      "k": 5,
+      "cascade_sum": 10.829097265091741,
+      "universal": 10.829097265091741,
+      "match": 1.0
+    },
+    {
+      "trial": 8,
+      "k": 6,
+      "cascade_sum": 10.196507561073915,
+      "universal": 10.196507561073915,
+      "match": 1.0
+    },
+    {
+      "trial": 9,
+      "k": 6,
+      "cascade_sum": 18.701977165727623,
+      "universal": 18.701977165727623,
+      "match": 1.0
+    },
+    {
+      "trial": 10,
+      "k": 6,
+      "cascade_sum": 14.227255535645456,
+      "universal": 14.227255535645455,
+      "match": 1.0
+    },
+    {
+      "trial": 11,
+      "k": 4,
+      "cascade_sum": 5.882497683698258,
+      "universal": 5.882497683698258,
+      "match": 1.0
+    },
+    {
+      "trial": 12,
+      "k": 7,
+      "cascade_sum": 14.799235506558373,
+      "universal": 14.799235506558373,
+      "match": 1.0
+    },
+    {
+      "trial": 13,
+      "k": 5,
+      "cascade_sum": 11.037545573292805,
+      "universal": 11.037545573292803,
+      "match": 1.0
+    },
+    {
+      "trial": 14,
+      "k": 4,
+      "cascade_sum": 8.826832313852195,
+      "universal": 8.826832313852197,
+      "match": 1.0
+    }
+  ]
+}

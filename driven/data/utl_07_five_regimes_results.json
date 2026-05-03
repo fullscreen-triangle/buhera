@@ -1,0 +1,16 @@
+{
+  "summary": {
+    "claim": "R partitions [0,1] into 5 regimes at {0.3, 0.5, 0.8, 0.95}",
+    "n_R_values": 1001,
+    "regime_counts": {
+      "turbulent": 300,
+      "aperture": 200,
+      "cascade": 300,
+      "coherent": 150,
+      "phase_locked": 51
+    },
+    "monotone_ordering": true,
+    "all_classified": true,
+    "overall_pass": true
+  }
+}

@@ -1,0 +1,1 @@
+"""COE paper panel generation."""

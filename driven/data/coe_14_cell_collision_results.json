@@ -1,0 +1,410 @@
+{
+  "summary": {
+    "claim": "Cell collisions are correctly identified",
+    "n_trials": 50,
+    "all_correct": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "trial": 0,
+      "N_existing": 7,
+      "new_cell": 5,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 1,
+      "N_existing": 15,
+      "new_cell": 100,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 2,
+      "N_existing": 10,
+      "new_cell": 19,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 3,
+      "N_existing": 23,
+      "new_cell": 99,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 4,
+      "N_existing": 17,
+      "new_cell": 2,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 5,
+      "N_existing": 17,
+      "new_cell": 54,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 6,
+      "N_existing": 24,
+      "new_cell": 88,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 7,
+      "N_existing": 18,
+      "new_cell": 7,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 8,
+      "N_existing": 7,
+      "new_cell": 3,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 9,
+      "N_existing": 26,
+      "new_cell": 108,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 10,
+      "N_existing": 9,
+      "new_cell": 6,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 11,
+      "N_existing": 6,
+      "new_cell": 103,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 12,
+      "N_existing": 21,
+      "new_cell": 16,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 13,
+      "N_existing": 14,
+      "new_cell": 6,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 14,
+      "N_existing": 18,
+      "new_cell": 33,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 15,
+      "N_existing": 28,
+      "new_cell": 102,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 16,
+      "N_existing": 15,
+      "new_cell": 4,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 17,
+      "N_existing": 6,
+      "new_cell": 2,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 18,
+      "N_existing": 16,
+      "new_cell": 2,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 19,
+      "N_existing": 13,
+      "new_cell": 35,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 20,
+      "N_existing": 28,
+      "new_cell": 71,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 21,
+      "N_existing": 20,
+      "new_cell": 14,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 22,
+      "N_existing": 24,
+      "new_cell": 107,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 23,
+      "N_existing": 26,
+      "new_cell": 10,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 24,
+      "N_existing": 10,
+      "new_cell": 6,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 25,
+      "N_existing": 25,
+      "new_cell": 4,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 26,
+      "N_existing": 24,
+      "new_cell": 102,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 27,
+      "N_existing": 16,
+      "new_cell": 86,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 28,
+      "N_existing": 18,
+      "new_cell": 63,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 29,
+      "N_existing": 5,
+      "new_cell": 0,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 30,
+      "N_existing": 15,
+      "new_cell": 10,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 31,
+      "N_existing": 26,
+      "new_cell": 82,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 32,
+      "N_existing": 19,
+      "new_cell": 82,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 33,
+      "N_existing": 7,
+      "new_cell": 3,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 34,
+      "N_existing": 20,
+      "new_cell": 0,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 35,
+      "N_existing": 29,
+      "new_cell": 6,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 36,
+      "N_existing": 29,
+      "new_cell": 24,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 37,
+      "N_existing": 25,
+      "new_cell": 1,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 38,
+      "N_existing": 27,
+      "new_cell": 56,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 39,
+      "N_existing": 8,
+      "new_cell": 63,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 40,
+      "N_existing": 29,
+      "new_cell": 19,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 41,
+      "N_existing": 15,
+      "new_cell": 12,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 42,
+      "N_existing": 13,
+      "new_cell": 0,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 43,
+      "N_existing": 24,
+      "new_cell": 17,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 44,
+      "N_existing": 22,
+      "new_cell": 38,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 45,
+      "N_existing": 28,
+      "new_cell": 43,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 46,
+      "N_existing": 17,
+      "new_cell": 7,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 47,
+      "N_existing": 10,
+      "new_cell": 40,
+      "expected": false,
+      "detected": false,
+      "match": true
+    },
+    {
+      "trial": 48,
+      "N_existing": 20,
+      "new_cell": 7,
+      "expected": true,
+      "detected": true,
+      "match": true
+    },
+    {
+      "trial": 49,
+      "N_existing": 13,
+      "new_cell": 24,
+      "expected": false,
+      "detected": false,
+      "match": true
+    }
+  ]
+}

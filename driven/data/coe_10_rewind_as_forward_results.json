@@ -1,0 +1,250 @@
+{
+  "summary": {
+    "claim": "Rollback strictly increases M (rewind is forward)",
+    "n_trials": 30,
+    "all_increase": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "trial": 0,
+      "n_forward": 26,
+      "n_rollback": 21,
+      "M_before": 26,
+      "M_after": 47,
+      "increased": true
+    },
+    {
+      "trial": 1,
+      "n_forward": 134,
+      "n_rollback": 59,
+      "M_before": 134,
+      "M_after": 193,
+      "increased": true
+    },
+    {
+      "trial": 2,
+      "n_forward": 92,
+      "n_rollback": 79,
+      "M_before": 92,
+      "M_after": 171,
+      "increased": true
+    },
+    {
+      "trial": 3,
+      "n_forward": 26,
+      "n_rollback": 19,
+      "M_before": 26,
+      "M_after": 45,
+      "increased": true
+    },
+    {
+      "trial": 4,
+      "n_forward": 48,
+      "n_rollback": 5,
+      "M_before": 48,
+      "M_after": 53,
+      "increased": true
+    },
+    {
+      "trial": 5,
+      "n_forward": 110,
+      "n_rollback": 108,
+      "M_before": 110,
+      "M_after": 218,
+      "increased": true
+    },
+    {
+      "trial": 6,
+      "n_forward": 149,
+      "n_rollback": 114,
+      "M_before": 149,
+      "M_after": 263,
+      "increased": true
+    },
+    {
+      "trial": 7,
+      "n_forward": 146,
+      "n_rollback": 115,
+      "M_before": 146,
+      "M_after": 261,
+      "increased": true
+    },
+    {
+      "trial": 8,
+      "n_forward": 107,
+      "n_rollback": 14,
+      "M_before": 107,
+      "M_after": 121,
+      "increased": true
+    },
+    {
+      "trial": 9,
+      "n_forward": 169,
+      "n_rollback": 77,
+      "M_before": 169,
+      "M_after": 246,
+      "increased": true
+    },
+    {
+      "trial": 10,
+      "n_forward": 105,
+      "n_rollback": 39,
+      "M_before": 105,
+      "M_after": 144,
+      "increased": true
+    },
+    {
+      "trial": 11,
+      "n_forward": 44,
+      "n_rollback": 41,
+      "M_before": 44,
+      "M_after": 85,
+      "increased": true
+    },
+    {
+      "trial": 12,
+      "n_forward": 158,
+      "n_rollback": 102,
+      "M_before": 158,
+      "M_after": 260,
+      "increased": true
+    },
+    {
+      "trial": 13,
+      "n_forward": 86,
+      "n_rollback": 71,
+      "M_before": 86,
+      "M_after": 157,
+      "increased": true
+    },
+    {
+      "trial": 14,
+      "n_forward": 113,
+      "n_rollback": 51,
+      "M_before": 113,
+      "M_after": 164,
+      "increased": true
+    },
+    {
+      "trial": 15,
+      "n_forward": 95,
+      "n_rollback": 22,
+      "M_before": 95,
+      "M_after": 117,
+      "increased": true
+    },
+    {
+      "trial": 16,
+      "n_forward": 27,
+      "n_rollback": 15,
+      "M_before": 27,
+      "M_after": 42,
+      "increased": true
+    },
+    {
+      "trial": 17,
+      "n_forward": 178,
+      "n_rollback": 12,
+      "M_before": 178,
+      "M_after": 190,
+      "increased": true
+    },
+    {
+      "trial": 18,
+      "n_forward": 173,
+      "n_rollback": 144,
+      "M_before": 173,
+      "M_after": 317,
+      "increased": true
+    },
+    {
+      "trial": 19,
+      "n_forward": 62,
+      "n_rollback": 40,
+      "M_before": 62,
+      "M_after": 102,
+      "increased": true
+    },
+    {
+      "trial": 20,
+      "n_forward": 41,
+      "n_rollback": 32,
+      "M_before": 41,
+      "M_after": 73,
+      "increased": true
+    },
+    {
+      "trial": 21,
+      "n_forward": 143,
+      "n_rollback": 51,
+      "M_before": 143,
+      "M_after": 194,
+      "increased": true
+    },
+    {
+      "trial": 22,
+      "n_forward": 22,
+      "n_rollback": 22,
+      "M_before": 22,
+      "M_after": 44,
+      "increased": true
+    },
+    {
+      "trial": 23,
+      "n_forward": 94,
+      "n_rollback": 84,
+      "M_before": 94,
+      "M_after": 178,
+      "increased": true
+    },
+    {
+      "trial": 24,
+      "n_forward": 138,
+      "n_rollback": 108,
+      "M_before": 138,
+      "M_after": 246,
+      "increased": true
+    },
+    {
+      "trial": 25,
+      "n_forward": 154,
+      "n_rollback": 30,
+      "M_before": 154,
+      "M_after": 184,
+      "increased": true
+    },
+    {
+      "trial": 26,
+      "n_forward": 79,
+      "n_rollback": 37,
+      "M_before": 79,
+      "M_after": 116,
+      "increased": true
+    },
+    {
+      "trial": 27,
+      "n_forward": 104,
+      "n_rollback": 5,
+      "M_before": 104,
+      "M_after": 109,
+      "increased": true
+    },
+    {
+      "trial": 28,
+      "n_forward": 113,
+      "n_rollback": 18,
+      "M_before": 113,
+      "M_after": 131,
+      "increased": true
+    },
+    {
+      "trial": 29,
+      "n_forward": 151,
+      "n_rollback": 104,
+      "M_before": 151,
+      "M_after": 255,
+      "increased": true
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "summary": {
+    "claim": "Same input + same conditions => identical output and Q",
+    "n_runs": 1000,
+    "Q": 1024,
+    "identical_outputs": true,
+    "identical_weights": true,
+    "identical_hashes": true,
+    "overall_pass": true
+  }
+}

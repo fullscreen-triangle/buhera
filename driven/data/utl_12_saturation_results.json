@@ -1,0 +1,113 @@
+{
+  "summary": {
+    "claim": "Composite tp_inv saturates at Sigma; marginal benefit diminishes",
+    "n_kernels_max": 20,
+    "monotone_increasing": true,
+    "diminishing_returns": true,
+    "final_tp_inv": 99.9202077337024,
+    "asymptote_gap": 0.07979226629760205,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "n_kernels": 1,
+      "tp_inv_fed": 30.000000000000004,
+      "marginal": 30.000000000000004
+    },
+    {
+      "n_kernels": 2,
+      "tp_inv_fed": 51.0,
+      "marginal": 20.999999999999996
+    },
+    {
+      "n_kernels": 3,
+      "tp_inv_fed": 65.7,
+      "marginal": 14.700000000000003
+    },
+    {
+      "n_kernels": 4,
+      "tp_inv_fed": 75.99000000000001,
+      "marginal": 10.290000000000006
+    },
+    {
+      "n_kernels": 5,
+      "tp_inv_fed": 83.19300000000001,
+      "marginal": 7.203000000000003
+    },
+    {
+      "n_kernels": 6,
+      "tp_inv_fed": 88.2351,
+      "marginal": 5.042099999999991
+    },
+    {
+      "n_kernels": 7,
+      "tp_inv_fed": 91.76457,
+      "marginal": 3.5294700000000034
+    },
+    {
+      "n_kernels": 8,
+      "tp_inv_fed": 94.23519900000001,
+      "marginal": 2.4706290000000024
+    },
+    {
+      "n_kernels": 9,
+      "tp_inv_fed": 95.9646393,
+      "marginal": 1.7294402999999932
+    },
+    {
+      "n_kernels": 10,
+      "tp_inv_fed": 97.17524751,
+      "marginal": 1.2106082100000037
+    },
+    {
+      "n_kernels": 11,
+      "tp_inv_fed": 98.02267325700001,
+      "marginal": 0.8474257470000026
+    },
+    {
+      "n_kernels": 12,
+      "tp_inv_fed": 98.6158712799,
+      "marginal": 0.5931980228999976
+    },
+    {
+      "n_kernels": 13,
+      "tp_inv_fed": 99.03110989593,
+      "marginal": 0.41523861602999546
+    },
+    {
+      "n_kernels": 14,
+      "tp_inv_fed": 99.32177692715099,
+      "marginal": 0.29066703122099113
+    },
+    {
+      "n_kernels": 15,
+      "tp_inv_fed": 99.52524384900569,
+      "marginal": 0.20346692185469806
+    },
+    {
+      "n_kernels": 16,
+      "tp_inv_fed": 99.667670694304,
+      "marginal": 0.14242684529830285
+    },
+    {
+      "n_kernels": 17,
+      "tp_inv_fed": 99.7673694860128,
+      "marginal": 0.09969879170880347
+    },
+    {
+      "n_kernels": 18,
+      "tp_inv_fed": 99.83715864020895,
+      "marginal": 0.06978915419615817
+    },
+    {
+      "n_kernels": 19,
+      "tp_inv_fed": 99.88601104814627,
+      "marginal": 0.04885240793731782
+    },
+    {
+      "n_kernels": 20,
+      "tp_inv_fed": 99.9202077337024,
+      "marginal": 0.03419668555612532
+    }
+  ]
+}

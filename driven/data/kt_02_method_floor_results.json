@@ -1,0 +1,74 @@
+{
+  "summary": {
+    "claim": "s_n -> sigma*kappa/(1-kappa) (Banach fixed point)",
+    "n_pairs": 9,
+    "max_rel_error": 1.3816108750890835e-15,
+    "machine_precision": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "kappa": 0.1,
+      "sigma": 0.5,
+      "predicted": 0.05555555555555556,
+      "measured": 0.05555555555555556,
+      "rel_error": 0.0
+    },
+    {
+      "kappa": 0.3,
+      "sigma": 0.5,
+      "predicted": 0.2142857142857143,
+      "measured": 0.2142857142857143,
+      "rel_error": 0.0
+    },
+    {
+      "kappa": 0.5,
+      "sigma": 0.5,
+      "predicted": 0.5,
+      "measured": 0.5,
+      "rel_error": 0.0
+    },
+    {
+      "kappa": 0.7,
+      "sigma": 0.5,
+      "predicted": 1.1666666666666665,
+      "measured": 1.166666666666667,
+      "rel_error": 3.8064789415719656e-16
+    },
+    {
+      "kappa": 0.9,
+      "sigma": 0.5,
+      "predicted": 4.500000000000001,
+      "measured": 4.500000000000007,
+      "rel_error": 1.3816108750890835e-15
+    },
+    {
+      "kappa": 0.5,
+      "sigma": 0.1,
+      "predicted": 0.1,
+      "measured": 0.1,
+      "rel_error": 0.0
+    },
+    {
+      "kappa": 0.5,
+      "sigma": 1.0,
+      "predicted": 1.0,
+      "measured": 1.0,
+      "rel_error": 0.0
+    },
+    {
+      "kappa": 0.5,
+      "sigma": 5.0,
+      "predicted": 5.0,
+      "measured": 5.0,
+      "rel_error": 0.0
+    },
+    {
+      "kappa": 0.7,
+      "sigma": 2.0,
+      "predicted": 4.666666666666666,
+      "measured": 4.666666666666668,
+      "rel_error": 3.8064789415719656e-16
+    }
+  ]
+}

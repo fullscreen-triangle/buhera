@@ -1,0 +1,190 @@
+{
+  "summary": {
+    "claim": "Q_II (confinement route) = ground-truth weight",
+    "n_trials": 30,
+    "all_match": true,
+    "overall_pass": true
+  },
+  "records": [
+    {
+      "trial": 0,
+      "Q_true": 893,
+      "Q_II": 893,
+      "match": true
+    },
+    {
+      "trial": 1,
+      "Q_true": 7739,
+      "Q_II": 7739,
+      "match": true
+    },
+    {
+      "trial": 2,
+      "Q_true": 6546,
+      "Q_II": 6546,
+      "match": true
+    },
+    {
+      "trial": 3,
+      "Q_true": 4389,
+      "Q_II": 4389,
+      "match": true
+    },
+    {
+      "trial": 4,
+      "Q_true": 4330,
+      "Q_II": 4330,
+      "match": true
+    },
+    {
+      "trial": 5,
+      "Q_true": 8586,
+      "Q_II": 8586,
+      "match": true
+    },
+    {
+      "trial": 6,
+      "Q_true": 860,
+      "Q_II": 860,
+      "match": true
+    },
+    {
+      "trial": 7,
+      "Q_true": 6973,
+      "Q_II": 6973,
+      "match": true
+    },
+    {
+      "trial": 8,
+      "Q_true": 2015,
+      "Q_II": 2015,
+      "match": true
+    },
+    {
+      "trial": 9,
+      "Q_true": 942,
+      "Q_II": 942,
+      "match": true
+    },
+    {
+      "trial": 10,
+      "Q_true": 5265,
+      "Q_II": 5265,
+      "match": true
+    },
+    {
+      "trial": 11,
+      "Q_true": 9756,
+      "Q_II": 9756,
+      "match": true
+    },
+    {
+      "trial": 12,
+      "Q_true": 7357,
+      "Q_II": 7357,
+      "match": true
+    },
+    {
+      "trial": 13,
+      "Q_true": 7611,
+      "Q_II": 7611,
+      "match": true
+    },
+    {
+      "trial": 14,
+      "Q_true": 7175,
+      "Q_II": 7175,
+      "match": true
+    },
+    {
+      "trial": 15,
+      "Q_true": 7860,
+      "Q_II": 7860,
+      "match": true
+    },
+    {
+      "trial": 16,
+      "Q_true": 5132,
+      "Q_II": 5132,
+      "match": true
+    },
+    {
+      "trial": 17,
+      "Q_true": 1282,
+      "Q_II": 1282,
+      "match": true
+    },
+    {
+      "trial": 18,
+      "Q_true": 8397,
+      "Q_II": 8397,
+      "match": true
+    },
+    {
+      "trial": 19,
+      "Q_true": 4504,
+      "Q_II": 4504,
+      "match": true
+    },
+    {
+      "trial": 20,
+      "Q_true": 5004,
+      "Q_II": 5004,
+      "match": true
+    },
+    {
+      "trial": 21,
+      "Q_true": 3708,
+      "Q_II": 3708,
+      "match": true
+    },
+    {
+      "trial": 22,
+      "Q_true": 1826,
+      "Q_II": 1826,
+      "match": true
+    },
+    {
+      "trial": 23,
+      "Q_true": 9267,
+      "Q_II": 9267,
+      "match": true
+    },
+    {
+      "trial": 24,
+      "Q_true": 7815,
+      "Q_II": 7815,
+      "match": true
+    },
+    {
+      "trial": 25,
+      "Q_true": 6439,
+      "Q_II": 6439,
+      "match": true
+    },
+    {
+      "trial": 26,
+      "Q_true": 4024,
+      "Q_II": 4024,
+      "match": true
+    },
+    {
+      "trial": 27,
+      "Q_true": 8227,
+      "Q_II": 8227,
+      "match": true
+    },
+    {
+      "trial": 28,
+      "Q_true": 5454,
+      "Q_II": 5454,
+      "match": true
+    },
+    {
+      "trial": 29,
+      "Q_true": 4434,
+      "Q_II": 4434,
+      "match": true
+    }
+  ]
+}

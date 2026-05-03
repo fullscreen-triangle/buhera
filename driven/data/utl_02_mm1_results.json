@@ -1,0 +1,200 @@
+{
+  "summary": {
+    "claim": "Universal law reduces to M/M/1 (TP^-1 = rho/mu) for N=1",
+    "n_pairs": 27,
+    "max_abs_error": 2.7755575615628914e-17,
+    "machine_precision": 1.0,
+    "overall_pass": 1.0
+  },
+  "records": [
+    {
+      "rho": 0.1,
+      "mu": 1.0,
+      "tp_inv_mm1": 0.1,
+      "tp_inv_universal": 0.1,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.2,
+      "mu": 1.0,
+      "tp_inv_mm1": 0.2,
+      "tp_inv_universal": 0.2,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.30000000000000004,
+      "mu": 1.0,
+      "tp_inv_mm1": 0.30000000000000004,
+      "tp_inv_universal": 0.30000000000000004,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.4,
+      "mu": 1.0,
+      "tp_inv_mm1": 0.4,
+      "tp_inv_universal": 0.4,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.5,
+      "mu": 1.0,
+      "tp_inv_mm1": 0.5,
+      "tp_inv_universal": 0.5,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.6,
+      "mu": 1.0,
+      "tp_inv_mm1": 0.6,
+      "tp_inv_universal": 0.6,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.7000000000000001,
+      "mu": 1.0,
+      "tp_inv_mm1": 0.7000000000000001,
+      "tp_inv_universal": 0.7000000000000001,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.8,
+      "mu": 1.0,
+      "tp_inv_mm1": 0.8,
+      "tp_inv_universal": 0.8,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.9,
+      "mu": 1.0,
+      "tp_inv_mm1": 0.9,
+      "tp_inv_universal": 0.9,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.1,
+      "mu": 2.0,
+      "tp_inv_mm1": 0.05,
+      "tp_inv_universal": 0.05,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.2,
+      "mu": 2.0,
+      "tp_inv_mm1": 0.1,
+      "tp_inv_universal": 0.1,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.30000000000000004,
+      "mu": 2.0,
+      "tp_inv_mm1": 0.15000000000000002,
+      "tp_inv_universal": 0.15000000000000002,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.4,
+      "mu": 2.0,
+      "tp_inv_mm1": 0.2,
+      "tp_inv_universal": 0.2,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.5,
+      "mu": 2.0,
+      "tp_inv_mm1": 0.25,
+      "tp_inv_universal": 0.25,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.6,
+      "mu": 2.0,
+      "tp_inv_mm1": 0.3,
+      "tp_inv_universal": 0.3,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.7000000000000001,
+      "mu": 2.0,
+      "tp_inv_mm1": 0.35000000000000003,
+      "tp_inv_universal": 0.35000000000000003,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.8,
+      "mu": 2.0,
+      "tp_inv_mm1": 0.4,
+      "tp_inv_universal": 0.4,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.9,
+      "mu": 2.0,
+      "tp_inv_mm1": 0.45,
+      "tp_inv_universal": 0.45,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.1,
+      "mu": 5.0,
+      "tp_inv_mm1": 0.02,
+      "tp_inv_universal": 0.020000000000000004,
+      "abs_err": 3.469446951953614e-18
+    },
+    {
+      "rho": 0.2,
+      "mu": 5.0,
+      "tp_inv_mm1": 0.04,
+      "tp_inv_universal": 0.04000000000000001,
+      "abs_err": 6.938893903907228e-18
+    },
+    {
+      "rho": 0.30000000000000004,
+      "mu": 5.0,
+      "tp_inv_mm1": 0.06000000000000001,
+      "tp_inv_universal": 0.06000000000000001,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.4,
+      "mu": 5.0,
+      "tp_inv_mm1": 0.08,
+      "tp_inv_universal": 0.08000000000000002,
+      "abs_err": 1.3877787807814457e-17
+    },
+    {
+      "rho": 0.5,
+      "mu": 5.0,
+      "tp_inv_mm1": 0.1,
+      "tp_inv_universal": 0.1,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.6,
+      "mu": 5.0,
+      "tp_inv_mm1": 0.12,
+      "tp_inv_universal": 0.12,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.7000000000000001,
+      "mu": 5.0,
+      "tp_inv_mm1": 0.14,
+      "tp_inv_universal": 0.14,
+      "abs_err": 0.0
+    },
+    {
+      "rho": 0.8,
+      "mu": 5.0,
+      "tp_inv_mm1": 0.16,
+      "tp_inv_universal": 0.16000000000000003,
+      "abs_err": 2.7755575615628914e-17
+    },
+    {
+      "rho": 0.9,
+      "mu": 5.0,
+      "tp_inv_mm1": 0.18,
+      "tp_inv_universal": 0.18000000000000002,
+      "abs_err": 2.7755575615628914e-17
+    }
+  ]
+}

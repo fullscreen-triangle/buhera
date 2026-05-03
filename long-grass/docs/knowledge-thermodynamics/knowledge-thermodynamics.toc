@@ -1,0 +1,49 @@
+\contentsline {part}{I\hspace {1em}Preliminaries}{3}{part.1}%
+\contentsline {section}{\numberline {1}Receivers, Action-Cells, and the S-Functional}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Outcome and action spaces}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Receivers and the floor}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Methodologies}{3}{subsection.1.3}%
+\contentsline {part}{II\hspace {1em}The Receiver Uncertainty Principle}{3}{part.2}%
+\contentsline {section}{\numberline {2}Knowledge and Action Dispersions}{4}{section.2}%
+\contentsline {section}{\numberline {3}The Phase-Space Cell}{4}{section.3}%
+\contentsline {section}{\numberline {4}The Receiver Uncertainty Theorem}{4}{section.4}%
+\contentsline {section}{\numberline {5}The Saturating Scheduler}{5}{section.5}%
+\contentsline {section}{\numberline {6}The Compile/Execute Phase Lock}{5}{section.6}%
+\contentsline {part}{III\hspace {1em}Cell-Type Equivalence}{6}{part.3}%
+\contentsline {section}{\numberline {7}Refinement Types as Action-Cells}{6}{section.7}%
+\contentsline {section}{\numberline {8}The Open Type System}{6}{section.8}%
+\contentsline {part}{IV\hspace {1em}The Domain Lattice}{6}{part.4}%
+\contentsline {section}{\numberline {9}Domains as Triples}{6}{section.9}%
+\contentsline {section}{\numberline {10}The Domain Lattice}{9}{section.10}%
+\contentsline {section}{\numberline {11}Composition of Domains}{9}{section.11}%
+\contentsline {part}{V\hspace {1em}Cascade Switching as 0-1 Knapsack}{10}{part.5}%
+\contentsline {section}{\numberline {12}The Cascade Selection Problem}{10}{section.12}%
+\contentsline {section}{\numberline {13}The Cascade Switching Theorem}{10}{section.13}%
+\contentsline {section}{\numberline {14}Strong vs.\ Weak Replication}{10}{section.14}%
+\contentsline {part}{VI\hspace {1em}Knowledge Entropy and Federation}{11}{part.6}%
+\contentsline {section}{\numberline {15}The Knowledge Functional}{11}{section.15}%
+\contentsline {section}{\numberline {16}Knowledge Entropy}{13}{section.16}%
+\contentsline {section}{\numberline {17}Federation Inequality}{13}{section.17}%
+\contentsline {part}{VII\hspace {1em}Architectural Synthesis}{15}{part.7}%
+\contentsline {section}{\numberline {18}The Six-Theorem Architecture}{15}{section.18}%
+\contentsline {subsection}{\numberline {18.1}Uncertainty-Saturating Scheduler}{15}{subsection.18.1}%
+\contentsline {subsection}{\numberline {18.2}Cell-Stable Frozen Interface}{15}{subsection.18.2}%
+\contentsline {subsection}{\numberline {18.3}Lattice-Merge Multi-Domain Ontology}{15}{subsection.18.3}%
+\contentsline {subsection}{\numberline {18.4}Knapsack-Solver Cascade Router}{15}{subsection.18.4}%
+\contentsline {subsection}{\numberline {18.5}Entropy-Reducing Federation Manager}{15}{subsection.18.5}%
+\contentsline {subsection}{\numberline {18.6}The Closed-Form Specification}{15}{subsection.18.6}%
+\contentsline {section}{\numberline {19}Six Subsystems Forced by Six Theorems}{15}{section.19}%
+\contentsline {part}{VIII\hspace {1em}Numerical Validation}{16}{part.8}%
+\contentsline {section}{\numberline {20}Methodology}{16}{section.20}%
+\contentsline {section}{\numberline {21}Headline Results}{16}{section.21}%
+\contentsline {part}{IX\hspace {1em}Discussion}{16}{part.9}%
+\contentsline {section}{\numberline {22}Connections to Standard Mathematics}{16}{section.22}%
+\contentsline {subsection}{\numberline {22.1}Heisenberg, Cramér-Rao, and Information-Theoretic Bounds}{16}{subsection.22.1}%
+\contentsline {subsection}{\numberline {22.2}Refinement Types and Logical Frameworks}{16}{subsection.22.2}%
+\contentsline {subsection}{\numberline {22.3}Lattice Theory and Partitions}{16}{subsection.22.3}%
+\contentsline {subsection}{\numberline {22.4}Knapsack and Convex Optimisation}{16}{subsection.22.4}%
+\contentsline {subsection}{\numberline {22.5}Information Theory and Federation}{18}{subsection.22.5}%
+\contentsline {section}{\numberline {23}Open Questions}{18}{section.23}%
+\contentsline {part}{X\hspace {1em}Conclusion}{18}{part.10}%
+\contentsline {section}{\numberline {24}Summary}{18}{section.24}%
+\contentsline {section}{\numberline {25}Final Remarks}{18}{section.25}%
