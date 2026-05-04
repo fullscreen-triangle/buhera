@@ -47,7 +47,12 @@
       "Bash(python -m src.utl.panels.generate)",
       "Bash(python -m src.coe.panels.generate)",
       "Bash(pdflatex -interaction=nonstopmode -halt-on-error universal-os-transport-law.tex)",
-      "Bash(grep -c \"\\\\\\\\\\\\\\\\ker\\\\b\" universal-os-transport-law.tex)"
+      "Bash(grep -c \"\\\\\\\\\\\\\\\\ker\\\\b\" universal-os-transport-law.tex)",
+      "Read(//c/Users/kunda/.cargo/**)",
+      "PowerShell(Get-Command cargo 2>$null)",
+      "PowerShell(rustc --version 2>$null)",
+      "PowerShell(cargo --version 2>$null)",
+      "PowerShell(rustup --version 2>$null)"
     ]
   }
 }

@@ -4,6 +4,7 @@ members = [
     "crates/purpose-core",
     "crates/purpose-operations",
     "crates/purpose-domains-protein",
+    "crates/purpose-kernel",
     "crates/purpose-cli",
 ]
 
@@ -30,6 +31,7 @@ futures = "0.3"
 purpose-core = { path = "crates/purpose-core" }
 purpose-operations = { path = "crates/purpose-operations" }
 purpose-domains-protein = { path = "crates/purpose-domains-protein" }
+purpose-kernel = { path = "crates/purpose-kernel" }
 
 [profile.release]
 lto = "thin"
