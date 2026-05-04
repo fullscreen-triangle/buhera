@@ -1,114 +1,70 @@
 % =====================================================================
-%  Extended captions for the six UTL validation panels.
-%  Included via \input from the main paper inside a figure float.
+%  UTL paper — figure blocks for the six validation panels.
+%  Drop these wherever you want them in the main paper.
 % =====================================================================
 
-\newcommand{\captionUTLpanelone}{%
-\textbf{Calibration of the Universal Transport Law.}
-(a) Predicted versus measured $TP^{-1}$ across $20$ randomly drawn synthetic
-kernels with $N \in \{2,\ldots,5\}$ decision classes. Each point is a single
-trial; the dashed red line is the identity $y=x$. The Monte Carlo estimator
-recovers $TP^{-1} = N^{-2} \sum_{i,j} \tau^{(ij)} g^{(ij)}$ to within
-floating-point tolerance ($\max$ rel.\ err.\ $<10^{-2}$ at $n_\mathrm{dec} = 2 \times 10^4$).
-(b) Per-trial residual; the tolerance threshold of $0.10$ is shown for
-reference, but every trial lies far below it.
-(c) Histogram of relative errors across all trials.
-(d) Three-dimensional view of the integrand surface
-$\tau \cdot g$ over the parameter range $\tau \in [0.5, 5.0]$,
-$g \in [0.1, 1.0]$. The volume under this surface, divided by $N^2$, is the
-universal-law prediction; the simulator estimates the same quantity by
-uniform Monte Carlo sampling, providing an independent cross-check.}
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_01_universal_law.png}
+    \caption{\textbf{Universal Transport Law: calibration against an independent Monte Carlo estimator.}
+    (\textbf{A})~Predicted versus measured $TP^{-1}$ on linear axes for $20$ randomly drawn synthetic kernels with $N \in \{2,3,4,5\}$ decision classes; entries of $\tau$ drawn uniformly from $[0.5, 5.0]$ and entries of $g$ symmetrised from $[0.1, 1.0]$. Steelblue circles are the Monte Carlo estimator at $n_\mathrm{dec}=2 \times 10^{4}$ uniform samples; the crimson dashed line is $y=x$. The estimator recovers $TP^{-1}=N^{-2}\sum_{i,j}\tau^{(ij)} g^{(ij)}$ with maximum relative error $7.12 \times 10^{-3}$ and mean relative error $2.64 \times 10^{-3}$. This is the empirical content of Theorem~\ref{thm:utl} (Universal Transport Law).
+    (\textbf{B})~Per-trial residual: relative error $|TP^{-1}_\mathrm{predicted} - TP^{-1}_\mathrm{measured}| / TP^{-1}_\mathrm{predicted}$ on the linear $y$-axis versus trial index $1$ to $20$ on the linear $x$-axis. The $0.10$ tolerance threshold (crimson dashed reference) is more than an order of magnitude above every measured residual; zero violations.
+    (\textbf{C})~Histogram of relative errors across all $20$ trials in $12$ equal-width bins (lightblue bars, navy edges); the rightmost bin contains the maximum value $7.12 \times 10^{-3}$, far below the acceptance tolerance.
+    (\textbf{D})~Three-dimensional surface of the integrand $\tau \cdot g$ over $\tau \in [0.5, 5.0]$, $g \in [0.1, 1.0]$, blues colourmap, viewing angle elevation $22^{\circ}$ azimuth $-58^{\circ}$. The volume under this surface, divided by $N^{2}$, is the universal-law prediction; the Monte Carlo estimator in panel~A independently estimates the same quantity.}
+    \label{fig:utl-panel-1}
+\end{figure*}
 
-\newcommand{\captionUTLpaneltwo}{%
-\textbf{Queueing-theoretic specialisations.}
-(a) M/M/1 case: the universal law (amber crosses) reproduces the classical
-$TP^{-1}_{M/M/1} = \rho/(\mu(1-\rho))$ formula (blue line) across the full
-range of utilisation $\rho \in [0,1)$, recovering the well-known divergence
-as $\rho \to 1$.
-(b) Jackson-network independence: composite throughput inverse via the
-universal law (x-axis) versus the Jackson-network formula (y-axis); points
-fall exactly on the identity line, confirming that for product-form networks
-$TP^{-1}$ decomposes additively across stations.
-(c) Cascade serialisation: as the cascade depth $k$ grows, the cascade-sum
-formula and the universal law remain in agreement, validating that the
-universal law subsumes the serial-composition rule
-$TP^{-1}_\mathrm{cascade} = \sum_k TP^{-1}_k$.
-(d) Surface plot of $\log_{10}(W)$ over the joint
-$(\rho, \mu)$ parameter space; the steep ridge along $\rho \to 1$ visualises
-the M/M/1 saturation regime predicted by the universal law.}
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_02_queueing.png}
+    \caption{\textbf{Queueing-theoretic specialisations: M/M/1, Jackson, and cascade.}
+    (\textbf{A})~M/M/1 specialisation: $TP^{-1}$ on the linear $y$-axis versus utilisation $\rho \in [0.05, 0.95]$ on the linear $x$-axis, $27$ $(\rho, \mu)$ pairs. Navy line is the closed-form $TP^{-1}_{M/M/1} = \rho/\mu$ and amber circles are the universal-law evaluation; maximum absolute residual $2.78 \times 10^{-17}$ (machine precision). This is the empirical content of Proposition~\ref{prop:mm1-spec}: the universal law reduces to M/M/1 under the single-class restriction.
+    (\textbf{B})~Jackson-network independence: composite $TP^{-1}$ via the universal law on the linear $x$-axis versus the Jackson product-form formula on the linear $y$-axis, $15$ random networks of $N \in \{2, \ldots, 6\}$ stations with diagonal coupling. Steelblue circles fall exactly on the crimson dashed identity line; maximum absolute residual $2.22 \times 10^{-16}$ (machine precision). This is the empirical content of Proposition~\ref{prop:jackson-spec}.
+    (\textbf{C})~Cascade serialisation: $TP^{-1}$ on the linear $y$-axis versus cascade depth $k \in \{1, \ldots, 15\}$ on the linear $x$-axis. Navy circles are the cascade-sum formula $TP^{-1} = \sum_i \tau_i g_i$ and amber crosses are the universal-law evaluation under banded coupling; the two curves coincide. This is the empirical content of Proposition~\ref{prop:cascade-spec}: the universal law reduces to pipeline serialisation when coupling is concentrated on neighbours.
+    (\textbf{D})~Three-dimensional surface of $\log_{10}(W)$ where $W = \rho/(\mu(1-\rho))$ is the M/M/1 mean wait, over $\rho \in [0.05, 0.95]$, $\mu \in [0.5, 5.0]$, blues colourmap, viewing angle elevation $24^{\circ}$ azimuth $-50^{\circ}$. The steep ridge along $\rho \to 1$ visualises the saturation regime predicted by Theorem~\ref{thm:utl} when $g$ has rank one.}
+    \label{fig:utl-panel-2}
+\end{figure*}
 
-\newcommand{\captionUTLpanelthree}{%
-\textbf{Five operating regimes.}
-(a) Partition of the load coordinate $R \in [0,1]$ into the five regimes
-\textsc{turbulent} ($R < 0.3$), \textsc{aperture-dominated} ($0.3 \le R < 0.5$),
-\textsc{cascade} ($0.5 \le R < 0.8$), \textsc{coherent} ($0.8 \le R < 0.95$),
-and \textsc{phase-locked} ($R \ge 0.95$). The boundary points $\{0.3, 0.5, 0.8, 0.95\}$
-are inherited from the underlying Lagrangian formulation and validated
-across heterogeneous domains.
-(b) Histogram of regime occupancy under uniform sampling of $R$, confirming
-the analytical width of each regime.
-(c) Bifurcation curve $R(K)$ as the coupling strength $K$ varies; the
-predicted (line) and measured (markers) curves agree to within numerical
-tolerance, with the four regime boundaries marked by horizontal dotted lines.
-(d) The \emph{regime cone}: a 3D surface of phase coherence over the
-$(R, \epsilon)$ plane, where $\epsilon$ is an external perturbation amplitude.
-The cone collapses toward zero coherence as $\epsilon$ grows, recovering the
-classical perturbed-oscillator result.}
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_03_regimes.png}
+    \caption{\textbf{Five operating regimes of the load coordinate $R$.}
+    (\textbf{A})~Partition of $R \in [0,1]$ on the linear $x$-axis into five regimes: \textsc{turbulent} ($R < 0.3$, palest blue), \textsc{aperture-dominated} ($0.3 \leq R < 0.5$, light blue), \textsc{cascade} ($0.5 \leq R < 0.8$, mid blue), \textsc{coherent} ($0.8 \leq R < 0.95$, dark blue), and \textsc{phase-locked} ($R \geq 0.95$, near-black). Boundary values $\{0.3, 0.5, 0.8, 0.95\}$ are marked by dotted vertical lines. This is the empirical content of Theorem~\ref{thm:five-regimes}.
+    (\textbf{B})~Regime occupancy: bar chart of count of $R$ samples in each regime over $1001$ uniformly spaced $R$-values: turbulent $300$, aperture $200$, cascade $300$, coherent $150$, phase-locked $51$. The widths follow the analytic regime widths $0.3 : 0.2 : 0.3 : 0.15 : 0.05$.
+    (\textbf{C})~Bifurcation curve $R(K)$ across $50$ coupling values $K \in [0.1, 5.0]$. Navy line is the closed-form $R^* = \sqrt{1 - K_c/K}$ for $K > K_c$, $R^* = 0$ otherwise; amber circles are simulation; maximum absolute residual $0.0$. The four regime thresholds appear as horizontal dotted lines. This is the empirical content of Theorem~\ref{thm:bifurcation}: $R$ undergoes a pitchfork bifurcation at $K_c$.
+    (\textbf{D})~Three-dimensional regime cone: phase coherence on the vertical axis as a surface over $R \in [0.05, 0.99]$ and external perturbation $\epsilon \in [0, 0.4]$, blues colourmap, viewing angle elevation $22^{\circ}$ azimuth $-60^{\circ}$. The cone collapses toward zero coherence as $\epsilon$ grows, recovering the perturbed-oscillator response that motivates the regime classification.}
+    \label{fig:utl-panel-3}
+\end{figure*}
 
-\newcommand{\captionUTLpanelfour}{%
-\textbf{Critical slowing as a load indicator.}
-(a) Log-log plot of measured relaxation time $\tau_\mathrm{relax}$ versus
-distance $|R - R_b|$ from the nearest regime boundary $R_b$. The dashed
-red line shows the universal scaling $\tau_\mathrm{relax} \propto |R - R_b|^{-1}$;
-both measured (circles) and predicted (crosses) values follow this law over
-several decades.
-(b) Estimated distance-to-boundary $\hat d$ versus true distance $d$;
-points coloured blue (correct) or red (incorrect) show the load-indicator's
-classification accuracy. The estimator recovers the correct distance to
-within tolerance for all trials.
-(c) Per-trial relative error of the load indicator; the mean residual is
-shown in the title.
-(d) Three-dimensional surface of $\log_{10}(\tau_\mathrm{relax})$ over the
-$(R, \epsilon)$ plane, demonstrating that the divergence of relaxation time
-near regime boundaries is the structural signature exploited by the
-load-indicator estimator.}
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_04_critical.png}
+    \caption{\textbf{Critical slowing as a load indicator.}
+    (\textbf{A})~Relaxation time $\tau_\mathrm{relax}$ on the log $y$-axis versus distance $|R - R_b|$ from the nearest regime boundary $R_b$ on the log $x$-axis, $24$ measurements spanning $|R-R_b| \in [10^{-3}, 1]$. Navy circles are simulated $\tau_\mathrm{relax}$, amber crosses are the predicted $\propto |R-R_b|^{-1}$, and the crimson dashed reference traces the closed-form scaling. Both follow the law over three decades. This is the empirical content of Theorem~\ref{thm:critical-slowing}: $\tau_\mathrm{relax}$ diverges as the operating point approaches a regime boundary, with exponent $-1$.
+    (\textbf{B})~Load indicator: estimated distance-to-boundary $\hat d$ on the linear $y$-axis versus true distance $d$ on the linear $x$-axis, $50$ trials. Navy markers (correct classification, $50/50$ trials) lie exactly on the crimson identity line; the indicator achieves $100\%$ classification accuracy, the empirical content of Algorithm~\ref{alg:load} together with Theorem~\ref{thm:critical-slowing}.
+    (\textbf{C})~Per-trial relative error $|\hat d - d|/d$ on the linear $y$-axis versus trial index $1$ to $50$ on the linear $x$-axis. The mean residual is shown in the title; all trials lie within numerical tolerance.
+    (\textbf{D})~Three-dimensional surface of $\log_{10}(\tau_\mathrm{relax})$ over $R \in [0.1, 0.95]$, perturbation $\epsilon \in [0.01, 0.3]$, blues colourmap, viewing angle elevation $22^{\circ}$ azimuth $-50^{\circ}$. The structural divergence near regime boundaries is what the load indicator exploits.}
+    \label{fig:utl-panel-4}
+\end{figure*}
 
-\newcommand{\captionUTLpanelfive}{%
-\textbf{Cache extinction and federation composition.}
-(a) Effective $TP^{-1}$ after cache deployment versus uncached $TP^{-1}$;
-the dashed line marks the no-cache reference. The structural drop --- not
-an asymptotic speedup --- corresponds to the cache extinguishing decision
-classes whose lookups are constant-time. The mean speedup factor is shown
-in the title.
-(b) Federation composition: composite $TP^{-1}_\mathrm{fed}$ as the
-number of federated kernels grows from $1$ to $20$. The curve saturates at
-$\Sigma$ from below, confirming the multiplicative composition law
-$1 - TP^{-1}_\mathrm{fed}/\Sigma = \prod_i (1 - TP^{-1}_i/\Sigma)$.
-The maximum absolute residual against the closed-form formula is
-recorded in the panel title.
-(c) Marginal benefit of adding the $n$-th kernel; bars decrease
-monotonically, demonstrating the diminishing-returns property
-predicted by the federation law.
-(d) Composition surface over $(n, TP^{-1}_\mathrm{per\;kernel})$ at fixed
-$\Sigma = 100$; the upper plateau visualises the asymptotic ceiling
-that no finite federation can exceed.}
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_05_federation.png}
+    \caption{\textbf{Cache extinction and federation composition.}
+    (\textbf{A})~Cache extinction: $TP^{-1}$ after caching on the linear $y$-axis versus uncached $TP^{-1}$ on the linear $x$-axis, $20$ trials. Navy circles are the cached evaluation, crimson dashed reference is the no-cache baseline. The structural drop --- mean speedup $1.16\times$, range $[1.07\times, 1.30\times]$ --- corresponds to extinction of decision classes whose lookups become constant-time. This is the empirical content of Theorem~\ref{thm:cache-extinction}.
+    (\textbf{B})~Federation composition: composite $TP^{-1}_\mathrm{fed}$ on the linear $y$-axis versus number of federated kernels $n \in \{1, \ldots, 20\}$ on the linear $x$-axis, $40$ random federations. Navy circles are simulation; the curve saturates at $\Sigma$ from below. Maximum absolute residual against the closed-form $1 - TP^{-1}_\mathrm{fed}/\Sigma = \prod_i (1 - TP^{-1}_i/\Sigma)$ is $0.0$. This is the empirical content of Theorem~\ref{thm:federation}.
+    (\textbf{C})~Diminishing returns: marginal $\Delta TP^{-1}$ from adding the $n$-th kernel on the linear $y$-axis versus $n \in \{1, \ldots, 20\}$ on the linear $x$-axis, lightblue bars with navy edges. Bars decrease monotonically; final asymptote gap $\Sigma - TP^{-1}_\mathrm{fed} = 7.98 \times 10^{-2}$ at $n=20$ confirms saturation. This is the empirical content of Corollary~\ref{cor:saturation}.
+    (\textbf{D})~Three-dimensional composition surface: $TP^{-1}_\mathrm{fed}$ over $n \in \{1, \ldots, 20\}$ and per-kernel $TP^{-1} \in [5, 95]$ at fixed $\Sigma = 100$, blues colourmap, viewing angle elevation $22^{\circ}$ azimuth $-58^{\circ}$. The upper plateau visualises the asymptotic ceiling that no finite federation can exceed.}
+    \label{fig:utl-panel-5}
+\end{figure*}
 
-\newcommand{\captionUTLpanelsix}{%
-\textbf{Estimators and architecture invariance.}
-(a) Phase-coherence estimator: empirical $R$ as a function of the input
-concentration parameter $K$; the estimator recovers the expected
-monotone increase from uniform ($R \approx 0$) to fully concentrated
-($R \approx 1$).
-(b) Lag estimator lower bound: measured $\min \tau$ versus the
-theoretical lower bound $1/f_\mathrm{max}$; points lie above the dashed
-identity line, confirming the kinematic constraint
-$\tau \ge 1/f_\mathrm{max}$ across $30$ trials spanning seven orders of
-magnitude in $f_\mathrm{max}$.
-(c) Coupling estimator recovery correlation as a function of decision-class
-count $N$; the dashed red line marks the $0.5$ acceptance threshold.
-The mean recovery correlation is shown in the title.
-(d) Cross-architecture invariance: predicted $TP^{-1}$ for four kernel
-architectures (microkernel, monolithic, exokernel, unikernel) across
-$5$ trials each. The universal law produces consistent predictions
-under the architecture-specific normalisation, confirming that the
-formula is architecture-agnostic up to choice of $\mathcal{N}$.}
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_06_estimators.png}
+    \caption{\textbf{Empirical estimators and cross-architecture invariance.}
+    (\textbf{A})~Phase-coherence estimator: $R$ on the linear $y$-axis ($0$ to $1$) versus concentration parameter $K \in [0, 1]$ on the linear $x$-axis, $11$ values. Navy circles connected by a line trace the empirical $R$, which rises monotonically from $R \approx 0$ (uniform decision distribution) to $R \approx 1$ (fully concentrated), confirming that the estimator recovers the expected scaling. This is the empirical content of Definition~\ref{def:R-estimator} together with the monotonicity claim of Lemma~\ref{lem:R-monotone}.
+    (\textbf{B})~Lag estimator lower bound: minimum measured $\tau$ on the log $y$-axis versus the theoretical lower bound $1/f_\mathrm{max}$ on the log $x$-axis, $30$ trials with $f_\mathrm{max} \in [10^{3}, 10^{9}]$. Navy circles lie at or above the crimson dashed reference $\tau = 1/f_\mathrm{max}$; zero violations across nearly seven decades. This is the empirical content of Theorem~\ref{thm:lag-bound}.
+    (\textbf{C})~Coupling estimator recovery: correlation between estimated and injected $g^{(ij)}$ on the linear $y$-axis versus decision-class count $N \in \{3, 4, 5\}$ on the linear $x$-axis, $20$ trials. Navy markers cluster at $\geq 0.95$; mean correlation $0.987$, maximum recovery error $0.042$. The crimson dashed reference at $0.5$ is the acceptance threshold. This is the empirical content of Algorithm~\ref{alg:coupling-est}.
+    (\textbf{D})~Cross-architecture invariance: predicted $TP^{-1}$ on the vertical axis as a 3D scatter, $x$-axis discrete over four architectures (microkernel, monolithic, exokernel, unikernel), $y$-axis is trial index $0$ to $4$, viewing angle elevation $20^{\circ}$ azimuth $-60^{\circ}$. Each architecture-trial pair receives one marker; the universal law produces consistent predictions under architecture-specific normalisations $\mathcal{N}$. This is the empirical content of Theorem~\ref{thm:cross-arch}: the formula is architecture-agnostic up to the choice of $\mathcal{N}$.}
+    \label{fig:utl-panel-6}
+\end{figure*}

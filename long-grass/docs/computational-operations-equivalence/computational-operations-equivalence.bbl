@@ -1,0 +1,74 @@
+\begin{thebibliography}{11}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bennett(1973)]{bennett1973logical}
+Charles~H. Bennett.
+\newblock Logical reversibility of computation.
+\newblock \emph{IBM Journal of Research and Development}, 17\penalty0
+  (6):\penalty0 525--532, 1973.
+
+\bibitem[Bennett(1982)]{bennett1982}
+Charles~H. Bennett.
+\newblock The thermodynamics of computation: A review.
+\newblock \emph{International Journal of Theoretical Physics}, 21:\penalty0
+  905--940, 1982.
+
+\bibitem[Gregg(2013)]{gregg2013systems}
+Brendan Gregg.
+\newblock \emph{Systems Performance: Enterprise and the Cloud}.
+\newblock Prentice Hall, 2013.
+
+\bibitem[Jain(1991)]{jain1991art}
+Raj Jain.
+\newblock \emph{The Art of Computer Systems Performance Analysis}.
+\newblock Wiley, 1991.
+
+\bibitem[Klein et~al.(2009)Klein, Elphinstone, Heiser, Andronick, Cock, Derrin,
+  Elkaduwe, Engelhardt, Kolanski, Norrish, Sewell, Tuch, and
+  Winwood]{klein2009sel4}
+Gerwin Klein, Kevin Elphinstone, Gernot Heiser, June Andronick, David Cock,
+  Philip Derrin, Dhammika Elkaduwe, Kai Engelhardt, Rafal Kolanski, Michael
+  Norrish, Thomas Sewell, Harvey Tuch, and Simon Winwood.
+\newblock {seL4}: Formal verification of an os kernel.
+\newblock In \emph{Proceedings of the 22nd ACM SIGOPS Symposium on Operating
+  Systems Principles}, pages 207--220, 2009.
+
+\bibitem[Liskov(1987)]{liskov1987data}
+Barbara Liskov.
+\newblock Data abstraction and hierarchy.
+\newblock \emph{ACM SIGPLAN Notices}, 23\penalty0 (5):\penalty0 17--34, 1987.
+
+\bibitem[Ma et~al.(2017)Ma, Zhai, Wang, Lee, Zhang, and Xu]{ma2017hercule}
+Shiqing Ma, Juan Zhai, Fei Wang, Kyu~Hyung Lee, Xiangyu Zhang, and Dongyan Xu.
+\newblock {MPI}: Multiple perspective attack investigation with semantic aware
+  execution partitioning.
+\newblock In \emph{Proceedings of USENIX Security}, pages 1111--1128, 2017.
+
+\bibitem[Rondon et~al.(2008)Rondon, Kawaguchi, and Jhala]{rondon2008liquid}
+Patrick~M. Rondon, Ming Kawaguchi, and Ranjit Jhala.
+\newblock Liquid types.
+\newblock In \emph{Proceedings of PLDI}, pages 159--169, 2008.
+
+\bibitem[Schneier and Kelsey(1999)]{schneier1999secure}
+Bruce Schneier and John Kelsey.
+\newblock Secure audit logs to support computer forensics.
+\newblock In \emph{ACM Transactions on Information and System Security},
+  volume~2, pages 159--176, 1999.
+
+\bibitem[Tanenbaum and Bos(2014)]{tanenbaum2014modern}
+Andrew~S. Tanenbaum and Herbert Bos.
+\newblock \emph{Modern Operating Systems}.
+\newblock Pearson, 4 edition, 2014.
+
+\bibitem[Vazou et~al.(2014)Vazou, Seidel, Jhala, Vytiniotis, and
+  Jones]{vazou2014refinement}
+Niki Vazou, Eric~L. Seidel, Ranjit Jhala, Dimitrios Vytiniotis, and
+  Simon~Peyton Jones.
+\newblock Refinement types for {Haskell}.
+\newblock In \emph{Proceedings of ICFP}, pages 269--282, 2014.
+
+\end{thebibliography}

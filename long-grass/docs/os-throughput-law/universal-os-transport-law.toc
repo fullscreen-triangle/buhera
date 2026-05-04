@@ -1,8 +1,8 @@
-\contentsline {part}{I\hspace {1em}Preliminaries}{1}{part.1}%
+\contentsline {part}{I\hspace {1em}Preliminaries}{2}{part.1}%
 \contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
 \contentsline {subsection}{\numberline {1.1}The throughput problem in operating-system design}{2}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}The Universal OS Transport Law}{2}{subsection.1.2}%
-\contentsline {subsection}{\numberline {1.3}Five consequences}{2}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.2}The Universal OS Transport Law}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Five consequences}{3}{subsection.1.3}%
 \contentsline {subsection}{\numberline {1.4}Scope and structure}{3}{subsection.1.4}%
 \contentsline {section}{\numberline {2}Axiomatic Foundations}{3}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Consequences of the axioms}{4}{subsection.2.1}%
@@ -16,39 +16,38 @@
 \contentsline {subsection}{\numberline {5.1}Origin}{6}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}Estimation}{6}{subsection.5.2}%
 \contentsline {section}{\numberline {6}The Universal Throughput Theorem}{6}{section.6}%
-\contentsline {section}{\numberline {7}Specialisations to Standard Models}{7}{section.7}%
-\contentsline {subsection}{\numberline {7.1}M/M/1 utilisation}{7}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Jackson networks}{7}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Drude serialisation}{7}{subsection.7.3}%
-\contentsline {subsection}{\numberline {7.4}Cascade composition}{7}{subsection.7.4}%
-\contentsline {part}{III\hspace {1em}Phase Coherence and the Five Operating Regimes}{7}{part.3}%
+\contentsline {section}{\numberline {7}Specialisations to Standard Models}{6}{section.7}%
+\contentsline {subsection}{\numberline {7.1}M/M/1 utilisation}{8}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Jackson networks}{8}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Drude serialisation}{8}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Cascade composition}{8}{subsection.7.4}%
+\contentsline {part}{III\hspace {1em}Phase Coherence and the Five Operating Regimes}{8}{part.3}%
 \contentsline {section}{\numberline {8}Phase Coherence Among Operations}{8}{section.8}%
 \contentsline {section}{\numberline {9}The Five-Regime Classification}{8}{section.9}%
-\contentsline {section}{\numberline {10}Regime Transitions as Bifurcations}{9}{section.10}%
-\contentsline {subsection}{\numberline {10.1}The effective potential}{9}{subsection.10.1}%
-\contentsline {subsection}{\numberline {10.2}Regime boundaries as second-order transitions}{9}{subsection.10.2}%
-\contentsline {part}{IV\hspace {1em}Special Phenomena}{9}{part.4}%
-\contentsline {section}{\numberline {11}Cache Hits as Decision Extinction}{9}{section.11}%
-\contentsline {section}{\numberline {12}Critical Slowing as Load Indicator}{10}{section.12}%
-\contentsline {subsection}{\numberline {12.1}The critical-slowing relation}{10}{subsection.12.1}%
-\contentsline {subsection}{\numberline {12.2}Operational use as a load indicator}{10}{subsection.12.2}%
-\contentsline {section}{\numberline {13}Federation: Composite Throughput}{11}{section.13}%
-\contentsline {subsection}{\numberline {13.1}Federated kernels}{11}{subsection.13.1}%
-\contentsline {part}{V\hspace {1em}Numerical Validation}{11}{part.5}%
-\contentsline {section}{\numberline {14}Validation Methodology}{11}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Experimental design}{11}{subsection.14.1}%
-\contentsline {subsection}{\numberline {14.2}Success criteria}{12}{subsection.14.2}%
-\contentsline {subsection}{\numberline {14.3}Reproducibility}{12}{subsection.14.3}%
-\contentsline {section}{\numberline {15}Validation Results}{12}{section.15}%
-\contentsline {part}{VI\hspace {1em}Discussion}{19}{part.6}%
-\contentsline {section}{\numberline {16}Connections to Existing Models}{19}{section.16}%
-\contentsline {subsection}{\numberline {16.1}Queueing theory}{19}{subsection.16.1}%
-\contentsline {subsection}{\numberline {16.2}Little's law}{19}{subsection.16.2}%
-\contentsline {subsection}{\numberline {16.3}Kinetic theory of dissipation}{19}{subsection.16.3}%
-\contentsline {subsection}{\numberline {16.4}Cache theory}{19}{subsection.16.4}%
-\contentsline {subsection}{\numberline {16.5}Reversible computing}{19}{subsection.16.5}%
-\contentsline {section}{\numberline {17}Open Questions}{19}{section.17}%
-\contentsline {section}{\numberline {18}Architectural Implications}{20}{section.18}%
-\contentsline {part}{VII\hspace {1em}Conclusion}{20}{part.7}%
-\contentsline {section}{\numberline {19}Summary}{20}{section.19}%
-\contentsline {section}{\numberline {20}Final Remarks}{21}{section.20}%
+\contentsline {section}{\numberline {10}Regime Transitions as Bifurcations}{10}{section.10}%
+\contentsline {subsection}{\numberline {10.1}The effective potential}{10}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Regime boundaries as second-order transitions}{10}{subsection.10.2}%
+\contentsline {part}{IV\hspace {1em}Special Phenomena}{10}{part.4}%
+\contentsline {section}{\numberline {11}Cache Hits as Decision Extinction}{10}{section.11}%
+\contentsline {section}{\numberline {12}Critical Slowing as Load Indicator}{12}{section.12}%
+\contentsline {subsection}{\numberline {12.1}The critical-slowing relation}{12}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Operational use as a load indicator}{12}{subsection.12.2}%
+\contentsline {section}{\numberline {13}Federation: Composite Throughput}{14}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Federated kernels}{14}{subsection.13.1}%
+\contentsline {part}{V\hspace {1em}Numerical Validation}{14}{part.5}%
+\contentsline {section}{\numberline {14}Validation Methodology}{14}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Experimental design}{14}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Success criteria}{16}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.3}Reproducibility}{16}{subsection.14.3}%
+\contentsline {part}{VI\hspace {1em}Discussion}{16}{part.6}%
+\contentsline {section}{\numberline {15}Connections to Existing Models}{16}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Queueing theory}{16}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Little's law}{16}{subsection.15.2}%
+\contentsline {subsection}{\numberline {15.3}Kinetic theory of dissipation}{16}{subsection.15.3}%
+\contentsline {subsection}{\numberline {15.4}Cache theory}{16}{subsection.15.4}%
+\contentsline {subsection}{\numberline {15.5}Reversible computing}{16}{subsection.15.5}%
+\contentsline {section}{\numberline {16}Open Questions}{18}{section.16}%
+\contentsline {section}{\numberline {17}Architectural Implications}{18}{section.17}%
+\contentsline {part}{VII\hspace {1em}Conclusion}{18}{part.7}%
+\contentsline {section}{\numberline {18}Summary}{18}{section.18}%
+\contentsline {section}{\numberline {19}Final Remarks}{18}{section.19}%
