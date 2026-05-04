@@ -1,0 +1,141 @@
+\begin{thebibliography}{23}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Baskett et~al.(1975)Baskett, Chandy, Muntz, and Palacios]{baskett1975}
+Forest Baskett, K.~Mani Chandy, Richard~R. Muntz, and Fernando~G. Palacios.
+\newblock Open, closed, and mixed networks of queues with different classes of
+  customers.
+\newblock \emph{Journal of the ACM}, 22\penalty0 (2):\penalty0 248--260, 1975.
+
+\bibitem[Bennett(1973)]{bennett1973logical}
+Charles~H. Bennett.
+\newblock Logical reversibility of computation.
+\newblock \emph{IBM Journal of Research and Development}, 17\penalty0
+  (6):\penalty0 525--532, 1973.
+
+\bibitem[Bennett(1982)]{bennett1982}
+Charles~H. Bennett.
+\newblock The thermodynamics of computation: A review.
+\newblock \emph{International Journal of Theoretical Physics}, 21:\penalty0
+  905--940, 1982.
+
+\bibitem[Breakspear(2017)]{breakspear2017}
+Michael Breakspear.
+\newblock Dynamic models of large-scale brain activity.
+\newblock \emph{Nature Neuroscience}, 20:\penalty0 340--352, 2017.
+
+\bibitem[Cantrill et~al.(2004)Cantrill, Shapiro, and
+  Leventhal]{cantrill2004dynamic}
+Bryan~M. Cantrill, Michael~W. Shapiro, and Adam~H. Leventhal.
+\newblock Dynamic instrumentation of production systems.
+\newblock \emph{Proceedings of the USENIX Annual Technical Conference}, pages
+  15--28, 2004.
+
+\bibitem[Chapman and Cowling(1990)]{chapman1990}
+Sydney Chapman and Thomas~G. Cowling.
+\newblock \emph{The Mathematical Theory of Non-Uniform Gases}.
+\newblock Cambridge University Press, 3 edition, 1990.
+
+\bibitem[Drude(1900)]{drude1900}
+Paul Drude.
+\newblock Zur {Elektronentheorie} der {Metalle}.
+\newblock \emph{Annalen der Physik}, 306\penalty0 (3):\penalty0 566--613, 1900.
+
+\bibitem[Gregg(2013)]{gregg2013systems}
+Brendan Gregg.
+\newblock \emph{Systems Performance: Enterprise and the Cloud}.
+\newblock Prentice Hall, 2013.
+
+\bibitem[Hennessy and Patterson(2017)]{hennessy2017computer}
+John~L. Hennessy and David~A. Patterson.
+\newblock \emph{Computer Architecture: A Quantitative Approach}.
+\newblock Morgan Kaufmann, 6 edition, 2017.
+
+\bibitem[Jackson(1957)]{jackson1957}
+James~R. Jackson.
+\newblock Networks of waiting lines.
+\newblock \emph{Operations Research}, 5\penalty0 (4):\penalty0 518--521, 1957.
+
+\bibitem[Jain(1991)]{jain1991art}
+Raj Jain.
+\newblock \emph{The Art of Computer Systems Performance Analysis}.
+\newblock Wiley, 1991.
+
+\bibitem[Klein et~al.(2009)Klein, Elphinstone, Heiser, Andronick, Cock, Derrin,
+  Elkaduwe, Engelhardt, Kolanski, Norrish, Sewell, Tuch, and
+  Winwood]{klein2009sel4}
+Gerwin Klein, Kevin Elphinstone, Gernot Heiser, June Andronick, David Cock,
+  Philip Derrin, Dhammika Elkaduwe, Kai Engelhardt, Rafal Kolanski, Michael
+  Norrish, Thomas Sewell, Harvey Tuch, and Simon Winwood.
+\newblock {seL4}: Formal verification of an os kernel.
+\newblock In \emph{Proceedings of the 22nd ACM SIGOPS Symposium on Operating
+  Systems Principles}, pages 207--220, 2009.
+
+\bibitem[Kleinrock(1975)]{kleinrock1975}
+Leonard Kleinrock.
+\newblock \emph{Queueing Systems, Volume I: Theory}.
+\newblock Wiley, 1975.
+
+\bibitem[Kuramoto(1975)]{kuramoto1975}
+Yoshiki Kuramoto.
+\newblock Self-entrainment of a population of coupled non-linear oscillators.
+\newblock \emph{International Symposium on Mathematical Problems in Theoretical
+  Physics}, pages 420--422, 1975.
+
+\bibitem[Liedtke(1995)]{liedtke1995microkernel}
+Jochen Liedtke.
+\newblock On micro-kernel construction.
+\newblock In \emph{Proceedings of the 15th ACM Symposium on Operating Systems
+  Principles (SOSP)}, pages 237--250, 1995.
+
+\bibitem[Little(1961)]{little1961proof}
+John D.~C. Little.
+\newblock A proof for the queuing formula: $l = \lambda w$.
+\newblock \emph{Operations Research}, 9\penalty0 (3):\penalty0 383--387, 1961.
+
+\bibitem[Mattson et~al.(1970)Mattson, Gecsei, Slutz, and
+  Traiger]{mattson1970evaluation}
+R.~L. Mattson, J.~Gecsei, D.~R. Slutz, and I.~L. Traiger.
+\newblock Evaluation techniques for storage hierarchies.
+\newblock \emph{IBM Systems Journal}, 9\penalty0 (2):\penalty0 78--117, 1970.
+
+\bibitem[Ousterhout(1990)]{ousterhout1990why}
+John~K. Ousterhout.
+\newblock Why aren't operating systems getting faster as fast as hardware?
+\newblock \emph{Proceedings of the USENIX Summer Conference}, pages 247--256,
+  1990.
+
+\bibitem[Patterson and Hennessy(2017)]{patterson2017computer}
+David~A. Patterson and John~L. Hennessy.
+\newblock \emph{Computer Organization and Design: The Hardware/Software
+  Interface}.
+\newblock Morgan Kaufmann, 6 edition, 2017.
+
+\bibitem[Poincar{\'e}(1890)]{poincare1890}
+Henri Poincar{\'e}.
+\newblock Sur le probl{\`e}me des trois corps et les {\'e}quations de la
+  dynamique.
+\newblock \emph{Acta Mathematica}, 13:\penalty0 1--270, 1890.
+
+\bibitem[Smith(1982)]{smith1982cache}
+Alan~Jay Smith.
+\newblock Cache memories.
+\newblock \emph{ACM Computing Surveys}, 14\penalty0 (3):\penalty0 473--530,
+  1982.
+
+\bibitem[Strogatz(2000)]{strogatz2000}
+Steven~H. Strogatz.
+\newblock From {Kuramoto} to {Crawford}: Exploring the onset of synchronization
+  in populations of coupled oscillators.
+\newblock \emph{Physica D}, 143:\penalty0 1--20, 2000.
+
+\bibitem[Tanenbaum and Bos(2014)]{tanenbaum2014modern}
+Andrew~S. Tanenbaum and Herbert Bos.
+\newblock \emph{Modern Operating Systems}.
+\newblock Pearson, 4 edition, 2014.
+
+\end{thebibliography}

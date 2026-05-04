@@ -53,7 +53,7 @@ GREY = "#555555"
 
 
 def save_panel(fig, name: str) -> Path:
-    out = PANEL_DIR / f"{name}.pdf"
-    fig.savefig(out, bbox_inches="tight", dpi=200)
+    out = PANEL_DIR / f"{name}.png"
+    fig.savefig(out, bbox_inches="tight", dpi=220, facecolor="white")
     plt.close(fig)
     return out

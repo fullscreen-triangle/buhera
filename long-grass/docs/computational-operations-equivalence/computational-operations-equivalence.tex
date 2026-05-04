@@ -57,11 +57,11 @@
 A Single-Quantity Bookkeeping Framework\\[2pt]
 for Kernel Operations}}
 
-\author{
-Kundai Farai Sachikonye\\
+\author{Kundai Farai Sachikonye\\
+Technical University of Munich\\
 AIMe Registry for Artificial Intelligence\\
-\texttt{kundai.sachikonye@bitspark.com}
-}
+Maximus-von-Imhof-Forum 3, 85354 Freising, Germany\\
+\texttt{kundai.sachikonye@wzw.tum.de}}
 
 \date{\today}
 
@@ -276,6 +276,17 @@ The first equality is Theorem~\ref{thm:time-count}. The second follows because t
 Theorem~\ref{thm:time-count} reduces kernel accounting to a single operation: increment $\Mcount$ at each scheduling decision. Wall-clock time is not stored separately; it is computed on read by dividing $\Mcount$ by the reference frequency. The kernel's per-operation control block reduces to one integer field per operation (plus the reference frequency, stored once).
 \end{remark}
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_01_identity.png}
+    \caption{\textbf{Time-Count Identity and count linearity.}
+    (\textbf{A})~Recovered reference frequency $\hat f = M(t)/t$ on the linear $y$-axis versus trial index $1$ to $50$ on the linear $x$-axis at $f_\mathrm{ref} = 10^{6}\,\mathrm{Hz}$ (crimson dashed reference). Forest-green circles connected by a line trace the per-trial recovered frequency; the recovered frequency hugs $f_\mathrm{ref}$ across all $50$ trials, with maximum relative error $4.01 \times 10^{-7}$, well below the $10^{-3}$ acceptance tolerance. This is the empirical content of Theorem~\ref{thm:time-count}: the relation $t = \Mcount/f$ is an operational definition, not a measurement equation, and the kernel's elapsed time \emph{is} its accumulated decision count divided by the reference frequency.
+    (\textbf{B})~Recovery residual: $|\hat f - f_\mathrm{ref}|/f_\mathrm{ref}$ on the log $y$-axis versus trial index on the linear $x$-axis. The $10^{-3}$ tolerance line (crimson dashed reference) lies at least three orders of magnitude above every measured residual; zero violations.
+    (\textbf{C})~Count linearity: $M(\op_1 \cup \op_2)$ on the linear $y$-axis versus $M(\op_1) + M(\op_2)$ on the linear $x$-axis, $50$ random non-overlapping operation pairs with $M(\op_i) \in [1, 10^{4}]$. Forest-green circles fall exactly on the crimson identity line $y=x$; all $50$ trials match. This is the empirical content of the count-additivity claim that supports the audit-log derivation in Section~\ref{sec:time-count}.
+    (\textbf{D})~Three-dimensional surface of the conversion law $t = Q/f$ over $Q \in [1, 200]$ on one horizontal axis and $\log_{10} f \in [3, 7]$ on the other, greens colourmap, viewing angle elevation $22^{\circ}$ azimuth $-58^{\circ}$. The single underlying $Q$ projects to different $(t, M)$ pairs through the kernel's reference frequency, the geometric content of Theorem~\ref{thm:time-count}.}
+    \label{fig:coe-panel-1}
+\end{figure*}
+
 % ============================================================
 \part{Three Routes to Operation Weight}
 % ============================================================
@@ -430,6 +441,17 @@ Theorem~\ref{thm:three-route} provides a non-trivial computational consistency c
 A kernel implementation is operationally consistent iff the three computations of $\Qweight(\op)$ agree for every operation $\op$. This consistency check is decidable in linear time per operation.
 \end{corollary}
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_02_three_routes.png}
+    \caption{\textbf{Three independent routes to operation weight $Q$.}
+    (\textbf{A})~Route I (residue): $Q_\mathrm{I}$ measured by an instrumented decision-counter on the linear $y$-axis versus ground-truth weight $Q_\mathrm{true} \in [1, 10^{4}]$ on the linear $x$-axis, $30$ trials. Forest-green circles fall exactly on the crimson identity line $y=x$; all $30$ trials match. This is the empirical content of Definition~\ref{def:route-I}: the residue route counts decisions during the operation's categorical lifetime.
+    (\textbf{B})~Route II (confinement): $Q_\mathrm{II}$ measured by an address-space-cell-counting instrument on the linear $y$-axis versus $Q_\mathrm{true}$ on the linear $x$-axis, $30$ trials. Sea-green circles fall exactly on the identity line; all $30$ trials match. This is the empirical content of Definition~\ref{def:route-II}.
+    (\textbf{C})~Route III (negation fixed point): $Q_\mathrm{III}$ measured by an iterated-negation-depth instrument on the linear $y$-axis versus $Q_\mathrm{true}$ on the linear $x$-axis, $30$ trials. Light-green circles edged in dark green fall exactly on the identity line; all $30$ trials match. This is the empirical content of Definition~\ref{def:route-III}.
+    (\textbf{D})~Three-dimensional point cloud of the triples $(Q_\mathrm{I}, Q_\mathrm{II}, Q_\mathrm{III})$ for $30$ trials, viewing angle elevation $22^{\circ}$ azimuth $-58^{\circ}$. Every point lies on the diagonal $Q_\mathrm{I} = Q_\mathrm{II} = Q_\mathrm{III}$ (crimson dashed reference); zero off-diagonal points. The three computationally distinct instruments converge to a single underlying invariant.}
+    \label{fig:coe-panel-2}
+\end{figure*}
+
 % ============================================================
 \part{The Master Equivalence}
 % ============================================================
@@ -478,6 +500,17 @@ This is a substantial architectural simplification. Standard kernels track multi
 \label{rem:frequency-arch}
 The reference frequency $f$ is the kernel's fundamental architectural parameter. Specifying $f$ determines the unit conversions for all four equivalence classes: it is the kernel's `clock', its `tempo', and its `discrimination rate' simultaneously. Different kernel architectures have different $f$ values; the equivalence theorem holds within each architecture.
 \end{remark}
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_03_equivalence.png}
+    \caption{\textbf{Three-Route Equivalence and Mass-Time-Identity-Count Equivalence.}
+    (\textbf{A})~Pairwise residuals $Q_\mathrm{I} - Q_\mathrm{II}$, $Q_\mathrm{II} - Q_\mathrm{III}$, $Q_\mathrm{I} - Q_\mathrm{III}$ on the linear $y$-axis versus trial index $1$ to $50$ on the linear $x$-axis, in three line styles (dark green solid, sea-green dashed, light-green dotted). All three curves coincide identically on zero (crimson reference at $0$); maximum disagreement $0$ across all $50$ trials. This is the empirical content of Theorem~\ref{thm:three-route} (Three-Route Equivalence).
+    (\textbf{B})~$Q_\mathrm{I}$ on the linear $x$-axis versus $Q_\mathrm{II}$ on the linear $y$-axis, $50$ trials, with marker colour encoding $Q_\mathrm{III}$ (greens colourmap, colourbar). Markers fall on the crimson dashed identity line and the colour gradient runs along the diagonal, demonstrating that all three quantities co-vary perfectly: $Q_\mathrm{I} = Q_\mathrm{II} = Q_\mathrm{III}$.
+    (\textbf{C})~Mass-Time-Identity-Count: $t = Q/f$ on the linear $y$-axis versus $Q$ on the linear $x$-axis, $30$ trials at $f = 10^{6}\,\mathrm{Hz}$. Forest-green circles are direct $(Q, t)$ pairs; amber crosses are $(Q, Q_\mathrm{from\,t}/f)$, recovered by inverting the time-count identity. The two markers coincide on the same straight line, confirming that $Q$, $t$, and $M$ are unit conversions of one quantity. This is the empirical content of Theorem~\ref{thm:mtic}.
+    (\textbf{D})~Three-dimensional locus of $(Q, M, t)$ points for the same $30$ trials, viewing angle elevation $20^{\circ}$ azimuth $-58^{\circ}$. Forest-green markers lie on the one-parameter curve $M = Q$, $t = Q/f$. The MTIC theorem states that this curve is the only locus a kernel can occupy: any divergence between $Q$, $M$, and $tf$ would be a measurement artefact, not a degree of freedom.}
+    \label{fig:coe-panel-3}
+\end{figure*}
 
 \section{The Sliding-Endpoint Theorem}
 \label{sec:sliding}
@@ -536,6 +569,17 @@ A kernel's decision log grows monotonically by structural force: every kernel op
 This is a strong architectural guarantee. It says that within the kernel's own operations, the transaction log only grows. Rollback is not the inverse of forward execution; it is a separate forward operation that records the rollback in the log alongside the original execution. The log retains the full history.
 \end{remark}
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_04_irreversibility.png}
+    \caption{\textbf{Reproducibility, sliding-endpoint, and monotone log growth.}
+    (\textbf{A})~Reproducibility: bar chart of identical-output, identical-weight, and identical-hash flags across $1000$ runs of an identical operation at $Q=1024$. All three sea-green bars stand at $1$ (identical across all runs); zero divergence. This is the empirical content of the reproducibility property of Definition~\ref{def:reproducibility}.
+    (\textbf{B})~Sliding-Endpoint Theorem: bar chart with two categories on the linear $x$-axis (\textit{baseline reproducible}, \textit{truncated breaks}) and presence on the linear $y$-axis. Forest-green and amber bars both stand at $1$, confirming that the baseline configuration is reproducible and that externally truncating the kernel's accumulated count $\Mcount$ breaks reproducibility. This is the empirical content of Theorem~\ref{thm:sliding}: reproducibility $\iff$ irreversibility of $\Mcount$.
+    (\textbf{C})~Rewind-as-Forward Principle: $\Mcount$ after rollback on the linear $y$-axis versus $\Mcount$ before rollback on the linear $x$-axis, $30$ trials. All $30$ forest-green markers lie strictly above the crimson dashed equality line; rollback strictly increases $\Mcount$ in every trial. This is the empirical content of Theorem~\ref{thm:rewind}: rolling back is itself a forward kernel decision.
+    (\textbf{D})~Monotone log growth: 3D bar chart of per-step increments $\Delta \Mcount$ on the vertical axis over operation index $0$ to $49$ on one horizontal axis (in a $1000$-op workload mixing forwards and rollbacks), viewing angle elevation $22^{\circ}$ azimuth $-58^{\circ}$. Every bar has nonnegative height; minimum step $1$, final $M_\mathrm{final} = 4980$. This is the empirical content of Corollary~\ref{cor:monotone-log}: the kernel's transaction log grows monotonically by structural force.}
+    \label{fig:coe-panel-4}
+\end{figure*}
+
 % ============================================================
 \part{Architectural Consequences}
 % ============================================================
@@ -566,6 +610,17 @@ Two implementations of the same kernel operation are observationally substitutab
 \begin{remark}
 This formalises the API-design principle that implementation details are opaque to clients. The framework gives this principle a closed-form theorem rather than a design-by-convention guideline. Substitutability is decidable: compare the fixed-point values at the API boundary.
 \end{remark}
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_05_substitutability.png}
+    \caption{\textbf{API substitutability and cell-stability.}
+    (\textbf{A})~Two cascade chains $A$ and $B$, internally distinct, on the linear $x$-axis (output of chain $A$) and linear $y$-axis (output of chain $B$); $50$ random inputs. Forest-green markers fall exactly on the crimson dashed identity line; all $50$ trials match. The fixed-point semantics at the API boundary make the chains operationally indistinguishable from any external observer. This is the empirical content of Theorem~\ref{thm:api-subst}.
+    (\textbf{B})~Cell-stability: stable-flag on the linear $y$-axis (1 = stable) versus number of existing operations $N_\mathrm{existing} \in [5, 30]$ on the linear $x$-axis, $30$ trials adding cell-disjoint new operations. All $30$ sea-green markers read $1$; zero perturbations of existing operation weights. This is the empirical content of the cell-stability property of Theorem~\ref{thm:cell-stable}.
+    (\textbf{C})~Cell-collision detection: $2 \times 2$ confusion matrix over $50$ trials (half cell-disjoint additions, half colliding additions). Greens colourmap; the diagonal entries (true negatives, true positives) carry all $50$ trials and the off-diagonal entries (false positives, false negatives) read $0$. This is the empirical content of the collision-detection invariant: the framework correctly classifies every addition.
+    (\textbf{D})~Three-dimensional bar chart of operation weights $Q$ on the vertical axis over cell index $0$ to $11$ on one horizontal axis and kernel identity $0$ to $3$ on the other, viewing angle elevation $22^{\circ}$ azimuth $-60^{\circ}$. Each kernel owns a disjoint subset of cells (every cell shows a bar in exactly one kernel slot); the absence of bars at non-owned cells visualises the cell-stability invariant.}
+    \label{fig:coe-panel-5}
+\end{figure*}
 
 \section{Cell-Stable Frozen Interfaces}
 \label{sec:frozen}
@@ -638,6 +693,17 @@ The framework's architectural implications, taken together, prescribe a specific
 \end{algorithmic}
 \end{algorithm}
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_06_cross_arch.png}
+    \caption{\textbf{Cross-architecture invariance of MTIC.}
+    (\textbf{A})~$t$ on the linear $y$-axis versus $Q$ on the linear $x$-axis for four kernel architectures (microkernel at $f=10^{6}$, monolithic at $f=2.5 \times 10^{6}$, exokernel at $f=5 \times 10^{5}$, unikernel at $f=10^{7}$), $10$ trials per architecture. Each architecture's points (forest-green, sea-green, light-green, amber respectively) follow its own straight line $t = Q/f$ through the origin; no architecture-specific corrections are required. This is the empirical content of Theorem~\ref{thm:cross-arch} for $t = Q/f$.
+    (\textbf{B})~Reference-frequency hierarchy: bar chart of reference frequency $f$ on the log $y$-axis (Hz) versus architecture on the linear $x$-axis. The four bars span more than a decade ($5 \times 10^{5}$ to $10^{7}$ Hz), demonstrating that the framework accommodates architecture-local frequencies of widely varying magnitudes.
+    (\textbf{C})~Per-architecture recovery error: $|Q - Q_\mathrm{recovered}|$ on the log $y$-axis (offset by $+10^{-3}$ for visualisation) versus trial index $0$ to $9$ on the linear $x$-axis, four lines (one per architecture, same colour scheme). All four curves lie at the visualisation floor; zero recovery errors across $40$ trials. This is the empirical content of the four-way unit-conversion claim of Theorem~\ref{thm:mtic} extended to architecture-specific $f$.
+    (\textbf{D})~Three-dimensional view of $(Q, t)$ stratified by architecture: $x$-axis discrete over four architectures, $y$-axis $Q$, $z$-axis $t$, viewing angle elevation $20^{\circ}$ azimuth $-60^{\circ}$. The four point clouds lie on architecture-specific straight lines through the origin, visualising that $f$ is the only architecture-dependent quantity in the MTIC framework.}
+    \label{fig:coe-panel-6}
+\end{figure*}
+
 % ============================================================
 \part{Numerical Validation}
 % ============================================================
@@ -679,65 +745,6 @@ The framework is empirically supported if:
 \subsection{Reproducibility}
 
 The validation suite is implemented in a deterministic test harness with fixed random seed (where applicable) and fixed input workload. Results are persisted as JSON records. The complete suite reproduces from a single command in under one minute.
-
-\section{Validation Results}
-\label{sec:validation-results}
-
-We executed the full fifteen-experiment programme against a deterministic
-reference implementation. The aggregate result is $15/15$ \textsc{pass} in
-under three seconds of wall-clock time on commodity hardware. All identity
-claims (V1, V6, V7, V12) hold to machine precision; all bound claims (V2,
-V11) are satisfied at every test point; all Boolean claims (V8, V9, V13,
-V14) match prediction in all test cases; and the cross-architecture
-invariance (V15) confirms the framework is architecture-agnostic up to the
-choice of the kernel's reference frequency $f$. The six panels in this
-section group the $15$ experiments by theme.
-
-\input{figures/coe-captions}
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/panel_01_identity.pdf}
-\caption{\captionCOEpanelone}
-\label{fig:coe-panel-1}
-\end{figure*}
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/panel_02_three_routes.pdf}
-\caption{\captionCOEpaneltwo}
-\label{fig:coe-panel-2}
-\end{figure*}
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/panel_03_equivalence.pdf}
-\caption{\captionCOEpanelthree}
-\label{fig:coe-panel-3}
-\end{figure*}
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/panel_04_irreversibility.pdf}
-\caption{\captionCOEpanelfour}
-\label{fig:coe-panel-4}
-\end{figure*}
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/panel_05_substitutability.pdf}
-\caption{\captionCOEpanelfive}
-\label{fig:coe-panel-5}
-\end{figure*}
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/panel_06_cross_arch.pdf}
-\caption{\captionCOEpanelsix}
-\label{fig:coe-panel-6}
-\end{figure*}
-
-\clearpage
 
 % ============================================================
 \part{Discussion}
