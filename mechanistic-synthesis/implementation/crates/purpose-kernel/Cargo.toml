@@ -1,22 +1,19 @@
 [package]
-name = "purpose-cli"
+name = "purpose-kernel"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 license.workspace = true
-description = "Command-line driver for the Purpose MVP: compile an utterance, execute its fragment, emit the Value."
-
-[[bin]]
-name = "purpose"
-path = "src/main.rs"
+description = "Buhera Kernel: BuheraKernel wraps purpose-operations::Executor with five subsystems (CMM, PSS, DIC, PVE, TEM). See long-grass/integration.md §6 and long-grass/implementation-plan.md."
 
 [dependencies]
 purpose-core = { workspace = true }
 purpose-operations = { workspace = true }
-purpose-domains-protein = { workspace = true }
-purpose-kernel = { workspace = true }
+async-trait = { workspace = true }
 tokio = { workspace = true }
-clap = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+
+[dev-dependencies]
+purpose-domains-protein = { workspace = true }
 anyhow = { workspace = true }
