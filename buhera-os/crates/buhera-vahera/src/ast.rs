@@ -10,6 +10,7 @@ pub struct Stmt {
 }
 
 /// The 15 statement kinds supported in v0.1.0.
+#[allow(missing_docs)]
 #[derive(Debug, Clone, PartialEq)]
 pub enum StmtKind {
     /// `describe <name> with "<text>"`

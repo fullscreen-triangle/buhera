@@ -4,7 +4,7 @@
 //! `embed_molecule` exactly. Both are content-derived (not learned); the
 //! same input yields the same output across runs and architectures.
 
-use std::collections::{BTreeMap, HashMap};
+use std::collections::BTreeMap;
 
 use crate::scoord::SCoord;
 
@@ -36,8 +36,10 @@ pub fn embed_text(content: &str) -> SCoord {
     let chars: Vec<char> = trimmed.chars().filter(|c| !c.is_whitespace()).collect();
     let n = chars.len().max(1) as f64;
 
-    // S_k: Shannon entropy normalised by log2(26)
-    let mut freq: HashMap<char, usize> = HashMap::new();
+    // S_k: Shannon entropy normalised by log2(26). Use BTreeMap so the
+    // accumulation order is deterministic (HashMap iteration order is
+    // randomised and would cause 1-ULP drift between runs).
+    let mut freq: BTreeMap<char, usize> = BTreeMap::new();
     for c in &chars {
         *freq.entry(*c).or_insert(0) += 1;
     }

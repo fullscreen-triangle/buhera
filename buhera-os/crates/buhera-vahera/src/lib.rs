@@ -23,6 +23,9 @@
 
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]
+// Field-level docs on the simple data-carrying StmtKind variants are
+// not load-bearing; the variants themselves are documented.
+#![allow(clippy::missing_docs_in_private_items)]
 
 mod ast;
 mod parser;
