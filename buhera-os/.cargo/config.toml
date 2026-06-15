@@ -2,9 +2,21 @@
 # affected by any legacy workspace at the repo root.
 [build]
 target-dir = "target"
+# Override the parent .cargo/config.toml at the repo root, which sets
+# `RUSTFLAGS = "-C target-cpu=native"` and a fat-LTO target stanza that
+# conflicts with proc-macro and build-script compilation under
+# rustc 1.96+. The standalone OS sets its own profile in Cargo.toml.
+rustflags = []
 
-# Some rustc 1.89+ builds on Windows pass `-C embed-bitcode=no` to build
-# scripts implicitly. Explicitly enable embed-bitcode so it composes
-# with any LTO setting that downstream crates may set.
-[target.'cfg(all())']
-rustflags = ["-C", "embed-bitcode=yes"]
+[target.x86_64-pc-windows-msvc]
+rustflags = []
+
+[target.x86_64-unknown-linux-gnu]
+rustflags = []
+
+[target.x86_64-apple-darwin]
+rustflags = []
+
+[target.aarch64-apple-darwin]
+rustflags = []
+
