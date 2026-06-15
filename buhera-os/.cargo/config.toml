@@ -1,22 +1,7 @@
-# Keep the build artifacts inside buhera-os so the standalone OS is not
-# affected by any legacy workspace at the repo root.
+# buhera-os-specific cargo config.
+# Keeps the build directory inside this workspace so binaries land at
+# buhera-os/target/{debug,release}/ rather than the shared repo-root
+# target.
+
 [build]
 target-dir = "target"
-# Override the parent .cargo/config.toml at the repo root, which sets
-# `RUSTFLAGS = "-C target-cpu=native"` and a fat-LTO target stanza that
-# conflicts with proc-macro and build-script compilation under
-# rustc 1.96+. The standalone OS sets its own profile in Cargo.toml.
-rustflags = []
-
-[target.x86_64-pc-windows-msvc]
-rustflags = []
-
-[target.x86_64-unknown-linux-gnu]
-rustflags = []
-
-[target.x86_64-apple-darwin]
-rustflags = []
-
-[target.aarch64-apple-darwin]
-rustflags = []
-

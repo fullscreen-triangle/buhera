@@ -38,15 +38,12 @@ buhera-vahera    = { path = "crates/buhera-vahera" }
 [profile.release]
 opt-level = 3
 codegen-units = 1
-lto = false
 
 [profile.dev]
 opt-level = 0
 debug = true
-lto = false
 incremental = true
 
 [profile.test]
 opt-level = 0
 debug = true
-lto = false

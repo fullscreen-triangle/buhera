@@ -9,3 +9,4 @@ description = "Buhera categorical substrate: S-entropy coordinates, Fisher metri
 
 [dependencies]
 serde = { workspace = true }
+serde_json = { workspace = true }
