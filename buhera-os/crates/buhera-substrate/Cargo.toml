@@ -1,0 +1,11 @@
+[package]
+name = "buhera-substrate"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Buhera categorical substrate: S-entropy coordinates, Fisher metric, ternary addresses, backward trajectory completion."
+
+[dependencies]
+serde = { workspace = true }

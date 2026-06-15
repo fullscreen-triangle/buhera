@@ -1,0 +1,16 @@
+[package]
+name = "buhera-vahera"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "vaHera parser and interpreter for the Buhera OS. 15 statement types covering full Python parity plus inspection commands."
+
+[dependencies]
+buhera-substrate = { workspace = true }
+buhera-kernel    = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+regex = { workspace = true }
+thiserror = { workspace = true }

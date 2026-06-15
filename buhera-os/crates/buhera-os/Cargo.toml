@@ -1,0 +1,27 @@
+[package]
+name = "buhera-os"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Buhera OS binaries: end-to-end NIST demo and interactive vaHera REPL."
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "demo"
+path = "src/bin/demo.rs"
+
+[[bin]]
+name = "repl"
+path = "src/bin/repl.rs"
+
+[dependencies]
+buhera-substrate = { workspace = true }
+buhera-kernel    = { workspace = true }
+buhera-vahera    = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+clap = { workspace = true }

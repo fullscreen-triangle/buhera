@@ -1,0 +1,33 @@
+# Buhera OS end-to-end demo script.
+#
+# Pipeline: describe → spawn → navigate → complete (penultimate, then
+# completion morphism) → look the resolved compound up via categorical
+# retrieval.
+
+# Query 1: ethanol via name resolution.
+describe ethanol with "ethanol C2H5OH boiling point 78"
+spawn lookup_eth from ethanol
+navigate to penultimate
+complete trajectory
+
+# Query 2: benzene via natural-language phrasing.
+describe benzene with "what is the boiling point of benzene"
+spawn lookup_benz from benzene
+navigate to penultimate
+complete trajectory
+
+# Categorical retrieval against the pre-allocated NIST compounds.
+memory find nearest "ethanol" k=1
+memory find nearest "benzene" k=1
+memory find nearest "caffeine" k=1
+
+# Inspect what was allocated and dump a single compound.
+memory list
+memory dump ethanol
+
+# Demon sort: zero-cost categorical ordering.
+demon sort
+
+# Diagnostics.
+controller verify
+kernel stats
