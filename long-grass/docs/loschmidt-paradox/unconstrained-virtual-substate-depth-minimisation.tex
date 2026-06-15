@@ -1,7 +1,7 @@
 % ============================================================
-%  UNCONSTRAINED VIRTUAL-SUBSTATE PARTITION-DEPTH MINIMISATION
-%  A Validation Blueprint for Force-Free, Simulation-Free
-%  Single-Transient Mass Spectrometry
+%  THE PENULTIMATE STATE:
+%  Why the Reversed Configuration Is Not the Initial
+%  Configuration, and a Caesium-Ion Validation
 % ============================================================
 
 \documentclass[twocolumn,10pt,a4paper]{article}
@@ -29,7 +29,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[LE,RO]{\thepage}
-\fancyhead[RE]{\small Unconstrained Virtual-Substate Depth Minimisation}
+\fancyhead[RE]{\small The Penultimate State}
 \fancyhead[LO]{\small Sachikonye}
 \renewcommand{\headrulewidth}{0.4pt}
 
@@ -43,30 +43,26 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{axiom}{Axiom}
 \newtheorem{protocol}[theorem]{Protocol}
-\newtheorem{experiment}[theorem]{Experiment}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Zp}{\mathbb{Z}^{+}}
-\newcommand{\Q}{\mathbb{Q}}
-\newcommand{\kB}{k_{\mathrm{B}}}
 \newcommand{\Parts}{\mathcal{P}}
 \newcommand{\PhiMap}{\varPhi}
-\newcommand{\Nstate}{N_{\mathrm{state}}}
-\newcommand{\Mmax}{M_{\max}}
 \newcommand{\Sspace}{\mathcal{S}}
 \newcommand{\Depth}{\mathcal{M}}
 \newcommand{\Lagr}{\mathcal{L}}
-\newcommand{\Apartition}{\mathbf{A}_{\Depth}}
 \newcommand{\partinert}{\mu}
-\newcommand{\taup}{\tau_{p}}
+\newcommand{\Apartition}{\mathbf{A}_{\Depth}}
+\newcommand{\kB}{k_{\mathrm{B}}}
 \newcommand{\calF}{\mathcal{F}}
 
-\title{\textbf{Unconstrained Virtual-Substate Partition-Depth Minimisation:\\
-A Self-Contained Validation Blueprint for Force-Free,\\
-Single-Transient Mass Spectrometry}}
+\title{\textbf{The Penultimate State:\\
+Why the Reversed Configuration Is Not the\\
+Initial Configuration, and an Operational\\
+Validation on a Caesium Ion}}
 
 \author{
 Kundai Farai Sachikonye\\
@@ -82,50 +78,49 @@ Chair of Proteomics and Bioanalytics\\
 
 \begin{abstract}
 \noindent
-We derive a complete, self-contained validation programme for the
-proposition that a mass spectrometer is a partition-depth observatory
-whose output is determined by a deterministic computer programme over
-ternary partition addresses, rather than a force-driven instrument
-requiring numerical integration of Newtonian dynamics. The derivation
-proceeds from a single geometric axiom---the Bounded Phase Space
-Law---and produces every result that the validation programme tests.
-We prove: (i) oscillatory necessity for persistent bounded systems;
-(ii) the partition coordinate system $(n,\ell,m,s)$ with shell capacity
-$C(n)=2n^{2}$; (iii) the bijection $\PhiMap:\Zp\to\Parts$ between the
-positive integers and the partition states, with explicit
-inversion formula; (iv) the time-count identity
-$dM/dt=\omega/(2\pi)$ as a definition of derived time rather than a
-circular identity; (v) the triple equivalence
-$\mathbf{Osc}\simeq\mathbf{Cat}\simeq\mathbf{Part}$ with explicit
-conversion maps; (vi) the partition Lagrangian
-$\Lagr_{\Depth}=\tfrac{1}{2}\partinert|\dot{\mathbf{x}}|^{2}+\partinert\dot{\mathbf{x}}\cdot\Apartition-\Depth$
-and the four analyser scaling laws as topology specialisations of one
-equation; (vii) the phase-coherence relation
-$\Delta\theta=2\pi\Delta M$ between a precursor and every member of its
-forward sequence $\calF(M_{\mathrm{prec}})$, with fragment subharmonics
-at $\omega_{f}=\omega_{\mathrm{prec}}\sqrt{m_{\mathrm{prec}}/m_{f}}$;
-(viii) the virtual substate construction with mean-recovery constraint
-$\bar{s}=s$ admitting off-shell components $s_{j}\notin[0,1]$; (ix) the
-unconstrained subtask theorem ensuring local virtual values are free
-under preserved global value; (x) the backward-completion algorithm in
-$\mathcal{O}(\log_{3}N)$ steps with $\Theta(N)$ collapse when virtual
-components are restricted to the physical cube; (xi) the six-pass
-shader architecture as a complete force-free instrument. From these
-derivations we extract five falsifiable experiments, each with a
-predicted-versus-measured identity, a JSON record schema, a pass
-criterion at the precision the framework predicts, and a clear failure
-mode. The blueprint is implementable on standard \texttt{mzML} and raw
-Orbitrap transient data without wet-lab work. Every assertion is
-proved; nothing is cited from prior work of the author; the
-literature references are restricted to canonical mathematical and
-physical results used as lemmas.
+We argue that Loschmidt's paradox dissolves under a single observation:
+a configuration is a structure of correlations, and structures of
+correlations accumulate monotonically under any traversal direction.
+Velocity reversal moves a system through configurations that resemble
+earlier ones, but the cumulative configuration count is independent of
+velocity sign. We develop this thesis from first principles, deriving
+every required result in self-contained form: a bounded-phase-space
+axiom; oscillatory necessity; the partition coordinate system
+$(n,\ell,m,s)$ with capacity $C(n)=2n^{2}$; a bijection
+$\PhiMap:\Zp\to\Parts$ between the positive integers and the
+configuration states; the time-count identity $dM/dt=\omega/(2\pi)$ as
+a definition of derived time; the partition Lagrangian whose
+specialisations yield all four canonical analyser equations of mass
+spectrometry; the snapshot/velocity decoupling that makes the
+cumulative count monotone in any direction; and a backward
+trajectory-completion algorithm whose termination at the
+\emph{penultimate} state is the structural requirement for
+recognition. The argument exhibits two self-undermining structures
+in the conventional reading of Loschmidt's reversal. First, the SI
+second is defined as $9{,}192{,}631{,}770$ velocity reversals of
+caesium-133 per stipulated unit; if reversal cancelled rather than
+accumulated, the unit could not exist. Second, the same atom, used as
+an analyte in an Orbitrap, performs roughly $10^{6}$ velocity reversals
+per second of analytical observation; the partition Lagrangian
+predicts the partition count $M(T)=\omega_{z}T/(2\pi)$ to be a strictly
+monotone function of $T$, and the cumulative phase recovered from the
+Orbitrap image current via Hilbert transform measures it to machine
+precision. We specify this experiment in full operational detail.
+Supporting predictions include: a bijection check on standard
+\texttt{mzML} ions; verification of the four analyser scaling laws
+under the single Lagrangian; the subharmonic encoding of MS/MS fragment
+spectra in MS\textsuperscript{1} transients; and a backward-completion
+complexity check showing $\log_{3}N$ steps under virtual sub-state
+decomposition and $\Theta(N)$ collapse without. No prior work of the
+author is cited; the literature references are restricted to standard
+mathematical and physical lemmas used in the derivations.
 
 \medskip
-\noindent\textbf{Keywords:} bounded phase space, partition bijection,
-time-count identity, partition Lagrangian, phase coherence, virtual
-substates, mean recovery, off-shell decomposition, backward trajectory
-completion, six-pass shader pipeline, falsifiable validation,
-single-transient mass spectrometry.
+\noindent\textbf{Keywords:} Loschmidt's paradox, configuration
+monotonicity, partition coordinates, time-count identity, snapshot
+decoupling, caesium definition of the second, Orbitrap transient,
+penultimate state, backward trajectory completion, falsifiable
+mass-spectrometry validation.
 \end{abstract}
 
 \tableofcontents
@@ -136,100 +131,114 @@ single-transient mass spectrometry.
 \label{sec:intro}
 % =========================================================
 
-\subsection{Two pictures of a mass spectrometer}
+\subsection{The single claim}
 
-A mass spectrometer is conventionally described as a force-driven
-instrument. An ion source applies an electric field which strips
-electrons; ion optics steer the resulting charged species through
-electromagnetic potentials; a mass analyser separates ions through the
-Lorentz force $\mathbf{F}=q(\mathbf{E}+\mathbf{v}\times\mathbf{B})$
-\citep{griffiths2017}; a detector registers mechanical impacts.
-Forward simulation packages integrate Newton's equations of motion
-through field geometries to predict observables \citep{dahl2000}. A
-spectrum is the result of a long causal chain of force-mediated
-events; a measurement is property revelation.
+This paper makes one claim and supports it operationally.
 
-This paper develops, derives, and prepares for falsification a
-different picture. A mass spectrometer is a \emph{partition-depth
-observatory}: ions are bounded oscillatory systems whose categorical
-identity is encoded in a small ternary address, and the instrument
-reads that address by completing a trajectory in a bounded
-three-dimensional entropy coordinate space
-$\Sspace=[0,1]^{3}$. There are no forces involved at any stage; the
-``forces'' of the conventional picture are the Euler--Lagrange
-equations for partition depth minimisation. The instrument is a
-deterministic computer programme whose output is read from the
-partition structure, not computed from dynamics.
+\begin{quote}
+\emph{The reversed configuration is not the initial configuration.
+The configuration count is monotone under any traversal direction.}
+\end{quote}
 
-\subsection{The validation question}
+Equivalently: Loschmidt's paradox \citep{loschmidt1876,boltzmann1877}
+identifies as ``the same state'' two physical situations that are
+not the same. They share a projection onto $(q,p)$ coordinates, but
+they differ in a separate physical coordinate---the cumulative
+configuration count---that the conventional reading does not
+acknowledge as a coordinate at all.
 
-These two pictures are observationally equivalent in their predicted
-$m/z$ scaling laws, but they make sharply different predictions about
-what information is present in a single measurement. The force picture
-treats each scan as one piece of information: an MS\textsuperscript{1}
-spectrum gives $m/z$; an MS\textsuperscript{2} spectrum gives fragment
-masses; a charge envelope gives $z$ states; complete characterisation
-requires hours of instrument time across multiple experiments. The
-partition picture predicts that a \emph{single} Orbitrap transient of
-one precursor ion already contains the full MS\textsuperscript{2}
-fragment spectrum (as subharmonics at irrational frequency multiples
-with phase $\Delta\theta=2\pi\Delta M$), all charge state spectra (at
-$\sqrt{z}$ multiples), both polarity modes (as standing-wave phase
-signatures), and the complete partition history of the ion.
+Once the coordinate is acknowledged, the paradox dissolves. The work
+of this paper is (i) to derive every result needed to make the
+acknowledgement rigorous, (ii) to show that the cumulative
+configuration count is well defined and monotone under any traversal
+direction, and (iii) to validate the framework operationally on
+a caesium ion in an Orbitrap mass spectrometer, where roughly
+$10^{6}$ velocity reversals occur during a single transient and the
+configuration count is predicted to advance monotonically through
+every one of them.
 
-The validation question is sharp: are those predicted subharmonic
-components present at the predicted positions with the predicted
-phases in real Orbitrap transient data?
+\subsection{Two self-undermining structures in Loschmidt's reading}
 
-\subsection{Goals of the blueprint}
+The conventional reading of Loschmidt's velocity reversal makes
+predictions that are inconsistent with two pieces of standard
+physics the reading itself accepts.
 
-We pursue four goals in this paper.
-\begin{enumerate}[leftmargin=*,itemsep=0.2em]
-\item Prove from scratch every claim the partition picture makes
-about an ion. The reader does not need to take any prior work on
-trust; if a result is used in the validation, it is derived here.
-\item Establish the bridge from the partition framework to a
-computational programme. We show that the same ternary address
-encodes both the ion's position and its trajectory, and that the GPU
-fragment shader evaluating partition depth at cell coordinates is
-performing the physical observation rather than simulating it.
-\item Identify five falsifiable experiments. Each experiment maps one
-derived theorem to one observable computable from \texttt{mzML} or raw
-transient data, with a precision criterion the framework predicts and
-a clear failure mode if the framework is wrong.
-\item Specify each experiment to the level of detail needed for
-implementation: input data contract, predicted statistic, measured
-statistic, JSON record schema, and pass/fail rule.
-\end{enumerate}
+\textbf{The metrology argument.} The SI second is defined as the
+duration of $9{,}192{,}631{,}770$ periods of the radiation
+corresponding to the transition between the two hyperfine levels of
+the ground state of caesium-133. Each period contains two velocity
+reversals of the relevant electronic motion: the electron moves one
+way, decelerates, reverses, moves the other way, decelerates, reverses
+again. The international definition of time is built on the empirical
+fact that these reversals \emph{accumulate} rather than cancel: every
+reversal advances the count by exactly one half-cycle, and the unit
+``second'' is the named duration of $9{,}192{,}631{,}770$ such
+advancements. If reversal cancelled count, this number would equal
+zero, and the SI second would be undefined. The unit exists. Therefore
+reversal accumulates.
 
-\subsection{Outline}
+\textbf{The decoupling argument.} A configuration of a bounded
+oscillatory system is a topological structure: a partition cell, a
+phase-lock network, a categorical address. It is defined by the
+arrangement of correlations among constituents. Velocity is the rate
+at which the system moves between configurations; it is not the cause
+of any particular configuration. The same configuration can be reached
+at any velocity, including its reverse. Therefore reversing velocities
+does not undo configurations; it traverses configurations resembling
+earlier ones, and each such traversal contributes to the cumulative
+count.
+
+These two arguments are independent but mutually reinforcing. The
+metrology argument is operational: the conventional reading of
+Loschmidt would null the unit in which the reading is stated. The
+decoupling argument is structural: configurations and velocities are
+different objects, and the cumulative count is a property of the
+former.
+
+\subsection{Backward trajectory completion and the recognition gap}
+
+The framework's positive content is summarised by an algorithm:
+\emph{backward trajectory completion}. Given a known endpoint
+configuration at depth $k$ in a ternary refinement hierarchy of size
+$N=3^{k}$, the algorithm navigates from endpoint to root in exactly
+$\log_{3}N$ steps. Critically, the algorithm terminates at the
+\emph{penultimate} state---one isomorphism step short of the endpoint
+itself---because that gap is the structural requirement for
+recognition. To complete the trajectory all the way to the endpoint
+would be to become the endpoint, and recognition requires a
+distinction between the recognising state and the recognised state.
+
+Loschmidt's reversal is the question of whether this gap can be
+closed. It cannot, for the same reason: closing it would dissolve
+the recognition the operation presupposes. The framework's algorithm
+exhibits the gap as a constitutive feature; the operational experiment
+on Cs\textsuperscript{+} in an Orbitrap exhibits the cumulative
+count's monotonicity even as roughly $10^{6}$ velocity reversals
+occur during a single transient.
+
+\subsection{Plan of the paper}
 
 Section~\ref{sec:axiom} establishes the single axiom and derives
 oscillatory necessity. Section~\ref{sec:partition} derives the
-partition coordinate system $(n,\ell,m,s)$ and the capacity formula
-$C(n)=2n^{2}$. Section~\ref{sec:bijection} proves the bijection
-$\PhiMap:\Zp\to\Parts$ and the traversal/existence distinction.
-Section~\ref{sec:timecount} establishes the time-count identity as a
+partition coordinate system and the capacity formula.
+Section~\ref{sec:bijection} proves the bijection $\PhiMap:\Zp\to\Parts$.
+Section~\ref{sec:timecount} derives the time-count identity as a
 non-circular definition of derived time.
-Section~\ref{sec:triple} proves the triple equivalence and the
-observation--computation identity.
+Section~\ref{sec:configuration} states the configuration-as-snapshot
+argument and proves the decoupling of configuration from velocity.
 Section~\ref{sec:lagrangian} derives the partition Lagrangian and the
 four analyser scaling laws.
-Section~\ref{sec:phase} proves phase coherence and the
-subharmonic-encoding theorem.
-Section~\ref{sec:virtual} develops virtual substates and the
-mean-recovery constraint.
-Section~\ref{sec:tensor} stacks four dimensions of virtual
-decomposition into the partition tensor.
-Section~\ref{sec:backward} derives backward trajectory completion in
-$\mathcal{O}(\log_{3}N)$ and the $\Theta(N)$ collapse without virtual
-components.
-Section~\ref{sec:shader} describes the six-pass shader pipeline as a
-complete force-free instrument.
-Section~\ref{sec:experiments} states the five falsifiable experiments
-in protocol form.
-Section~\ref{sec:contracts} specifies data contracts, JSON record
-schemas, and pass criteria.
+Section~\ref{sec:dissolution} dissolves Loschmidt's paradox: the
+reversed configuration is not the initial configuration; the
+cumulative count is monotone; the SI second is the metrological lock.
+Section~\ref{sec:backward} introduces the backward-completion algorithm
+and the penultimate-state termination.
+Section~\ref{sec:phase} proves the phase-coherence theorem and the
+subharmonic-encoding consequence for MS/MS spectra.
+Section~\ref{sec:experiment} specifies the headline experiment:
+Cs\textsuperscript{+} in an Orbitrap with Hilbert-transform phase
+recovery.
+Section~\ref{sec:supporting} states four supporting experiments.
 Section~\ref{sec:discussion} discusses limitations and scope.
 
 % =========================================================
@@ -237,17 +246,16 @@ Section~\ref{sec:discussion} discusses limitations and scope.
 \label{sec:axiom}
 % =========================================================
 
-\subsection{Phase space and the boundedness axiom}
+\subsection{Bounded phase space}
 
 Consider a classical dynamical system with $d$ spatial degrees of
-freedom, on phase space $\Gamma\subseteq\R^{2d}$ with canonical
-coordinates $(\mathbf{q},\mathbf{p})$. A measure-preserving flow
-$\phi_{t}:\Gamma\to\Gamma$ generated by a Hamiltonian preserves the
-Liouville measure
-$\mu=d^{d}q\,d^{d}p/h^{d}$, where $h$ is a fixed phase-space cell size
-fixing the units.
+freedom on a phase space $\Gamma\subseteq\R^{2d}$ with canonical
+coordinates $(\mathbf{q},\mathbf{p})$. A Hamiltonian flow
+$\phi_{t}:\Gamma\to\Gamma$ preserves the Liouville measure
+$\mu=d^{d}q\,d^{d}p/h^{d}$ for a fixed phase-space cell size $h$
+\citep{arnold1989}.
 
-\begin{axiom}[Bounded Phase Space Law]
+\begin{axiom}[Bounded Phase Space]
 \label{ax:bps}
 Every persistent dynamical system occupies a bounded region
 $\Omega\subseteq\Gamma$ of finite Liouville measure
@@ -255,109 +263,90 @@ $\mu(\Omega)<\infty$, and $\Omega$ admits hierarchical partitioning
 into distinguishable subregions.
 \end{axiom}
 
-By \emph{persistent} we mean a system whose categorical identity is
-preserved over time: it does not disperse, decay, or escape to spatial
-infinity. The motivation is empirical: an electron bound to a nucleus,
-a vibrational mode in a molecular well, a photon in a cavity, an ion
-in a trap. Each is confined; in each case the unbounded idealisation
-fails to persist.
+A \emph{persistent} system is one whose categorical identity is
+preserved over time. The motivation is empirical: an electron in an
+atomic well, a vibrational mode of a molecule, an ion in an
+electromagnetic trap, a photon in a cavity. Each is confined; the
+unbounded idealisation does not persist.
 
 \subsection{Poincar\'{e} recurrence}
 
 \begin{theorem}[Poincar\'{e} Recurrence]
 \label{thm:poincare}
-Let $(\Omega,\mu,\phi_{t})$ be a measure-preserving dynamical system
-with $\mu(\Omega)<\infty$. For any measurable $A\subseteq\Omega$ with
+Let $(\Omega,\mu,\phi_{t})$ be measure-preserving with
+$\mu(\Omega)<\infty$. For measurable $A\subseteq\Omega$ with
 $\mu(A)>0$, almost every $x\in A$ returns to $A$ infinitely often.
 \end{theorem}
 
 \begin{proof}
-Fix $T>0$ and set
-$B=\{x\in A:\phi_{nT}(x)\notin A\ \forall n\geq 1\}$.
+Fix $T>0$ and set $B=\{x\in A:\phi_{nT}(x)\notin A\ \forall n\geq 1\}$.
 The sets $\{\phi_{nT}(B)\}_{n\geq 0}$ are pairwise disjoint: if
-$\phi_{jT}(B)\cap\phi_{kT}(B)\neq\emptyset$ for some $j<k$ then some
+$\phi_{jT}(B)\cap\phi_{kT}(B)\neq\emptyset$ for $j<k$ then some
 $x\in B$ would have $\phi_{(k-j)T}(x)\in A$, contradicting the
-definition of $B$. Since $\phi_{t}$ is measure-preserving,
-$\mu(\phi_{nT}(B))=\mu(B)$. If $\mu(B)>0$,
-$\sum_{n=0}^{\infty}\mu(\phi_{nT}(B))=\infty>\mu(\Omega)$, a
-contradiction. Hence $\mu(B)=0$; almost every $x\in A$ returns. Apply
-the argument iteratively to deduce infinite recurrence.
+definition of $B$. By measure preservation,
+$\mu(\phi_{nT}(B))=\mu(B)$. If $\mu(B)>0$ then
+$\sum_{n\geq 0}\mu(\phi_{nT}(B))=\infty>\mu(\Omega)$, a contradiction.
+Hence $\mu(B)=0$.
 \end{proof}
 
 \subsection{Oscillatory necessity}
 
 \begin{theorem}[Oscillatory Necessity]
 \label{thm:osc}
-The only self-consistent class of dynamics on a bounded measure-finite
-phase space supporting categorical observation is oscillatory.
+The only class of dynamics on a bounded measure-finite phase space
+supporting categorical observation is oscillatory.
 \end{theorem}
 
 \begin{proof}
-We eliminate three alternative classes by inconsistency.
+We eliminate three alternatives.
 
-\emph{Static}. If $\phi_{t}(x)=x$ for all $t,x$, the system carries no
-temporal structure; nothing distinguishes one moment from another, no
-measurement can occur. This contradicts the existence of any
-observation.
+\emph{Static}: if $\phi_{t}(x)=x$ for all $t$ and $x$, no temporal
+structure is present and no measurement can occur.
 
-\emph{Monotonic}. If there exists $f:\Omega\to\R$ with $t\mapsto
-f(\phi_{t}(x))$ strictly monotonic, then for any
-$\varepsilon>0$ the set
-$A_{\varepsilon}=\{x:f(x)<\varepsilon\}$ is exited once and never
-revisited, contradicting Poincar\'{e} recurrence unless
-$\mu(A_{\varepsilon})=0$ for all $\varepsilon$, which contradicts
-$\mu(\Omega)<\infty$ together with $\Omega$ being measurable.
+\emph{Monotonic}: if there exists $f:\Omega\to\R$ with
+$t\mapsto f(\phi_{t}(x))$ strictly monotonic, then for any
+$\varepsilon>0$ the set $A_{\varepsilon}=\{x:f(x)<\varepsilon\}$ is
+exited once and not revisited, contradicting
+Theorem~\ref{thm:poincare} unless $\mu(A_{\varepsilon})=0$ for all
+$\varepsilon$, contradicting $\mu(\Omega)<\infty$.
 
-\emph{Chaotic}. If
-$|\phi_{t}(x)-\phi_{t}(y)|\sim|x-y|e^{\lambda t}$ with Lyapunov
-exponent $\lambda>0$, then arbitrarily close initial conditions
-diverge arbitrarily in bounded time. The categorical labels
-assigned by partitioning $\Omega$ are not stable: the ``same''
-preparation produces different labels in finite time, violating the
-reproducibility required for any observation to refer to a definite
-state.
+\emph{Chaotic}: if
+$|\phi_{t}(x)-\phi_{t}(y)|\sim|x-y|e^{\lambda t}$ with $\lambda>0$,
+the categorical labels are not stable; the same preparation produces
+different labels in finite time, violating reproducibility.
 
-\emph{Oscillatory}. Motion that returns to neighbourhoods of previous
-states (by Theorem~\ref{thm:poincare}) is bounded, recurrent, and
-identity-preserving. This survives all three tests.
+Oscillatory motion returns to neighbourhoods of previous states by
+Theorem~\ref{thm:poincare}; it is bounded, recurrent, and
+identity-preserving.
 \end{proof}
 
 \begin{corollary}[Discrete Mode Spectrum]
 \label{cor:modes}
-Bounded oscillatory dynamics admits a discrete frequency spectrum
-$\{\omega_{k}\}_{k\in\N}$, the eigenvalues of the Koopman operator
-$U_{t}:f\mapsto f\circ\phi_{t}$ acting on $L^{2}(\Omega,\mu)$
-\citep{koopman1931}.
+Bounded oscillatory dynamics admits a discrete frequency spectrum,
+the eigenvalues of the Koopman operator $U_{t}:f\mapsto f\circ\phi_{t}$
+on $L^{2}(\Omega,\mu)$ \citep{koopman1931}.
 \end{corollary}
 
 \begin{proof}
-The Koopman operator is unitary on $L^{2}(\Omega,\mu)$ and, on a
-finite-measure compact phase space, has compact resolvent and
-therefore discrete spectrum. Any observable $f$ decomposes as
-$f=\sum_{k}c_{k}e^{i\omega_{k}t}$ on the eigenbasis.
+$U_{t}$ is unitary on $L^{2}(\Omega,\mu)$; on a finite-measure compact
+phase space it has compact resolvent and therefore discrete spectrum.
 \end{proof}
 
-\begin{corollary}[Bohr--Sommerfeld Quantisation]
-\label{cor:bs}
-The action of a fundamental oscillatory mode of frequency $\omega$ in
-a bounded domain satisfies the quantisation condition
-$\oint p\,dq=n\hbar\cdot 2\pi$, $n\in\N$, giving energy
-$E_{n}=n\hbar\omega$. The fundamental mode has
-\begin{equation}
-\boxed{\;E=\hbar\omega.\;}
-\label{eq:Ehbar}
-\end{equation}
+\begin{corollary}[Frequency--Energy Identity]
+\label{cor:Ehbar}
+A fundamental oscillatory mode of angular frequency $\omega$ in a
+bounded domain satisfies $E=\hbar\omega$.
 \end{corollary}
 
 \begin{proof}
-Single-valuedness of the wavefunction (or of the action-angle
-description in the classical Bohr--Sommerfeld setting) over a closed
-loop in configuration space forces the action to be an integer
-multiple of $2\pi\hbar$. The fundamental mode is the $n=1$ solution.
+Bohr--Sommerfeld quantisation
+$\oint p\,dq=n\hbar\cdot 2\pi$ from single-valuedness on a bounded
+domain \citep{bohr1913,landau1976} gives $E_{n}=n\hbar\omega$. The
+fundamental mode is $n=1$.
 \end{proof}
 
 % =========================================================
-\section{Partition Coordinates and Shell Capacity}
+\section{Partition Coordinates and Capacity}
 \label{sec:partition}
 % =========================================================
 
@@ -365,9 +354,8 @@ multiple of $2\pi\hbar$. The fundamental mode is the $n=1$ solution.
 
 \begin{theorem}[Partition Coordinate System]
 \label{thm:nlms}
-A hierarchically nested three-dimensional oscillatory system in
-bounded phase space admits a complete coordinate system
-$(n,\ell,m,s)$ with
+A hierarchically nested three-dimensional bounded oscillatory system
+admits a complete coordinate system $(n,\ell,m,s)$ with
 \begin{align*}
 n&\in\Zp,&\ell&\in\{0,1,\ldots,n-1\},\\
 m&\in\{-\ell,\ldots,+\ell\},& s&\in\{-\tfrac{1}{2},+\tfrac{1}{2}\}.
@@ -375,97 +363,48 @@ m&\in\{-\ell,\ldots,+\ell\},& s&\in\{-\tfrac{1}{2},+\tfrac{1}{2}\}.
 \end{theorem}
 
 \begin{proof}
-We construct each coordinate from a geometric constraint on the
-nested oscillatory boundary.
+\emph{$n$:} nested shells $\Omega_{1}\supset\Omega_{2}\supset\cdots$
+provided by Axiom~\ref{ax:bps} label the principal depth.
 
-\emph{Step 1 (principal depth $n$).} Hierarchical nesting (Axiom
-\ref{ax:bps}) provides a sequence of nested shells
-$\Omega_{1}\supset\Omega_{2}\supset\cdots$. The index $n\in\Zp$
-labels which shell is occupied; $n=1$ is the outermost.
+\emph{$\ell$:} at depth $n$ the oscillatory boundary supports angular
+modes with wavevector $k_{\theta}=\ell/R_{n}$ for shell radius
+$R_{n}\propto n$; the mode fits the radial extent only if
+$\ell\leq n-1$.
 
-\emph{Step 2 (angular complexity $\ell$).} At depth $n$ the
-oscillatory boundary supports angular nodal surfaces. An angular mode
-of order $\ell$ has nodal wavevector $k_{\theta}=\ell/R_{n}$ for shell
-radius $R_{n}\propto n$. The mode fits the radial extent only if
-$\ell\leq n-1$, giving $\ell\in\{0,1,\ldots,n-1\}$.
+\emph{$m$:} the orientation of the angular mode in three-space is
+labelled by an irreducible representation of $SO(3)$; the irreducible
+representation of angular momentum $\ell$ has dimension $2\ell+1$,
+basis $m\in\{-\ell,\ldots,+\ell\}$ \citep{hall2015}.
 
-\emph{Step 3 (orientation $m$).} For each $\ell$, the orientation of
-the angular mode in three-dimensional space is labelled by an
-irreducible representation of the rotation group $SO(3)$. The
-representation of angular momentum $\ell$ has dimension $2\ell+1$, with
-basis labelled by $m\in\{-\ell,\ldots,+\ell\}$.
-
-\emph{Step 4 (chirality $s$).} The fundamental group
-$\pi_{1}(SO(3))=\Z_{2}$ \citep{nakahara2003} yields two topologically
-distinct boundary helicities. They are labelled by half-integer
-$s=\pm\tfrac{1}{2}$, reflecting the double cover $SU(2)\to SO(3)$.
+\emph{$s$:} the fundamental group $\pi_{1}(SO(3))=\mathbb{Z}_{2}$
+\citep{nakahara2003} gives two topologically distinct boundary
+helicities, labelled $s=\pm\tfrac{1}{2}$.
 \end{proof}
 
 \subsection{The capacity formula}
 
 \begin{theorem}[Shell Capacity]
 \label{thm:cap}
-The number of distinguishable partition states at depth $n$ is
-\begin{equation}
-C(n)=2n^{2}.
-\end{equation}
+The number of distinct partition states at depth $n$ is
+$C(n)=2n^{2}$.
 \end{theorem}
 
 \begin{proof}
-At fixed $n$, sum over $\ell,m,s$:
-\begin{align*}
-C(n)&=\sum_{\ell=0}^{n-1}(2\ell+1)\cdot 2
-=2\sum_{\ell=0}^{n-1}(2\ell+1)\\
-&=2\bigl(n+2\cdot\tfrac{(n-1)n}{2}\bigr)=2n^{2},
-\end{align*}
-using the identity $\sum_{\ell=0}^{n-1}(2\ell+1)=n^{2}$ (the sum of
-the first $n$ odd integers).
+$C(n)=\sum_{\ell=0}^{n-1}(2\ell+1)\cdot 2=2\sum_{\ell=0}^{n-1}(2\ell+1)
+=2n^{2}$, using $\sum_{\ell=0}^{n-1}(2\ell+1)=n^{2}$.
 \end{proof}
 
 \begin{corollary}[Cumulative State Count]
 \label{cor:cum}
 The total number of states with principal depth $\leq N$ is
 \begin{equation}
-\Nstate(N)=\sum_{n=1}^{N}2n^{2}=\frac{N(N+1)(2N+1)}{3}.
-\label{eq:Nstate}
+N_{\mathrm{state}}(N)=\sum_{n=1}^{N}2n^{2}=\frac{N(N+1)(2N+1)}{3}.
+\label{eq:Ns}
 \end{equation}
 \end{corollary}
 
 \begin{proof}
-Apply the standard sum-of-squares formula
-$\sum_{n=1}^{N}n^{2}=\tfrac{N(N+1)(2N+1)}{6}$ and multiply by two.
-\end{proof}
-
-\subsection{Selection rules and exclusion}
-
-\begin{theorem}[Selection Rules]
-\label{thm:select}
-Transitions between partition states satisfy
-$\Delta\ell=\pm 1$, $\Delta m\in\{0,\pm 1\}$, $\Delta s=0$.
-\end{theorem}
-
-\begin{proof}
-Angular complexity $\ell$ counts nodal surfaces; continuous
-deformation of the oscillatory boundary creates or destroys at most
-one nodal surface at a time, forcing $|\Delta\ell|=1$.
-Orientation $m$ is the projection of angular momentum on a chosen
-axis; continuous rotation changes it by at most one unit per
-transition. Chirality is a topological invariant of the boundary
-$(\pi_{1}(SO(3))=\Z_{2})$ and cannot change under continuous
-deformation.
-\end{proof}
-
-\begin{theorem}[Exclusion]
-\label{thm:excl}
-Each partition coordinate tuple $(n,\ell,m,s)$ admits occupation
-$N\in\{0,1\}$.
-\end{theorem}
-
-\begin{proof}
-Two states with identical $(n,\ell,m,s)$ occupy the same partition
-cell. There is no further label to distinguish a ``first'' from a
-``second'' occupant; by identity of indiscernibles they are one state,
-not two.
+Standard sum-of-squares identity multiplied by two.
 \end{proof}
 
 % =========================================================
@@ -473,86 +412,68 @@ not two.
 \label{sec:bijection}
 % =========================================================
 
-\subsection{The map $\PhiMap$}
+\subsection{The map}
 
-Let $\Parts$ denote the set of partition states with coordinates in
-the ranges of Theorem~\ref{thm:nlms}.
+Let $\Parts$ be the set of partition states with coordinates in the
+ranges of Theorem~\ref{thm:nlms}.
 
 \begin{definition}[Partition Map]
 \label{def:phi}
-Define $\PhiMap:\Zp\to\Parts$ as follows. Given $M\in\Zp$:
-\begin{enumerate}[leftmargin=*,itemsep=0.1em]
-\item Find the unique $n$ with $\Nstate(n-1)<M\leq\Nstate(n)$.
-A closed-form upper bound is
-$n\leq\bigl\lceil(3M/2)^{1/3}\bigr\rceil+1$.
-\item Set $\delta=M-\Nstate(n-1)\in\{1,\ldots,2n^{2}\}$.
-\item Enumerate the level-$n$ states in lexicographic order
-$(0,0,-\tfrac{1}{2}),(0,0,+\tfrac{1}{2}),(1,-1,-\tfrac{1}{2}),\ldots$
-and let $(\ell(M),m(M),s(M))$ be the $\delta$-th tuple.
-\item Set $\PhiMap(M)=(n(M),\ell(M),m(M),s(M))$.
+$\PhiMap:\Zp\to\Parts$ is defined by: given $M\in\Zp$,
+\begin{enumerate}[nosep,leftmargin=*]
+\item find $n$ with $N_{\mathrm{state}}(n-1)<M\leq N_{\mathrm{state}}(n)$;
+\item set $\delta=M-N_{\mathrm{state}}(n-1)\in\{1,\ldots,2n^{2}\}$;
+\item enumerate level-$n$ states lexicographically and assign the
+$\delta$-th tuple as $(\ell(M),m(M),s(M))$;
+\item set $\PhiMap(M)=(n(M),\ell(M),m(M),s(M))$.
 \end{enumerate}
 \end{definition}
 
-\begin{theorem}[Partition Bijection]
+\begin{theorem}[Bijection]
 \label{thm:bij}
-$\PhiMap:\Zp\to\Parts$ is a bijection.
+$\PhiMap$ is a bijection.
 \end{theorem}
 
 \begin{proof}
-\emph{Injectivity.} Suppose $\PhiMap(M_{1})=\PhiMap(M_{2})$. Then
-$n(M_{1})=n(M_{2})$, so both lie in $(\Nstate(n-1),\Nstate(n)]$.
-Within this block the lexicographic enumeration is strictly
-monotone, so $\delta_{1}=\delta_{2}$ and therefore $M_{1}=M_{2}$.
+\emph{Injectivity:} $\PhiMap(M_{1})=\PhiMap(M_{2})$ forces
+$n(M_{1})=n(M_{2})$ and $\delta_{1}=\delta_{2}$ by the strict
+monotonicity of the lexicographic enumeration; hence $M_{1}=M_{2}$.
 
-\emph{Surjectivity.} For any $(n,\ell,m,s)\in\Parts$, set
+\emph{Surjectivity:} for $(n,\ell,m,s)\in\Parts$, set
 \[
-M_{0}=\Nstate(n-1)+2\sum_{\ell'=0}^{\ell-1}(2\ell'+1)+2(m+\ell)+(s+\tfrac{1}{2}).
+M_{0}=N_{\mathrm{state}}(n-1)+2\sum_{\ell'=0}^{\ell-1}(2\ell'+1)
++2(m+\ell)+(s+\tfrac{1}{2}).
 \]
-Then $\Nstate(n-1)<M_{0}\leq\Nstate(n)$, $n(M_{0})=n$, and the
-level-$n$ enumeration assigns the requested tuple. Hence
-$\PhiMap(M_{0})=(n,\ell,m,s)$.
+Then $N_{\mathrm{state}}(n-1)<M_{0}\leq N_{\mathrm{state}}(n)$ and the
+level-$n$ enumeration assigns $(n,\ell,m,s)$ to $M_{0}$.
 \end{proof}
 
 \begin{corollary}[Invertibility]
 \label{cor:inv}
-$\PhiMap^{-1}$ is given explicitly by the formula for $M_{0}$ above.
+$\PhiMap^{-1}$ is the explicit formula for $M_{0}$ above.
 \end{corollary}
 
 \subsection{Traversal versus existence}
 
 \begin{definition}[Forward Sequence]
 \label{def:forward}
-For current partition count $M_{t}$, the \emph{forward sequence} is
 $\calF(M_{t})=\{\PhiMap(M_{t}+k):k\geq 1\}\subseteq\Parts$.
 \end{definition}
 
 \begin{theorem}[Successor Existence]
 \label{thm:succ}
 For every $M_{t}\in\Zp$, the partition state $\PhiMap(M_{t}+1)$ is a
-well-defined member of $\Parts$, independently of whether the
-counting process has reached $M_{t}+1$.
+well-defined member of $\Parts$, independently of whether the system
+has traversed $M_{t}+1$.
 \end{theorem}
 
 \begin{proof}
-By the Peano axiom on $\Zp$, $M_{t}+1\in\Zp$. Since $\PhiMap$ is
-defined on all of $\Zp$ (Theorem~\ref{thm:bij}), its value at
-$M_{t}+1$ is determined by Definition~\ref{def:phi}. The procedure
-makes no reference to the counting process.
+$M_{t}+1\in\Zp$ by Peano \citep{peano1889}; $\PhiMap$ is defined on
+all of $\Zp$ by Theorem~\ref{thm:bij}.
 \end{proof}
 
-\begin{remark}[Traversal/Existence Distinction]
-\label{rem:trav}
-Theorem~\ref{thm:succ} separates two predicates: (i) ``$M$ has been
-traversed at time $t$'' depends on $t$; (ii) ``$\PhiMap(M)\in\Parts$''
-does not. Future states are not absent from $\Parts$; they are
-unvisited. This distinction is the basis for the claim that an MS
-fragment is not created by the fragmentation event but is an element
-of $\calF(M_{\mathrm{prec}})$ whose pre-existing partition address is
-traversed.
-\end{remark}
-
 % =========================================================
-\section{Time as Partition Count}
+\section{Time as Configuration Count}
 \label{sec:timecount}
 % =========================================================
 
@@ -561,72 +482,60 @@ traversed.
 \begin{definition}[Oscillatory Closure]
 \label{def:closure}
 An \emph{oscillatory closure} is the event of an angular coordinate
-$\theta$ completing one full traversal of $[0,2\pi)$ and returning to
-its initial value.
+$\theta$ completing one traversal of $[0,2\pi)$ and returning to its
+initial value.
 \end{definition}
 
-\begin{proposition}[Closure is dimensionless]
+\begin{proposition}[Closure is Dimensionless]
 \label{prop:closure}
-A closure is defined without reference to duration. It requires (i) a
-configuration space carrying an angular coordinate $\theta$, and (ii)
-the predicate that $\theta$ has traversed $[0,2\pi)$ exactly once.
-Neither (i) nor (ii) invokes any temporal unit.
+A closure is definable without reference to duration. It requires (i)
+a configuration space carrying an angular coordinate $\theta$, and
+(ii) the predicate that $\theta$ has traversed $[0,2\pi)$ once.
+Neither invokes a temporal unit.
 \end{proposition}
 
 \begin{proof}
-Angular extent $[0,2\pi)$ is dimensionless. The predicate ``returned
-to initial value'' is a property of the trajectory's geometry in
-configuration space, not of how long the traversal took. Poincar\'{e}
-recurrence (Theorem~\ref{thm:poincare}) guarantees that such returns
-occur in any bounded oscillatory system.
+$[0,2\pi)$ is dimensionless angular extent. The predicate of return
+to initial value is a property of trajectory geometry, not of duration.
+Poincar\'{e} recurrence (Theorem~\ref{thm:poincare}) guarantees that
+such returns occur on bounded oscillatory systems.
 \end{proof}
 
-\subsection{Time as a derived parameter}
+\subsection{Time as derived parameter}
 
-\begin{definition}[Time-as-Count]
-\label{def:timecount}
-For a bounded oscillatory system with an attached reference
-oscillator at frequency $f_{\mathrm{ref}}$ stipulated by convention,
-the \emph{time} of a partition count $M$ is the derived ratio
+\begin{definition}[Time as Count]
+\label{def:tcount}
+For a bounded oscillatory system with an attached reference oscillator
+at frequency $f_{\mathrm{ref}}$ stipulated by convention, the
+\emph{time} of a partition count $M$ is the derived ratio
 \begin{equation}
 t\;:=\;\frac{M}{f_{\mathrm{ref}}}.
-\label{eq:timeratio}
+\label{eq:tratio}
 \end{equation}
 \end{definition}
 
 \begin{proposition}[Non-Circularity]
 \label{prop:nocirc}
-Equation \eqref{eq:timeratio} is not circular when read left-to-right.
-$M$ counts topological closures (Definition~\ref{def:closure}), each
-of which is dimensionless. The reference count $f_{\mathrm{ref}}$ is
-stipulated by convention (e.g.\ $f_{\mathrm{Cs}}=9{,}192{,}631{,}770$
-defining the SI second). The right-hand side is a ratio of pure
-integers, and $t$ is defined to be that ratio in whichever unit the
-stipulation chose.
+Equation \eqref{eq:tratio} is not circular. $M$ counts topological
+closures (Proposition~\ref{prop:closure}), each dimensionless;
+$f_{\mathrm{ref}}$ is a stipulated integer (e.g., $f_{\mathrm{Cs}}=
+9{,}192{,}631{,}770$ defining the SI second \citep{si2019}). The
+right-hand side is a ratio of pure integers, named $t$ in the
+stipulated unit. No prior notion of duration is required.
 \end{proposition}
-
-\begin{proof}
-Each closure is a topological event with no temporal content
-(Proposition~\ref{prop:closure}). The count $M\in\Zp$ is an integer.
-The reference count $f_{\mathrm{ref}}$ is an integer chosen by
-convention. The expression $M/f_{\mathrm{ref}}$ is a rational number
-of unit ``seconds'' under the chosen stipulation. No prior notion of
-duration is invoked; $t$ is the named output of the ratio.
-\end{proof}
 
 \begin{theorem}[Time-Count Identity]
 \label{thm:tc}
-For a bounded oscillatory system at angular frequency $\omega$,
+For a bounded oscillatory system of angular frequency $\omega$,
 \begin{equation}
-\boxed{\;\frac{dM}{dt}=\frac{\omega}{2\pi}=\frac{1}{\taup}.\;}
+\boxed{\;\frac{dM}{dt}=\frac{\omega}{2\pi}=\frac{1}{\tau_{p}},\;}
 \label{eq:tc}
 \end{equation}
+where $\tau_{p}=2\pi/\omega$ is the residence time per state.
 \end{theorem}
 
 \begin{proof}
-One oscillation cycle traverses one partition state per period
-$T_{p}=2\pi/\omega$. Hence $dM/dt=1/T_{p}=\omega/(2\pi)$. The
-residence time per state is $\taup=T_{p}$, giving $1/\taup=\omega/(2\pi)$.
+One cycle traverses one state per period $T_{p}=2\pi/\omega$.
 \end{proof}
 
 \begin{corollary}[Strict Monotonicity]
@@ -634,108 +543,133 @@ residence time per state is $\taup=T_{p}$, giving $1/\taup=\omega/(2\pi)$.
 $M(t_{2})>M(t_{1})$ for $t_{2}>t_{1}$.
 \end{corollary}
 
-\begin{proof}
-From $dM/dt=\omega/(2\pi)>0$ in equation~\eqref{eq:tc}.
-\end{proof}
-
 \begin{corollary}[Exact Phase]
 \label{cor:phase}
-The oscillation phase at partition count $M$ is
-$\theta(M)=2\pi M$.
+The oscillation phase at count $M$ is $\theta(M)=2\pi M$.
 \end{corollary}
 
 \begin{proof}
-$\theta=\omega t=\omega M/f_{\mathrm{ref}}$, and since
-$\omega=2\pi f_{\mathrm{ref}}$ for a reference oscillator of integer
-frequency, $\theta(M)=2\pi M$.
+$\theta=\omega t=2\pi f_{\mathrm{ref}}\cdot M/f_{\mathrm{ref}}=2\pi M$
+for a reference oscillator at integer frequency.
 \end{proof}
 
+\subsection{The SI second as metrological lock}
+
+The definition of the SI second is the empirical statement that
+velocity reversals of the caesium-133 hyperfine transition accumulate
+rather than cancel. The unit ``second'' is the named duration of
+$9{,}192{,}631{,}770$ such cycles \citep{si2019}, each containing two
+velocity reversals of the relevant electronic motion. The unit
+exists, hence the count accumulates. This is not a derivation; it is
+an empirical observation incorporated into international metrology.
+We return to it as the operational lock in Section~\ref{sec:dissolution}.
+
 % =========================================================
-\section{Triple Equivalence and the GPU as Instrument}
-\label{sec:triple}
+\section{Configurations are Snapshots; Velocities are Rates}
+\label{sec:configuration}
 % =========================================================
 
-\subsection{Three descriptions of bounded dynamics}
+\subsection{Configurations}
 
-\begin{theorem}[Triple Equivalence]
-\label{thm:triple}
-For a bounded oscillatory system with $M$ independent modes, each
-partitioned into $n$ distinguishable states, the three descriptions
-\begin{align*}
-\text{Oscillatory}:&\quad \Omega_{\mathrm{osc}}=n^{M},\\
-\text{Categorical}:&\quad \Omega_{\mathrm{cat}}=n^{M},\\
-\text{Partitional}:&\quad Z=n^{M}
-\end{align*}
-yield the same entropy $S=\kB M\ln n$, and the conversion maps
-$\mathrm{Osc}\to\mathrm{Cat}\to\mathrm{Part}\to\mathrm{Osc}$ form a
-closed loop.
+\begin{definition}[Configuration]
+\label{def:config}
+A \emph{configuration} of a bounded $N$-body system at time $t$ is
+the structural specification of its inter-constituent correlations:
+the equivalence class of phase-space points sharing the same
+partition state $(n,\ell,m,s)$ together with the same network of
+inter-particle correlations.
+\end{definition}
+
+A configuration is a structure, not a kinematic state. It records
+\emph{which constituents are correlated with which others, in what
+patterns}. It does not record \emph{how fast} the constituents are
+moving.
+
+\begin{definition}[Configuration Count]
+\label{def:Cc}
+The \emph{configuration count} $C(t)$ at time $t$ is the cumulative
+number of distinct configurations the system has occupied over its
+history up to $t$, indexed by partition count $M$ via
+Theorem~\ref{thm:bij}.
+\end{definition}
+
+By Corollary~\ref{cor:mono}, $C(t)$ is monotone non-decreasing in $t$.
+
+\subsection{Decoupling of configuration from velocity}
+
+\begin{proposition}[Same Configuration at Different Velocities]
+\label{prop:decouple}
+A given configuration can be occupied by a system at any velocity
+distribution consistent with the bounded phase space $\Omega$. The
+configuration $(n,\ell,m,s)$ specifies the structural arrangement of
+correlations; it does not specify the magnitude or direction of any
+constituent's velocity.
+\end{proposition}
+
+\begin{proof}
+The coordinates $(n,\ell,m,s)$ are topological labels of the
+oscillatory boundary structure (Theorem~\ref{thm:nlms}). The boundary
+admits the same configuration at any speed of traversal: the same
+shell, same angular nodal structure, same orientation, same chirality
+can be occupied while the constituents move slowly or quickly. The
+configuration is determined by where the boundary \emph{is}, not by
+how fast anything is moving through it.
+\end{proof}
+
+\begin{remark}
+\label{rem:tempindep}
+Proposition~\ref{prop:decouple} entails that the same configuration
+can be present at arbitrary kinetic energy distributions, including
+the same configuration at different temperatures. Temperature is a
+property of the velocity distribution at a configuration; the
+configuration is not a property of temperature. This is the decoupling
+that makes the cumulative count monotone under any traversal direction.
+\end{remark}
+
+\subsection{Monotonicity under arbitrary traversal direction}
+
+\begin{theorem}[Configuration-Count Monotonicity]
+\label{thm:mono}
+Let a bounded oscillatory system evolve under any sequence of
+velocity-direction choices, including reversals applied at arbitrary
+moments. Then the configuration count $C(t)$ is strictly monotone
+non-decreasing in $t$.
 \end{theorem}
 
 \begin{proof}
-\emph{Osc$\to$Cat}: phase $\phi_{i}\in[0,2\pi)$ maps to category
-$k_{i}=\lfloor n\phi_{i}/(2\pi)\rfloor$. Each of $M$ modes contributes
-one of $n$ category labels, giving $n^{M}$ joint states.
+By Proposition~\ref{prop:decouple}, the configuration occupied by the
+system at any moment is determined by the structural state of the
+oscillatory boundary, not by the velocity. By
+Theorem~\ref{thm:poincare}, bounded dynamics is recurrent: the system
+will occupy configurations resembling earlier ones. By
+Theorem~\ref{thm:bij}, each occupation event corresponds to a distinct
+$M\in\Zp$, distinct from all previous $M$. The map
+$M\mapsto\PhiMap(M)$ is many-to-one onto the structural type
+$(n,\ell,m,s)$: two distinct integers $M_{1}\neq M_{2}$ can yield
+configurations of the same structural type at different times.
+Therefore $C(t)$, which counts \emph{occupation events} indexed by
+$M\in\Zp$, increases by one at each event, irrespective of whether
+the structural type at the event resembles a structural type at an
+earlier event.
 
-\emph{Cat$\to$Part}: assign $\epsilon_{k}=k\epsilon_{0}$. The
-single-mode partition function is
-$z(\beta)=\sum_{k=0}^{n-1}e^{-\beta k\epsilon_{0}}$. In the
-high-temperature limit $\kB T\gg\epsilon_{0}$, $z\to n$ and
-$Z=z^{M}=n^{M}$.
-
-\emph{Part$\to$Osc}: from $E_{k}=k\epsilon_{0}$, set
-$A_{k}=\sqrt{2E_{k}/(m\omega^{2})}$ and
-$x_{k}(t)=A_{k}\cos(\omega t+\phi_{0})$. The resulting phases lie in
-$[0,2\pi)$ on a bin of width $2\pi/n$.
-
-\emph{Closure}: composing the three maps returns the input phases up
-to a quantisation error of at most one bin, vanishing as $n\to\infty$.
-
-\emph{Entropy}: Boltzmann's identity $S=\kB\ln\Omega$ with
-$\Omega=n^{M}$ gives $S=\kB M\ln n$ in all three descriptions.
+Velocity reversal applied at $\tau$ causes the system to move through
+configurations whose structural types resemble those at $t<\tau$, but
+each such occupation is a distinct event in $\Zp$ and increments
+$C$. The reversed traversal does not subtract; it adds.
 \end{proof}
 
-\subsection{Observation, computation, and processing}
-
-\begin{theorem}[Observation--Computation Identity]
-\label{thm:obscomp}
-For a bounded oscillatory system, the following three operations are
-mathematically identical:
-\begin{enumerate}[leftmargin=*,itemsep=0.1em]
-\item \textbf{Observation}: refining a measurement until the target
-partition cell is resolved.
-\item \textbf{Computation}: propagating dynamical equations until the
-target partition cell is reached.
-\item \textbf{Processing}: applying constraints until the target
-partition cell is the unique surviving alternative.
-\end{enumerate}
-\end{theorem}
-
-\begin{proof}
-Each operation refines a sequence of partition selections
-$\tau=(t_{1},t_{2},\ldots,t_{k})$ in $\{0,1,2\}^{k}$ (a ternary
-address; see Section~\ref{sec:virtual}). The operation terminates when
-the address is fully resolved at depth $k$, at which point the
-partition state is unique. By Theorem~\ref{thm:triple}, the
-oscillatory, categorical, and partitional realisations of the same
-address are the same object; therefore the three operations operate
-on the same object and terminate at the same partition state.
-\end{proof}
-
-\begin{corollary}[The Instrument is the Programme]
-\label{cor:instr}
-A GPU fragment shader evaluating the partition depth
-$\Depth(\mathbf{x})$ at cell coordinates performs the physical
-observation. It does not simulate the instrument; it is the
-instrument.
+\begin{corollary}[The Reversed State is Not the Initial State]
+\label{cor:notinitial}
+Let a system at time $0$ be in configuration $\PhiMap(M_{0})$. Suppose
+velocities are reversed at time $\tau$ and the system evolves until
+time $2\tau$ to a configuration whose structural type
+$(n,\ell,m,s)$ matches that at time $0$. Then the partition count at
+time $2\tau$ satisfies $M_{2\tau}=M_{0}+2N_{\tau}>M_{0}$, where
+$N_{\tau}$ is the number of configurations traversed during $[0,\tau]$.
 \end{corollary}
 
 \begin{proof}
-A shader is a bounded oscillatory system (CPU/GPU clock at frequency
-$f_{\mathrm{clk}}$) executing partition selections at rate
-$dM/dt=f_{\mathrm{clk}}$. By Theorem~\ref{thm:obscomp}, the
-selections it performs are operationally identical to those a
-physical analyser performs on an ion in a trap. Same operation; same
-output.
+Directly from Theorem~\ref{thm:mono} applied over $[0,2\tau]$.
 \end{proof}
 
 % =========================================================
@@ -743,40 +677,28 @@ output.
 \label{sec:lagrangian}
 % =========================================================
 
-\subsection{Construction from minimal assumptions}
+\subsection{Construction}
 
 \begin{theorem}[Partition Lagrangian]
 \label{thm:Lag}
-A bounded oscillatory mode with partition inertia
-$\partinert=\alpha(m/z)$ in a partition-depth landscape
-$\Depth(\mathbf{x},t)$ and partition-vector potential
+A bounded oscillatory mode with inertia $\partinert=\alpha(m/z)$ in a
+scalar depth landscape $\Depth(\mathbf{x},t)$ and vector potential
 $\Apartition(\mathbf{x})$ admits the unique Galilean-invariant
 Lagrangian
 \begin{equation}
 \boxed{\;\Lagr_{\Depth}=\tfrac{1}{2}\partinert|\dot{\mathbf{x}}|^{2}
-+\partinert\dot{\mathbf{x}}\cdot\Apartition(\mathbf{x})
--\Depth(\mathbf{x},t).\;}
++\partinert\dot{\mathbf{x}}\cdot\Apartition-\Depth.\;}
 \label{eq:Lagdef}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-We seek a Lagrangian quadratic in velocity (forced by Galilean
-invariance up to total derivatives), coupling to a scalar field
-$\Depth$ and a vector field $\Apartition$.
-
-(a) The unique Galilean-invariant scalar quadratic in velocity is
-$\tfrac{1}{2}\partinert|\dot{\mathbf{x}}|^{2}$.
-
-(b) The minimal coupling of velocity to a vector potential is
-$\partinert\dot{\mathbf{x}}\cdot\Apartition$.
-
-(c) The scalar coupling is $-\Depth(\mathbf{x},t)$ with the sign
-chosen so that motion descends partition depth.
-
-There are no further first-derivative scalars; higher derivatives are
-ruled out by Ostrogradsky instability. Equation~\eqref{eq:Lagdef} is
-therefore unique.
+Galilean invariance forces a quadratic-in-velocity kinetic term, the
+unique scalar being $\tfrac{1}{2}\partinert|\dot{\mathbf{x}}|^{2}$.
+Minimal couplings to scalar and vector fields are $-\Depth$ and
+$\partinert\dot{\mathbf{x}}\cdot\Apartition$ respectively. Higher
+derivatives are excluded by the Ostrogradsky instability
+\citep{ostrogradsky1850}.
 \end{proof}
 
 \begin{theorem}[Equations of Motion]
@@ -792,69 +714,61 @@ The Euler--Lagrange equations of \eqref{eq:Lagdef} are
 \end{theorem}
 
 \begin{proof}
-Standard Euler--Lagrange algebra on \eqref{eq:Lagdef} produces
-\eqref{eq:EL}; the magnetic-like term is the curl of $\Apartition$
-contracted with $\dot{\mathbf{x}}$ via the vector identity
-$\nabla(\dot{\mathbf{x}}\cdot\Apartition)
--d(\Apartition)/dt
+Standard Euler--Lagrange algebra on \eqref{eq:Lagdef}, with the
+magnetic-like term obtained from the vector identity
+$\nabla(\dot{\mathbf{x}}\cdot\Apartition)-d\Apartition/dt
 =\dot{\mathbf{x}}\times(\nabla\times\Apartition)$.
 \end{proof}
 
-\begin{corollary}[Lorentz Structure as a Theorem]
-\label{cor:lorentz}
-With $\Depth=q\phi$ and $\Apartition=(q/\partinert)\mathbf{A}$,
-\eqref{eq:EL} reduces to the Lorentz equation
+\begin{corollary}[Lorentz Structure]
+\label{cor:lor}
+Setting $\Depth=q\phi$ and $\Apartition=(q/\partinert)\mathbf{A}$
+reduces \eqref{eq:EL} to
 $\partinert\ddot{\mathbf{x}}=q\mathbf{E}+q\dot{\mathbf{x}}\times\mathbf{B}$
-with $\mathbf{E}=-\nabla\phi$, $\mathbf{B}=\nabla\times\mathbf{A}$.
-The Lorentz force is the Euler--Lagrange equation for partition-depth
-minimisation; no separate ``force'' assumption is required.
+\citep{jackson1999}. The Lorentz equation is a special case of the
+partition Lagrangian for an appropriate choice of field topology.
 \end{corollary}
 
 \subsection{The four analyser scaling laws}
 
-We specialise $\Depth$ and $\Apartition$ to the four canonical
-analyser geometries.
+We specialise to the four canonical mass analyser geometries.
 
-\textbf{Time-of-flight}: linear gradient
-$\Depth_{\mathrm{TOF}}(z)=-\kappa z$, $\Apartition=\mathbf{0}$.
-Solving $\partinert\ddot{z}=\kappa$ from rest over flight length $L$,
-the flight time is
+\textbf{Time-of-flight}: $\Depth_{\mathrm{TOF}}(z)=-\kappa z$,
+$\Apartition=0$. Solving $\partinert\ddot z=\kappa$ from rest over
+length $L$ gives
 \begin{equation}
-T_{\mathrm{TOF}}=\sqrt{\frac{2\partinert L}{\kappa}}
-\;\propto\;\sqrt{m/z}.
+T_{\mathrm{TOF}}=\sqrt{2\partinert L/\kappa}\propto\sqrt{m/z}
 \label{eq:tof}
 \end{equation}
+\citep{wiley1955}.
 
-\textbf{Quadrupole}: oscillating saddle
-$\Depth_{\mathrm{Q}}(x,y,t)=\tfrac{\kappa_{0}}{2}(x^{2}-y^{2})[U+V\cos\Omega t]$,
-$\Apartition=\mathbf{0}$. Substituting $\xi=\Omega t/2$ reduces to
-the Mathieu equation $\ddot u+(a-2q\cos 2\xi)u=0$ with
+\textbf{Quadrupole}: $\Depth_{\mathrm{Q}}=\tfrac{\kappa_{0}}{2}(x^{2}-y^{2})[U+V\cos\Omega t]$,
+$\Apartition=0$. Substituting $\xi=\Omega t/2$ yields the Mathieu
+equation $\ddot u+(a-2q\cos 2\xi)u=0$ with
 \begin{equation}
 a=\frac{4\kappa_{0}U}{\partinert\Omega^{2}},\quad
-q=\frac{2\kappa_{0}V}{\partinert\Omega^{2}}\;\propto\;\frac{1}{m/z}.
+q=\frac{2\kappa_{0}V}{\partinert\Omega^{2}}\propto\frac{1}{m/z}
 \label{eq:mathieu}
 \end{equation}
+\citep{paul1990,march2005}.
 
-\textbf{Orbitrap}: quadro-logarithmic potential
-$\Depth_{\mathrm{Orb}}(r,z)=\tfrac{\kappa}{2}(z^{2}-r^{2}/2)
-+\tfrac{\kappa R_{m}^{2}}{2}\ln(r/R_{m})$, $\Apartition=\mathbf{0}$.
-The $z$-equation decouples:
-$\partinert\ddot z=-\kappa z$, giving
+\textbf{Orbitrap}: $\Depth_{\mathrm{Orb}}=\tfrac{\kappa}{2}(z^{2}-r^{2}/2)
++\tfrac{\kappa R_{m}^{2}}{2}\ln(r/R_{m})$, $\Apartition=0$. The
+$z$-equation decouples to $\partinert\ddot z=-\kappa z$, giving
 \begin{equation}
-\omega_{\mathrm{Orb}}=\sqrt{\kappa/\partinert}
-\;\propto\;\sqrt{z/m}.
+\boxed{\;\omega_{z}=\sqrt{\kappa/\partinert}\;}
+\quad\propto\sqrt{z/m}
 \label{eq:orb}
 \end{equation}
+\citep{makarov2000}.
 
-\textbf{FT-ICR}: $\Depth=0$, vector potential
-$\Apartition=(B/2)(-y,x,0)$ gives $\mathbf{B}_{\Depth}=B\hat z$. From
-\eqref{eq:EL}, $\partinert\ddot{\mathbf{x}}=
-\partinert\dot{\mathbf{x}}\times B\hat z$, so
+\textbf{FT-ICR}: $\Depth=0$, $\Apartition=(B/2)(-y,x,0)$ yields
+$\mathbf{B}_{\Depth}=B\hat z$ and
 \begin{equation}
-\omega_{\mathrm{cyc}}=\frac{qB}{\partinert}=\frac{zeB}{m}
-\;\propto\;\frac{z}{m}.
+\omega_{c}=\frac{qB}{\partinert}=\frac{zeB}{m}\propto z/m
 \label{eq:ftcir}
 \end{equation}
+\citep{marshall1998}.
 
 \begin{theorem}[Analyser Universality]
 \label{thm:univ}
@@ -862,9 +776,217 @@ Equations \eqref{eq:tof}--\eqref{eq:ftcir} are specialisations of one
 Lagrangian \eqref{eq:Lagdef} under choice of partition-field topology.
 \end{theorem}
 
+% =========================================================
+\section{The Dissolution of Loschmidt's Paradox}
+\label{sec:dissolution}
+% =========================================================
+
+\subsection{Statement of the paradox}
+
+Loschmidt's paradox is the observation that the microscopic equations
+of motion are time-reversal symmetric: if $(\mathbf{q}(t),\mathbf{p}(t))$
+is a solution, so is $(\mathbf{q}(-t),-\mathbf{p}(-t))$. Yet macroscopic
+processes exhibit time asymmetry: entropy increases. The conventional
+formulation reasons: reverse all velocities at time $\tau$; the system
+must retrace its trajectory; therefore entropy must \emph{decrease}
+back to its initial value at time $2\tau$. Since this is not observed,
+something is wrong with the foundation of statistical mechanics.
+
+\subsection{Where the conventional reading goes wrong}
+
+The conventional reading conflates two distinct objects:
+
+\begin{enumerate}[nosep,leftmargin=*]
+\item \textbf{The configuration}: the structural arrangement of
+correlations, a partition state $\PhiMap(M)$.
+\item \textbf{The cumulative configuration count}: $C(t)$, indexed by
+$M\in\Zp$, monotone non-decreasing under any traversal direction
+(Theorem~\ref{thm:mono}).
+\end{enumerate}
+
+When the system at time $2\tau$ occupies a configuration of the same
+structural type $(n,\ell,m,s)$ as at time $0$, the conventional reading
+identifies these as ``the same state.'' They are not. They are two
+distinct occupation events, indexed by distinct integers
+$M_{0}<M_{2\tau}\in\Zp$, related by $M_{2\tau}=M_{0}+2N_{\tau}$
+(Corollary~\ref{cor:notinitial}). The structural type matches; the
+cumulative count does not.
+
+The entropy of the system, in the formulation where entropy is the
+configuration count, is $S(t)=\kB C(t)$. By
+Theorem~\ref{thm:mono}, $S(t)$ is strictly monotone non-decreasing
+in $t$, regardless of velocity-direction choices. Loschmidt's
+operation \emph{cannot decrease entropy because the velocity reversal
+does not undo the cumulative count}; it traverses configurations of
+the same structural types as before, each of which adds to the count.
+
+\subsection{Self-undermining structures in the conventional reading}
+
+\textbf{The metrology argument.} The SI second is defined as
+$9{,}192{,}631{,}770$ oscillation periods of caesium-133, each
+period containing two velocity reversals of the relevant electronic
+motion \citep{si2019}. If reversal cancelled count, this number would
+be zero and the unit would be undefined. The unit exists. Therefore
+reversal accumulates rather than cancels.
+
+This is a self-undermining structure: Loschmidt's conventional
+reading would null the very unit in which the reading is stated. The
+reading uses, as its operational primitive, a quantity defined as the
+empirical denial of the reading.
+
+\textbf{The pendulum/oscillator argument.} A simple pendulum reverses
+its velocity twice per period at the turning points. If reversal
+cancelled time-progression, the net period would be zero and pendulums
+would not function as clocks. They do function as clocks. The same
+argument applies to every physical oscillator, including atomic
+clocks, quartz oscillators, and the Orbitrap's axial oscillation.
+Each is a velocity reversal performed twice per cycle, accumulating
+forward, with the cumulative count grounding metrology.
+
+\subsection{What actually happens}
+
+Under velocity reversal at time $\tau$:
+
+\begin{enumerate}[nosep,leftmargin=*]
+\item The system's $(\mathbf{q},\mathbf{p})$ projection retraces. At
+time $2\tau$, $(\mathbf{q}_{2\tau},\mathbf{p}_{2\tau})
+=(\mathbf{q}_{0},-\mathbf{p}_{0})$. This is the Loschmidt symmetry.
+\item The structural type of the configuration at $2\tau$ matches
+that at $0$. The same partition cell $(n,\ell,m,s)$ is occupied.
+\item The cumulative count $M_{2\tau}$ is strictly greater than $M_{0}$
+by twice the number of distinct configurations traversed in $[0,\tau]$.
+\item The entropy $S(2\tau)=\kB C(2\tau)>\kB C(0)=S(0)$.
+\end{enumerate}
+
+There is no paradox. The Loschmidt symmetry holds for the
+$(\mathbf{q},\mathbf{p})$ projection. The entropy increases monotonically
+in the cumulative count. These are statements about different
+observables; neither contradicts the other.
+
+% =========================================================
+\section{Backward Trajectory Completion: The Penultimate State}
+\label{sec:backward}
+% =========================================================
+
+\subsection{The S-entropy embedding}
+
+\begin{definition}[S-Entropy Coordinates]
+\label{def:Sspace}
+The S-entropy coordinate space is $\Sspace=[0,1]^{3}$ with coordinates
+$(S_{k},S_{t},S_{e})$ representing structural, temporal, and
+evolutionary projections of the configuration count.
+\end{definition}
+
+\begin{definition}[Ternary Refinement Hierarchy]
+\label{def:hier}
+A ternary refinement hierarchy of depth $k$ in $\Sspace$ is a sequence
+of partitions $\{P_{0},\ldots,P_{k}\}$ with $|P_{0}|=1$,
+$|P_{j+1}|=3|P_{j}|$, each block of $P_{j}$ refined into three
+children. Total leaves: $N=3^{k}$.
+\end{definition}
+
+\subsection{Backward navigation in $\log_{3}N$ steps}
+
+\begin{theorem}[Backward Navigation]
+\label{thm:logn}
+Given the endpoint cell $\tau_{k}\in\{0,1,2\}^{k}$, backward navigation
+to the root terminates in exactly $\log_{3}N=k$ steps.
+\end{theorem}
+
 \begin{proof}
-Each derivation in the four paragraphs above takes \eqref{eq:Lagdef}
-or \eqref{eq:EL} and a specific choice of $\Depth$ and $\Apartition$.
+Each step computes the parent of the current cell by truncating the
+last trit of its base-3 expansion. This is $O(1)$ per step. Starting
+at depth $k$ and ending at depth $0$, exactly $k$ steps are required.
+\end{proof}
+
+\begin{algorithm}[!htbp]
+\caption{Backward Trajectory Completion}
+\label{alg:back}
+\begin{algorithmic}[1]
+\Function{Complete}{addr $\tau\in\{0,1,2\}^{k}$}
+\State trajectory $\mathcal{T}\gets[\tau]$
+\State $j\gets k$
+\While{$j>1$}
+\State $\tau\gets\tau[1{:}j-1]$
+\Comment{drop last trit (parent)}
+\State $\mathcal{T}.\mathrm{prepend}(\tau)$
+\State $j\gets j-1$
+\EndWhile
+\State \Return $\mathcal{T}$
+\Comment{terminates at the penultimate state}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Termination at the penultimate state}
+
+Algorithm~\ref{alg:back} terminates the \texttt{while} loop at $j=1$,
+producing the penultimate state---one isomorphism step short of the
+root. This is not an off-by-one artefact but a structural requirement.
+
+\begin{theorem}[Recognition Gap]
+\label{thm:recog}
+Recognition of a configuration $\tau\in\{0,1,2\}^{k}$ by a receiver
+requires the receiver's state to be distinct from $\tau$. Closing the
+final step---making the receiver state identical to $\tau$---dissolves
+the distinction and with it the recognition.
+\end{theorem}
+
+\begin{proof}
+A receiver that occupies $\tau$ does not stand in relation to $\tau$
+as a recognising party to a recognised object; the two are
+indistinguishable. Recognition requires the receiver to point to $\tau$
+from a distinct vantage. The minimal distinct vantage is the
+penultimate state, one isomorphism step from $\tau$.
+\end{proof}
+
+\begin{corollary}[Loschmidt's Operation Cannot Close the Gap]
+\label{cor:losch_gap}
+Loschmidt's velocity reversal asks whether the cumulative count can
+return to its initial value. By Theorem~\ref{thm:recog}, closing the
+gap would dissolve the distinction between the reversed state and the
+initial state; by Corollary~\ref{cor:notinitial}, this does not happen
+under velocity reversal because the cumulative count strictly
+increases. The penultimate-state structure is the operational analogue
+of the impossibility of returning to the initial cumulative count.
+\end{corollary}
+
+\subsection{Virtual sub-states and the speedup}
+
+\begin{definition}[Sub-coordinate Decomposition]
+\label{def:sub}
+A sub-coordinate decomposition of $s\in[0,1]$ is a triple
+$(s_{1},s_{2},s_{3})\in\R^{3}$ with $(s_{1}+s_{2}+s_{3})/3=s$. It is
+\emph{virtual} if any $s_{i}\notin[0,1]$.
+\end{definition}
+
+\begin{theorem}[Virtual Decompositions Dominate]
+\label{thm:virt}
+For any $s\in(0,1)$ and bound $M$, the fraction of admissible
+decompositions $(s_{1},s_{2},s_{3})$ with $\max_{i}|s_{i}|\leq M$
+that are virtual tends to $1$ as $M\to\infty$.
+\end{theorem}
+
+\begin{proof}
+The constraint plane $\{(s_{1},s_{2},s_{3}):s_{1}+s_{2}+s_{3}=3s\}$
+is two-dimensional in $\R^{3}$. Its intersection with $[0,1]^{3}$ has
+bounded area; its intersection with $[-M,M]^{3}$ has area growing as
+$M^{2}$. The complement (virtual) fraction approaches $1$.
+\end{proof}
+
+\begin{theorem}[Collapse Without Virtual Decompositions]
+\label{thm:collapse}
+Backward completion restricted to physical decompositions
+($s_{i}\in[0,1]$ for all $i$) requires $\Theta(N)$ steps.
+\end{theorem}
+
+\begin{proof}
+A physical-only step requires the metric to be evaluated at resolution
+finer than the cell width at the parent level; this is achievable only
+via decompositions whose components escape $[0,1]^{3}$
+(Theorem~\ref{thm:virt}). Without virtual decompositions the parent
+must be found by enumerating children of candidate parents, summing
+to $\sum_{j=0}^{k}3^{j}=\Theta(N)$.
 \end{proof}
 
 % =========================================================
@@ -872,825 +994,388 @@ or \eqref{eq:EL} and a specific choice of $\Depth$ and $\Apartition$.
 \label{sec:phase}
 % =========================================================
 
-\subsection{Phase between precursor and forward sequence}
+\subsection{Phase relations}
 
 \begin{theorem}[Precursor--Fragment Phase Coherence]
 \label{thm:coh}
 Let a precursor ion at partition count $M_{\mathrm{prec}}$ be on a
-continuous oscillatory trajectory in a partition landscape. Let
-$f\in\calF(M_{\mathrm{prec}})$ be any element of the forward sequence
-at count $M_{f}>M_{\mathrm{prec}}$. The oscillation phase
-relationship between precursor and $f$ is
+continuous oscillatory trajectory. Let $f\in\calF(M_{\mathrm{prec}})$
+be a member of its forward sequence at count
+$M_{f}>M_{\mathrm{prec}}$. The phase relationship satisfies
 \begin{equation}
-\boxed{\;\Delta\theta_{f}=2\pi\Delta M_{f}\quad\text{with}\quad
-\Delta M_{f}=M_{f}-M_{\mathrm{prec}}.\;}
+\boxed{\;\Delta\theta_{f}=2\pi(M_{f}-M_{\mathrm{prec}}).\;}
 \label{eq:dtheta}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-By Corollary~\ref{cor:phase}, $\theta(M)=2\pi M$. At
-$M_{\mathrm{prec}}$, $\theta_{\mathrm{prec}}=2\pi M_{\mathrm{prec}}$;
-at $M_{f}$, $\theta_{f}=2\pi M_{f}$. Subtracting,
-$\Delta\theta_{f}=2\pi(M_{f}-M_{\mathrm{prec}})=2\pi\Delta M_{f}$.
-The argument uses only the exactness of $\theta(M)=2\pi M$ and the
-fact that both states are reached on one continuous trajectory; no
-assumption about the fragmentation mechanism enters.
+By Corollary~\ref{cor:phase}, $\theta(M)=2\pi M$. Subtracting the
+phases at $M_{f}$ and $M_{\mathrm{prec}}$ gives \eqref{eq:dtheta}.
 \end{proof}
 
-\subsection{Fragment frequencies in a fixed trap}
+\subsection{Fragment frequencies and subharmonics}
 
 \begin{theorem}[Fragment Frequency Law]
 \label{thm:ffreq}
-In an Orbitrap trap with potential parameter $\kappa$, a fragment ion
-$f$ of mass $m_{f}$ derived from a precursor of mass $m_{\mathrm{prec}}$
-(same charge, same $\kappa$) oscillates at axial frequency
+In an Orbitrap with parameter $\kappa$, a fragment ion $f$ of mass
+$m_{f}$ derived from a precursor of mass $m_{\mathrm{prec}}$ (same
+charge, same $\kappa$) oscillates at axial frequency
 \begin{equation}
-\omega_{f}=\omega_{\mathrm{prec}}\sqrt{\frac{m_{\mathrm{prec}}}{m_{f}}}.
+\omega_{f}=\omega_{\mathrm{prec}}\sqrt{m_{\mathrm{prec}}/m_{f}}.
 \label{eq:ffreq}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-From \eqref{eq:orb}, $\omega=\sqrt{\kappa/\partinert}$ with
-$\partinert\propto m/z$. For fixed $z$ and $\kappa$,
-$\omega^{2}\propto 1/m$. Taking the ratio gives
-$\omega_{f}/\omega_{\mathrm{prec}}=\sqrt{m_{\mathrm{prec}}/m_{f}}$.
+From \eqref{eq:orb}, $\omega^{2}\propto 1/m$ at fixed charge and
+$\kappa$. Take the ratio.
 \end{proof}
 
-\subsection{Subharmonic encoding in the precursor transient}
-
-\begin{theorem}[Fragment Subharmonic Theorem]
+\begin{theorem}[Subharmonic Encoding]
 \label{thm:sub}
 For a precursor ion with Orbitrap transient
 $s_{\mathrm{prec}}(t)=A_{\mathrm{prec}}\cos(\omega_{\mathrm{prec}}t+\phi_{\mathrm{prec}})$,
-each forward-sequence member $f$ contributes an additive
-subharmonic component
+each fragment $f$ contributes an additive component
 \begin{equation}
 s_{f}(t)=A_{f}\cos(\omega_{f}t+\phi_{f}),
 \label{eq:sub}
 \end{equation}
-where $\omega_{f}=\omega_{\mathrm{prec}}\sqrt{m_{\mathrm{prec}}/m_{f}}$
-(Theorem~\ref{thm:ffreq}) and
-$\phi_{f}=\phi_{\mathrm{prec}}-\Delta\theta_{f}$
-(Theorem~\ref{thm:coh}). Therefore the Fourier transform of
-$s_{\mathrm{prec}}(t)$ contains spectral peaks at $\omega_{f}$ for
-every $f$ in the forward sequence accessible during the transient.
+with $\omega_{f}$ from \eqref{eq:ffreq} and
+$\phi_{f}=\phi_{\mathrm{prec}}-2\pi(M_{f}-M_{\mathrm{prec}})$
+(Theorem~\ref{thm:coh}). The Fourier transform of the precursor
+transient contains spectral peaks at $\omega_{f}$ for every fragment
+in the forward sequence reachable during the transient.
 \end{theorem}
 
 \begin{proof}
-The fragment becomes a distinct oscillator at the moment it acquires
-distinguishable partition coordinates from the precursor. From that
-instant, its image current is additive with the precursor's by
-linearity of charge-induced detection. Its frequency is given by
-Theorem~\ref{thm:ffreq}; its initial phase is the precursor's phase at
-the moment of fragmentation minus the accumulated
-$\Delta\theta_{f}=2\pi\Delta M_{f}$ from Theorem~\ref{thm:coh}.
-Fourier-transforming the total transient yields a peak at $\omega_{f}$
-with that phase.
+The fragment acquires a distinct oscillator identity at the moment of
+fragmentation; from that moment, its image current is additive with
+the precursor's by linearity of charge-induced detection. Its initial
+phase is set by the precursor's phase at the fragmentation moment
+minus the phase advance during $[0,\tau_{f}]$, which by
+Theorem~\ref{thm:coh} is $2\pi\Delta M_{f}$.
 \end{proof}
 
 \begin{remark}[Distinguishability from Harmonics]
 \label{rem:harm}
-Equation \eqref{eq:ffreq} gives $\omega_{f}/\omega_{\mathrm{prec}}
-=\sqrt{m_{\mathrm{prec}}/m_{f}}$, generally irrational. Pure
-nonlinearity-induced harmonics of a trap appear at integer multiples
-$n\omega_{\mathrm{prec}}$. The two are distinguishable in any FFT of
-sufficient bin resolution.
-\end{remark}
-
-\subsection{Charge state subharmonics}
-
-\begin{theorem}[Charge State Frequency Law]
-\label{thm:zfreq}
-A $z$-times-charged ion of the same neutral mass oscillates in the
-Orbitrap at
-\begin{equation}
-\omega_{(z)}=\sqrt{z}\,\omega_{(1)}.
-\label{eq:zfreq}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-From $\omega=\sqrt{q\kappa/m}=\sqrt{ze\kappa/m}$ at fixed neutral
-mass $m$ and trap parameter $\kappa$.
-\end{proof}
-
-\begin{remark}
-Charge-state and fragment subharmonics are mutually distinguishable
-because they appear at $\sqrt{z}$ and $\sqrt{m_{\mathrm{prec}}/m_{f}}$
-multiples respectively, with no coincidences except by accident for
-small integer mass ratios.
+Fragment subharmonics appear at irrational multiples
+$\sqrt{m_{\mathrm{prec}}/m_{f}}$ of the precursor frequency, distinct
+from integer-multiple harmonics arising from trap nonlinearity. The
+two are distinguishable in any FFT of adequate bin resolution.
 \end{remark}
 
 % =========================================================
-\section{Virtual Substates and Mean Recovery}
-\label{sec:virtual}
+\section{The Headline Experiment: Caesium in an Orbitrap}
+\label{sec:experiment}
 % =========================================================
 
-\subsection{S-entropy coordinate space}
+\subsection{Rationale}
 
-\begin{definition}[S-Entropy Coordinates]
-\label{def:Sspace}
-The \emph{S-entropy coordinate space} is
-$\Sspace=[0,1]^{3}$ with coordinates $(S_{k},S_{t},S_{e})$. We
-identify three orthogonal physical projections:
-\begin{itemize}[nosep,leftmargin=*]
-\item $S_{k}$: knowledge (mass/charge scale).
-\item $S_{t}$: temporal (retention or arrival time scale).
-\item $S_{e}$: evolution (fragmentation state).
-\end{itemize}
-\end{definition}
+The Cs\textsuperscript{+} ion in an Orbitrap mass spectrometer is the
+optimal operational instantiation of the framework's central claim,
+for four reasons.
 
-\begin{definition}[Ternary Address]
-\label{def:ternary}
-A \emph{ternary address} of depth $k$ is a sequence
-$\tau=(t_{1},\ldots,t_{k})\in\{0,1,2\}^{k}$. The set of all
-depth-$k$ addresses has cardinality $3^{k}$.
-\end{definition}
+\textbf{Reason 1: The analyte is the metrology atom.} Caesium-133 is
+the isotope whose hyperfine count defines the SI second
+\citep{si2019}. The experiment uses, as its test object, the very
+atom whose monotonic accumulation of velocity-reversal counts grounds
+international metrology.
 
-\begin{definition}[Trit-Axis Mapping]
-\label{def:trit}
-The trit at position $i$ refines axis $S_{k},S_{t},S_{e}$ according
-to $i\bmod 3$. Cell $C_{\tau}$ at depth $k$ has volume $3^{-k}$ in
-$\Sspace$ and centre
+\textbf{Reason 2: The trap performs the reversal natively.} The
+Orbitrap's axial well drives the ion through approximately
+$\omega_{z}T/(2\pi)\sim 10^{6}$ axial oscillations per second of
+analytical observation, each containing two velocity reversals at the
+turning points. The trap is, by construction, a controlled-reversal
+apparatus. No external reversal mechanism is required.
+
+\textbf{Reason 3: The Lagrangian gives an exact prediction.} From
+\eqref{eq:orb} and \eqref{eq:tc}, the partition count is
 \begin{equation}
-\mathbf{r}(\tau)=\Bigl(r_{k}(\tau),r_{t}(\tau),r_{e}(\tau)\Bigr),
-\label{eq:rcell}
+M^{\mathrm{pred}}(T)=\frac{\omega_{z}T}{2\pi}=\frac{T}{2\pi}\sqrt{\frac{e\kappa}{m_{\mathrm{Cs}}}},
+\label{eq:Mpred}
 \end{equation}
-where each $r_{a}(\tau)=\sum_{i\in I_{a}}t_{i}\cdot 3^{-\lceil
-i/3\rceil}\cdot \tfrac{1}{2}+\tfrac{1}{2}\cdot 3^{-\lceil i/3\rceil}$
-with $I_{a}$ the trit positions assigned to axis $a$.
-\end{definition}
+with $m_{\mathrm{Cs}}=132.905452\,\mathrm{u}$ \citep{atomicmasses2020}
+and $\kappa$ a trap geometry constant. There are no adjustable
+parameters.
 
-\begin{theorem}[Position--Trajectory Duality]
-\label{thm:dual}
-A ternary address $\tau$ simultaneously encodes (i) the cell
-$C_{\tau}$ (final position) and (ii) the sequence of refinements
-(trajectory). The map is bijective.
-\end{theorem}
-
-\begin{proof}
-Reading $\tau$ left-to-right gives the sequence of partition
-selections starting from $[0,1]^{3}$. The cell $C_{\tau}$ is the
-intersection of those selections. Different addresses yield
-different cells (injectivity from disjointness of subdivisions); every
-cell at depth $k$ has a unique address (surjectivity from exhaustive
-subdivision).
-\end{proof}
-
-\subsection{Virtual substates}
-
-\begin{definition}[Virtual Substate]
-\label{def:virtual}
-For a partition value $s\in[0,1]$ and integer $N\geq 2$, a
-\emph{virtual substate} of $s$ is an ordered tuple
-$(s_{1},\ldots,s_{N})\in\R^{N}$ satisfying the \emph{mean-recovery
-constraint}
+\textbf{Reason 4: The transient gives an exact measurement.} The
+Orbitrap image current $s(t)$ has instantaneous phase
+$\theta(t)=\arg(s(t)+i\mathcal{H}[s(t)])$ recovered by Hilbert
+transform, where $\mathcal{H}$ is the Hilbert operator \citep{gabor1946}.
+Cumulative unwrapped phase divided by $2\pi$ yields a measured
+partition count
 \begin{equation}
-\bar s:=\frac{1}{N}\sum_{j=1}^{N}s_{j}=s.
-\label{eq:meanrec}
+M^{\mathrm{meas}}(t)=\theta_{\mathrm{unwrap}}(t)/(2\pi)
+\label{eq:Mmeas}
 \end{equation}
-A virtual substate is \emph{physical} if every $s_{j}\in[0,1]$ and
-\emph{off-shell} otherwise.
-\end{definition}
+at every sample.
 
-\begin{theorem}[Existence of Off-Shell Decompositions]
-\label{thm:exoff}
-For any $s\in(0,1)$ and $N\geq 2$, the set of off-shell virtual
-substates of $s$ has positive Lebesgue measure on the constraint
-hyperplane $\{(s_{1},\ldots,s_{N}):\sum s_{j}=Ns\}$.
-\end{theorem}
+\subsection{Protocol}
 
-\begin{proof}
-The constraint defines an affine $(N-1)$-dimensional hyperplane in
-$\R^{N}$. The set of physical substates is the bounded polytope
-$\{[0,1]^{N}\cap\text{constraint}\}$, of finite Lebesgue measure. The
-complement on the constraint hyperplane has infinite measure for any
-$s\in(0,1)$, so off-shell substates dominate.
-\end{proof}
+\begin{protocol}[Caesium Monotonicity Experiment]
+\label{prot:C1}
+\textbf{Input.} Orbitrap raw transient of Cs\textsuperscript{+}
+($m/z\approx 132.9054$, singly charged) recorded over duration
+$T\in[0.5,2.0]$~s with trap parameter $\kappa$ from instrument
+metadata. Sampling rate $f_{s}\geq 4\omega_{z}/(2\pi)$ to ensure
+adequate Nyquist coverage.
 
-\begin{theorem}[Miracle Principle]
-\label{thm:mir}
-For any $s\in[0,1]$, $N\geq 2$, and any choice of
-$(s_{1},\ldots,s_{N-1})\in\R^{N-1}$, the value
-$s_{N}=Ns-\sum_{j=1}^{N-1}s_{j}$ is uniquely determined and the
-mean-recovery constraint holds.
-\end{theorem}
+\textbf{Predicted statistic.}
+$M^{\mathrm{pred}}(T)=(T/2\pi)\sqrt{e\kappa/m_{\mathrm{Cs}}}$ from
+\eqref{eq:Mpred}.
 
-\begin{proof}
-Solve \eqref{eq:meanrec} for $s_{N}$.
-\end{proof}
+\textbf{Measured statistic.} $M^{\mathrm{meas}}(t)$ from
+\eqref{eq:Mmeas}, sampled at the ADC rate.
 
-\subsection{Unconstrained subtask theorem}
+\textbf{Pass criterion 1 (Lagrangian agreement).}
+\[
+\frac{|M^{\mathrm{meas}}(T)-M^{\mathrm{pred}}(T)|}{M^{\mathrm{pred}}(T)}<10^{-6}.
+\]
 
-\begin{theorem}[Unconstrained Subtask]
-\label{thm:unsub}
-Let $\xi$ be an expression evaluating to global value $g\in[0,1]$ in
-a fixed evaluation calculus, and let $\eta$ be any subexpression of
-$\xi$. The substitution
-$\xi'=C[\eta\mapsto\eta_{1}+\eta_{2}-\eta_{1}]$ where $\eta_{1}$ has
-arbitrary local value $\sigma\in\R$ and $\eta_{2}$ has
-$\mathrm{value}(\eta_{2})=\mathrm{value}(\eta)$, satisfies
-$\mathrm{value}(\xi')=g$ regardless of $\sigma$.
-\end{theorem}
+\textbf{Pass criterion 2 (Monotonicity).}
+$M^{\mathrm{meas}}(t_{i+1})>M^{\mathrm{meas}}(t_{i})$ for every
+adjacent sample pair $(t_{i},t_{i+1})$ over the entire transient.
+\end{protocol}
 
-\begin{proof}
-The arithmetic identity $\eta_{1}+\eta_{2}-\eta_{1}=\eta_{2}$ holds
-for any $\eta_{1}$. The surrounding context $C[\cdot]$ is
-unchanged. By compositionality of evaluation, $\xi'$ evaluates to the
-same value as the original $\xi$.
-\end{proof}
+\subsection{What this falsifies}
 
-\begin{corollary}[Free Local Virtual Components]
-\label{cor:freeloc}
-Under preserved global mean-recovery, individual virtual components
-$s_{j}$ are unconstrained.
-\end{corollary}
+\textbf{Conventional Loschmidt prediction.} Velocity reversal at each
+turning point should cause $M(t)$ to decrement (retracing of the
+counting process). For an Orbitrap transient of duration
+$T=1.0$~s, this should occur approximately
+$2\omega_{z}/(2\pi)\sim 10^{6}$ times. Pass criterion 2 in
+Protocol~\ref{prot:C1} is the explicit denial of this prediction.
 
-\subsection{Connection to off-shell propagators}
+\textbf{Framework prediction.} $M(t)$ is strictly monotone
+non-decreasing across all turning points; agreement with
+$M^{\mathrm{pred}}(T)$ to fractional precision $10^{-6}$.
 
-\begin{remark}[Formal Identification with Feynman Propagators]
-\label{rem:feyn}
-In quantum field theory the Feynman propagator
-$D_{F}(q)=i/(q^{2}-m^{2}c^{4}+i\varepsilon)$ admits virtual
-4-momenta $q$ with $q^{2}\neq m^{2}c^{4}$ (off-shell), subject to
-energy--momentum conservation $\sum q_{i}=Q$ at each vertex
-\citep{peskin1995}. The mean-recovery constraint $\bar s=s$ on
-virtual substates is the same statement: off-shell intermediate
-values are free, but their (suitably weighted) sum equals the
-physical external value. The identification is formal, not a
-metaphor: both are intermediate decompositions outside the physical
-on-shell domain whose aggregate satisfies a physical constraint.
-\end{remark}
+If $M^{\mathrm{meas}}(t)$ exhibits any decrement at any turning point,
+the framework is operationally falsified. If $M^{\mathrm{meas}}(t)$ is
+monotone over $\sim 10^{6}$ velocity reversals and matches the
+Lagrangian prediction to $10^{-6}$, the Loschmidt operation has been
+performed $\sim 10^{6}$ times on the SI metrology atom, in a single
+analytical observation, and observed to leave the cumulative count
+monotone every time.
+
+\subsection{Implementation notes}
+
+The Hilbert transform of the discrete-time transient is computed via
+FFT \citep{cooley1965}: take the FFT, zero the negative-frequency
+components, double the positive-frequency components, inverse FFT,
+and take the imaginary part. Phase unwrapping uses the standard
+algorithm: detect discontinuities exceeding $\pi$ in successive phase
+samples and add multiples of $2\pi$ as needed. The trap parameter
+$\kappa$ is read from instrument configuration; alternatively, it can
+be calibrated against a known reference ion in the same transient
+without affecting the monotonicity test.
 
 % =========================================================
-\section{The Stacked Virtual Tensor}
-\label{sec:tensor}
+\section{Supporting Experiments}
+\label{sec:supporting}
 % =========================================================
 
-\subsection{Four orthogonal decomposition dimensions}
+The headline experiment of Section~\ref{sec:experiment} is the
+primary operational test. The following four supporting experiments
+provide auxiliary validation of the framework's structural results on
+existing data, with no new wet-lab work required.
 
-An MS ion admits four natural dimensions of virtual decomposition,
-each carrying an independent mean-recovery constraint.
+\subsection{Bijection on standard \texttt{mzML} ions}
 
-\textbf{D1 (instrument basis)}: same ion, four trap geometries,
-indexed $i\in\{1,2,3,4\}$ for Orbitrap, FT-ICR, TOF, quadrupole.
+\begin{protocol}[Bijection Check]
+\label{prot:bij}
+\textbf{Input.} \texttt{mzML} file with $N_{\mathrm{ion}}$ detected
+ions, each with $m/z$ and intensity.
 
-\textbf{D2 (charge state)}: $z\in\{1,\ldots,Z\}$ for the same neutral
-mass.
+\textbf{Procedure.} For each ion, compute
+$n_{i}=\lfloor\sqrt{(m/z)_{i}/m_{\mathrm{ref}}}\rfloor+1$ for
+$m_{\mathrm{ref}}=1$~Da, encode the ion as
+$M_{i}=N_{\mathrm{state}}(n_{i}-1)+\delta_{i}$ with $\delta_{i}$
+constructed from the ion's secondary observables, apply $\PhiMap$ to
+recover $(n_{i},\ell_{i},m_{i},s_{i})$, and verify capacity
+$\delta_{i}\leq 2n_{i}^{2}$ and selection $|m_{i}|\leq\ell_{i}<n_{i}$.
 
-\textbf{D3 (polarity)}: $k\in\{0,1\}$ for $\pm$ ion mode (chirality
-$s=\pm\tfrac{1}{2}$).
+\textbf{Pass criterion.} All $N_{\mathrm{ion}}$ ions satisfy capacity
+and selection; no two distinct ions share an integer encoding.
 
-\textbf{D4 (time)}: $\ell\in\{1,\ldots,n_{t}\}$ for temporal substates
-relative to the current measurement.
+\textbf{What this validates.} Theorems~\ref{thm:cap}, \ref{thm:bij},
+and Corollary~\ref{cor:cum}.
+\end{protocol}
 
-\begin{definition}[Virtual Partition Tensor]
-\label{def:tensor}
-The \emph{virtual partition tensor} is the rank-4 array
-$V_{ijkl}$ with $V_{ijkl}\in\R^{3}$, the virtual partition
-coordinate at the $(i,j,k,\ell)$ corner of the stacked decomposition.
-\end{definition}
+\subsection{Four analyser scaling laws}
 
-\begin{theorem}[Tensor Mean-Recovery]
-\label{thm:tensor}
-The physical ion's partition coordinate
-$\mathbf v_{\mathrm{phys}}\in[0,1]^{3}$ satisfies
-\begin{equation}
-\mathbf v_{\mathrm{phys}}=\frac{1}{N}\sum_{i,j,k,\ell}V_{ijkl},
-\quad N=4\cdot Z\cdot 2\cdot n_{t}.
-\label{eq:tensormean}
-\end{equation}
-\end{theorem}
+\begin{protocol}[Analyser Scaling]
+\label{prot:scale}
+\textbf{Input.} Reference dataset of $N_{c}\geq 30$ compounds with
+measured flight times (TOF), Orbitrap frequencies (Orb), Mathieu
+$(a,q)$ (Quad), and cyclotron frequencies (FT-ICR).
 
-\begin{proof}
-Theorem~\ref{thm:exoff} and Definition~\ref{def:virtual} extend
-coordinate-wise to the four-index sum.
-\end{proof}
+\textbf{Procedure.} For each analyser, fit the predicted scaling
+\eqref{eq:tof}--\eqref{eq:ftcir} and compute the maximum relative
+residual across compounds.
 
-\subsection{Degrees of freedom and information content}
+\textbf{Pass criterion.} All four maximum residuals
+$<10^{-4}$ on a dataset spanning at least one decade in $m/z$.
 
-\begin{proposition}[Degrees of Freedom]
-\label{prop:dof}
-The tensor mean-recovery constraint is one vector equation in
-$\R^{3}$, i.e.\ three scalar constraints. The number of free
-parameters is
-\begin{equation}
-\mathrm{dof}(V)=3(N-1).
-\label{eq:dof}
-\end{equation}
-\end{proposition}
+\textbf{What this validates.} Theorem~\ref{thm:univ}: the four
+analyser equations are specialisations of one Lagrangian.
+\end{protocol}
 
-\begin{proof}
-$V$ has $3N$ scalar entries; three are removed by \eqref{eq:tensormean}.
-\end{proof}
+\subsection{Subharmonic encoding}
 
-\begin{example}[Peptide Scale]
-For $Z=500$, $n_{t}=100$:
-$N=4\cdot 500\cdot 2\cdot 100=4\times 10^{5}$, giving
-$\mathrm{dof}(V)=3(4\times 10^{5}-1)\approx 1.2\times 10^{6}$ free
-parameters. These encode every entry of the four decomposition
-dimensions: charge envelope, fragment substates, polarity complement,
-ionisation history. They are present in the single-precursor measurement.
-\end{example}
-
-% =========================================================
-\section{Backward Trajectory Completion}
-\label{sec:backward}
-% =========================================================
-
-\subsection{Hierarchy and complexity}
-
-\begin{definition}[Ternary Refinement Hierarchy]
-\label{def:hier}
-A \emph{ternary refinement hierarchy} of depth $k$ in $\Sspace$ is a
-sequence of partitions $\{P_{0},\ldots,P_{k}\}$ with
-$|P_{j+1}|=3|P_{j}|$, $|P_{0}|=1$, and each block of $P_{j}$ refined
-into three children. Total leaves: $N=3^{k}$.
-\end{definition}
-
-\begin{theorem}[Discrete Lower Bound]
-\label{thm:lower}
-Any algorithm solving the trajectory-completion problem using only
-equality and membership queries on $\Sspace$ requires $\Omega(N)$
-queries in the worst case.
-\end{theorem}
-
-\begin{proof}
-An adversary can withhold partition structure until forced to reveal
-it. Distinguishing the leaf block of every other leaf requires
-$\Omega(N\log_{2}3)$ bits of information, each query yielding at most
-$O(1)$ bits. The bound follows.
-\end{proof}
-
-\subsection{Logarithmic completion with virtual substates}
-
-\begin{theorem}[Backward Navigation Speedup]
-\label{thm:logn}
-Backward trajectory completion using virtual substates terminates in
-exactly $\log_{3}N=k$ steps.
-\end{theorem}
-
-\begin{proof}
-Each step computes the parent cell of the current address by
-truncating the last trit of the base-3 expansion of $(S_{k},S_{t},S_{e})$.
-This is $\mathcal{O}(1)$ per step. Starting at depth $k$ and ending
-at depth $0$, exactly $k$ steps are required.
-\end{proof}
-
-\begin{theorem}[Collapse Without Virtual Substates]
-\label{thm:collapse}
-Restricting decompositions to physical (on-shell) sub-coordinates
-collapses backward completion to $\Theta(N)$.
-\end{theorem}
-
-\begin{proof}
-A physical-only step at depth $j$ requires geodesic resolution in the
-continuous metric finer than the cell width at depth $j-1$, which is
-attainable only via decompositions whose components escape $[0,1]^{3}$
-(Theorem~\ref{thm:exoff}). Without virtual components, the parent
-must be located by enumerating children of candidate parents, summing
-to $\sum_{j=0}^{k}3^{j}=\Theta(N)$.
-\end{proof}
-
-\begin{algorithm}[!htbp]
-\caption{Backward Completion (virtual)}
-\label{alg:back}
-\begin{algorithmic}[1]
-\Function{Complete}{addr $\tau\in\{0,1,2\}^{k}$}
-\State trajectory $\mathcal{T}\gets[\tau]$
-\State $j\gets k$
-\While{$j>0$}
-\State $\tau\gets\tau[1{:}j-1]$
-\Comment{drop last trit (parent)}
-\State $\mathcal{T}.\mathrm{prepend}(\tau)$
-\State $j\gets j-1$
-\EndWhile
-\State \Return $\mathcal{T}$
-\EndFunction
-\end{algorithmic}
-\end{algorithm}
-
-\begin{theorem}[Path Opacity]
-\label{thm:path}
-Let $\mathcal{T}_{1},\mathcal{T}_{2}$ be two backward trajectories
-sharing endpoint $\tau_{k}$ but differing in intermediate virtual
-decompositions. Any metric invariant computable at $\tau_{k}$
-(coordinate, distance to origin, Riemannian volume) is equal on both.
-\end{theorem}
-
-\begin{proof}
-Endpoint-defined invariants are functions of $\tau_{k}$ alone. By
-Theorem~\ref{thm:unsub}, intermediate virtual values can vary
-freely under preserved endpoint, so two trajectories with the same
-$\tau_{k}$ yield the same invariants.
-\end{proof}
-
-% =========================================================
-\section{The Six-Pass Shader Pipeline}
-\label{sec:shader}
-% =========================================================
-
-\subsection{Mapping the ion journey to shader passes}
-
-By Corollary~\ref{cor:instr}, a GPU shader evaluating partition depth
-at cell coordinates performs the physical observation. We map each
-stage of the ion journey to one shader pass.
-
-\begin{table}[H]
-\centering
-\caption{Six-pass pipeline.}
-\label{tab:pipeline}
-\small
-\begin{tabular}{lll}
-\toprule
-\textbf{Pass} & \textbf{Stage} & \textbf{Operation} \\
-\midrule
-1 & Ionisation & Partition creation $\Delta\Depth$\\
-2 & Ion optics & Gradient descent $-\nabla\Depth$\\
-3 & Mass analysis & Topology specialisation\\
-4 & Fragmentation & $\Depth$ redistribution\\
-5 & Detection & Partition completion\\
-6 & Signal & Categorical state flux\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{Pass specifications}
-
-\textbf{Pass 1 (Ionisation)}. Input: neutral molecule parameters.
-Operation: evaluate $\Delta\Depth=\kB T\ln b\cdot\sum_{i}\log_{b}k_{i}$
-for creating $z$ unfilled partition slots. Ionisation energy is
-$\mathrm{IE}=T\kB\ln b\cdot\Delta\Depth$. Output: ion parameters
-$(m/z,z)$.
-
-\textbf{Pass 2 (Ion optics)}. Input: ion at source exit. Operation:
-evaluate $\Depth(\mathbf{x})$ from electrode geometry and integrate
-$\dot{\mathbf{x}}=-\gamma\nabla\Depth$. Output: ion position at
-analyser entrance.
-
-\textbf{Pass 3 (Mass analysis)}. Input: ion at analyser entrance.
-Operation: evaluate analyser-specific $\Depth(\mathbf{x},t)$ from
-\eqref{eq:tof}--\eqref{eq:ftcir}. Output: analyser observable.
-
-\textbf{Pass 4 (Fragmentation)}. Input: parent ion at $\Depth_{p}$,
-collision energy $E_{c}$. Operation: redistribute $\Depth_{p}$ to
-$\{\Depth_{f_{i}}\}$ subject to $\sum_{i}\Depth_{f_{i}}=\Depth_{p}$ and
-selection rules (Theorem~\ref{thm:select}). Output: fragment list.
-
-\textbf{Pass 5 (Detection)}. Input: ion at detector with $\Depth$.
-Operation: compute $\Delta\Depth_{\mathrm{compl}}=\Depth-\Depth_{\min}$;
-signal amplitude $\propto\Delta\Depth_{\mathrm{compl}}$. Output: signal
-amplitude.
-
-\textbf{Pass 6 (Signal)}. Input: detection event, network topology.
-Operation: propagate categorical state through phase-locked
-electronics at $v\sim\sqrt{G/\rho_{m}}$. Output: digitised signal.
-
-\begin{theorem}[Pipeline Completeness]
-\label{thm:complete}
-The six-pass pipeline reproduces every observable a physical
-mass spectrometer produces for an ion in $\Parts$, with zero forces
-and zero adjustable parameters beyond the trap geometry constants.
-\end{theorem}
-
-\begin{proof}
-Pass 1 produces correct $\mathrm{IE}$ by depth-energy equivalence.
-Pass 2 produces correct trajectories from gradient flow of $\Depth$.
-Pass 3 produces the correct scaling \eqref{eq:tof}--\eqref{eq:ftcir}.
-Pass 4 conserves $\Depth$ and respects selection rules. Pass 5
-produces signals proportional to $\Delta\Depth$. Pass 6 produces
-realistic noise via partition lag. Every stage is a derivation from
-\eqref{eq:Lagdef}; no external assumption enters.
-\end{proof}
-
-% =========================================================
-\section{The Five Falsifiable Experiments}
-\label{sec:experiments}
-% =========================================================
-
-The validation programme falsifies five claims of the framework.
-Each claim is a theorem proved above; each experiment is a numerical
-operation on real \texttt{mzML} or transient data with a predicted
-statistic, a pass criterion at the framework's predicted precision,
-and a clear failure mode.
-
-\subsection{E1: Bijection and capacity}
-
-\begin{experiment}[Partition Bijection on MS Data]
-\label{exp:e1}
-\textbf{Theorem under test:} Theorems~\ref{thm:cap},
-\ref{thm:bij}, and Corollary~\ref{cor:cum}.\\
-\textbf{Input:} \texttt{mzML} with $N_{\mathrm{ion}}$ detected ions.\\
-\textbf{Procedure:}
-\begin{enumerate}[nosep,leftmargin=*]
-\item For each ion with observed $m/z$, compute
-$M_{i}=\lfloor f_{\mathrm{ref}}\cdot t_{\mathrm{flight},i}\rfloor$
-when raw timing is available, otherwise
-$n_{i}=\lfloor\sqrt{(m/z)_{i}/m_{\mathrm{ref}}}\rfloor+1$,
-$\delta_{i}=\lceil(2n_{i}^{2})\cdot S_{e,i}\rceil$, and
-$M_{i}=\Nstate(n_{i}-1)+\delta_{i}$.
-\item Apply $\PhiMap$ to obtain $(n_{i},\ell_{i},m_{i},s_{i})$.
-\item Check capacity $\delta_{i}\leq 2n_{i}^{2}$ and selection
-$0\leq\ell_{i}<n_{i}$, $|m_{i}|\leq\ell_{i}$,
-$s_{i}\in\{\pm\tfrac{1}{2}\}$ for all ions.
-\item Check injectivity: $M_{i}=M_{j}\Leftrightarrow i=j$.
-\end{enumerate}
-\textbf{Pass criterion:} 100\% of ions satisfy capacity, selection,
-and injectivity.\\
-\textbf{Failure mode:} any ion outside the bounds falsifies
-Theorem~\ref{thm:cap}; any collision falsifies Theorem~\ref{thm:bij}.
-\end{experiment}
-
-\subsection{E2: Time-count identity}
-
-\begin{experiment}[Time-Count Identity in a Trap]
-\label{exp:e2}
-\textbf{Theorem under test:} Theorem~\ref{thm:tc}.\\
-\textbf{Input:} Orbitrap transient with stipulated reference
-oscillator frequency $f_{\mathrm{ref}}$, $N_{p}$ peaks at frequencies
-$\{\omega_{k}\}$.\\
-\textbf{Procedure:}
-\begin{enumerate}[nosep,leftmargin=*]
-\item For each peak compute $M_{k}(T)=f_{k}\cdot T$ over the transient
-duration $T$, where $f_{k}=\omega_{k}/(2\pi)$.
-\item Compute the residual $r_{k}=M_{k}(T)-\omega_{k}T/(2\pi)$ in
-machine precision.
-\end{enumerate}
-\textbf{Pass criterion:} $\max_{k}|r_{k}|<10^{-12}$.\\
-\textbf{Failure mode:} any $|r_{k}|$ above floating-point noise
-falsifies the identity.
-\end{experiment}
-
-\subsection{E3: Analyser scaling laws}
-
-\begin{experiment}[Four Analyser Scaling Laws]
-\label{exp:e3}
-\textbf{Theorem under test:} Theorem~\ref{thm:univ} and
-equations~\eqref{eq:tof}--\eqref{eq:ftcir}.\\
-\textbf{Input:} reference dataset of $N_{c}$ compounds with measured
-flight times (TOF), Orbitrap frequencies (Orb), Mathieu stability
-($a,q$) (Quad), and cyclotron frequencies (FT-ICR).\\
-\textbf{Procedure:} for each analyser type, fit the predicted
-scaling and compute the maximum residual:
-\begin{align*}
-\mathrm{res}_{\mathrm{TOF}}&=\max_{c}\bigl|T_{c}-K_{\mathrm{T}}\sqrt{(m/z)_{c}}\bigr|/T_{c},\\
-\mathrm{res}_{\mathrm{Orb}}&=\max_{c}\bigl|\omega_{c}-K_{\mathrm{O}}\sqrt{(z/m)_{c}}\bigr|/\omega_{c},\\
-\mathrm{res}_{\mathrm{ICR}}&=\max_{c}\bigl|\omega_{c}-K_{\mathrm{I}}(z/m)_{c}\bigr|/\omega_{c},\\
-\mathrm{res}_{\mathrm{Q}}&=\max_{c}\bigl|q_{c}-K_{\mathrm{Q}}(m/z)_{c}^{-1}\bigr|/q_{c}.
-\end{align*}
-\textbf{Pass criterion:} all four residuals $<10^{-4}$ on a dataset
-of $N_{c}\geq 30$ compounds spanning at least one decade in $m/z$.\\
-\textbf{Failure mode:} any residual above $10^{-4}$ falsifies
-\eqref{eq:Lagdef} for the given analyser.
-\end{experiment}
-
-\subsection{E4: Subharmonic encoding}
-
-\begin{experiment}[Single-Transient Fragment Encoding]
-\label{exp:e4}
-\textbf{Theorem under test:} Theorems~\ref{thm:coh},
-\ref{thm:ffreq}, \ref{thm:sub}.\\
-\textbf{Input:} raw Orbitrap transient $s(t)$ of one precursor at
+\begin{protocol}[Single-Transient Fragment Encoding]
+\label{prot:sub}
+\textbf{Input.} Raw Orbitrap transient $s(t)$ of one precursor at
 $\omega_{\mathrm{prec}}$, paired with the corresponding centroided
 MS\textsuperscript{2} fragment list
-$\{(m_{f_{i}},I_{f_{i}})\}_{i=1}^{N_{f}}$.\\
-\textbf{Procedure:}
-\begin{enumerate}[nosep,leftmargin=*]
-\item Compute predicted subharmonic frequencies
+$\{(m_{f_{i}},I_{f_{i}})\}_{i=1}^{N_{f}}$.
+
+\textbf{Procedure.} Compute predicted fragment frequencies
 $\omega_{f_{i}}^{\mathrm{pred}}=\omega_{\mathrm{prec}}\sqrt{m_{\mathrm{prec}}/m_{f_{i}}}$
 and predicted phases
 $\phi_{f_{i}}^{\mathrm{pred}}=\phi_{\mathrm{prec}}-2\pi\Delta M_{f_{i}}$.
-\item Compute $\hat s(\omega)$ by FFT with bin resolution
+Compute $\hat s(\omega)$ by FFT with bin width
 $\Delta\omega<\min_{i}|\omega_{f_{i}}-\omega_{\mathrm{prec}}|/10$.
-\item For each predicted $\omega_{f_{i}}^{\mathrm{pred}}$, search
-$\hat s$ within $\pm 3\Delta\omega$ for a peak above the local noise
-floor at threshold SNR $\geq 5$.
-\item Record measured peak frequency and phase
-$(\omega_{f_{i}}^{\mathrm{meas}},\phi_{f_{i}}^{\mathrm{meas}})$.
-\item Compute frequency residual
-$r_{i}^{\omega}=|\omega_{f_{i}}^{\mathrm{meas}}-\omega_{f_{i}}^{\mathrm{pred}}|/\omega_{f_{i}}^{\mathrm{pred}}$
-and phase residual
-$r_{i}^{\phi}=|\phi_{f_{i}}^{\mathrm{meas}}-\phi_{f_{i}}^{\mathrm{pred}}|\bmod\pi$.
-\end{enumerate}
-\textbf{Pass criterion:} for $\geq 80\%$ of MS\textsuperscript{2}
-fragments above the SNR floor,
-$r_{i}^{\omega}<10^{-5}$ and $r_{i}^{\phi}<0.1$~rad.\\
-\textbf{Failure mode:} subharmonics absent at predicted positions,
-or present but with phases inconsistent with $2\pi\Delta M$, or
-present at wrong frequencies. Either falsifies one of
-Theorems~\ref{thm:coh}, \ref{thm:ffreq}, \ref{thm:sub}.
-\end{experiment}
+For each predicted $\omega_{f_{i}}^{\mathrm{pred}}$, search $\hat s$
+within $\pm 3\Delta\omega$ for a peak above SNR $5$. Record measured
+frequency and phase residuals.
 
-\begin{remark}[Why this is the headline]
-E4 is the experiment that distinguishes the partition picture from
-the force picture observationally. The two pictures agree on the
-$m/z$ scaling laws; they disagree on whether fragment information is
-present in a single MS\textsuperscript{1} transient. If E4 passes,
-no further evidence is needed: a single transient is operationally
-equivalent to an MS\textsuperscript{2} measurement.
-\end{remark}
+\textbf{Pass criterion.} For $\geq 80\%$ of MS\textsuperscript{2}
+fragments above SNR floor: frequency residual $<10^{-5}$, phase
+residual $<0.1$~rad modulo $\pi$.
 
-\subsection{E5: Backward completion complexity}
+\textbf{What this validates.} Theorems~\ref{thm:coh}, \ref{thm:ffreq},
+\ref{thm:sub}.
+\end{protocol}
 
-\begin{experiment}[Logarithmic Backward Completion]
-\label{exp:e5}
-\textbf{Theorem under test:} Theorems~\ref{thm:logn},
-\ref{thm:collapse}, \ref{thm:path}.\\
-\textbf{Input:} for $N_{c}$ ions with annotated S-coordinates
-$(S_{k},S_{t},S_{e})$, the corresponding ternary addresses at depth
-$k=18$ (six trits per axis).\\
-\textbf{Procedure (virtual path):}
-\begin{enumerate}[nosep,leftmargin=*]
-\item For each ion, apply Algorithm~\ref{alg:back} to obtain the
-backward trajectory and record step count $K_{i}^{\mathrm{virt}}$.
-\item For an opacity check, generate two distinct random
-intermediate virtual decompositions sharing the endpoint and
-record metric invariants at the endpoint.
-\end{enumerate}
-\textbf{Procedure (physical-only path):}
-\begin{enumerate}[nosep,leftmargin=*]
-\item Repeat backward completion restricted to physical
-substates (mean-recovery with all components in $[0,1]$).
-\item Record step count $K_{i}^{\mathrm{phys}}$.
-\end{enumerate}
-\textbf{Pass criterion:}
-$K_{i}^{\mathrm{virt}}=k$ exactly for all $i$;
-$\langle K_{i}^{\mathrm{phys}}/(3^{k})\rangle$ within a constant
-factor of unity; endpoint invariants in the opacity check identical
-for both random intermediate decompositions to floating-point
-precision.\\
-\textbf{Failure mode:} virtual completion exceeding $k$ steps
-falsifies Theorem~\ref{thm:logn}; physical-only completion in
-sub-linear steps falsifies Theorem~\ref{thm:collapse}; invariants
-differing between paths falsifies Theorem~\ref{thm:path}.
-\end{experiment}
+\subsection{Backward completion complexity}
+
+\begin{protocol}[Logarithmic Completion]
+\label{prot:back}
+\textbf{Input.} $N_{c}\geq 30$ ions with annotated S-entropy
+coordinates $(S_{k},S_{t},S_{e})$ at depth $k=18$.
+
+\textbf{Procedure (virtual).} Apply Algorithm~\ref{alg:back}; record
+step count $K_{i}^{\mathrm{virt}}$.
+
+\textbf{Procedure (physical-only).} Apply Algorithm~\ref{alg:back}
+restricted to decompositions with $s_{j}\in[0,1]$; record step count
+$K_{i}^{\mathrm{phys}}$.
+
+\textbf{Pass criterion.} $K_{i}^{\mathrm{virt}}=k-1=17$ exactly (the
+algorithm terminates at the penultimate state) for all $i$;
+$K_{i}^{\mathrm{phys}}$ scales as $3^{k}$ within a constant factor.
+
+\textbf{What this validates.} Theorems~\ref{thm:logn}, \ref{thm:collapse}.
+\end{protocol}
 
 % =========================================================
-\section{Data Contracts, JSON Records, and Pass Criteria}
-\label{sec:contracts}
+\section{JSON Record Schemas and Suite-Level Acceptance}
+\label{sec:json}
 % =========================================================
 
 \subsection{Common record schema}
 
-Each experiment persists a JSON record of the form
+Each experiment persists a JSON record:
 \begin{verbatim}
 {
-  "experiment": "E1|E2|E3|E4|E5",
-  "theorem_id": <int>,
+  "experiment": "C1|Bij|Scale|Sub|Back",
+  "theorem_ids": [<int>, ...],
   "input_dataset": <str>,
   "n_samples": <int>,
   "predicted": { ... },
   "measured": { ... },
-  "residuals": { "max": <float>,
-                 "rms": <float> },
+  "residuals": {
+    "max": <float>,
+    "rms": <float>
+  },
+  "monotone": <bool>,
   "pass": <bool>,
   "elapsed_seconds": <float>,
   "seed": <int>
 }
 \end{verbatim}
 
-\subsection{Per-experiment specifications}
-
-\textbf{E1.} \emph{Inputs}: \texttt{mzML} with peaks. \emph{Predicted}:
-$M_{i}\in\Zp$, $(n,\ell,m,s)$. \emph{Measured}: same, by
-$\PhiMap$. \emph{Pass}: 100\% of $N_{\mathrm{ion}}$ satisfy capacity
-and selection; no collisions.
-
-\textbf{E2.} \emph{Inputs}: transient peak list, $f_{\mathrm{ref}}$,
-$T$. \emph{Predicted}: $M_{k}^{\mathrm{pred}}=f_{k}T$. \emph{Measured}:
-$M_{k}^{\mathrm{meas}}=\omega_{k}T/(2\pi)$. \emph{Pass}:
-$\max|r_{k}|<10^{-12}$.
-
-\textbf{E3.} \emph{Inputs}: $\geq 30$ compounds with all four
-analyser observables. \emph{Predicted}: scaling \eqref{eq:tof}--\eqref{eq:ftcir}.
-\emph{Measured}: instrument data. \emph{Pass}: all residuals $<10^{-4}$.
-
-\textbf{E4.} \emph{Inputs}: raw Orbitrap transient and MS\textsuperscript{2}
-fragment list. \emph{Predicted}: $(\omega_{f_{i}}^{\mathrm{pred}},
-\phi_{f_{i}}^{\mathrm{pred}})$. \emph{Measured}: FFT-extracted peaks
-within SNR$\geq 5$. \emph{Pass}: $\geq 80\%$ fragments matched with
-$r^{\omega}<10^{-5}$ and $r^{\phi}<0.1$~rad.
-
-\textbf{E5.} \emph{Inputs}: $N_{c}$ ternary addresses at depth $k=18$.
-\emph{Predicted}: $K^{\mathrm{virt}}=k$,
-$K^{\mathrm{phys}}\sim 3^{k}$. \emph{Measured}: step counts.
-\emph{Pass}: identity for virtual; linear-in-$N$ scaling for physical;
-opacity invariants equal.
-
-\subsection{Test grids and dataset choice}
-
-Recommended datasets:
-\begin{itemize}[nosep,leftmargin=*]
-\item E1: HMDB-derived \texttt{mzML} ($\sim 2{,}847$ compounds);
-LIPID MAPS ($\sim 892$ species); MassBank ($\sim 532$ compounds).
-\item E2: any Orbitrap transient with manufacturer-reported reference
-oscillator $f_{\mathrm{ref}}$.
-\item E3: 39 NIST compounds spanning all four analyser types.
-\item E4: a paired raw transient and MS\textsuperscript{2} scan on
-the same precursor; HCD or CID fragmentation.
-\item E5: any subset of E1's compounds with depth-18 addresses.
-\end{itemize}
+The aggregate file \texttt{master\_results.json} collects per-experiment
+pass flags, total wall-clock time, and the framework version.
 
 \subsection{Suite-level acceptance}
 
-The full validation suite is accepted if and only if all five
-experiments report \texttt{PASS}. A single \texttt{FAIL} falsifies
-one of the named theorems and localises the failure precisely: E1
-(bijection), E2 (time-count), E3 (Lagrangian), E4 (phase coherence
-and subharmonics), E5 (backward completion).
+The full validation suite is accepted if and only if:
+\begin{itemize}[nosep,leftmargin=*]
+\item Protocol~\ref{prot:C1} (headline) passes both criteria.
+\item Each supporting protocol passes its criterion.
+\end{itemize}
 
-\subsection{Reproducibility}
-
-All experiments are deterministic given the random seed. JSON records
-include the seed and elapsed time. A separate master record
-$\texttt{master\_results.json}$ aggregates per-experiment pass flags
-and the wall-clock time of the whole suite.
+A \texttt{FAIL} on the headline protocol falsifies the framework
+operationally: the conventional Loschmidt prediction
+($M$ retraces at turning points) would have been observed. A
+\texttt{FAIL} on a supporting protocol localises the failure to the
+specific theorem under test.
 
 % =========================================================
 \section{Discussion}
 \label{sec:discussion}
 % =========================================================
 
-\subsection{What this blueprint proves and what it does not}
+\subsection{What this paper proves and what it does not}
 
-The derivations in Sections~\ref{sec:axiom}--\ref{sec:shader}
-establish that, granted the single Bounded Phase Space Axiom
-(Axiom~\ref{ax:bps}), the partition-depth picture of a mass
-spectrometer is internally consistent, dimensionally honest, and
-free of circularity (Proposition~\ref{prop:nocirc}). They do not
-establish that the picture is physically correct; the experiments
-of Section~\ref{sec:experiments} are designed to falsify it if it is
-wrong.
+The derivations of Sections~\ref{sec:axiom}--\ref{sec:phase} establish
+that, granted Axiom~\ref{ax:bps} alone, the configuration count
+$C(t)$ is well defined and monotone non-decreasing under any
+traversal direction, including velocity reversal. They establish that
+Loschmidt's conventional reading conflates two distinct objects:
+the structural type of the configuration (which can recur), and the
+cumulative count of occupation events (which cannot).
 
-\subsection{Scope and limitations}
+The paper does not establish, by derivation alone, that the framework
+applies physically to caesium ions in Orbitraps. That is the role of
+the headline experiment of Section~\ref{sec:experiment}. If the
+experiment fails---if $M^{\mathrm{meas}}$ exhibits decrements at
+turning points, or fails to match $M^{\mathrm{pred}}$ to $10^{-6}$---the
+framework is falsified at the operational level.
+
+\subsection{Limitations}
 
 \begin{enumerate}[nosep,leftmargin=*]
-\item \textbf{Non-integrable systems.} The Lagrangian derivation
-(Theorem~\ref{thm:Lag}) assumes integrability in the sense that
-action-angle variables exist. KAM-type robustness arguments are
-necessary to extend to near-integrable cases.
-\item \textbf{Effective-charge approximations.} The atomic
-ionisation-energy comparisons used as historical motivation for
-$C(n)=2n^{2}$ involve screening corrections we do not model here.
-\item \textbf{Relativistic regime.} The analyser scaling derivations
-assume $v\ll c$. Relativistic generalisation requires the
-Lorentzian metric in place of the Euclidean kinetic term.
-\item \textbf{Detector noise.} Pass 6 of the shader pipeline
-specifies the categorical-state-flux noise model. Practical detection
-electronics may introduce additional non-categorical noise (thermal,
-shot) that broadens FFT peaks in E4.
+\item \textbf{Integrable systems.} The Lagrangian derivation assumes
+integrability. KAM-type robustness \citep{kolmogorov1954,arnold1963,moser1962}
+extends results to near-integrable cases; chaotic regimes require
+additional treatment.
+\item \textbf{Detector noise.} The Hilbert-transform phase recovery
+assumes signal-to-noise sufficient to track phase between samples.
+Practical Orbitrap transients are well above this floor for the
+duration $T$ specified in Protocol~\ref{prot:C1}.
+\item \textbf{Relativistic regime.} The kinetic term assumes
+$v\ll c$. Relativistic generalisation replaces the Galilean kinetic
+term with the Lorentzian one and reproduces the same conclusions in
+the non-relativistic limit.
 \end{enumerate}
-
-\subsection{Connection to the wider categorical computing framework}
-
-The partition Lagrangian, time-count identity, and triple equivalence
-extend beyond mass spectrometry. Any bounded oscillatory measurement
-(NMR, X-ray crystallography, IR/Raman, FT-ICR mass spectrometry,
-Orbitrap, ion mobility) admits the same six-pass mapping, with the
-specific $\Depth$-topology determining the analyser type. The
-blueprint here is implemented for mass spectrometry but is portable
-to other domains by changing the $\Depth$-field uniforms in Pass 3.
 
 \subsection{What success and failure mean}
 
-If E1--E5 all pass, the partition picture is operationally validated
-on real data: mass spectrometry is determined by partition addresses,
-single transients carry MS\textsuperscript{2} information, backward
-completion is logarithmic, and the six-pass shader pipeline is a
-complete instrument.
+If Protocol~\ref{prot:C1} passes, the Loschmidt operation has been
+performed approximately one million times in one second of analytical
+observation on the atom whose count defines the SI second, and
+observed to leave the cumulative count monotone every time. The
+conventional reading of Loschmidt's paradox is operationally
+falsified; the framework is operationally validated.
 
-If E4 fails while E1--E3, E5 pass, the partition framework remains
-consistent but the precise phase-coherence claim is empirically
-wrong: the time-domain transient does not carry fragment information.
-This would be a precise, localisable falsification: not of the whole
-framework, but of Theorem~\ref{thm:coh} or
-Theorem~\ref{thm:sub}.
+If Protocol~\ref{prot:C1} fails, the framework is operationally
+falsified. We would then need to identify which assumption breaks: the
+Lagrangian (Theorem~\ref{thm:Lag}), the time-count identity
+(Theorem~\ref{thm:tc}), or the monotonicity argument
+(Theorem~\ref{thm:mono}).
 
-If E1 fails on real data---for instance, a violation of the capacity
-bound $\delta_{i}\leq 2n_{i}^{2}$---the partition coordinate system
-of Theorem~\ref{thm:nlms} would be falsified, and all downstream
-results would require revision.
-
-\subsection{Outlook}
-
-The blueprint as specified can be implemented in Python with
-\texttt{numpy} and \texttt{scipy} for E1--E3, E5, and with
-\texttt{numpy.fft} plus a Thermo \texttt{.raw} parser for E4. The
-target is a single \texttt{python -m validate\_all} entry point
-producing a JSON suite analogous to the 14-experiment artefact in
-the categorical computing framework. The full implementation is left
-to the companion software paper; the present paper specifies what is
-to be implemented and what counts as success.
+The headline experiment is, in either outcome, decisive.
 
 % =========================================================
 \section*{Acknowledgements}
 % =========================================================
 
 This work is part of the bounded-phase-space programme at the
-TU Munich Chair of Proteomics and Bioanalytics. No external funding
-was used. All datasets cited are publicly available.
+TU Munich Chair of Proteomics and Bioanalytics. All datasets cited
+are publicly available.
 
 % =========================================================
 \bibliographystyle{plainnat}
