@@ -1,0 +1,36 @@
+# A plain-text notes demo.
+#
+# Stores some everyday sentences, then searches them by topic. No
+# domain knowledge required — just ordinary text in and ordinary text
+# out. Run with:
+#
+#   cargo run -p buhera-os --bin demo -- --script examples/notes.bvh
+#
+# (no NIST data needed; you can omit --data, or it'll be ignored.)
+
+# Store a handful of sentences. Each one gets a categorical coordinate
+# computed deterministically from its content.
+memory store "weekend"   = "I need to do laundry and clean the kitchen this weekend"
+memory store "groceries" = "buy milk eggs bread and coffee from the supermarket"
+memory store "meeting"   = "schedule the team meeting for Wednesday afternoon"
+memory store "email"     = "reply to the customer email about the late shipment"
+memory store "exercise"  = "go for a run on Saturday morning before it gets hot"
+memory store "book"      = "finish reading the chapter on bounded oscillatory systems"
+memory store "code"      = "refactor the database connection pool to use async"
+memory store "travel"    = "book a flight to Munich for the conference next month"
+
+# Look at everything we just stored.
+memory list
+
+# Search by topic. The OS finds notes whose coordinate is closest to
+# the query's coordinate.
+memory find nearest "shopping list" k=3
+memory find nearest "morning workout" k=3
+memory find nearest "travel plans" k=3
+
+# Sort all notes by their distance from the origin (a "zero-cost"
+# categorical sort that doesn't compare any text).
+demon sort
+
+# Show what the kernel did under the hood.
+kernel stats
