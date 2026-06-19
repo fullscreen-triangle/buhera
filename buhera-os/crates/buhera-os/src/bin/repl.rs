@@ -10,9 +10,10 @@ use std::io::{self, BufRead, Write};
 use std::path::PathBuf;
 use std::process::ExitCode;
 
+use buhera_embed::{LexicalEmbedder, SemanticEmbedder, TextEmbedder};
 use buhera_kernel::Kernel;
-use buhera_os::{boot_os, load_nist, print_result, NistDatabase};
-use buhera_vahera::{execute_vahera, MoleculeDatabase};
+use buhera_os::{boot_os, load_nist, print_result, rerank_hits_with_overlap, EmbedderAdapter, NistDatabase};
+use buhera_vahera::{execute_vahera_with, MoleculeDatabase, NamedResult};
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -29,6 +30,15 @@ struct Args {
     /// Ternary-address depth used by CMM.
     #[arg(long, default_value_t = 12)]
     depth: usize,
+
+    /// Use the dependency-free lexical embedder instead of the
+    /// semantic model.
+    #[arg(long, default_value_t = false)]
+    lexical: bool,
+
+    /// Disable the token-overlap re-ranking pass.
+    #[arg(long, default_value_t = false)]
+    no_overlap: bool,
 }
 
 const HELP: &str = r#"
@@ -98,6 +108,20 @@ kernel stats
 fn main() -> ExitCode {
     let args = Args::parse();
 
+    // Pick an embedder.
+    let embedder: Box<dyn TextEmbedder> = if args.lexical {
+        Box::new(LexicalEmbedder::new())
+    } else {
+        eprintln!("(loading semantic embedder; first run downloads ~23 MB)");
+        match SemanticEmbedder::new() {
+            Ok(e) => Box::new(e),
+            Err(err) => {
+                eprintln!("(semantic embedder failed: {}; falling back to lexical)", err);
+                Box::new(LexicalEmbedder::new())
+            }
+        }
+    };
+
     let db = match args.data.as_ref() {
         Some(p) => match load_nist(p) {
             Ok(db) => Some(db),
@@ -119,8 +143,9 @@ fn main() -> ExitCode {
     };
 
     println!(
-        "buhera-os repl  (depth={}, objects loaded={})",
+        "buhera-os repl  (depth={}, embedder={}, objects loaded={})",
         args.depth,
+        embedder.name(),
         kernel.cmm.len()
     );
     println!("type something to search, or :help for the menu, :quit to exit");
@@ -163,28 +188,45 @@ fn main() -> ExitCode {
                 println!("(kernel reset)");
                 continue;
             }
-            ":tour" => match execute_vahera(TOUR, &mut kernel, &molecules) {
-                Ok(ctx) => {
-                    for line in &ctx.trace {
-                        println!("  {}", line);
+            ":tour" => {
+                let adapter = EmbedderAdapter::new(embedder.as_ref());
+                match execute_vahera_with(TOUR, &mut kernel, &molecules, &adapter) {
+                    Ok(mut ctx) => {
+                        if !args.no_overlap {
+                            for r in &mut ctx.results {
+                                if let NamedResult::FindHits { query, hits } = r {
+                                    rerank_hits_with_overlap(query, hits, 0.5);
+                                }
+                            }
+                        }
+                        for line in &ctx.trace {
+                            println!("  {}", line);
+                        }
+                        for r in &ctx.results {
+                            print_result(r);
+                        }
                     }
-                    for r in &ctx.results {
-                        print_result(r);
-                    }
+                    Err(err) => eprintln!("error during tour: {}", err),
                 }
-                Err(err) => eprintln!("error during tour: {}", err),
-            },
+            }
             _ => {
                 // Normal input: try a friendly shortcut first, then fall
                 // back to full vaHera.
                 let vahera = translate_shortcut(&trimmed);
-                match execute_vahera(&vahera, &mut kernel, &molecules) {
-                    Ok(ctx) => {
+                let adapter = EmbedderAdapter::new(embedder.as_ref());
+                match execute_vahera_with(&vahera, &mut kernel, &molecules, &adapter) {
+                    Ok(mut ctx) => {
+                        if !args.no_overlap {
+                            for r in &mut ctx.results {
+                                if let NamedResult::FindHits { query, hits } = r {
+                                    rerank_hits_with_overlap(query, hits, 0.5);
+                                }
+                            }
+                        }
                         for r in &ctx.results {
                             print_result(r);
                         }
                         if ctx.results.is_empty() {
-                            // Echo the interpreter's own one-line summary.
                             if let Some(t) = ctx.trace.last() {
                                 println!("  {}", t);
                             } else {

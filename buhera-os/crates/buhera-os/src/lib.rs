@@ -6,9 +6,10 @@
 use std::collections::BTreeMap;
 use std::path::Path;
 
+use buhera_embed::{token_overlap_score, TextEmbedder};
 use buhera_kernel::{Kernel, MemoryObject, RetrievedItem};
-use buhera_substrate::{embed_molecule, MoleculeProperties};
-use buhera_vahera::{MoleculeDatabase, NamedResult};
+use buhera_substrate::{embed_molecule, MoleculeProperties, SCoord};
+use buhera_vahera::{Embedder as VaheraEmbedder, MoleculeDatabase, NamedResult};
 
 /// Load a JSON compound database from disk.
 ///
@@ -101,8 +102,8 @@ pub fn render_objects(objs: &[MemoryObject]) -> String {
 /// Pretty-print one `NamedResult` to stdout.
 pub fn print_result(result: &NamedResult) {
     match result {
-        NamedResult::FindHits(hits) => {
-            println!("hits:");
+        NamedResult::FindHits { query, hits } => {
+            println!("hits for {:?}:", query);
             print!("{}", render_hits(hits));
         }
         NamedResult::SortedObjects(objs) => {
@@ -151,4 +152,80 @@ pub fn print_result(result: &NamedResult) {
             }
         }
     }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Embedder bridge: turn a `buhera_embed::TextEmbedder` into something
+// the vahera interpreter can consume via `execute_vahera_with`.
+// ─────────────────────────────────────────────────────────────────────
+
+/// Adapter wrapping a [`TextEmbedder`] from `buhera-embed` so it can be
+/// passed to `buhera_vahera::execute_vahera_with`.
+pub struct EmbedderAdapter<'a> {
+    inner: &'a dyn TextEmbedder,
+}
+
+impl<'a> EmbedderAdapter<'a> {
+    /// Construct over a borrowed embedder.
+    pub fn new(inner: &'a dyn TextEmbedder) -> Self {
+        Self { inner }
+    }
+}
+
+impl<'a> VaheraEmbedder for EmbedderAdapter<'a> {
+    fn embed(&self, text: &str) -> SCoord {
+        self.inner.embed(text)
+    }
+}
+
+/// Re-rank `memory find nearest` hits by token-overlap with the query.
+///
+/// Hits whose stored `source` text shares more literal tokens with the
+/// query are pulled toward the top, with a blended score combining the
+/// kernel's S-distance and the overlap fraction. This is the
+/// "option C" safety net for short queries where the semantic
+/// embedding doesn't have enough signal to disambiguate.
+///
+/// * `boost` controls how much weight the overlap score gets in the
+///   blended ranking. `0.0` disables re-ranking; `1.0` makes overlap
+///   the dominant factor. The default of `0.5` keeps S-distance in
+///   charge while letting overlap break near-ties.
+pub fn rerank_hits_with_overlap(
+    query: &str,
+    hits: &mut Vec<RetrievedItem<MemoryObject>>,
+    boost: f64,
+) {
+    if hits.is_empty() || boost <= 0.0 {
+        return;
+    }
+    // Compute a blended cost for each hit: lower is better.
+    let scored: Vec<(usize, f64)> = hits
+        .iter()
+        .enumerate()
+        .map(|(i, h)| {
+            let source = h
+                .value
+                .metadata
+                .get("source")
+                .and_then(|v| v.as_str())
+                .unwrap_or("");
+            let overlap = token_overlap_score(query, source);
+            // Lower is better, so subtract `boost * overlap`.
+            let blended = h.distance - boost * overlap;
+            (i, blended)
+        })
+        .collect();
+
+    let mut order: Vec<usize> = scored.iter().map(|(i, _)| *i).collect();
+    order.sort_by(|a, b| {
+        scored[*a]
+            .1
+            .partial_cmp(&scored[*b].1)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
+
+    // Apply the reordering.
+    let reordered: Vec<RetrievedItem<MemoryObject>> =
+        order.into_iter().map(|i| hits[i].clone()).collect();
+    *hits = reordered;
 }

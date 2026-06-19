@@ -1,16 +1,16 @@
 //! Buhera OS demo.
 //!
-//! Boots a kernel (optionally pre-loaded with a JSON compound database)
-//! and runs a vaHera script. With no arguments it runs a plain-text
-//! notes demo that shows the OS storing sentences and retrieving them
-//! by topic — no domain knowledge required.
+//! Boots a kernel and runs a vaHera script. By default uses the
+//! semantic embedder (downloads a ~23 MB model on first run); pass
+//! `--lexical` to use the dependency-free fallback.
 
 use std::path::PathBuf;
 use std::process::ExitCode;
 
+use buhera_embed::{LexicalEmbedder, SemanticEmbedder, TextEmbedder};
 use buhera_kernel::Kernel;
-use buhera_os::{boot_os, load_nist, print_result};
-use buhera_vahera::{execute_vahera, MoleculeDatabase};
+use buhera_os::{boot_os, load_nist, print_result, rerank_hits_with_overlap, EmbedderAdapter};
+use buhera_vahera::{execute_vahera_with, MoleculeDatabase, NamedResult};
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -19,26 +19,31 @@ use clap::Parser;
     about = "Boot Buhera OS and run a vaHera program."
 )]
 struct Args {
-    /// Path to a vaHera source file. Defaults to the built-in notes
-    /// demo, which doesn't need any external data.
+    /// Path to a vaHera source file. Defaults to the built-in notes demo.
     #[arg(long)]
     script: Option<PathBuf>,
 
-    /// Optional JSON compound database. Provide this only if your
-    /// script wants pre-allocated objects (e.g. `examples/demo.bvh`).
+    /// Optional JSON compound database for `embed_molecule` lookups.
     #[arg(long)]
     data: Option<PathBuf>,
 
     /// Ternary-address depth used by CMM.
     #[arg(long, default_value_t = 12)]
     depth: usize,
+
+    /// Use the dependency-free lexical embedder instead of the
+    /// semantic model.
+    #[arg(long, default_value_t = false)]
+    lexical: bool,
+
+    /// Disable the token-overlap re-ranking pass.
+    #[arg(long, default_value_t = false)]
+    no_overlap: bool,
 }
 
-/// Friendly plain-text default — same one in `examples/notes.bvh`.
 const BUILTIN_SCRIPT: &str = r#"
 # Plain-text notes demo: store some everyday sentences, then search
-# them by topic. The OS files each sentence at its categorical address
-# and finds matches by closeness in S-coordinate space.
+# them by topic.
 
 memory store "weekend"   = "I need to do laundry and clean the kitchen this weekend"
 memory store "groceries" = "buy milk eggs bread and coffee from the supermarket"
@@ -55,12 +60,29 @@ memory find nearest "shopping list" k=3
 memory find nearest "morning workout" k=3
 memory find nearest "travel plans" k=3
 
-demon sort
 kernel stats
 "#;
 
 fn main() -> ExitCode {
     let args = Args::parse();
+
+    // Pick an embedder.
+    let embedder: Box<dyn TextEmbedder> = if args.lexical {
+        eprintln!("(using lexical embedder)");
+        Box::new(LexicalEmbedder::new())
+    } else {
+        eprintln!("(loading semantic embedder; first run downloads ~23 MB)");
+        match SemanticEmbedder::new() {
+            Ok(e) => {
+                eprintln!("(semantic embedder ready: {})", e.name());
+                Box::new(e)
+            }
+            Err(err) => {
+                eprintln!("(semantic embedder failed: {}; falling back to lexical)", err);
+                Box::new(LexicalEmbedder::new())
+            }
+        }
+    };
 
     // Load NIST data only if explicitly asked for.
     let (mut kernel, molecules) = match args.data.as_ref() {
@@ -102,13 +124,24 @@ fn main() -> ExitCode {
     }
     println!();
 
-    let ctx = match execute_vahera(&source, &mut kernel, &molecules) {
+    let adapter = EmbedderAdapter::new(embedder.as_ref());
+    let mut ctx = match execute_vahera_with(&source, &mut kernel, &molecules, &adapter) {
         Ok(ctx) => ctx,
         Err(err) => {
             eprintln!("vaHera execution failed: {}", err);
             return ExitCode::from(1);
         }
     };
+
+    // Apply token-overlap re-ranking to every FindHits result, using
+    // each hit's own originating query.
+    if !args.no_overlap {
+        for r in &mut ctx.results {
+            if let NamedResult::FindHits { query, hits } = r {
+                rerank_hits_with_overlap(query, hits, 0.5);
+            }
+        }
+    }
 
     println!("interpreter trace:");
     for line in &ctx.trace {

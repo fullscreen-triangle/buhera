@@ -1,0 +1,15 @@
+[package]
+name = "buhera-embed"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Semantic text embedding for the Buhera OS. Wraps the fastembed-rs sentence-transformer pipeline (default model: BGE-small-EN-v1.5) and projects its 384-dim output onto the three S-entropy axes."
+
+[dependencies]
+buhera-substrate = { workspace = true }
+fastembed  = { version = "4", default-features = false, features = ["ort-download-binaries", "hf-hub"] }
+thiserror  = { workspace = true }
+serde      = { workspace = true }
+serde_json = { workspace = true }

@@ -14,11 +14,38 @@ use crate::parser::{parse_vahera, ParseError};
 /// Per-molecule properties keyed by name.
 pub type MoleculeDatabase = BTreeMap<String, MoleculeProperties>;
 
+/// A pluggable text-to-coordinate embedder used by the interpreter.
+///
+/// The vahera crate is intentionally not coupled to any specific
+/// embedder implementation. The lexical fallback that ships in
+/// `buhera-substrate` is wrapped by [`DefaultEmbedder`]; callers that
+/// want semantic embedding pass an implementation from `buhera-embed`.
+pub trait Embedder: Send + Sync {
+    /// Embed a piece of text into S-entropy space.
+    fn embed(&self, text: &str) -> SCoord;
+}
+
+/// Default embedder: defers to [`buhera_substrate::embed_text`].
+#[derive(Debug, Default, Clone, Copy)]
+pub struct DefaultEmbedder;
+
+impl Embedder for DefaultEmbedder {
+    fn embed(&self, text: &str) -> SCoord {
+        embed_text(text)
+    }
+}
+
 /// Anything a statement may produce.
 #[derive(Debug, Clone)]
 pub enum NamedResult {
-    /// `memory find nearest "..."` hits.
-    FindHits(Vec<RetrievedItem<MemoryObject>>),
+    /// `memory find nearest "..."` hits, paired with the originating
+    /// query string so downstream re-rankers can inspect it.
+    FindHits {
+        /// The query that produced these hits.
+        query: String,
+        /// The hits, in S-distance order from the kernel.
+        hits: Vec<RetrievedItem<MemoryObject>>,
+    },
     /// `demon sort` outputs.
     SortedObjects(Vec<MemoryObject>),
     /// `memory list` snapshot.
@@ -58,6 +85,9 @@ pub struct ExecContext {
     pub results: Vec<NamedResult>,
     /// Human-readable interpreter trace.
     pub trace: Vec<String>,
+    /// The most recent `memory find nearest` query string, if any.
+    /// Used by the REPL/demo for token-overlap re-ranking.
+    pub last_query: Option<String>,
 }
 
 /// Top-level interpreter error.
@@ -74,16 +104,33 @@ pub enum ExecError {
     Runtime(String),
 }
 
-/// Parse `source`, then execute on `kernel`.
+/// Parse `source`, then execute on `kernel` using the default
+/// (lexical) embedder.
+///
+/// This is a thin wrapper around [`execute_vahera_with`] that supplies
+/// [`DefaultEmbedder`]. Callers that want semantic embedding should
+/// use [`execute_vahera_with`] directly with a
+/// `buhera_embed::SemanticEmbedder`.
 pub fn execute_vahera(
     source: &str,
     kernel: &mut Kernel,
     molecules: &MoleculeDatabase,
 ) -> Result<ExecContext, ExecError> {
+    execute_vahera_with(source, kernel, molecules, &DefaultEmbedder)
+}
+
+/// Parse `source`, then execute on `kernel` using `embedder` for all
+/// text → coordinate conversions.
+pub fn execute_vahera_with(
+    source: &str,
+    kernel: &mut Kernel,
+    molecules: &MoleculeDatabase,
+    embedder: &dyn Embedder,
+) -> Result<ExecContext, ExecError> {
     let stmts = parse_vahera(source)?;
     let mut ctx = ExecContext::default();
     for stmt in stmts {
-        run_one(&stmt, kernel, &mut ctx, molecules)?;
+        run_one(&stmt, kernel, &mut ctx, molecules, embedder)?;
     }
     Ok(ctx)
 }
@@ -93,10 +140,11 @@ fn run_one(
     kernel: &mut Kernel,
     ctx: &mut ExecContext,
     molecules: &MoleculeDatabase,
+    embedder: &dyn Embedder,
 ) -> Result<(), ExecError> {
     match &stmt.kind {
         StmtKind::Describe { name, text } => {
-            let coord = resolve_coord(name, text, molecules);
+            let coord = resolve_coord(name, text, molecules, embedder);
             ctx.trace.push(format!(
                 "describe {} -> S({:.3},{:.3},{:.3})",
                 name, coord.k, coord.t, coord.e
@@ -106,7 +154,7 @@ fn run_one(
 
         StmtKind::Resolve { name } => {
             if !ctx.targets.contains_key(name) {
-                let coord = resolve_coord(name, name, molecules);
+                let coord = resolve_coord(name, name, molecules, embedder);
                 ctx.targets.insert(name.clone(), coord);
             }
             let coord = ctx.targets[name];
@@ -153,23 +201,30 @@ fn run_one(
         }
 
         StmtKind::MemoryStore { name, text } => {
-            let coord = embed_text(text);
+            let coord = embedder.embed(text);
             let mut meta = BTreeMap::new();
             meta.insert("name".to_string(), serde_json::json!(name));
+            // Store the original text as part of the payload so the
+            // overlap re-ranker can read it back.
+            meta.insert("source".to_string(), serde_json::json!(text));
             let obj = kernel.store(coord, serde_json::json!(text), meta)?;
             ctx.trace
                 .push(format!("memory_store name={} addr={}", name, obj.address));
         }
 
         StmtKind::MemoryFind { query, k } => {
-            let q_coord = embed_text(query);
+            let q_coord = embedder.embed(query);
             let hits = kernel.find_nearest(q_coord, *k);
             ctx.trace.push(format!(
                 "memory_find query={:?} -> {} hits",
                 query,
                 hits.len()
             ));
-            ctx.results.push(NamedResult::FindHits(hits));
+            ctx.last_query = Some(query.clone());
+            ctx.results.push(NamedResult::FindHits {
+                query: query.clone(),
+                hits,
+            });
         }
 
         StmtKind::MemoryList => {
@@ -251,10 +306,15 @@ fn first_pid(ctx: &ExecContext) -> Option<u64> {
 /// Decide which embedding to use for a `describe`/`resolve` target.
 ///
 /// If the name (case-insensitively) matches a known molecule, use
-/// [`embed_molecule`]. Otherwise fall back to [`embed_text`].
-fn resolve_coord(name: &str, text: &str, molecules: &MoleculeDatabase) -> SCoord {
+/// [`embed_molecule`]. Otherwise defer to the supplied `embedder`.
+fn resolve_coord(
+    name: &str,
+    text: &str,
+    molecules: &MoleculeDatabase,
+    embedder: &dyn Embedder,
+) -> SCoord {
     if molecules.is_empty() {
-        return embed_text(text);
+        return embedder.embed(text);
     }
     let name_lc = name.to_lowercase();
     for (mol_name, props) in molecules {
@@ -263,7 +323,10 @@ fn resolve_coord(name: &str, text: &str, molecules: &MoleculeDatabase) -> SCoord
         }
     }
     // Token match in name or text.
-    let mut tokens: Vec<String> = name_lc.split(|c: char| c.is_whitespace() || c == '_' || c == '-').map(String::from).collect();
+    let mut tokens: Vec<String> = name_lc
+        .split(|c: char| c.is_whitespace() || c == '_' || c == '-')
+        .map(String::from)
+        .collect();
     tokens.extend(text.to_lowercase().split_whitespace().map(String::from));
     for (mol_name, props) in molecules {
         let mn = mol_name.to_lowercase();
@@ -271,7 +334,7 @@ fn resolve_coord(name: &str, text: &str, molecules: &MoleculeDatabase) -> SCoord
             return embed_molecule(mol_name, props);
         }
     }
-    embed_text(text)
+    embedder.embed(text)
 }
 
 #[cfg(test)]
@@ -306,7 +369,7 @@ memory find nearest "boiling point" k=1
         let ctx = execute_vahera(src, &mut k, &molecules).unwrap();
         assert_eq!(k.cmm.len(), 2);
         let hits = ctx.results.iter().find_map(|r| match r {
-            NamedResult::FindHits(h) => Some(h.clone()),
+            NamedResult::FindHits { hits, .. } => Some(hits.clone()),
             _ => None,
         });
         assert!(hits.unwrap().len() >= 1);

@@ -34,5 +34,6 @@ mod interpreter;
 pub use ast::{Stmt, StmtKind};
 pub use parser::{parse_vahera, ParseError};
 pub use interpreter::{
-    execute_vahera, ExecContext, ExecError, MoleculeDatabase, NamedResult, ResolvedTarget,
+    execute_vahera, execute_vahera_with, DefaultEmbedder, Embedder, ExecContext, ExecError,
+    MoleculeDatabase, NamedResult, ResolvedTarget,
 };

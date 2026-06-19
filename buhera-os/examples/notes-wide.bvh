@@ -1,0 +1,17 @@
+# Same notes, but ask for more hits so the overlap re-ranker has more
+# to work with.
+
+memory store "weekend"   = "I need to do laundry and clean the kitchen this weekend"
+memory store "groceries" = "buy milk eggs bread and coffee from the supermarket"
+memory store "meeting"   = "schedule the team meeting for Wednesday afternoon"
+memory store "email"     = "reply to the customer email about the late shipment"
+memory store "exercise"  = "go for a run on Saturday morning before it gets hot"
+memory store "book"      = "finish reading the chapter on bounded oscillatory systems"
+memory store "code"      = "refactor the database connection pool to use async"
+memory store "travel"    = "book a flight to Munich for the conference next month"
+
+memory find nearest "shopping list" k=8
+memory find nearest "morning workout" k=8
+memory find nearest "travel plans" k=8
+memory find nearest "flight to Munich" k=3
+memory find nearest "database refactor" k=3

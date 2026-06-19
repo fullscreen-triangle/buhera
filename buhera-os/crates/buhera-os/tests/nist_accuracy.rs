@@ -12,7 +12,7 @@ fn query(kernel: &mut buhera_kernel::Kernel, db_molecules: &buhera_vahera::Molec
     let source = format!("memory find nearest \"{}\" k=1\n", text);
     let ctx = execute_vahera(&source, kernel, db_molecules).ok()?;
     for r in ctx.results {
-        if let NamedResult::FindHits(hits) = r {
+        if let NamedResult::FindHits { hits, .. } = r {
             if let Some(h) = hits.first() {
                 return h
                     .value

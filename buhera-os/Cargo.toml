@@ -12,6 +12,7 @@ members = [
     "crates/buhera-substrate",
     "crates/buhera-kernel",
     "crates/buhera-vahera",
+    "crates/buhera-embed",
     "crates/buhera-os",
 ]
 
@@ -34,6 +35,7 @@ clap = { version = "4", features = ["derive"] }
 buhera-substrate = { path = "crates/buhera-substrate" }
 buhera-kernel    = { path = "crates/buhera-kernel" }
 buhera-vahera    = { path = "crates/buhera-vahera" }
+buhera-embed     = { path = "crates/buhera-embed" }
 
 [profile.release]
 opt-level = 3
