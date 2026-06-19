@@ -112,7 +112,7 @@ fn main() -> ExitCode {
     let embedder: Box<dyn TextEmbedder> = if args.lexical {
         Box::new(LexicalEmbedder::new())
     } else {
-        eprintln!("(loading semantic embedder; first run downloads ~23 MB)");
+        eprintln!("(loading semantic embedder; first run downloads ~133 MB)");
         match SemanticEmbedder::new() {
             Ok(e) => Box::new(e),
             Err(err) => {

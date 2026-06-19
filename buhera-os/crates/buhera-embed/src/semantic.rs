@@ -23,7 +23,11 @@ pub enum EmbedError {
 /// Configuration for [`SemanticEmbedder`].
 #[derive(Debug, Clone)]
 pub struct SemanticConfig {
-    /// Which model to load. Default: `AllMiniLML6V2Q` (quantised, ~23 MB).
+    /// Which model to load. Default: `BGESmallENV15Q` (quantised
+    /// BGE-small-en-v1.5, ~33 MB). This model was specifically trained
+    /// for retrieval and outperforms MiniLM on synonym and paraphrase
+    /// queries while keeping the embedding dimension at 384 (so the
+    /// rest of the projection machinery works unchanged).
     pub model: EmbeddingModel,
     /// Optional override for the cache directory. When `None`, fastembed
     /// uses its default location.
@@ -35,7 +39,11 @@ pub struct SemanticConfig {
 impl Default for SemanticConfig {
     fn default() -> Self {
         Self {
-            model: EmbeddingModel::AllMiniLML6V2Q,
+            // Full-precision BGE-small. The quantised variant has a
+            // known fastembed-v4.9 issue (missing LayerNorm
+            // initialisers); use the full model instead. ~133 MB on
+            // disk after download; ~0.5 s per query on CPU.
+            model: EmbeddingModel::BGESmallENV15,
             cache_dir: None,
             show_download_progress: false,
         }
@@ -50,9 +58,9 @@ pub struct SemanticEmbedder {
 }
 
 impl SemanticEmbedder {
-    /// Load the default semantic embedder (all-MiniLM-L6-v2, quantised).
+    /// Load the default semantic embedder (BGE-small-en-v1.5, quantised).
     ///
-    /// The first call downloads the model (~23 MB) to fastembed's cache.
+    /// The first call downloads the model (~33 MB) to fastembed's cache.
     /// Subsequent calls reuse the cached files.
     pub fn new() -> Result<Self, EmbedError> {
         Self::with_config(SemanticConfig::default())
@@ -60,6 +68,7 @@ impl SemanticEmbedder {
 
     /// Load with an explicit configuration.
     pub fn with_config(cfg: SemanticConfig) -> Result<Self, EmbedError> {
+        let name = name_for_model(&cfg.model);
         let mut opts = InitOptions::new(cfg.model.clone())
             .with_show_download_progress(cfg.show_download_progress);
         if let Some(dir) = cfg.cache_dir {
@@ -72,8 +81,20 @@ impl SemanticEmbedder {
         Ok(Self {
             model,
             projection: Projection::default(),
-            name: "all-MiniLM-L6-v2",
+            name,
         })
+    }
+}
+
+fn name_for_model(m: &EmbeddingModel) -> &'static str {
+    match m {
+        EmbeddingModel::BGESmallENV15Q => "bge-small-en-v1.5",
+        EmbeddingModel::BGESmallENV15 => "bge-small-en-v1.5",
+        EmbeddingModel::BGEBaseENV15Q => "bge-base-en-v1.5",
+        EmbeddingModel::BGEBaseENV15 => "bge-base-en-v1.5",
+        EmbeddingModel::AllMiniLML6V2Q => "all-MiniLM-L6-v2",
+        EmbeddingModel::AllMiniLML6V2 => "all-MiniLM-L6-v2",
+        _ => "fastembed-model",
     }
 }
 
@@ -83,10 +104,7 @@ impl TextEmbedder for SemanticEmbedder {
             return SCoord::origin();
         }
         match self.model.embed(vec![text], None) {
-            Ok(mut vs) => match vs.pop() {
-                Some(v) => self.projection.project(&v),
-                None => SCoord::origin(),
-            },
+            Ok(mut vs) => vs.pop().map(|v| self.projection.project(&v)).unwrap_or_else(SCoord::origin),
             Err(_) => SCoord::origin(),
         }
     }

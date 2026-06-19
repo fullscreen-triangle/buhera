@@ -71,7 +71,7 @@ fn main() -> ExitCode {
         eprintln!("(using lexical embedder)");
         Box::new(LexicalEmbedder::new())
     } else {
-        eprintln!("(loading semantic embedder; first run downloads ~23 MB)");
+        eprintln!("(loading semantic embedder; first run downloads ~133 MB)");
         match SemanticEmbedder::new() {
             Ok(e) => {
                 eprintln!("(semantic embedder ready: {})", e.name());
