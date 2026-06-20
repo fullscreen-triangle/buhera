@@ -1,0 +1,59 @@
+{
+  "experiment": "E6_resolution_floor",
+  "theorem_ids": [
+    "thm:floor",
+    "thm:floor-agree"
+  ],
+  "input_dataset": "synthetic [0,1]^2 with uniform partitions",
+  "n_samples": 6,
+  "predicted": {
+    "all_floors_positive": true,
+    "geometric_floor_scales_h2": true,
+    "cost_floor_independent_of_h": true
+  },
+  "measured": {
+    "h": [
+      0.05,
+      0.02,
+      0.01,
+      0.005,
+      0.002,
+      0.001
+    ],
+    "geometric": [
+      0.0025000000000000005,
+      0.0004,
+      0.0001,
+      2.5e-05,
+      4e-06,
+      1e-06
+    ],
+    "representational": [
+      0.22000000000000003,
+      0.0888,
+      0.0444,
+      0.0222,
+      0.008884000000000001,
+      0.004442000000000001
+    ],
+    "cost": [
+      0.006737946999085467,
+      0.006737946999085467,
+      0.006737946999085467,
+      0.006737946999085467,
+      0.006737946999085467,
+      0.006737946999085467
+    ],
+    "all_positive": true,
+    "geometric_monotone_decrease": true,
+    "cost_constant_in_h": true
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.00014472007751464844,
+  "seed": 20260624
+}

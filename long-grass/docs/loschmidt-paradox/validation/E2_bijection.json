@@ -1,0 +1,29 @@
+{
+  "experiment": "E2_bijection",
+  "theorem_ids": [
+    "thm:bij",
+    "cor:inv"
+  ],
+  "input_dataset": "Z+ x (n,l,m,s) for M in [1,200000] and 20k random tuples",
+  "n_samples": 220000,
+  "predicted": {
+    "round_trip_failures": 0,
+    "capacity_violations": 0,
+    "selection_violations": 0
+  },
+  "measured": {
+    "forward_round_trip_failures": 0,
+    "backward_round_trip_failures": 0,
+    "capacity_violations": 0,
+    "selection_violations": 0,
+    "first_failure_sample": []
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 12.189040899276733,
+  "seed": 20260620
+}

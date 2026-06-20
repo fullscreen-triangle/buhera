@@ -1,0 +1,77 @@
+{
+  "framework_version": "loschmidt-paradox v1.1 (+occupation-specification)",
+  "harness_seed": 20260620,
+  "experiments": [
+    {
+      "name": "E1_capacity",
+      "pass": true,
+      "elapsed_seconds": 1.2259206771850586,
+      "file": "E1_capacity.json",
+      "sha256_16": "8a496afe22c5c16c"
+    },
+    {
+      "name": "E2_bijection",
+      "pass": true,
+      "elapsed_seconds": 12.189040899276733,
+      "file": "E2_bijection.json",
+      "sha256_16": "c40a1c0c5eb75a0c"
+    },
+    {
+      "name": "E3_monotonicity_reversals",
+      "pass": true,
+      "elapsed_seconds": 6.363893508911133,
+      "file": "E3_monotonicity_reversals.json",
+      "sha256_16": "2c858444d1102bc6"
+    },
+    {
+      "name": "E4_phase_hilbert",
+      "pass": true,
+      "elapsed_seconds": 5.317273139953613,
+      "file": "E4_phase_hilbert.json",
+      "sha256_16": "0c552c2185f34787"
+    },
+    {
+      "name": "E5_backward_completion",
+      "pass": true,
+      "elapsed_seconds": 0.028264760971069336,
+      "file": "E5_backward_completion.json",
+      "sha256_16": "e9af9b28ee9a87e7"
+    },
+    {
+      "name": "E6_resolution_floor",
+      "pass": true,
+      "elapsed_seconds": 0.00014472007751464844,
+      "file": "E6_resolution_floor.json",
+      "sha256_16": "bede3a528676f9f7"
+    },
+    {
+      "name": "E7_occupation_specification",
+      "pass": true,
+      "elapsed_seconds": 0.07445907592773438,
+      "file": "E7_occupation_specification.json",
+      "sha256_16": "83028ff0fcbaf849"
+    },
+    {
+      "name": "E8_reversed_not_initial",
+      "pass": true,
+      "elapsed_seconds": 0.0006160736083984375,
+      "file": "E8_reversed_not_initial.json",
+      "sha256_16": "1facc91d89664ae3"
+    },
+    {
+      "name": "E9_analyser_scaling",
+      "pass": true,
+      "elapsed_seconds": 0.002204418182373047,
+      "file": "E9_analyser_scaling.json",
+      "sha256_16": "a55b8baaf373e7ad"
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0,
+    "suite_pass": true,
+    "wall_clock_seconds": 25.682627201080322
+  },
+  "framework_self_path": "C:\\Users\\kunda\\Documents\\architecture\\buhera\\long-grass\\docs\\loschmidt-paradox\\validation\\run_validation.py"
+}

@@ -1,0 +1,43 @@
+{
+  "experiment": "E8_reversed_not_initial",
+  "theorem_ids": [
+    "cor:notinitial",
+    "prop:errA"
+  ],
+  "input_dataset": "synthetic harmonic oscillator with reversal at tau=T/2",
+  "n_samples": 5000000,
+  "predicted": {
+    "M_at_2tau_eq_M0_plus_2Ntau": true,
+    "Phi(M_0)_distinct_from_Phi(M_2tau)": true,
+    "cumulative_count_strictly_greater": true
+  },
+  "measured": {
+    "N_tau": 250000.0,
+    "M_at_tau": 250000.0,
+    "M_at_2tau": 500000.0,
+    "predicted_M_2tau": 500000.0,
+    "rel_error": 0.0,
+    "Phi(M_0)": [
+      25,
+      9,
+      9,
+      0.5
+    ],
+    "Phi(M_2tau)": [
+      91,
+      89,
+      -76,
+      0.5
+    ],
+    "distinct_M": true,
+    "distinct_Phi": true
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.0006160736083984375,
+  "seed": 20260626
+}

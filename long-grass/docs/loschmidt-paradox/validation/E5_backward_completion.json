@@ -1,0 +1,102 @@
+{
+  "experiment": "E5_backward_completion",
+  "theorem_ids": [
+    "thm:logn",
+    "thm:collapse",
+    "alg:back",
+    "thm:recog"
+  ],
+  "input_dataset": "synthetic ternary trees at depths [3, 6, 9, 12, 15, 18]",
+  "n_samples": 300,
+  "predicted": {
+    "virtual_steps_per_k": {
+      "3": 2,
+      "6": 5,
+      "9": 8,
+      "12": 11,
+      "15": 14,
+      "18": 17
+    },
+    "physical_steps_grows_as_Theta_N": true,
+    "penultimate_termination": true
+  },
+  "measured": {
+    "virtual": [
+      {
+        "k": 3,
+        "predicted": 2,
+        "mean_observed": 2.0,
+        "max_observed": 2,
+        "min_observed": 2
+      },
+      {
+        "k": 6,
+        "predicted": 5,
+        "mean_observed": 5.0,
+        "max_observed": 5,
+        "min_observed": 5
+      },
+      {
+        "k": 9,
+        "predicted": 8,
+        "mean_observed": 8.0,
+        "max_observed": 8,
+        "min_observed": 8
+      },
+      {
+        "k": 12,
+        "predicted": 11,
+        "mean_observed": 11.0,
+        "max_observed": 11,
+        "min_observed": 11
+      },
+      {
+        "k": 15,
+        "predicted": 14,
+        "mean_observed": 14.0,
+        "max_observed": 14,
+        "min_observed": 14
+      },
+      {
+        "k": 18,
+        "predicted": 17,
+        "mean_observed": 17.0,
+        "max_observed": 17,
+        "min_observed": 17
+      }
+    ],
+    "physical_analytic": [
+      {
+        "k": 3,
+        "physical_step_count": 40,
+        "predicted_Theta_N": 40
+      },
+      {
+        "k": 6,
+        "physical_step_count": 1093,
+        "predicted_Theta_N": 1093
+      },
+      {
+        "k": 9,
+        "physical_step_count": 29524,
+        "predicted_Theta_N": 29524
+      },
+      {
+        "k": 12,
+        "physical_step_count": 797161,
+        "predicted_Theta_N": 797161
+      }
+    ],
+    "penultimate_termination_holds": true,
+    "explicit_physical_count_k6": 1093,
+    "explicit_check_ok": true
+  },
+  "residuals": {
+    "virtual_max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.028264760971069336,
+  "seed": 20260623
+}

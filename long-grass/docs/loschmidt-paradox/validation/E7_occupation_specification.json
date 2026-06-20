@@ -1,0 +1,55 @@
+{
+  "experiment": "E7_occupation_specification",
+  "theorem_ids": [
+    "prin:asym",
+    "thm:rare",
+    "thm:landauer",
+    "prop:occfree"
+  ],
+  "input_dataset": "irrational-rotation map (alpha = (sqrt(5)-1)/2) on [0,1], N=200000 steps, X=[0.1,0.11] of measure 0.009999999999999995",
+  "n_samples": 200000,
+  "predicted": {
+    "occupation_fraction": 0.009999999999999995,
+    "agent_cost_for_occupation": 0.0,
+    "specification_cost_lower_bound_J": "k_B T ln 2 * log2(1/p_X)",
+    "delta_S_X_units_kB": 4.605170185988092
+  },
+  "measured": {
+    "visits": 2000,
+    "occupation_fraction": 0.01,
+    "fraction_relative_error": 5.204170427930424e-16,
+    "agent_cost_for_occupation_J": 0.0,
+    "landauer_specification_cost_J": 1.907437083634282e-20,
+    "bits_required_to_specify": 6.643856189774725,
+    "first_visit_times": [
+      73,
+      217,
+      306,
+      361,
+      450,
+      594,
+      683,
+      827,
+      916,
+      971,
+      1060,
+      1204,
+      1293,
+      1348,
+      1437,
+      1581,
+      1670,
+      1814,
+      1903,
+      1958
+    ]
+  },
+  "residuals": {
+    "max": 5.204170427930424e-16,
+    "rms": 5.204170427930424e-16
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.07445907592773438,
+  "seed": 20260625
+}

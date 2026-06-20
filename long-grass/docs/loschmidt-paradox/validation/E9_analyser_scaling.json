@@ -1,0 +1,40 @@
+{
+  "experiment": "E9_analyser_scaling",
+  "theorem_ids": [
+    "thm:univ",
+    "eq:tof",
+    "eq:mathieu",
+    "eq:orb",
+    "eq:ftcir"
+  ],
+  "input_dataset": "30 synthetic compounds with m/z in [50,2000]",
+  "n_samples": 30,
+  "predicted": {
+    "TOF_scales_as_sqrt_mz": true,
+    "Quad_scales_as_inv_mz": true,
+    "Orbitrap_scales_as_inv_sqrt_mz": true,
+    "FTICR_scales_as_inv_mz": true
+  },
+  "measured": {
+    "amplitude_fits": {
+      "TOF": 1.0,
+      "Quad": 1.0,
+      "Orbitrap": 1.0,
+      "FTICR": 1.0
+    },
+    "max_residuals": {
+      "TOF": 0.0,
+      "Quad": 0.0,
+      "Orbitrap": 1.7985280851675468e-16,
+      "FTICR": 0.0
+    }
+  },
+  "residuals": {
+    "max": 1.7985280851675468e-16,
+    "rms": 1.7985280851675468e-16
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.002204418182373047,
+  "seed": 20260627
+}
