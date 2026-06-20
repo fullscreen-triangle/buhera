@@ -348,5 +348,8 @@ If you want to embed Buhera into your own Rust application, depend on
 `buhera-embed`, and call `execute_vahera_with(source, &mut kernel,
 &molecules, &adapter)`. Everything else is internal.
 
-For a web interface (browser-side REPL backed by a local kernel
-process), see [`webtool-use.md`](./webtool-use.md).
+For a no-install browser version that you can show to someone in 30
+seconds, see [`webtool.md`](./webtool.md). It's a JavaScript
+implementation of the same kernel and vaHera — same semantics, no
+Rust toolchain required — meant for first-look demos before someone
+commits to the desktop install.

@@ -1,22 +1,198 @@
 import { useEffect, useRef, useState } from "react";
 import { Kernel } from "@/lib/kernel";
-import { embedProtein, embedText } from "@/lib/substrate";
+import { embedProtein } from "@/lib/substrate";
 import { translate } from "@/lib/translator";
 import { executeVahera } from "@/lib/vahera";
 import { PROTEINS } from "@/lib/proteins";
 
 // ────────────────────────────────────────────────────────────
-//  Boot the kernel with proteins.
+//  Kernel boot.
 // ────────────────────────────────────────────────────────────
 
-function bootKernel() {
-  const k = new Kernel(12);
+function bootBlank() {
+  return new Kernel(12);
+}
+
+function loadProteins(kernel) {
   for (const name of Object.keys(PROTEINS)) {
     const coord = embedProtein(name, PROTEINS[name]);
-    k.allocate(coord, PROTEINS[name], { name, gene: PROTEINS[name].gene });
+    kernel.allocate(coord, PROTEINS[name], {
+      name,
+      gene: PROTEINS[name].gene,
+      kind: "protein",
+    });
   }
-  return k;
 }
+
+// ────────────────────────────────────────────────────────────
+//  Input router.
+//
+//  Returns { type, vahera?, meta? }
+//    type === "vahera" — `vahera` is source to execute
+//    type === "meta"   — `meta` is one of "tour" | "proteins" | "clear"
+//                                       | "help"
+//    type === "nl"     — caller should fall back to the NL translator
+// ────────────────────────────────────────────────────────────
+
+const VAHERA_PREFIXES = [
+  "describe ",
+  "resolve ",
+  "spawn ",
+  "navigate ",
+  "complete ",
+  "memory ",
+  "demon ",
+  "controller ",
+  "kernel ",
+  "process ",
+];
+
+function stripQuotes(s) {
+  const t = s.trim();
+  if (t.length >= 2 && t.startsWith('"') && t.endsWith('"')) return t.slice(1, -1);
+  return t;
+}
+
+export function routeInput(line) {
+  const trimmed = line.trim();
+  if (!trimmed) return { type: "noop" };
+
+  const lower = trimmed.toLowerCase();
+
+  // Meta commands.
+  if (trimmed === ":quit" || trimmed === ":exit") return { type: "meta", meta: "quit" };
+  if (trimmed === ":help") return { type: "meta", meta: "help" };
+  if (trimmed === ":clear") return { type: "meta", meta: "clear" };
+  if (trimmed === ":tour") return { type: "meta", meta: "tour" };
+  if (trimmed === ":proteins") return { type: "meta", meta: "proteins" };
+
+  // Already vaHera.
+  if (VAHERA_PREFIXES.some((p) => lower.startsWith(p))) {
+    return { type: "vahera", vahera: trimmed };
+  }
+
+  // store <name> = "<text>"
+  if (lower.startsWith("store ")) {
+    const rest = trimmed.slice(6);
+    const eq = rest.indexOf("=");
+    if (eq >= 0) {
+      const name = rest.slice(0, eq).trim();
+      const value = stripQuotes(rest.slice(eq + 1));
+      if (name && value) {
+        return { type: "vahera", vahera: `memory store "${name}" = "${value}"` };
+      }
+    }
+  }
+
+  // find "<text>" [k=N]
+  if (lower.startsWith("find ")) {
+    const rest = trimmed.slice(5);
+    const m = rest.match(/\sk=(\d+)\s*$/);
+    let k = 3;
+    let text = rest;
+    if (m) {
+      k = parseInt(m[1], 10);
+      text = rest.slice(0, m.index);
+    }
+    const t = stripQuotes(text.trim());
+    return { type: "vahera", vahera: `memory find nearest "${t}" k=${k}` };
+  }
+
+  // dump <name>
+  if (lower.startsWith("dump ")) {
+    return { type: "vahera", vahera: `memory dump ${trimmed.slice(5).trim()}` };
+  }
+
+  const single = {
+    list: "memory list",
+    sort: "demon sort",
+    stats: "kernel stats",
+    trace: "kernel trace",
+    procs: "process list",
+    ps: "process list",
+    verify: "controller verify",
+  }[lower];
+  if (single) return { type: "vahera", vahera: single };
+
+  // Otherwise leave it for the NL translator (when proteins mode is
+  // on) or treat as a search query.
+  return { type: "nl", text: trimmed };
+}
+
+const TOUR_VAHERA = `
+memory store "weekend"   = "I need to do laundry and clean the kitchen this weekend"
+memory store "groceries" = "buy milk eggs bread and coffee from the supermarket"
+memory store "exercise"  = "go for a run on Saturday morning before it gets hot"
+memory store "travel"    = "book a flight to Munich for the conference next month"
+memory store "code"      = "refactor the database connection pool to use async"
+memory find nearest "shopping list" k=3
+memory find nearest "morning workout" k=3
+memory find nearest "flight to Germany" k=3
+kernel stats
+`.trim();
+
+// ────────────────────────────────────────────────────────────
+//  Welcome banner.
+// ────────────────────────────────────────────────────────────
+
+const WELCOME = `\
+buhera-os web demo · in-browser kernel, no install
+
+what it does
+  files text by its categorical address — three numbers
+  derived from the meaning of what you write. ask later,
+  it finds what you stored, ranked by closeness.
+
+quick try
+  store note  = "remember to write up the proposal"
+  store other = "buy milk and bread from the corner shop"
+  find "writing"
+  find "shopping"
+
+other commands
+  list                    show everything you've stored
+  stats                   per-subsystem statistics
+  dump <name>             show one object in detail
+  sort                    zero-cost categorical sort
+  :tour                   load five sample notes and search them
+  :proteins               load a hardcoded biology database for the
+                          natural-language demo
+  :clear                  reset the kernel
+  :help                   show every vaHera statement
+
+you can also type vaHera directly:
+  memory store "name" = "text"
+  memory find nearest "query" k=5
+  describe X with "text", spawn p from X, navigate to penultimate,
+  complete trajectory, kernel stats, controller verify ...
+`;
+
+const HELP = `\
+vaHera statements (15):
+  describe <name> with "<text>"
+  resolve <name>
+  spawn <program> from <name>
+  navigate to penultimate
+  complete trajectory
+  memory create at S(<k>,<t>,<e>)
+  memory store "<name>" = "<text>"
+  memory find nearest "<text>" k=<n>
+  memory list
+  memory dump <name>
+  demon sort
+  controller verify
+  kernel stats
+  kernel trace
+  process list
+
+shortcuts:
+  store <name> = "<text>"
+  find "<text>" [k=N]
+  list / dump <name> / sort / stats / trace / procs / verify
+
+meta:
+  :tour  :proteins  :clear  :help  :quit
+`;
 
 // ────────────────────────────────────────────────────────────
 //  Artifact renderers.
@@ -24,12 +200,12 @@ function bootKernel() {
 
 function ProteinHeader({ name, p }) {
   return (
-    <div className="flex items-baseline gap-6 mb-3">
+    <div className="flex items-baseline gap-6 mb-3 flex-wrap">
       <span className="text-white text-base">{name}</span>
-      <span className="text-gray-500 text-xs">{p.gene}</span>
-      <span className="text-gray-600 text-xs">{p.uniprot}</span>
-      <span className="text-gray-600 text-xs">{p.length} aa</span>
-      <span className="text-gray-500 text-xs italic">{p.role}</span>
+      {p.gene && <span className="text-gray-500 text-xs">{p.gene}</span>}
+      {p.uniprot && <span className="text-gray-600 text-xs">{p.uniprot}</span>}
+      {p.length && <span className="text-gray-600 text-xs">{p.length} aa</span>}
+      {p.role && <span className="text-gray-500 text-xs italic">{p.role}</span>}
     </div>
   );
 }
@@ -48,41 +224,18 @@ function Field({ label, value }) {
 
 function ArtifactProtein({ name, payload, aspect }) {
   const p = payload;
-
   if (aspect === "function") {
-    return (
-      <div>
-        <ProteinHeader name={name} p={p} />
-        <Field label="function" value={p.function} />
-      </div>
-    );
+    return (<div><ProteinHeader name={name} p={p} /><Field label="function" value={p.function} /></div>);
   }
   if (aspect === "diseases") {
-    return (
-      <div>
-        <ProteinHeader name={name} p={p} />
-        <Field label="diseases" value={p.diseases} />
-      </div>
-    );
+    return (<div><ProteinHeader name={name} p={p} /><Field label="diseases" value={p.diseases} /></div>);
   }
   if (aspect === "interacts") {
-    return (
-      <div>
-        <ProteinHeader name={name} p={p} />
-        <Field label="interacts" value={p.interacts} />
-      </div>
-    );
+    return (<div><ProteinHeader name={name} p={p} /><Field label="interacts" value={p.interacts} /></div>);
   }
   if (aspect === "domains") {
-    return (
-      <div>
-        <ProteinHeader name={name} p={p} />
-        <Field label="domains" value={p.domains} />
-      </div>
-    );
+    return (<div><ProteinHeader name={name} p={p} /><Field label="domains" value={p.domains} /></div>);
   }
-
-  // full record
   return (
     <div>
       <ProteinHeader name={name} p={p} />
@@ -123,34 +276,155 @@ function ArtifactCompare({ a, b }) {
   );
 }
 
-function ArtifactList({ items }) {
+function ArtifactFind({ query, items }) {
+  if (!items.length) {
+    return (<div className="text-gray-500 italic">no hits for &quot;{query}&quot;</div>);
+  }
   return (
-    <ul className="text-gray-300">
-      {items.map((it, i) => {
-        const p = it.payload;
-        return (
-          <li key={i} className="py-1 flex items-baseline gap-4">
-            <span className="w-24 text-gray-200">{it.name}</span>
-            {p && p.role && (
-              <span className="text-gray-500 italic text-xs w-40">{p.role}</span>
-            )}
-            {p && p.function && (
-              <span className="text-gray-400 text-xs flex-1 truncate">{p.function}</span>
-            )}
-            <span className="text-gray-600 text-xs">d={it.distance.toFixed(3)}</span>
+    <div>
+      <div className="text-gray-500 text-xs mb-2">
+        nearest to <span className="text-gray-300">&quot;{query}&quot;</span>
+      </div>
+      <ul className="text-gray-300">
+        {items.map((it, i) => (
+          <li key={i} className="py-1.5 grid grid-cols-[1.5rem_8rem_5rem_1fr] gap-3 items-baseline text-xs">
+            <span className="text-gray-600">[{i + 1}]</span>
+            <span className="text-gray-200 truncate">{it.name}</span>
+            <span className="text-gray-600">d={it.distance.toFixed(3)}</span>
+            <span className="text-gray-400 truncate">{it.source || ""}</span>
           </li>
-        );
-      })}
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ArtifactNote({ name, text, address, tier }) {
+  return (
+    <div>
+      <div className="flex items-baseline gap-6 mb-2 flex-wrap">
+        <span className="text-white text-base">{name}</span>
+        <span className="text-gray-600 text-xs">addr {address.slice(0, 12)}</span>
+        <span className="text-gray-600 text-xs">{tier}</span>
+      </div>
+      <div className="text-gray-300">{text}</div>
+    </div>
+  );
+}
+
+function ArtifactObjectList({ items }) {
+  if (!items.length) {
+    return <div className="text-gray-500 italic">memory is empty</div>;
+  }
+  return (
+    <div>
+      <div className="text-gray-500 text-xs mb-2">memory ({items.length})</div>
+      <ul>
+        {items.map((it, i) => (
+          <li key={i} className="py-1 grid grid-cols-[9rem_8rem_4rem_1fr] gap-3 items-baseline text-xs">
+            <span className="text-gray-600">{it.address.slice(0, 12)}</span>
+            <span className="text-gray-200 truncate">{it.name}</span>
+            <span className="text-gray-600">{it.tier}</span>
+            <span className="text-gray-400 truncate">{it.source || ""}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ArtifactDump({ name, object }) {
+  if (!object) {
+    return <div className="text-gray-500 italic">dump {name}: not found</div>;
+  }
+  const o = object;
+  return (
+    <div>
+      <div className="text-gray-500 text-xs mb-2">dump {name}</div>
+      <Field label="address" value={o.address} />
+      <Field label="coord" value={`S(${o.coord.k.toFixed(3)},${o.coord.t.toFixed(3)},${o.coord.e.toFixed(3)})`} />
+      <Field label="tier" value={o.tier} />
+      {typeof o.payload === "string" ? (
+        <Field label="text" value={o.payload} />
+      ) : (
+        <div className="flex mb-1">
+          <span className="text-gray-500 w-28 shrink-0">payload</span>
+          <pre className="text-gray-300 flex-1 whitespace-pre-wrap font-mono text-xs">
+            {JSON.stringify(o.payload, null, 2)}
+          </pre>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ArtifactStats({ stats }) {
+  return (
+    <div>
+      <div className="text-gray-500 text-xs mb-2">kernel stats</div>
+      <Field label="objects" value={String(stats.objects)} />
+      <Field label="PVE ok" value={String(stats.pveOk)} />
+      <Field label="PVE rejected" value={String(stats.pveRej)} />
+      <Field label="TEM samples" value={String(stats.tem)} />
+    </div>
+  );
+}
+
+function ArtifactTrace({ log }) {
+  if (!log.length) return <div className="text-gray-500 italic">no activity</div>;
+  return (
+    <div>
+      <div className="text-gray-500 text-xs mb-2">activity ({log.length})</div>
+      <ul className="text-gray-400 text-xs leading-relaxed font-mono">
+        {log.slice(-20).map((l, i) => (<li key={i}>{l}</li>))}
+      </ul>
+    </div>
+  );
+}
+
+function ArtifactSorted({ items }) {
+  return (
+    <div>
+      <div className="text-gray-500 text-xs mb-2">sorted by S-distance to origin</div>
+      <ul>
+        {items.map((it, i) => (
+          <li key={i} className="py-1 grid grid-cols-[2rem_9rem_8rem] gap-3 items-baseline text-xs">
+            <span className="text-gray-600">{i + 1}</span>
+            <span className="text-gray-600">{it.address.slice(0, 12)}</span>
+            <span className="text-gray-200">{it.name}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ArtifactProcesses({ items }) {
+  if (!items.length) return <div className="text-gray-500 italic">no processes</div>;
+  return (
+    <ul className="text-gray-300 text-xs font-mono">
+      {items.map((p, i) => (
+        <li key={i}>
+          {p.name} <span className="text-gray-500">state={p.state}</span>
+        </li>
+      ))}
     </ul>
+  );
+}
+
+function ArtifactVerify({ samples, message }) {
+  return (
+    <div>
+      <div className="text-gray-300">{message}</div>
+      <div className="text-gray-600 text-xs">samples observed: {samples}</div>
+    </div>
   );
 }
 
 function ArtifactText({ lines }) {
   return (
     <div className="text-gray-300">
-      {lines.map((line, i) => (
-        <p key={i}>{line}</p>
-      ))}
+      {lines.map((line, i) => (<p key={i}>{line}</p>))}
     </div>
   );
 }
@@ -158,21 +432,37 @@ function ArtifactText({ lines }) {
 function Artifact({ result }) {
   if (!result) return null;
   switch (result.kind) {
-    case "protein":
-      return <ArtifactProtein name={result.name} payload={result.payload} aspect={result.aspect} />;
-    case "protein_compare":
-      return <ArtifactCompare a={result.a} b={result.b} />;
-    case "list":
-      return <ArtifactList items={result.items} />;
-    case "text":
-      return <ArtifactText lines={result.lines} />;
-    default:
-      return null;
+    case "protein":         return <ArtifactProtein name={result.name} payload={result.payload} aspect={result.aspect} />;
+    case "protein_compare": return <ArtifactCompare a={result.a} b={result.b} />;
+    case "find":            return <ArtifactFind query={result.query} items={result.items} />;
+    case "note":            return <ArtifactNote name={result.name} text={result.text} address={result.address} tier={result.tier} />;
+    case "list_objects":    return <ArtifactObjectList items={result.items} />;
+    case "dump":            return <ArtifactDump name={result.name} object={result.object} />;
+    case "sorted_objects":  return <ArtifactSorted items={result.items} />;
+    case "stats":           return <ArtifactStats stats={result.stats} />;
+    case "trace":           return <ArtifactTrace log={result.log} />;
+    case "processes":       return <ArtifactProcesses items={result.items} />;
+    case "verify":          return <ArtifactVerify samples={result.samples} message={result.message} />;
+    case "text":            return <ArtifactText lines={result.lines} />;
+    case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
+    default:                return null;
   }
 }
 
 // ────────────────────────────────────────────────────────────
-//  Terminal component.
+//  Welcome panel.
+// ────────────────────────────────────────────────────────────
+
+function WelcomePanel() {
+  return (
+    <pre className="text-gray-400 text-xs leading-relaxed whitespace-pre-wrap font-mono">
+{WELCOME}
+    </pre>
+  );
+}
+
+// ────────────────────────────────────────────────────────────
+//  Terminal.
 // ────────────────────────────────────────────────────────────
 
 export default function BuheraTerminal() {
@@ -182,9 +472,12 @@ export default function BuheraTerminal() {
   const [entries, setEntries] = useState([]);
   const [busy, setBusy] = useState(false);
   const [draft, setDraft] = useState("");
+  const [proteinsMode, setProteinsMode] = useState(false);
+  const [history, setHistory] = useState([]);
+  const [cursor, setCursor] = useState(-1);
 
   useEffect(() => {
-    kernelRef.current = bootKernel();
+    kernelRef.current = bootBlank();
   }, []);
 
   useEffect(() => {
@@ -200,28 +493,122 @@ export default function BuheraTerminal() {
     }
   }, [entries]);
 
+  function pushEntry(entry) {
+    setEntries((e) => [...e, { id: Date.now() + Math.random(), ...entry }]);
+  }
+
+  async function dispatch(text) {
+    const route = routeInput(text);
+    if (route.type === "noop") return;
+
+    pushEntry({ obs: text, thinking: true });
+
+    // Small artificial delay so the screen doesn't flicker.
+    await new Promise((r) => setTimeout(r, 80));
+
+    function patchLast(patch) {
+      setEntries((es) => {
+        const out = [...es];
+        for (let i = out.length - 1; i >= 0; i--) {
+          if (out[i].obs === text && out[i].thinking) {
+            out[i] = { ...out[i], thinking: false, ...patch };
+            break;
+          }
+        }
+        return out;
+      });
+    }
+
+    try {
+      if (route.type === "meta") {
+        if (route.meta === "help") {
+          patchLast({ result: { kind: "text", lines: HELP.split("\n") } });
+        } else if (route.meta === "clear") {
+          kernelRef.current = bootBlank();
+          setProteinsMode(false);
+          patchLast({ result: { kind: "text", lines: ["(kernel reset)"] } });
+        } else if (route.meta === "tour") {
+          const out = executeVahera(TOUR_VAHERA, kernelRef.current, {
+            useProteinDb: false,
+            rerank: true,
+          });
+          patchLast({ multi: out.results });
+        } else if (route.meta === "proteins") {
+          if (!proteinsMode) {
+            loadProteins(kernelRef.current);
+            setProteinsMode(true);
+          }
+          patchLast({
+            result: {
+              kind: "text",
+              lines: [
+                "(proteins demo loaded; try \"tell me about TP53\" or \"compare BRCA1 and BRCA2\")",
+              ],
+            },
+          });
+        } else if (route.meta === "quit") {
+          patchLast({ result: { kind: "text", lines: ["(can't quit a browser tab from here)"] } });
+        }
+        return;
+      }
+
+      if (route.type === "vahera") {
+        const out = executeVahera(route.vahera, kernelRef.current, {
+          useProteinDb: proteinsMode,
+          rerank: true,
+        });
+        if (out.results.length === 1) {
+          patchLast({ result: out.results[0] });
+        } else if (out.results.length > 1) {
+          patchLast({ multi: out.results });
+        } else if (out.lastResult) {
+          patchLast({ result: out.lastResult });
+        } else {
+          patchLast({ result: { kind: "text", lines: ["ok"] } });
+        }
+        return;
+      }
+
+      // NL input.
+      if (proteinsMode) {
+        // Use the legacy translator for the proteins demo.
+        const vh = translate(route.text);
+        const out = executeVahera(vh, kernelRef.current, {
+          useProteinDb: true,
+          rerank: true,
+        });
+        if (out.lastResult) {
+          patchLast({ result: out.lastResult });
+        } else if (out.results.length) {
+          patchLast({ multi: out.results });
+        } else {
+          patchLast({ result: { kind: "text", lines: ["no categorical match."] } });
+        }
+        return;
+      }
+
+      // Otherwise: bare line, no proteins mode → search.
+      const safe = route.text.replace(/"/g, "'");
+      const vh = `memory find nearest "${safe}" k=3`;
+      const out = executeVahera(vh, kernelRef.current, {
+        useProteinDb: false,
+        rerank: true,
+      });
+      patchLast({ result: out.lastResult });
+    } catch (err) {
+      patchLast({ error: err.message || String(err) });
+    }
+  }
+
   async function submit(text) {
     if (!text.trim() || busy) return;
     setBusy(true);
-    const eId = Date.now();
-    setEntries((e) => [...e, { id: eId, obs: text, result: null, thinking: true, error: null }]);
     setDraft("");
+    setHistory((h) => (h[h.length - 1] === text ? h : [...h, text]));
+    setCursor(-1);
 
-    await new Promise((r) => setTimeout(r, 140 + Math.random() * 180));
+    await dispatch(text);
 
-    try {
-      const vahera = translate(text);
-      const result = executeVahera(vahera, kernelRef.current);
-      setEntries((e) =>
-        e.map((x) => (x.id === eId ? { ...x, result, thinking: false } : x))
-      );
-    } catch (err) {
-      setEntries((e) =>
-        e.map((x) =>
-          x.id === eId ? { ...x, error: err.message || String(err), thinking: false } : x
-        )
-      );
-    }
     setBusy(false);
     if (inputRef.current) inputRef.current.focus();
   }
@@ -230,6 +617,22 @@ export default function BuheraTerminal() {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       submit(draft);
+    } else if (e.key === "ArrowUp" && !draft.includes("\n")) {
+      if (!history.length) return;
+      e.preventDefault();
+      const next = cursor < 0 ? history.length - 1 : Math.max(0, cursor - 1);
+      setCursor(next);
+      setDraft(history[next]);
+    } else if (e.key === "ArrowDown" && cursor >= 0) {
+      e.preventDefault();
+      const next = cursor + 1;
+      if (next >= history.length) {
+        setCursor(-1);
+        setDraft("");
+      } else {
+        setCursor(next);
+        setDraft(history[next]);
+      }
     }
   }
 
@@ -239,6 +642,8 @@ export default function BuheraTerminal() {
     e.target.style.height = e.target.scrollHeight + "px";
   }
 
+  const empty = entries.length === 0;
+
   return (
     <div className="fixed inset-0 bg-black text-gray-300 flex flex-col px-16 py-10 md:px-8 md:py-6 font-mono text-sm leading-relaxed">
       <div
@@ -246,18 +651,30 @@ export default function BuheraTerminal() {
         className="flex-1 overflow-y-auto pb-4"
         style={{ scrollbarWidth: "none" }}
       >
+        {empty && (
+          <div className="mb-8 animate-fade">
+            <WelcomePanel />
+          </div>
+        )}
         {entries.map((e) => (
           <div key={e.id} className="mb-8 animate-fade">
             <div className="text-gray-200 whitespace-pre-wrap mb-2">{e.obs}</div>
             {e.thinking && <span className="text-gray-600 italic">...</span>}
             {e.error && <p className="text-gray-500">[{e.error}]</p>}
             {e.result && <Artifact result={e.result} />}
+            {e.multi && (
+              <div className="space-y-4">
+                {e.multi.map((r, i) => (
+                  <div key={i}><Artifact result={r} /></div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>
 
       <div className="flex items-start pt-3">
-        <span className="text-gray-700 mr-2 select-none pt-0.5"></span>
+        <span className="text-gray-700 mr-2 select-none pt-0.5">{proteinsMode ? "🧬" : ""}</span>
         <textarea
           ref={inputRef}
           value={draft}
@@ -266,7 +683,8 @@ export default function BuheraTerminal() {
           rows={1}
           spellCheck={false}
           autoFocus
-          className="flex-1 bg-transparent border-none outline-none resize-none text-gray-200 font-mono text-sm leading-relaxed"
+          placeholder={empty ? "type something to store, ask a question, or paste vaHera…" : ""}
+          className="flex-1 bg-transparent border-none outline-none resize-none text-gray-200 font-mono text-sm leading-relaxed placeholder-gray-700"
           style={{ caretColor: "#2a9d8f" }}
         />
       </div>

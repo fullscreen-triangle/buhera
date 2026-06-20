@@ -14,7 +14,6 @@ members = [
     "crates/buhera-vahera",
     "crates/buhera-embed",
     "crates/buhera-os",
-    "crates/buhera-server",
 ]
 
 [workspace.package]
