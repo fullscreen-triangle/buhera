@@ -231,8 +231,15 @@ four analyser scaling laws.
 Section~\ref{sec:dissolution} dissolves Loschmidt's paradox: the
 reversed configuration is not the initial configuration; the
 cumulative count is monotone; the SI second is the metrological lock.
+Section~\ref{sec:occspec} diagnoses why the conventional reading
+nevertheless feels paradoxical: it conflates the cost an embedded
+agent pays to \emph{specify} a low-probability state with an
+impossibility of the system's \emph{occupying} one, and it commits
+three category errors that the occupation--specification asymmetry
+blocks.
 Section~\ref{sec:backward} introduces the backward-completion algorithm
-and the penultimate-state termination.
+and the penultimate-state termination, deriving the recognition gap
+from the resolution-floor theorem rather than from informal grounds.
 Section~\ref{sec:phase} proves the phase-coherence theorem and the
 subharmonic-encoding consequence for MS/MS spectra.
 Section~\ref{sec:experiment} specifies the headline experiment:
@@ -864,6 +871,336 @@ in the cumulative count. These are statements about different
 observables; neither contradicts the other.
 
 % =========================================================
+\section{Why the Conventional Reading Appears Paradoxical:\\
+The Occupation--Specification Asymmetry}
+\label{sec:occspec}
+% =========================================================
+
+Section~\ref{sec:dissolution} dissolves the paradox structurally. It
+does not yet account for why the conventional reading \emph{feels}
+incoherent rather than merely wrong. This section gives the diagnosis.
+The felt incoherence is the cost an embedded agent must pay to
+\emph{specify}---to name, prepare, or recognise---a low-probability
+configuration, illegitimately transferred onto the configuration's
+\emph{occurrence}, which costs nothing. Three category errors follow
+the same transfer pattern; we state them and block each one. The
+analysis adds no new physics; it identifies the conceptual move that
+makes the dissolution \emph{appear} contested when it is not.
+
+\subsection{Occupation and specification are categorically distinct}
+
+\begin{definition}[Occupation]
+\label{def:occupation}
+A system \emph{occupies} a microstate $x\in\Omega$ at time $t$ when
+the flow has carried it there: $\phi_{t}(x_{0})=x$. Occupation
+relates the dynamics to a point. It involves no agent, no choice, and
+no preparation.
+\end{definition}
+
+\begin{definition}[Specification]
+\label{def:specification}
+An \emph{embedded agent} of finite descriptive resources
+\emph{specifies} a configuration $X\subseteq\Omega$ when it
+individuates $X$ from $\Omega\setminus X$ to its finite resolution.
+Three modes: (S1) \emph{pointing} (singling $X$ out from its
+alternatives), (S2) \emph{preparing} (forcing the system into $X$ by
+acting on it), and (S3) \emph{recognising} (certifying that the
+system occupies $X$).
+\end{definition}
+
+\begin{principle}[Occupation--Specification Asymmetry]
+\label{prin:asym}
+Let $X$ be a low-probability macrostate. Then:
+\begin{enumerate}[nosep,leftmargin=*]
+\item \emph{Specification of $X$ is costly}: an embedded agent cannot
+single out, prepare, or recognise $X$ without an irreducible
+expenditure---boundary residue, imported order, or erased
+information---bounded below by a strictly positive constant and, in
+the prepared case, no less than the entropy $X$ appears to save.
+\item \emph{Occupation of $X$ is free}: a bounded measure-preserving
+flow visits $X$ with no agent and no cost; it differs from its visits
+to high-probability configurations only in \emph{frequency}.
+\end{enumerate}
+\end{principle}
+
+The asymmetry is what makes the dissolution sturdy. It is the formal
+expression of an everyday observation: a needle in a haystack is
+costly to \emph{find} but is in the haystack whether anyone looks,
+and the haystack itself contains, at every instant, some specific
+and individually improbable arrangement of straws that no one
+assembled.
+
+\subsection{Specification is irreducibly costly}
+
+\begin{theorem}[Resolution Floor]
+\label{thm:floor}
+Let an embedded agent of finite resolution $\delta>0$ individuate a
+region $X$ from $\Omega\setminus X$ within a bounded measure space
+$\Omega$. Then every realisable separator $\Sigma(X)$ has measure
+$\mu(\Sigma(X))\geq\beta>0$, where $\beta$ is the agent's
+\emph{resolution floor}. No individuation an embedded agent performs
+is free.
+\end{theorem}
+
+\begin{proof}
+The realisable separator is a finite union of partition cells; by
+connectedness it contains at least one cell; by finite resolution
+each cell has measure $\geq\mu_{\min}>0$. Set
+$\beta:=\mu_{\min}$. Three independent derivations agree on the
+constant: geometric (the cell measure above), representational
+(any finite description scheme of $\Omega$'s regions has cardinality
+$<\mathfrak{c}$ and so cannot exactly name every region; the
+unnameable difference has measure $\geq\beta$), and cost-theoretic
+(any monotone refinement-cost functional has
+$g(t)\to+\infty$ as separator thickness $t\to 0^{+}$, so a
+finite-cost process halts at $t_{\star}>0$).
+\end{proof}
+
+\begin{theorem}[Preparation Pays for Itself]
+\label{thm:landauer}
+Let an embedded agent prepare the system into a pre-specified
+low-probability macrostate $X$ by acting on it conditional on
+knowledge of the system's prior microstate. Let
+$\Delta S_{X}=S(W_{\mathrm{typ}})-S(X)>0$ be the entropy deficit of
+$X$ relative to a typical macrostate. Then the agent's operation
+raises environmental entropy by at least $\Delta S_{X}$:
+\[
+\Delta S_{\mathrm{env}}\ \geq\ \Delta S_{X}.
+\]
+The preparation produces no net entropy decrease.
+\end{theorem}
+
+\begin{proof}
+Conditional preparation requires acquiring $I_{X}\geq\Delta S_{X}/k_{B}$
+bits of information distinguishing $X$ from its alternatives. To
+reuse a finite memory the agent must erase these bits; by the
+Landauer bound \citep{landauer1961,bennett1982}, erasure of $I_{X}$
+bits dissipates heat $\geq k_{B}T\ln 2\cdot I_{X}\geq T\Delta S_{X}$,
+raising environmental entropy by $\geq\Delta S_{X}$.
+\end{proof}
+
+\begin{corollary}[Recognition Cost]
+\label{cor:recogcost}
+Mode~(S3) recognition deposits boundary residue $\geq\beta$ by
+Theorem~\ref{thm:floor}. There is no cost-free recognition.
+\end{corollary}
+
+\subsection{Occupation is free; the only scarce property is frequency}
+
+\begin{proposition}[Occupation is Agent-Free]
+\label{prop:occfree}
+At every instant the system occupies a maximally specific microstate;
+no agent specifies, prepares, or recognises it for the occupation to
+obtain. The current microstate of any system is, among the microstates
+of its macrostate, an individually improbable point that no agent
+arranged.
+\end{proposition}
+
+\begin{theorem}[Free but Rare Occupation]
+\label{thm:rare}
+Let $X\subseteq\Omega$ be a macrostate of low probability $p(X)>0$
+under the bounded measure-preserving flow. Then:
+(i) by Theorem~\ref{thm:poincare}, almost every orbit enters $X$
+infinitely often---$X$ is occupied with no agent and no preparation;
+(ii) the occupation costs nothing because no agent acts; the flow
+merely passes through $X$;
+(iii) by the Birkhoff ergodic average, the long-run fraction of time
+in $X$ equals $p(X)$, small precisely because $X$ is
+low-probability.
+\end{theorem}
+
+\begin{proof}
+(i) is Poincar\'{e} recurrence
+(Theorem~\ref{thm:poincare}) on a finite-measure space; (ii) follows
+from Proposition~\ref{prop:occfree} (no actor to incur cost); (iii)
+is the indicator-function ergodic average.
+\end{proof}
+
+\begin{corollary}[Specificity does not entail Arrangement]
+\label{cor:specnotarr}
+That a configuration is highly specific (low-probability,
+fine-tuned) does not entail that any agent arranged it. The current
+microstate is a standing counterexample: maximally specific, arranged
+by no one.
+\end{corollary}
+
+\subsection{Three category errors in the conventional reading}
+
+The dissolution argument of Section~\ref{sec:dissolution} addresses
+two self-undermining structures (metrology, pendulum). We now
+identify three further moves the conventional reading uses to
+\emph{appear} to keep Loschmidt's paradox alive. Each transfers a
+property of specification onto occupation, or silently alters the
+measure that constitutes the state. Each is blocked by
+Principle~\ref{prin:asym}.
+
+\begin{proposition}[Error A: Renaming a Later State Initial]
+\label{prop:errA}
+Let a state $y$ be reached by the flow at time $t>0$, so $y$ has a
+past. Calling $y$ ``the initial state'' is a labelling (mode~(S1))
+and does not endow $y$ with the property---having no past---that
+distinguishes an origin. Any theorem whose hypothesis is ``has no
+past'' fails to apply to $y$ regardless of $y$'s name.
+\end{proposition}
+
+\begin{proof}
+``Initial'' admits two senses: (a) a bookkeeping start chosen by the
+agent, and (b) the structural origin, the unique state with no past.
+The reached $y=\phi_{t}(x_{0})$ has a past by construction; it
+satisfies (a) by stipulation but fails (b) by structure. A theorem
+proved under (b) reads the predicate ``no past,'' which $y$ lacks.
+The rename is inert with respect to that predicate.
+\end{proof}
+
+This is exactly Corollary~\ref{cor:notinitial} stated in the agent's
+register: $\Phi(M_{2\tau})$ shares the structural type
+$(n,\ell,m,s)$ with $\Phi(M_{0})$, but $M_{2\tau}>M_{0}$, so the
+later state has a past and cannot inherit the no-past predicate of
+the origin.
+
+\begin{proposition}[Error B: Inferring Arrangement from Specificity]
+\label{prop:errB}
+From ``$X$ is highly specific (low-probability)'' one cannot infer
+``an agent arranged $X$.'' The inference confuses a property of the
+outcome (its measure) with a claim about its causal origin (an
+agent's action).
+\end{proposition}
+
+\begin{proof}
+Corollary~\ref{cor:specnotarr} exhibits a standing counterexample:
+the system's current microstate is maximally specific and arranged
+by no one. Specificity is measure; arrangement is agency; the first
+does not imply the second.
+\end{proof}
+
+\begin{proposition}[Error C: Demanding a Low-Entropy State be Most Probable]
+\label{prop:errC}
+There is no operation that makes a low-entropy macrostate the most
+probable next state while it remains low-entropy. ``Most probable''
+and ``high entropy'' are the same predicate up to an additive
+constant: for a macrostate $W\subseteq\Omega$, $S(W)=k_{B}\log\mu(W)$
+and $\log p(W)=\log\mu(W)-\log\mu(\Omega)$ differ by the constant
+$-\log\mu(\Omega)$. Demanding a low-entropy state be most probable
+demands $\mu(X)=\min$ and $\mu(X)=\max$ simultaneously---a
+contradiction.
+\end{proposition}
+
+\begin{remark}
+\label{rem:nesting}
+Conditioning---``state $a$ makes $b$ probable, $b$ makes $c$
+probable''---cannot raise a small target's measure. The share of any
+predecessor's onward orbits entering a small region is bounded by the
+region's measure; nested chains drive occupation toward larger
+macrostates (higher entropy), never toward smaller ones. The nesting
+is the engine of the arrow, not a route around it.
+\end{remark}
+
+\begin{theorem}[The Three Errors Share One Form]
+\label{thm:oneform}
+Errors A, B, and C are instances of a single illegitimate transfer:
+a property established for the agent's relation to a state
+(specification: naming, locating, constructing) is carried onto the
+system's relation to the state (occupation), or the constitutive
+measure of the state is silently altered. Under
+Principle~\ref{prin:asym} and the entropy--probability identity each
+transfer is blocked.
+\end{theorem}
+
+\subsection{Diagnosis of the felt incoherence}
+
+\begin{theorem}[Spontaneous Reversal is Atypical, not Incoherent]
+\label{thm:atypical}
+The spontaneous reversed orbit is a legal, agent-free occupation
+event (Theorem~\ref{thm:rare}): it exists by recurrence, costs
+nothing because no agent acts, and is merely rare because its
+macrostate has small measure. Assuming its existence yields no
+contradiction---only an improbability of order
+$p=\mu(X)/\mu(\Omega)$.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:rare}, the low-measure reflected macrostate is
+occupied infinitely often by almost every orbit, with no agent and
+no cost. A contradiction would follow only if existence entailed an
+impossible state of affairs; it does not---the orbit is an ordinary
+forward trajectory of $\phi_{t}$, distinct from the origin
+(Corollary~\ref{cor:notinitial}), depositing positive individuation
+residue at each step it is \emph{analysed} (Theorem~\ref{thm:floor})
+yet itself costing nothing to \emph{occur}
+(Proposition~\ref{prop:occfree}). The felt incoherence is the cost
+of \emph{specifying} the orbit (Theorem~\ref{thm:landauer}),
+transferred by Errors~B/C onto its \emph{occurrence}. Removing the
+transfer, what remains is rarity, not incoherence.
+\end{proof}
+
+\begin{remark}[The bedrock fact]
+\label{rem:bedrock}
+A low-probability configuration is real (it is occupied), uncompensated
+(no agent pays), unarranged (no specifier), and rare. Its rarity is
+its identity: it cannot be made common without ceasing to be
+low-probability (the entropy--probability identity), made impossible
+without contradicting recurrence (Theorem~\ref{thm:poincare}), or
+made arranged without an agent and a cost
+(Theorem~\ref{thm:landauer}). Rarity is the residue that survives
+every reframing. The dissolution of
+Section~\ref{sec:dissolution} is the same fact stated at the level
+of the cumulative count: the rarity is the measure of the macrostate;
+the monotone count records its occupations one by one.
+\end{remark}
+
+\subsection{The four Loschmidt claims, classified}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{4.8cm}cp{6.8cm}}
+\toprule
+Claim & Status & Reason \\
+\midrule
+Reversed endpoint $\equiv$ initial state &
+\textbf{false} &
+reached forward, has a past;\newline rename is Error A
+(Cor.~\ref{cor:notinitial}, Prop.~\ref{prop:errA}) \\
+Prepared reversal decreases entropy &
+\textbf{compensated} &
+Landauer cost $\geq\Delta S$
+(Thm.~\ref{thm:landauer}) \\
+Spontaneous reversal is incoherent &
+\textbf{false} &
+occupation is free; only rare\newline
+(Thm.~\ref{thm:atypical}) \\
+Macrostate entropy falls spontaneously &
+\textbf{true, atypical} &
+uncompensated but $p(X)\ll 1$\newline
+(Thm.~\ref{thm:rare}(iii)) \\
+\bottomrule
+\end{tabular}
+\caption{The four Loschmidt claims under the
+occupation--specification distinction. The reversal is coherent and
+real; its only scarce property is frequency.}
+\label{tab:lossummary}
+\end{table}
+
+\subsection{Implications for the headline experiment}
+
+The Cs\textsuperscript{+} Orbitrap experiment of
+Section~\ref{sec:experiment} tests Theorem~\ref{thm:rare} and
+Theorem~\ref{thm:landauer} simultaneously. The trap performs
+$\sim 10^{6}$ velocity reversals per second of analytical
+observation: each is an unprepared, agent-free traversal of a
+configuration whose structural type resembles an earlier one. The
+Hilbert-transform receiver is structurally distinct from the orbit
+(it lives in the readout chain, not in the trap), so the
+recognition gap (Section~\ref{sec:backward}) is not closed by the
+measurement; the cumulative count is measured \emph{about} the
+orbit, not from inside it. The pass criteria of
+Protocol~\ref{prot:C1} are therefore tests of agent-free
+monotonicity: the orbit occupies its trajectory at no cost; the
+receiver pays a finite---and bounded---specification cost to record
+that occupation; the two are compatible because they obey opposite
+economies (Principle~\ref{prin:asym}).
+
+% =========================================================
 \section{Backward Trajectory Completion: The Penultimate State}
 \label{sec:backward}
 % =========================================================
@@ -929,16 +1266,37 @@ root. This is not an off-by-one artefact but a structural requirement.
 Recognition of a configuration $\tau\in\{0,1,2\}^{k}$ by a receiver
 requires the receiver's state to be distinct from $\tau$. Closing the
 final step---making the receiver state identical to $\tau$---dissolves
-the distinction and with it the recognition.
+the distinction and with it the recognition. The minimum distinct
+vantage is bounded below by the resolution floor: any separator
+between receiver and $\tau$ has measure $\geq\beta>0$
+(Theorem~\ref{thm:floor}), so the gap is not an artefact of choice
+but a structural lower bound.
 \end{theorem}
 
 \begin{proof}
 A receiver that occupies $\tau$ does not stand in relation to $\tau$
 as a recognising party to a recognised object; the two are
-indistinguishable. Recognition requires the receiver to point to $\tau$
-from a distinct vantage. The minimal distinct vantage is the
-penultimate state, one isomorphism step from $\tau$.
+indistinguishable, and recognition (mode~(S3),
+Definition~\ref{def:specification}) requires individuation against
+$\Omega\setminus\{\tau\}$. By Theorem~\ref{thm:floor}, the realisable
+separator has measure $\geq\beta$; the receiver therefore stands at
+distance $\geq\beta$ from $\tau$ in the agent's partition. The
+minimal distinct vantage is the penultimate state, one isomorphism
+step from $\tau$. Closing that gap would reduce separator measure to
+zero, contradicting Theorem~\ref{thm:floor}.
 \end{proof}
+
+\begin{remark}[Self-referential verification]
+\label{rem:selfref}
+The deeper reason the gap cannot close is self-referential. To
+\emph{verify} that the receiver occupies $\tau$ is to decide its
+membership in the collection that constitutes $\tau$ (the negation
+of everything $\tau$ is not). Self-referential set-membership has
+no consistent value (Russell, Cantor, Tarski). The gap is therefore
+not merely a finite-resolution artefact: it is the geometric
+shadow of a logical obstruction. Theorem~\ref{thm:floor} bounds the
+shadow's measure; the obstruction itself is not exhibitable as a set.
+\end{remark>
 
 \begin{corollary}[Loschmidt's Operation Cannot Close the Gap]
 \label{cor:losch_gap}
@@ -986,7 +1344,12 @@ finer than the cell width at the parent level; this is achievable only
 via decompositions whose components escape $[0,1]^{3}$
 (Theorem~\ref{thm:virt}). Without virtual decompositions the parent
 must be found by enumerating children of candidate parents, summing
-to $\sum_{j=0}^{k}3^{j}=\Theta(N)$.
+to $\sum_{j=0}^{k}3^{j}=\Theta(N)$. The same conclusion follows from
+the cost derivation of Theorem~\ref{thm:floor}: a monotone
+refinement-cost functional $g$ satisfies $g(t)\to+\infty$ as
+separator thickness $t\to 0^{+}$; restricting to physical
+decompositions caps $t$ at the cell width at depth $k$, forcing
+either divergent cost per step or enumeration of all $3^{k}$ cells.
 \end{proof}
 
 % =========================================================
