@@ -1,0 +1,146 @@
+\begin{thebibliography}{23}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Arnold(1963)]{arnold1963}
+V.~I. Arnold.
+\newblock Proof of a theorem of {A. N. K}olmogorov on the invariance of
+  quasi-periodic motions under small perturbations of the {H}amiltonian.
+\newblock \emph{Russian Mathematical Surveys}, 18\penalty0 (5):\penalty0 9--36,
+  1963.
+
+\bibitem[Arnold(1989)]{arnold1989}
+V.~I. Arnold.
+\newblock \emph{Mathematical Methods of Classical Mechanics}.
+\newblock Springer, 2nd edition, 1989.
+
+\bibitem[Bohr(1913)]{bohr1913}
+Niels Bohr.
+\newblock On the constitution of atoms and molecules.
+\newblock \emph{Philosophical Magazine}, 26\penalty0 (151):\penalty0 1--25,
+  1913.
+
+\bibitem[Boltzmann(1877)]{boltzmann1877}
+Ludwig Boltzmann.
+\newblock {\"U}ber die {B}eziehung zwischen dem zweiten {H}auptsatz der
+  mechanischen {W}{\"a}rmetheorie und der {W}ahrscheinlichkeitsrechnung
+  respective den {S}{\"a}tzen {\"u}ber das {W}{\"a}rmegleichgewicht.
+\newblock \emph{Sitzungsberichte der Akademie der Wissenschaften Wien},
+  76:\penalty0 373--435, 1877.
+
+\bibitem[Cooley and Tukey(1965)]{cooley1965}
+James~W. Cooley and John~W. Tukey.
+\newblock An algorithm for the machine calculation of complex {F}ourier series.
+\newblock \emph{Mathematics of Computation}, 19\penalty0 (90):\penalty0
+  297--301, 1965.
+
+\bibitem[Gabor(1946)]{gabor1946}
+Dennis Gabor.
+\newblock Theory of communication.
+\newblock \emph{Journal of the Institution of Electrical Engineers},
+  93\penalty0 (26):\penalty0 429--441, 1946.
+
+\bibitem[Hall(2015)]{hall2015}
+Brian~C. Hall.
+\newblock \emph{Lie Groups, Lie Algebras, and Representations: An Elementary
+  Introduction}.
+\newblock Springer, 2nd edition, 2015.
+
+\bibitem[{International Bureau of Weights and Measures}(2019)]{si2019}
+{International Bureau of Weights and Measures}.
+\newblock The {I}nternational {S}ystem of {U}nits ({SI}), 9th edition.
+\newblock BIPM, S{\`e}vres, 2019.
+
+\bibitem[Jackson(1999)]{jackson1999}
+John~David Jackson.
+\newblock \emph{Classical Electrodynamics}.
+\newblock Wiley, 3rd edition, 1999.
+
+\bibitem[Kolmogorov(1954)]{kolmogorov1954}
+A.~N. Kolmogorov.
+\newblock On conservation of conditionally periodic motions for a small change
+  in {H}amilton's function.
+\newblock \emph{Doklady Akademii Nauk SSSR}, 98:\penalty0 527--530, 1954.
+
+\bibitem[Koopman(1931)]{koopman1931}
+Bernard~O. Koopman.
+\newblock {H}amiltonian systems and transformations in {H}ilbert space.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 17\penalty0
+  (5):\penalty0 315--318, 1931.
+
+\bibitem[Landau and Lifshitz(1976)]{landau1976}
+L.~D. Landau and E.~M. Lifshitz.
+\newblock \emph{Mechanics}.
+\newblock Pergamon Press, 3rd edition, 1976.
+
+\bibitem[Loschmidt(1876)]{loschmidt1876}
+Josef Loschmidt.
+\newblock {\"U}ber den {Z}ustand des {W}{\"a}rmegleichgewichtes eines {S}ystems
+  von {K}{\"o}rpern mit {R}{\"u}cksicht auf die {S}chwerkraft.
+\newblock \emph{Sitzungsberichte der Akademie der Wissenschaften Wien},
+  73:\penalty0 128--142, 1876.
+
+\bibitem[Makarov(2000)]{makarov2000}
+Alexander Makarov.
+\newblock Electrostatic axially harmonic orbital trapping: a high-performance
+  technique of mass analysis.
+\newblock \emph{Analytical Chemistry}, 72\penalty0 (6):\penalty0 1156--1162,
+  2000.
+
+\bibitem[March and Todd(2005)]{march2005}
+Raymond~E. March and John F.~J. Todd.
+\newblock \emph{Quadrupole Ion Trap Mass Spectrometry}.
+\newblock Wiley-Interscience, 2nd edition, 2005.
+
+\bibitem[Marshall et~al.(1998)Marshall, Hendrickson, and Jackson]{marshall1998}
+Alan~G. Marshall, Christopher~L. Hendrickson, and George~S. Jackson.
+\newblock Fourier transform ion cyclotron resonance mass spectrometry: a
+  primer.
+\newblock \emph{Mass Spectrometry Reviews}, 17\penalty0 (1):\penalty0 1--35,
+  1998.
+
+\bibitem[Moser(1962)]{moser1962}
+J{\"u}rgen Moser.
+\newblock On invariant curves of area-preserving mappings of an annulus.
+\newblock \emph{Nachrichten der Akademie der Wissenschaften G{\"o}ttingen},
+  1962:\penalty0 1--20, 1962.
+
+\bibitem[Nakahara(2003)]{nakahara2003}
+Mikio Nakahara.
+\newblock \emph{Geometry, Topology and Physics}.
+\newblock Institute of Physics Publishing, 2nd edition, 2003.
+
+\bibitem[Ostrogradsky(1850)]{ostrogradsky1850}
+Mikhail Ostrogradsky.
+\newblock M{\'e}moires sur les {\'e}quations diff{\'e}rentielles relatives au
+  probl{\`e}me des isop{\'e}rim{\`e}tres.
+\newblock \emph{M{\'e}moires de l'Acad{\'e}mie Imp{\'e}riale des Sciences de
+  Saint-P{\'e}tersbourg}, 6\penalty0 (4):\penalty0 385--517, 1850.
+
+\bibitem[Paul(1990)]{paul1990}
+Wolfgang Paul.
+\newblock Electromagnetic traps for charged and neutral particles.
+\newblock \emph{Reviews of Modern Physics}, 62\penalty0 (3):\penalty0 531--540,
+  1990.
+
+\bibitem[Peano(1889)]{peano1889}
+Giuseppe Peano.
+\newblock Arithmetices principia, nova methodo exposita.
+\newblock \emph{Bocca, Turin}, 1889.
+
+\bibitem[Wang et~al.(2021)Wang, Huang, Kondev, Audi, and
+  Naimi]{atomicmasses2020}
+Meng Wang, W.~J. Huang, F.~G. Kondev, G.~Audi, and S.~Naimi.
+\newblock The {AME}~2020 atomic mass evaluation.
+\newblock \emph{Chinese Physics C}, 45\penalty0 (3):\penalty0 030003, 2021.
+
+\bibitem[Wiley and McLaren(1955)]{wiley1955}
+W.~C. Wiley and I.~H. McLaren.
+\newblock Time-of-flight mass spectrometer with improved resolution.
+\newblock \emph{Review of Scientific Instruments}, 26\penalty0 (12):\penalty0
+  1150--1157, 1955.
+
+\end{thebibliography}
