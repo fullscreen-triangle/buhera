@@ -15,50 +15,50 @@
 \contentsline {subsection}{\numberline {4.2}Traversal versus existence}{4}{subsection.4.2}%
 \contentsline {section}{\numberline {5}Time as Configuration Count}{4}{section.5}%
 \contentsline {subsection}{\numberline {5.1}Closure as a topological primitive}{4}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Time as derived parameter}{6}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}The SI second as metrological lock}{6}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.2}Time as derived parameter}{5}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}The SI second as metrological lock}{5}{subsection.5.3}%
 \contentsline {section}{\numberline {6}Configurations are Snapshots; Velocities are Rates}{6}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Configurations}{6}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Decoupling of configuration from velocity}{6}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}Monotonicity under arbitrary traversal direction}{6}{subsection.6.3}%
-\contentsline {section}{\numberline {7}The Partition Lagrangian}{7}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Construction}{7}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}The four analyser scaling laws}{7}{subsection.7.2}%
-\contentsline {section}{\numberline {8}The Dissolution of Loschmidt's Paradox}{7}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Statement of the paradox}{7}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Where the conventional reading goes wrong}{9}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Self-undermining structures in the conventional reading}{9}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}What actually happens}{9}{subsection.8.4}%
+\contentsline {section}{\numberline {7}The Partition Lagrangian}{6}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Construction}{6}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}The four analyser scaling laws}{8}{subsection.7.2}%
+\contentsline {section}{\numberline {8}The Dissolution of Loschmidt's Paradox}{8}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Statement of the paradox}{8}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Where the conventional reading goes wrong}{8}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Self-undermining structures in the conventional reading}{8}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}What actually happens}{8}{subsection.8.4}%
 \contentsline {section}{\numberline {9}Why the Conventional Reading Appears Paradoxical:\\ The Occupation--Specification Asymmetry}{9}{section.9}%
 \contentsline {subsection}{\numberline {9.1}Occupation and specification are categorically distinct}{9}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Specification is irreducibly costly}{11}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}Occupation is free; the only scarce property is frequency}{11}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.2}Specification is irreducibly costly}{9}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Occupation is free; the only scarce property is frequency}{9}{subsection.9.3}%
 \contentsline {subsection}{\numberline {9.4}Three category errors in the conventional reading}{11}{subsection.9.4}%
-\contentsline {subsection}{\numberline {9.5}Diagnosis of the felt incoherence}{12}{subsection.9.5}%
+\contentsline {subsection}{\numberline {9.5}Diagnosis of the felt incoherence}{11}{subsection.9.5}%
 \contentsline {subsection}{\numberline {9.6}The four Loschmidt claims, classified}{12}{subsection.9.6}%
 \contentsline {subsection}{\numberline {9.7}Implications for the headline experiment}{12}{subsection.9.7}%
 \contentsline {section}{\numberline {10}Backward Trajectory Completion: The Penultimate State}{12}{section.10}%
 \contentsline {subsection}{\numberline {10.1}The S-entropy embedding}{12}{subsection.10.1}%
-\contentsline {subsection}{\numberline {10.2}Backward navigation in $\log _{3}N$ steps}{14}{subsection.10.2}%
-\contentsline {subsection}{\numberline {10.3}Termination at the penultimate state}{14}{subsection.10.3}%
-\contentsline {subsection}{\numberline {10.4}Virtual sub-states and the speedup}{14}{subsection.10.4}%
-\contentsline {section}{\numberline {11}Phase Coherence and Subharmonic Encoding}{14}{section.11}%
-\contentsline {subsection}{\numberline {11.1}Phase relations}{14}{subsection.11.1}%
-\contentsline {subsection}{\numberline {11.2}Fragment frequencies and subharmonics}{16}{subsection.11.2}%
-\contentsline {section}{\numberline {12}The Headline Experiment: Caesium in an Orbitrap}{16}{section.12}%
-\contentsline {subsection}{\numberline {12.1}Rationale}{16}{subsection.12.1}%
-\contentsline {subsection}{\numberline {12.2}Protocol}{16}{subsection.12.2}%
-\contentsline {subsection}{\numberline {12.3}What this falsifies}{16}{subsection.12.3}%
-\contentsline {subsection}{\numberline {12.4}Implementation notes}{17}{subsection.12.4}%
-\contentsline {section}{\numberline {13}Supporting Experiments}{17}{section.13}%
-\contentsline {subsection}{\numberline {13.1}Bijection on standard \texttt {mzML} ions}{17}{subsection.13.1}%
-\contentsline {subsection}{\numberline {13.2}Four analyser scaling laws}{17}{subsection.13.2}%
-\contentsline {subsection}{\numberline {13.3}Subharmonic encoding}{17}{subsection.13.3}%
-\contentsline {subsection}{\numberline {13.4}Backward completion complexity}{17}{subsection.13.4}%
-\contentsline {section}{\numberline {14}JSON Record Schemas and Suite-Level Acceptance}{17}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Common record schema}{17}{subsection.14.1}%
-\contentsline {subsection}{\numberline {14.2}Suite-level acceptance}{17}{subsection.14.2}%
-\contentsline {section}{\numberline {15}Discussion}{19}{section.15}%
-\contentsline {subsection}{\numberline {15.1}What this paper proves and what it does not}{19}{subsection.15.1}%
-\contentsline {subsection}{\numberline {15.2}Limitations}{19}{subsection.15.2}%
-\contentsline {subsection}{\numberline {15.3}What success and failure mean}{19}{subsection.15.3}%
+\contentsline {subsection}{\numberline {10.2}Backward navigation in $\log _{3}N$ steps}{12}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Termination at the penultimate state}{12}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}Virtual sub-states and the speedup}{13}{subsection.10.4}%
+\contentsline {section}{\numberline {11}Phase Coherence and Subharmonic Encoding}{13}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Phase relations}{13}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Fragment frequencies and subharmonics}{15}{subsection.11.2}%
+\contentsline {section}{\numberline {12}The Headline Experiment: Caesium in an Orbitrap}{15}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Rationale}{15}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Protocol}{15}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}What this falsifies}{15}{subsection.12.3}%
+\contentsline {subsection}{\numberline {12.4}Implementation notes}{16}{subsection.12.4}%
+\contentsline {section}{\numberline {13}Supporting Experiments}{16}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Bijection on standard \texttt {mzML} ions}{16}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Four analyser scaling laws}{16}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Subharmonic encoding}{16}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}Backward completion complexity}{16}{subsection.13.4}%
+\contentsline {section}{\numberline {14}JSON Record Schemas and Suite-Level Acceptance}{16}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Common record schema}{16}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Suite-level acceptance}{16}{subsection.14.2}%
+\contentsline {section}{\numberline {15}Discussion}{17}{section.15}%
+\contentsline {subsection}{\numberline {15.1}What this paper proves and what it does not}{17}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Limitations}{17}{subsection.15.2}%
+\contentsline {subsection}{\numberline {15.3}What success and failure mean}{17}{subsection.15.3}%
