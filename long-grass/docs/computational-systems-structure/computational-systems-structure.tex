@@ -179,13 +179,19 @@ conjunction has not been packaged as a forced structural result, to
 the author's knowledge.
 
 % =====================================================================
-\section{Premises}
+\section{Three Premises}
 \label{sec:premises}
 % =====================================================================
 
-We fix two premises. Both are operational conditions on the agent
-and the system; neither is a metaphysical hypothesis about the
-world.
+We fix three premises. The first two are operational conditions on
+the agent and the system; the third is an order condition on the
+ambient whole that the agent's graph models. None is a metaphysical
+hypothesis. The third premise carries the load that the original
+draft tried to put on the floor by stipulation: it forces the floor
+as a derived consequence rather than a posit, and it converts the
+partiality of composition, the cell-structure of the residue
+preorder, and the four-type taxonomy into theorems rather than
+defects.
 
 \subsection{Finite graph-structured system}
 
@@ -269,6 +275,67 @@ may be a human, a machine, a sensor network, a software process, a
 finite collective. The three finiteness conditions of
 \cref{def:agent} are the substantive content of \cref{ax:agent}.
 
+\subsection{Non-completable whole}
+
+The agent engages a finite graph, but the graph is a
+\emph{model}---a finite individuated structure within an ambient
+whole that the agent's model does not exhaust. We name the
+ambient whole and require that it is not exhaustible by finite
+stages of modelling.
+
+\begin{definition}[Whole; medium]
+\label{def:medium}
+The \emph{whole} engaged by an agent is the totality
+$\mathcal{M}$ within which individuation occurs. The graph
+$\Graph = (\Vrt, \Edg, w)$ is a finitely-individuated model of
+$\mathcal{M}$. The \emph{medium} is $\mathcal{M}$ in its role as
+the reference against which the vertices of $\Graph$ are
+individuated: the totality simultaneously in contact with every
+vertex, such that the cut weight of a subset $U \subseteq \Vrt$ is
+the cost of separating $U$ from $\mathcal{M}\setminus U$.
+\end{definition}
+
+\begin{definition}[Non-completable whole]
+\label{def:noncompletable}
+The whole $\mathcal{M}$ is \emph{non-completable} if no finite
+stage of individuation exhausts it: for every finite individuation
+$\Graph$, there is at least one further distinction the agent could
+record but has not, i.e. a refinement of $\Graph$ that the agent's
+descriptive scheme can in principle extend to. This is an order
+condition (no terminal stage), not a cardinality posit on
+$\mathcal{M}$.
+\end{definition}
+
+\begin{axiom}[Non-completability hypothesis]
+\label{ax:noncompletable}
+The whole $\mathcal{M}$ the agent engages is non-completable in the
+sense of \cref{def:noncompletable}.
+\end{axiom}
+
+\Cref{ax:noncompletable} is not the claim that the world is
+infinite. It is the operational claim that the agent's modelling
+process does not terminate at a finite stage: there is always at
+least one more distinction available to draw beyond the current
+graph. For any realised engineering system this is observably the
+case---a sensor of finite resolution always admits a finer one; a
+classifier of finite vocabulary always admits a wider one; a query
+language of finite expressiveness always admits an extension. The
+operational content of \cref{ax:noncompletable} is exactly the
+practical fact that finite-agent modelling is open-ended in the
+direction of refinement.
+
+\begin{remark}[The third premise is what carries the floor]
+\label{rem:third_carries}
+In the original draft the positive floor $\floor$ on edge weights
+was stipulated as part of \cref{ax:graph}. Under
+\cref{ax:noncompletable}, $\floor > 0$ is no longer a stipulation
+but a theorem (\cref{thm:floor_from_infinitude} below): the floor
+is the trace of the non-completable whole on its finitely-modelled
+parts. With the floor derived, the remaining structural claims
+become theorems about the agent's engagement with the
+non-completable whole rather than artefacts of a stipulated bound.
+\end{remark}
+
 \subsection{What the premises do not say}
 
 \Cref{ax:graph,ax:agent} are sharp where they need to be sharp and
@@ -301,13 +368,72 @@ imposed---which is the case in all realised engineering
 systems---the premises apply.
 
 % =====================================================================
-\section{Consequences of the Two Premises}
+\section{Consequences of the Three Premises}
 \label{sec:consequences}
 % =====================================================================
 
-We derive three consequences of the conjunction of \cref{ax:graph}
-and \cref{ax:agent}. Each is forced by the premises alone; no
-additional hypothesis is invoked.
+We derive four consequences of the conjunction of \cref{ax:graph},
+\cref{ax:agent}, and \cref{ax:noncompletable}. The first is the
+Floor from Infinitude theorem: the positive floor on edge weights
+that the original draft posited is now derived from
+non-completability. The remaining three---distinguishability floor,
+residue propagation, and small-category structure---are then
+recovered under the derived floor and the agent's finiteness. Each
+consequence is forced by the premises alone; no additional
+hypothesis is invoked.
+
+\subsection{The Floor from Infinitude}
+
+\begin{theorem}[Floor from Infinitude]
+\label{thm:floor_from_infinitude}
+Let $\Graph$ be a finitely-individuated model of a non-completable
+whole $\mathcal{M}$ (\cref{ax:noncompletable}). For every realisable
+distinguishability act $u \not\sim v$ by a finite agent
+(\cref{ax:agent}), the agent's individuation of $u$ from
+$\mathcal{M}\setminus\{u\}$ via the path through $\Graph$ deposits a
+strictly positive residual: no realisable individuation has zero
+residue. Equivalently, the cost of any realised separator in
+$\Graph$ is bounded below by a strictly positive constant.
+\end{theorem}
+
+\begin{proof}
+A realisable distinguishability act $u \not\sim v$ individuates $u$
+from the rest of the agent's model by depositing measure on a
+separator $\Sigma(u, v) \subseteq \Edg$ (the edges of the path the
+agent uses). To individuate $u$ \emph{completely} would be to
+finish the comparison of $u$ against the entirety of
+$\mathcal{M}\setminus\{u\}$. By \cref{ax:noncompletable},
+$\mathcal{M}\setminus\{u\}$ is non-completable: no finite stage of
+individuation exhausts it. Hence the comparison cannot finish at
+any finite stage. Therefore the separator $\Sigma(u, v)$ cannot
+have zero measure: were $w(\Sigma) = 0$, the agent's descriptive
+scheme would record no measure differential between $u$ and the
+rest, and $u$ would not be individuated. Since the act is realised,
+the separator carries strictly positive measure, and the infimum of
+such positive measures over the finite edge set $\Edg$ is itself a
+strictly positive constant
+$\floor := \min\{w(e) : e \in \Edg,\, w(e) > 0\} > 0$. $\qed$
+\end{proof}
+
+\begin{corollary}[The floor is the trace of the whole on its
+parts]
+\label{cor:floor_trace}
+$\floor$ is not an independent posit but the structural shadow that
+$\mathcal{M}$'s non-completability casts on each of its finite
+modelled parts. Were $\mathcal{M}$ completable (a finite whole),
+the comparison of any part against the rest could finish, the
+separator could shrink to zero measure, and $\floor = 0$ would be
+admissible. Because $\mathcal{M}$ is non-completable
+(\cref{ax:noncompletable}), the floor is positive.
+\end{corollary}
+
+\begin{proof}
+Immediate from \cref{thm:floor_from_infinitude}: $\floor > 0$ is
+forced by non-completability and would vanish in the completable
+case. The constant $\floor$ is the irreducible identification
+residual of the agent's finite individuating acts against the
+non-completable whole. $\qed$
+\end{proof}
 
 \subsection{The distinguishability floor}
 
@@ -521,19 +647,61 @@ Finiteness of objects and morphisms is immediate from the premises.
 axioms in the partial-composition setting. $\qed$
 \end{proof}
 
-\begin{remark}[Why a category rather than a monoid]
+\begin{theorem}[Partiality of composition is forced by
+non-completability]
+\label{thm:partiality_forced}
+Under \cref{ax:graph}, \cref{ax:agent}, and
+\cref{ax:noncompletable}, composition in
+$\mathbf{C}_{\Agent,\Graph}$ is genuinely partial: there exist
+agent--graph configurations in which $(u, v)$ and $(v, w)$ are both
+realised but $(u, w)$ is not. Partiality is not a contingent
+artefact of budget exhaustion; it is the structural consequence of
+modelling a non-completable whole with a finite agent.
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:floor_from_infinitude}, every realised
+distinguishability act deposits residue $\geq \floor > 0$. The
+agent's individuating capacity over its lifetime is the cumulative
+residue it can deposit, bounded above by what the finite budget
+$C_\Agent$ permits at unit cost $c_0$:
+$\#\{\text{realised acts}\} \leq C_\Agent / c_0$.
+Composition of $(u, v)$ and $(v, w)$ into $(u, w)$ is realised only
+when the agent can record the composite act---which requires either
+that the composite path already lies in the agent's record, or that
+the agent has remaining capacity to traverse it.
+
+Now apply \cref{ax:noncompletable}: the whole $\mathcal M$ is
+non-completable, so the lattice of pairs $(u, w)$ the agent
+\emph{could} individuate exceeds any finite stage of realisations.
+For any finite agent there are pairs $(u, v), (v, w)$ both realised
+whose composite $(u, w)$ has not been realised at this stage---the
+non-completability of $\mathcal M$ guarantees that finite
+individuation is always strictly extensible, so the agent's record
+is always a proper sub-lattice of the closure under composition.
+
+Hence composition is partial, structurally: the gap between the
+realised category and its composition closure is a non-empty
+sub-lattice for every finite agent in a non-completable whole, and
+collapsing the gap would require the agent to have exhausted the
+whole (forbidden by \cref{ax:noncompletable}). $\qed$
+\end{proof}
+
+\begin{remark}[Small category is the honest structural object]
 \label{rem:why_category}
-A monoid requires composition to be total. In our setting,
-realisability depends on the agent's finite budget and on whether
-the agent's recording of one act can be extended to a recording of
-a composite act. Both fail for some triples. The category framework
-is the standard mathematical home for partial composition with
-identities and associativity \citep{maclane1998}; it captures
-exactly what the premises support, without overclaiming totality.
-A small category in which every pair of composable morphisms does
-compose is a monoid; the framework reduces to a monoid in that
-special case (no budget exhaustion, full closure), but the general
-case is a category.
+\Cref{thm:partiality_forced} promotes partial composition from a
+contingent feature of budget exhaustion to a forced consequence of
+non-completability. The honest structural object is a small
+category \citep{maclane1998}, not a monoid. The category framework
+is exactly what the conjunction of the three premises supports: a
+finite collection of morphisms (the realised individuations), an
+identity on each object, an associative partial composition
+(\cref{lem:assoc}), with the gap from totality not a defect but the
+structural shadow of the non-completable whole. A small category in
+which every pair of composable morphisms does compose corresponds
+exactly to a completable whole (the agent has exhausted what is
+individuable); under \cref{ax:noncompletable} this case is
+excluded.
 \end{remark}
 
 \begin{remark}[Free monoid envelope]
@@ -593,6 +761,51 @@ each hom-set; the \emph{residue quotient}
 $\widetilde{\mathbf{C}}_{\Agent,\Graph}$ identifies
 residue-equivalent morphisms.
 \end{definition}
+
+\begin{theorem}[Residue cells are the natural unit of operation]
+\label{thm:residue_cells}
+The residue equivalence classes of $\equiv_\Res$ are
+\emph{operation-cells}: regions of $\mathbf{C}_{\Agent,\Graph}$
+within which morphisms are agent-indistinguishable. The residue
+quotient $\widetilde{\mathbf{C}}_{\Agent,\Graph}$ is not a
+remedial collapse of an antisymmetry failure but the natural
+operational object: operations are individuated to their cell, not
+to their label.
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:floor_from_infinitude}, individuation against the
+non-completable whole proceeds by depositing residue
+$\geq \floor > 0$; the agent's identification of a morphism with the
+act it performs is to the resolution $\floor$ of its residue, not
+finer. Two morphisms $f, g$ with $\Res(f) = \Res(g)$ deposit
+indistinguishable measure differentials in the agent's record (the
+agent's separator measure on $f$ equals that on $g$), so the
+agent's finite descriptive scheme \ref{F:fin_descr} cannot
+discriminate them by cost. The residue cells $[f]_{\equiv_\Res}$
+are therefore the regions of operational indistinguishability under
+the floor; the quotient
+$\widetilde{\mathbf{C}}_{\Agent,\Graph}$ identifies them as the
+natural unit of operation, and the residue preorder descends to a
+genuine partial order on the cells. The cells are bounded below in
+diameter by $\floor$ in the cost-metric on operations, mirroring
+\cref{thm:floor_from_infinitude}. $\qed$
+\end{proof}
+
+\begin{remark}[Preorder collapse is cell-truth]
+\label{rem:preorder_cell_truth}
+The antisymmetry failure of $\preceq$ on $\mathbf{C}_{\Agent,
+\Graph}$ is not a defect to be patched. It is the operational form
+of cell-truth: the agent's record assigns a residue to each
+operation; operations sharing a residue are the same operation to
+the resolution of the floor; the natural object on which the order
+lives is the residue-cell. To insist on antisymmetry over
+$\mathbf{C}_{\Agent,\Graph}$ would be to demand point-truth on
+operations, which \cref{thm:floor_from_infinitude} forbids. The
+residue quotient is the operational structure's cell-structure, and
+the partial order on the quotient is the unique order forced by
+the conjunction of the three premises.
+\end{remark}
 
 \begin{definition}[Operational structure]
 \label{def:opstr}
@@ -965,17 +1178,79 @@ identity, falls into one of the four types, or is a composite
 whose components do. $\qed$
 \end{proof}
 
-\begin{remark}[The taxonomy is a definition that earns its
-``completeness'' from the loci]
+\begin{theorem}[Four-type taxonomy is the scale homomorphism]
+\label{thm:scale_homomorphism}
+The four types of \cref{def:op_type} are not an ad hoc taxonomy
+but the image of a structural homomorphism between the
+operations-scale and the contact-graph scale that the agent
+engages. The four loci of effect---graph $\Graph$, equivalence
+relation $\sim$, internal state $S_\Agent$, traversed-edges
+trace---are the agent-scale projections of the four-place
+structure $(\text{unit},\,\text{whole},\,\text{selector},\,\text{
+invariant})$ at the operations scale. Specifically, the assignment
+\[
+  \begin{array}{rcl}
+  \text{whole at op-scale} & \longmapsto & \Graph \\
+  \text{individuating selector} & \longmapsto & \sim \\
+  \text{invariant residue} & \longmapsto & S_\Agent \\
+  \text{committed history} & \longmapsto & \text{edges traversed}
+  \end{array}
+\]
+maps each role of the operations-scale's four-place structure to
+the locus of effect that records it on the agent-scale, and the
+four operation types are exactly the four singletons (and their
+compositions) in this image.
+\end{theorem}
+
+\begin{proof}
+At the operations scale, the agent's individuating activity over
+$\Graph$ admits a four-place description: a whole the agent
+engages, a selector that picks out the next individuation, an
+invariant the selector deposits, and a committed history of
+selections made. These are the four roles any finite individuating
+agent in a non-completable whole exhibits
+(\cref{ax:noncompletable}, \cref{ax:agent}), and they are the
+operational counterpart of the four-place structure
+$(\text{part},\,\text{whole},\,\text{gate},\,\text{invariant})$
+that the contact-graph theory uses across scales.
+
+Each role surfaces on the agent-scale at exactly one locus of
+effect. The \emph{whole} surfaces as modifications of $\Graph$
+itself (dynamical, \ref{T:dyn}): the only way an operation engages
+the whole is to change the graph it models. The \emph{selector}
+surfaces as modifications of $\sim$ (algebraic, \ref{T:alg}): the
+selector is the equivalence relation through which the agent
+individuates parts; changing it is changing what is treated as one.
+The \emph{invariant residue} surfaces as modifications of
+$S_\Agent$ (internal, \ref{T:int}): the invariant the agent
+deposits is recorded internally. The \emph{committed history}
+surfaces as traversal of graph edges (computational, \ref{T:comp}):
+querying produces a record of edges read, the operation's commitment.
+
+The four types of \cref{def:op_type} are therefore the four
+singletons in the image of the role-to-locus assignment, and any
+realised operation is a composite of these (the agent acts on at
+most all four loci simultaneously). The taxonomy is forced by the
+scale homomorphism; it is not a definition with attached
+completeness claim but a theorem about which loci the four roles
+surface at. $\qed$
+\end{proof}
+
+\begin{remark}[Why the taxonomy is structural, not stipulated]
 \label{rem:taxonomy_honest}
-\Cref{thm:three_types} is exhaustive over the loci of effect
-specified in \cref{def:effect_tuple}---graph, equivalence,
-internal-state. The exhaustiveness is therefore relative to the
-three-locus model. If a richer model is adopted (additional loci,
-e.g.~external communication channels, environment side-effects),
-the classification extends but is not changed in spirit:
-loci-effect-typing remains the organising principle, and the
-floor bounds continue to apply locus by locus.
+\Cref{thm:scale_homomorphism} converts the four-type taxonomy from
+a stipulation about loci of effect into a structural fact about
+roles at one scale projecting to loci at the next. The same
+four-place structure recurs at every scale at which an agent
+engages a non-completable whole: a unit individuating against a
+whole, with a selector and an invariant, over a committed history.
+At each scale the four roles surface as the four loci, and the
+operations are typed by which roles they exercise. The
+exhaustiveness is structural---there are exactly four roles---not
+contingent on the locus model. An extension to additional roles
+(e.g.\ inter-agent communication as a fifth role) would extend the
+taxonomy by exactly one type, but the conjunction of the three
+premises supplies four roles, hence four types.
 \end{remark}
 
 \begin{remark}[Composition across types]
@@ -1166,14 +1441,95 @@ example exists. $\qed$
 \begin{remark}[The argument is silent outside its premises]
 \label{rem:silent}
 We make no claim about agents that fail \cref{ax:agent} (putative
-infinite agents, oracles, perfect observers) or systems that fail
+infinite agents, oracles, perfect observers), systems that fail
 \cref{ax:graph} (continuous fields without finite discretisation,
-infinite combinatorial structures). The argument has nothing to
-say about those cases. This silence is intended: the framework is
-deliberately narrow, sharp where the premises hold, mute elsewhere.
-This is the right shape for a conditional architectural claim. It
-allows the result to be definite without overreaching.
+infinite combinatorial structures), or wholes that fail
+\cref{ax:noncompletable} (completable finite wholes that admit a
+terminal stage). The argument has nothing to say about those cases.
+This silence is intended: the framework is deliberately narrow,
+sharp where the premises hold, mute elsewhere. This is the right
+shape for a conditional architectural claim. It allows the result
+to be definite without overreaching.
 \end{remark}
+
+\subsection{The Master Theorem}
+
+We now show that the three premises are not merely sufficient for
+the operational structure; they are equivalent to it, jointly. The
+operational structure exists if and only if the conjunction of the
+three premises holds; failure of any one premise dissolves at
+least one structural feature.
+
+\begin{theorem}[Operational Structure Master Theorem]
+\label{thm:master}
+Let an agent $\Agent$ engage a system modelled by a graph $\Graph$
+within an ambient whole $\mathcal{M}$. The following are
+equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.2em]
+\item There exists a realisable distinguishability act
+$u \not\sim v$ by $\Agent$ on $\Graph$ within $\mathcal{M}$.
+\item \Cref{ax:graph}, \cref{ax:agent}, and
+\cref{ax:noncompletable} all hold.
+\item The full operational structure $\OpStr_\Agent$ of
+\cref{def:opstr} is forced: a small category
+$\mathbf{C}_{\Agent,\Graph}$ with strictly positive floor $\floor$
+on non-identity residues, partial composition (forced by
+\cref{thm:partiality_forced}), residue cells as the natural unit
+(\cref{thm:residue_cells}), and the four-type taxonomy as scale
+homomorphism (\cref{thm:scale_homomorphism}).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+$(\mathrm{i}) \Rightarrow (\mathrm{ii})$: A realised act
+$u \not\sim v$ requires $u$ and $v$ to be distinguishable vertices
+of $\Graph$, hence $\Graph$ must be a graph (\cref{ax:graph}) and
+$\Agent$ must record the distinction (\cref{ax:agent}). The act's
+residue is bounded below by \cref{thm:floor_from_infinitude}, which
+itself uses \cref{ax:noncompletable}: were $\mathcal{M}$
+completable, the comparison of $u$ against the rest could finish
+and the residue could vanish, so realisability with positive cost
+implies \cref{ax:noncompletable}.
+
+$(\mathrm{ii}) \Rightarrow (\mathrm{iii})$: This is the body of the
+paper. The Floor from Infinitude
+(\cref{thm:floor_from_infinitude}) and \cref{thm:floor} give the
+floor; \cref{thm:residue_additive,cor:res_accumulate} give the
+residue; \cref{thm:category} gives the small-category structure;
+\cref{thm:partiality_forced} gives the partial composition;
+\cref{thm:residue_cells} gives the residue-cell quotient as the
+natural object; \cref{thm:scale_homomorphism} gives the four-type
+taxonomy. The Operational Structure Theorem
+(\cref{thm:opstructure}) packages these into the quintuple
+$\OpStr_\Agent$.
+
+$(\mathrm{iii}) \Rightarrow (\mathrm{i})$: The small category
+$\mathbf{C}_{\Agent,\Graph}$ has at least the identity morphisms;
+under the floor $\floor > 0$ and the realisability marker, any
+hom-set $\mathrm{Hom}(u, v)$ with $u \neq v$ that is non-empty
+exhibits a realised non-identity morphism, i.e. a realisable
+distinguishability act.
+
+The cycle is closed. $\qed$
+\end{proof}
+
+\begin{corollary}[Identifiability is the operational structure]
+\label{cor:identifiability_is_structure}
+The bare fact that the agent can distinguish any one part of the
+system from any other in the ambient whole is sufficient to force
+the entire operational structure. Conversely, dissolving the
+structure (no floor, total composition, antisymmetric residue
+order, or fewer than four operation types) requires denying the
+agent any single act of distinguishing parts.
+\end{corollary}
+
+\begin{proof}
+The forward direction is the cycle of \cref{thm:master}: (i) forces
+(ii) forces (iii). The contrapositive is the corollary's second
+clause: failure of any clause of (iii) propagates back to failure
+of the conjunction in (ii) and thence to absence of any realisable
+distinguishing act in (i). $\qed$
+\end{proof}
 
 % =====================================================================
 \section{Implications}

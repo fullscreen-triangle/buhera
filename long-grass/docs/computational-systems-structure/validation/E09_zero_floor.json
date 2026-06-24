@@ -1,0 +1,26 @@
+{
+  "experiment": "E9_zero_floor",
+  "theorem_ids": [
+    "thm:zero_floor"
+  ],
+  "input_dataset": "(a) all-null graph (n=8); (b) mixed graph (n=15)",
+  "n_samples": 210,
+  "predicted": {
+    "no_realised_act_in_null_only_graph": true,
+    "no_realised_act_with_residue_below_beta": true
+  },
+  "measured": {
+    "null_graph_realised_acts": 0,
+    "mixed_graph_realised_acts": 210,
+    "mixed_graph_beta": 0.6536777557308774,
+    "mixed_graph_sub_beta_acts": 0
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.13430237770080566,
+  "seed": 20260632
+}

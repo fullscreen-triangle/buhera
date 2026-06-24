@@ -1,0 +1,64 @@
+{
+  "experiment": "E6_partial_composition",
+  "theorem_ids": [
+    "rem:why_category",
+    "thm:opstructure (O5)"
+  ],
+  "input_dataset": "1 random graph (n=20), tight-budget agent (C=20.0)",
+  "n_samples": 7,
+  "predicted": {
+    "partial_composition_exhibits_unrealised_composites": true
+  },
+  "measured": {
+    "realised_morphisms": 10,
+    "spent": 20.0,
+    "budget": 20.0,
+    "composable_with_realised_composite": 0,
+    "composable_with_unrealised_composite": 7,
+    "first_unrealised_composable_triples": [
+      [
+        7,
+        9,
+        12
+      ],
+      [
+        7,
+        9,
+        4
+      ],
+      [
+        19,
+        6,
+        3
+      ],
+      [
+        8,
+        19,
+        6
+      ],
+      [
+        9,
+        4,
+        3
+      ],
+      [
+        15,
+        7,
+        9
+      ],
+      [
+        17,
+        4,
+        3
+      ]
+    ]
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.42475461959838867,
+  "seed": 20260629
+}

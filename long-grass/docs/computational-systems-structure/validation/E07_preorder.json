@@ -1,0 +1,42 @@
+{
+  "experiment": "E7_preorder",
+  "theorem_ids": [
+    "def:opstr (O3)",
+    "def:residue_equiv"
+  ],
+  "input_dataset": "1 random graph (n=20), all realisable acts",
+  "n_samples": 11986,
+  "predicted": {
+    "reflexivity": true,
+    "transitivity": true,
+    "antisymmetry_on_Op": false,
+    "antisymmetry_on_quotient": true
+  },
+  "measured": {
+    "morphisms": 380,
+    "residue_classes": 190,
+    "quotient_collapse": 190,
+    "reflex_violations": 0,
+    "transitivity_checks": 11606,
+    "transitivity_violations": 0,
+    "antisymmetry_failure_classes": 190,
+    "sample_failure_class": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ]
+    ]
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.5584244728088379,
+  "seed": 20260630
+}

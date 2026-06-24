@@ -1,0 +1,71 @@
+{
+  "experiment": "E11_recipe_terminates",
+  "theorem_ids": [
+    "prop:recipe"
+  ],
+  "input_dataset": "random graphs at sizes [5, 10, 20, 30, 45]",
+  "n_samples": 3290,
+  "predicted": {
+    "termination_in_finite_time": true,
+    "n_realised_grows_with_n": true
+  },
+  "measured": {
+    "timing_by_size": [
+      {
+        "n_vertices": 5,
+        "n_edges": 3,
+        "beta": 0.8942932262517305,
+        "n_realised": 12,
+        "t_floor_s": 2.5987625122070312e-05,
+        "t_realise_s": 0.0013000965118408203,
+        "t_classify_s": 0.0001513957977294922
+      },
+      {
+        "n_vertices": 10,
+        "n_edges": 8,
+        "beta": 0.580786215110353,
+        "n_realised": 48,
+        "t_floor_s": 3.552436828613281e-05,
+        "t_realise_s": 0.004329681396484375,
+        "t_classify_s": 5.14984130859375e-05
+      },
+      {
+        "n_vertices": 20,
+        "n_edges": 56,
+        "beta": 0.6057193008344253,
+        "n_realised": 380,
+        "t_floor_s": 4.6253204345703125e-05,
+        "t_realise_s": 0.19654369354248047,
+        "t_classify_s": 0.0005829334259033203
+      },
+      {
+        "n_vertices": 30,
+        "n_edges": 132,
+        "beta": 0.5752896354594155,
+        "n_realised": 870,
+        "t_floor_s": 0.0002474784851074219,
+        "t_realise_s": 2.2786378860473633,
+        "t_classify_s": 0.002468109130859375
+      },
+      {
+        "n_vertices": 45,
+        "n_edges": 281,
+        "beta": 0.5135112721271646,
+        "n_realised": 1980,
+        "t_floor_s": 0.0004210472106933594,
+        "t_realise_s": 14.41105842590332,
+        "t_classify_s": 0.0025680065155029297
+      }
+    ],
+    "max_realise_seconds": 14.41105842590332,
+    "n_realised_monotone_in_n": true
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 16.903886318206787,
+  "seed": 20260634
+}

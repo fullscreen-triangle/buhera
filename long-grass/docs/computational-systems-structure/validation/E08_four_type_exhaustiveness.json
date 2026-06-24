@@ -1,0 +1,105 @@
+{
+  "experiment": "E8_four_type_exhaustiveness",
+  "theorem_ids": [
+    "thm:three_types (four-type exhaustiveness)"
+  ],
+  "input_dataset": "exhaustive enumeration of 2^3 effect tuples x {reads_edge}",
+  "n_samples": 16,
+  "predicted": {
+    "types_partition_effect_tuples": true,
+    "all_four_non_identity_types_realised": true
+  },
+  "measured": {
+    "type_counts": {
+      "identity": 2,
+      "internal": 1,
+      "computational": 1,
+      "algebraic": 4,
+      "dynamical": 8
+    },
+    "missing_expected_types": [],
+    "unexpected_types": [],
+    "sample_cases": [
+      {
+        "effect_tuple": [
+          0,
+          0,
+          0
+        ],
+        "reads_edge": false,
+        "type": "identity"
+      },
+      {
+        "effect_tuple": [
+          0,
+          0,
+          0
+        ],
+        "reads_edge": true,
+        "type": "identity"
+      },
+      {
+        "effect_tuple": [
+          0,
+          0,
+          1
+        ],
+        "reads_edge": false,
+        "type": "internal"
+      },
+      {
+        "effect_tuple": [
+          0,
+          0,
+          1
+        ],
+        "reads_edge": true,
+        "type": "computational"
+      },
+      {
+        "effect_tuple": [
+          0,
+          1,
+          0
+        ],
+        "reads_edge": false,
+        "type": "algebraic"
+      },
+      {
+        "effect_tuple": [
+          0,
+          1,
+          0
+        ],
+        "reads_edge": true,
+        "type": "algebraic"
+      },
+      {
+        "effect_tuple": [
+          0,
+          1,
+          1
+        ],
+        "reads_edge": false,
+        "type": "algebraic"
+      },
+      {
+        "effect_tuple": [
+          0,
+          1,
+          1
+        ],
+        "reads_edge": true,
+        "type": "algebraic"
+      }
+    ]
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.00031256675720214844,
+  "seed": 20260631
+}

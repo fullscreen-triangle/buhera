@@ -1,0 +1,27 @@
+{
+  "experiment": "E2_residue_additive",
+  "theorem_ids": [
+    "thm:residue_additive"
+  ],
+  "input_dataset": "30 random graphs, 40 triples each",
+  "n_samples": 1174,
+  "predicted": {
+    "rho_uw_leq_rho_uv_plus_rho_vw": true,
+    "equality_when_shortest_path_is_concat": true
+  },
+  "measured": {
+    "trials": 1174,
+    "subadditivity_violations": 0,
+    "equal_on_concat_count": 131,
+    "strict_inequality_count": 1043,
+    "first_violations": []
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 1.8873164653778076,
+  "seed": 20260625
+}

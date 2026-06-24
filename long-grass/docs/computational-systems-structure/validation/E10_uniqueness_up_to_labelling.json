@@ -1,0 +1,29 @@
+{
+  "experiment": "E10_uniqueness_up_to_labelling",
+  "theorem_ids": [
+    "cor:not_chosen",
+    "rem:path_choice"
+  ],
+  "input_dataset": "1 random graph + its relabelling; 1 diamond graph",
+  "n_samples": 420,
+  "predicted": {
+    "isomorphic_graphs_yield_same_residue_multiset": true,
+    "multiple_shortest_paths_can_exist": true
+  },
+  "measured": {
+    "agent1_morphisms": 210,
+    "agent2_morphisms": 210,
+    "morphism_counts_match": true,
+    "residue_multisets_match": true,
+    "diamond_shortest_residue": 2.0,
+    "has_multiple_shortest_paths": true
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.18513250350952148,
+  "seed": 20260633
+}

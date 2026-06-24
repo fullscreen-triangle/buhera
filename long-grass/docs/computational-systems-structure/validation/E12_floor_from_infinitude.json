@@ -1,0 +1,86 @@
+{
+  "experiment": "E12_floor_from_infinitude",
+  "theorem_ids": [
+    "thm:floor_from_infinitude",
+    "cor:floor_trace"
+  ],
+  "input_dataset": "non-completable whole (8 stages of refinement) vs completable whole (fixed graph) vs zero-floor graph",
+  "n_samples": 10,
+  "predicted": {
+    "noncompletable_floors_all_positive": true,
+    "completable_floor_admissible_arbitrarily_small": true,
+    "zero_floor_graph_has_beta_eq_zero": true
+  },
+  "measured": {
+    "noncompletable_stages": [
+      {
+        "stage": 0,
+        "n_vertices": 5,
+        "n_edges": 7,
+        "beta": 0.5,
+        "positive": true
+      },
+      {
+        "stage": 1,
+        "n_vertices": 8,
+        "n_edges": 16,
+        "beta": 0.3333333333333333,
+        "positive": true
+      },
+      {
+        "stage": 2,
+        "n_vertices": 11,
+        "n_edges": 31,
+        "beta": 0.25,
+        "positive": true
+      },
+      {
+        "stage": 3,
+        "n_vertices": 14,
+        "n_edges": 52,
+        "beta": 0.2,
+        "positive": true
+      },
+      {
+        "stage": 4,
+        "n_vertices": 17,
+        "n_edges": 71,
+        "beta": 0.16666666666666666,
+        "positive": true
+      },
+      {
+        "stage": 5,
+        "n_vertices": 20,
+        "n_edges": 101,
+        "beta": 0.14285714285714285,
+        "positive": true
+      },
+      {
+        "stage": 6,
+        "n_vertices": 23,
+        "n_edges": 138,
+        "beta": 0.125,
+        "positive": true
+      },
+      {
+        "stage": 7,
+        "n_vertices": 26,
+        "n_edges": 176,
+        "beta": 0.1111111111111111,
+        "positive": true
+      }
+    ],
+    "completable_floor": 0.015625,
+    "zero_floor_graph_beta": 0.0,
+    "nc_min_floor": 0.1111111111111111,
+    "completable_finest_admissible_weight": 0.015625
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.011054515838623047,
+  "seed": 20260635
+}

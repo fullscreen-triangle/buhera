@@ -1,0 +1,72 @@
+{
+  "experiment": "E3_cumulative_residue",
+  "theorem_ids": [
+    "cor:res_accumulate"
+  ],
+  "input_dataset": "50 random graphs, 60 acts each",
+  "n_samples": 2996,
+  "predicted": {
+    "cumulative_geq_n_beta": true,
+    "monotone_non_decreasing": true
+  },
+  "measured": {
+    "n_runs": 50,
+    "failures": 0,
+    "first_failures": [],
+    "first_runs": [
+      {
+        "graph_index": 0,
+        "beta": 0.23445453028428576,
+        "n_acts": 60,
+        "final_cumulative": 150.75792329879482,
+        "lower_bound_n_beta": 14.067271817057145,
+        "monotone": true,
+        "lower_bound_ok": true
+      },
+      {
+        "graph_index": 1,
+        "beta": 0.200672038451972,
+        "n_acts": 60,
+        "final_cumulative": 122.95692151329327,
+        "lower_bound_n_beta": 12.04032230711832,
+        "monotone": true,
+        "lower_bound_ok": true
+      },
+      {
+        "graph_index": 2,
+        "beta": 0.20167434135469706,
+        "n_acts": 60,
+        "final_cumulative": 152.30173510216648,
+        "lower_bound_n_beta": 12.100460481281823,
+        "monotone": true,
+        "lower_bound_ok": true
+      },
+      {
+        "graph_index": 3,
+        "beta": 0.2502119256903739,
+        "n_acts": 60,
+        "final_cumulative": 143.3806850260848,
+        "lower_bound_n_beta": 15.012715541422436,
+        "monotone": true,
+        "lower_bound_ok": true
+      },
+      {
+        "graph_index": 4,
+        "beta": 0.20655415684123465,
+        "n_acts": 60,
+        "final_cumulative": 122.85503639550075,
+        "lower_bound_n_beta": 12.393249410474079,
+        "monotone": true,
+        "lower_bound_ok": true
+      }
+    ]
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 3.8458199501037598,
+  "seed": 20260626
+}

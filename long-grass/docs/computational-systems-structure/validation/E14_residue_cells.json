@@ -1,0 +1,38 @@
+{
+  "experiment": "E14_residue_cells",
+  "theorem_ids": [
+    "thm:residue_cells",
+    "rem:preorder_cell_truth"
+  ],
+  "input_dataset": "1 random graph (n=25), all realisable acts",
+  "n_samples": 600,
+  "predicted": {
+    "all_cells_nonempty": true,
+    "all_nonidentity_cells_residue_geq_beta": true,
+    "min_nonid_residue_eq_floor_on_operations": true,
+    "antisymmetry_on_quotient": true
+  },
+  "measured": {
+    "n_morphisms": 600,
+    "n_residue_cells": 300,
+    "collapse": 300,
+    "beta_graph": 0.5075269976694488,
+    "min_nonid_residue": 0.507527,
+    "n_residues_sorted_first_5": [
+      0.507527,
+      0.591013,
+      0.612724,
+      0.715912,
+      0.72429
+    ],
+    "max_cell_size": 2
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.7041881084442139,
+  "seed": 20260637
+}

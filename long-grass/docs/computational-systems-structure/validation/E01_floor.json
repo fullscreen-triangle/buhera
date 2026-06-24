@@ -1,0 +1,108 @@
+{
+  "experiment": "E1_floor",
+  "theorem_ids": [
+    "thm:floor",
+    "rem:floor_graph_property"
+  ],
+  "input_dataset": "50 synthetic random graphs (n=20, p=0.25)",
+  "n_samples": 1992,
+  "predicted": {
+    "every_realised_path_has_max_edge_geq_beta": true,
+    "violations": 0
+  },
+  "measured": {
+    "realised_acts": 1992,
+    "violations": 0,
+    "first_violations": [],
+    "sample_records": [
+      {
+        "graph": 0,
+        "u": 18,
+        "v": 6,
+        "beta": 0.5460339235000478,
+        "max_edge_on_path": 3.793007039165094,
+        "residue": 6.159181120289419
+      },
+      {
+        "graph": 0,
+        "u": 17,
+        "v": 2,
+        "beta": 0.5460339235000478,
+        "max_edge_on_path": 7.392726557056934,
+        "residue": 7.938760480556981
+      },
+      {
+        "graph": 0,
+        "u": 19,
+        "v": 8,
+        "beta": 0.5460339235000478,
+        "max_edge_on_path": 5.756544825972073,
+        "residue": 5.756544825972073
+      },
+      {
+        "graph": 0,
+        "u": 13,
+        "v": 5,
+        "beta": 0.5460339235000478,
+        "max_edge_on_path": 1.530710655916806,
+        "residue": 1.530710655916806
+      },
+      {
+        "graph": 0,
+        "u": 14,
+        "v": 7,
+        "beta": 0.5460339235000478,
+        "max_edge_on_path": 5.527134793322017,
+        "residue": 6.836910425031257
+      },
+      {
+        "graph": 0,
+        "u": 13,
+        "v": 11,
+        "beta": 0.5460339235000478,
+        "max_edge_on_path": 0.8074813272655424,
+        "residue": 0.8074813272655424
+      },
+      {
+        "graph": 0,
+        "u": 3,
+        "v": 1,
+        "beta": 0.5460339235000478,
+        "max_edge_on_path": 3.250360387270352,
+        "residue": 5.9075113293264465
+      },
+      {
+        "graph": 0,
+        "u": 6,
+        "v": 1,
+        "beta": 0.5460339235000478,
+        "max_edge_on_path": 3.250360387270352,
+        "residue": 6.22968058048278
+      },
+      {
+        "graph": 0,
+        "u": 15,
+        "v": 12,
+        "beta": 0.5460339235000478,
+        "max_edge_on_path": 2.379343674947602,
+        "residue": 5.2128222296960995
+      },
+      {
+        "graph": 0,
+        "u": 15,
+        "v": 2,
+        "beta": 0.5460339235000478,
+        "max_edge_on_path": 5.756544825972073,
+        "residue": 8.681922424419723
+      }
+    ]
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 1.7311456203460693,
+  "seed": 20260624
+}

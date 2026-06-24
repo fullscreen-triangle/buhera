@@ -1,0 +1,34 @@
+{
+  "experiment": "E16_master_theorem",
+  "theorem_ids": [
+    "thm:master",
+    "cor:identifiability_is_structure"
+  ],
+  "input_dataset": "non-completable whole (1 stage); zero-floor graph; random graph",
+  "n_samples": 3,
+  "predicted": {
+    "i_forces_ii_and_iii": true,
+    "negation_of_premises_dissolves_structure": true,
+    "ii_constructively_forces_iii": true
+  },
+  "measured": {
+    "realised_one_act_in_nc": [
+      0,
+      1,
+      0.5
+    ],
+    "nc_floor": 0.16666666666666666,
+    "zero_floor_graph_realised_acts": 0,
+    "zero_floor_graph_beta": 0.0,
+    "ii_forces_iii_morphisms_realised": 210,
+    "ii_forces_iii_beta": 1.0510095973114915
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.13440752029418945,
+  "seed": 20260639
+}

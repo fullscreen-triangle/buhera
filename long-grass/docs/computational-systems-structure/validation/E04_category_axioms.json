@@ -1,0 +1,28 @@
+{
+  "experiment": "E4_category_axioms",
+  "theorem_ids": [
+    "thm:category",
+    "lem:identity",
+    "lem:assoc"
+  ],
+  "input_dataset": "20 random graphs, all realisable acts each",
+  "n_samples": 6640,
+  "predicted": {
+    "identity_law_holds": true,
+    "associativity_where_defined": true
+  },
+  "measured": {
+    "identity_checks": 2640,
+    "identity_violations": 0,
+    "associativity_checks": 4000,
+    "associativity_violations": 0
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.5189359188079834,
+  "seed": 20260627
+}

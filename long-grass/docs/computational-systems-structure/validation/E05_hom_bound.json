@@ -1,0 +1,23 @@
+{
+  "experiment": "E5_hom_bound",
+  "theorem_ids": [
+    "prop:hom_bound"
+  ],
+  "input_dataset": "40 random graphs",
+  "n_samples": 9000,
+  "predicted": {
+    "max_homset_size": 2
+  },
+  "measured": {
+    "homsets_checked": 9000,
+    "violations": 0
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 3.7501087188720703,
+  "seed": 20260628
+}

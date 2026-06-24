@@ -1,0 +1,151 @@
+{
+  "experiment": "E13_partiality_forced_by_noncompletability",
+  "theorem_ids": [
+    "thm:partiality_forced"
+  ],
+  "input_dataset": "non-completable whole, 5 refinement stages, agent with effectively unbounded budget; realises only half of available pairs at each stage",
+  "n_samples": 725,
+  "predicted": {
+    "partiality_persists_under_unbounded_budget": true,
+    "spent_fraction_negligible": true
+  },
+  "measured": {
+    "stages": [
+      {
+        "stage": 2,
+        "n_vertices": 11,
+        "realised_acts": 55,
+        "composable_realised": 120,
+        "composable_unrealised": 133,
+        "spent_fraction_of_budget": 1.1500000000000007e-16,
+        "sample_unrealised": [
+          [
+            10,
+            8,
+            0
+          ],
+          [
+            10,
+            8,
+            6
+          ],
+          [
+            9,
+            2,
+            7
+          ]
+        ]
+      },
+      {
+        "stage": 3,
+        "n_vertices": 14,
+        "realised_acts": 91,
+        "composable_realised": 275,
+        "composable_unrealised": 270,
+        "spent_fraction_of_budget": 2.2400000000000014e-16,
+        "sample_unrealised": [
+          [
+            3,
+            1,
+            12
+          ],
+          [
+            3,
+            1,
+            5
+          ],
+          [
+            3,
+            1,
+            10
+          ]
+        ]
+      },
+      {
+        "stage": 4,
+        "n_vertices": 17,
+        "realised_acts": 136,
+        "composable_realised": 527,
+        "composable_unrealised": 485,
+        "spent_fraction_of_budget": 3.4000000000000025e-16,
+        "sample_unrealised": [
+          [
+            8,
+            9,
+            1
+          ],
+          [
+            8,
+            9,
+            3
+          ],
+          [
+            8,
+            9,
+            5
+          ]
+        ]
+      },
+      {
+        "stage": 5,
+        "n_vertices": 20,
+        "realised_acts": 190,
+        "composable_realised": 852,
+        "composable_unrealised": 850,
+        "spent_fraction_of_budget": 4.910000000000004e-16,
+        "sample_unrealised": [
+          [
+            8,
+            5,
+            10
+          ],
+          [
+            8,
+            5,
+            2
+          ],
+          [
+            8,
+            5,
+            3
+          ]
+        ]
+      },
+      {
+        "stage": 6,
+        "n_vertices": 23,
+        "realised_acts": 253,
+        "composable_realised": 1302,
+        "composable_unrealised": 1354,
+        "spent_fraction_of_budget": 5.980000000000004e-16,
+        "sample_unrealised": [
+          [
+            3,
+            11,
+            5
+          ],
+          [
+            3,
+            11,
+            19
+          ],
+          [
+            3,
+            11,
+            7
+          ]
+        ]
+      }
+    ],
+    "partiality_at_every_stage": true,
+    "max_spent_fraction": 5.980000000000004e-16
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.5612144470214844,
+  "seed": 20260636
+}

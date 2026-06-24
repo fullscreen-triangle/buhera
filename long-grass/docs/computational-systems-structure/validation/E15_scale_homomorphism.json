@@ -1,0 +1,54 @@
+{
+  "experiment": "E15_scale_homomorphism",
+  "theorem_ids": [
+    "thm:scale_homomorphism"
+  ],
+  "input_dataset": "4 role-locus pairs (the canonical homomorphism)",
+  "n_samples": 4,
+  "predicted": {
+    "bijection_roles_to_loci": true,
+    "types_match_def_op_type": true,
+    "canonical_tuples_classify_correctly": true
+  },
+  "measured": {
+    "role_locus_pairs": [
+      {
+        "role": "whole",
+        "locus": "Delta-Graph",
+        "type": "dynamical"
+      },
+      {
+        "role": "selector",
+        "locus": "Delta-equiv",
+        "type": "algebraic"
+      },
+      {
+        "role": "invariant",
+        "locus": "Delta-state",
+        "type": "internal"
+      },
+      {
+        "role": "committed_history",
+        "locus": "reads-edge",
+        "type": "computational"
+      }
+    ],
+    "canonical_classifications": {
+      "dynamical": "dynamical",
+      "algebraic": "algebraic",
+      "computational": "computational",
+      "internal": "internal"
+    },
+    "bijection_check": true,
+    "types_match_def": true,
+    "classification_consistent": true
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.00010967254638671875,
+  "seed": 20260638
+}

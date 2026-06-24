@@ -1,0 +1,126 @@
+{
+  "framework_version": "computational-systems-structure v1.1 (post-revision)",
+  "harness_seed": 20260623,
+  "experiments": [
+    {
+      "name": "E01_floor",
+      "pass": true,
+      "elapsed_seconds": 1.7311456203460693,
+      "file": "E01_floor.json",
+      "sha256_16": "025c2c1faa0dde59"
+    },
+    {
+      "name": "E02_residue_additive",
+      "pass": true,
+      "elapsed_seconds": 1.8873164653778076,
+      "file": "E02_residue_additive.json",
+      "sha256_16": "8a6c219dd381fae9"
+    },
+    {
+      "name": "E03_cumulative_residue",
+      "pass": true,
+      "elapsed_seconds": 3.8458199501037598,
+      "file": "E03_cumulative_residue.json",
+      "sha256_16": "2a3f944db15898f8"
+    },
+    {
+      "name": "E04_category_axioms",
+      "pass": true,
+      "elapsed_seconds": 0.5189359188079834,
+      "file": "E04_category_axioms.json",
+      "sha256_16": "026a6dca9885b9cd"
+    },
+    {
+      "name": "E05_hom_bound",
+      "pass": true,
+      "elapsed_seconds": 3.7501087188720703,
+      "file": "E05_hom_bound.json",
+      "sha256_16": "2c0dda2ff5f69abb"
+    },
+    {
+      "name": "E06_partial_composition",
+      "pass": true,
+      "elapsed_seconds": 0.42475461959838867,
+      "file": "E06_partial_composition.json",
+      "sha256_16": "13da9cdf1e946c1c"
+    },
+    {
+      "name": "E07_preorder",
+      "pass": true,
+      "elapsed_seconds": 0.5584244728088379,
+      "file": "E07_preorder.json",
+      "sha256_16": "de220600d20cc8dc"
+    },
+    {
+      "name": "E08_four_type_exhaustiveness",
+      "pass": true,
+      "elapsed_seconds": 0.00031256675720214844,
+      "file": "E08_four_type_exhaustiveness.json",
+      "sha256_16": "479ab7460e697e99"
+    },
+    {
+      "name": "E09_zero_floor",
+      "pass": true,
+      "elapsed_seconds": 0.13430237770080566,
+      "file": "E09_zero_floor.json",
+      "sha256_16": "2ddd3d3947b73aa3"
+    },
+    {
+      "name": "E10_uniqueness_up_to_labelling",
+      "pass": true,
+      "elapsed_seconds": 0.18513250350952148,
+      "file": "E10_uniqueness_up_to_labelling.json",
+      "sha256_16": "1eef4277f2c57620"
+    },
+    {
+      "name": "E11_recipe_terminates",
+      "pass": true,
+      "elapsed_seconds": 16.903886318206787,
+      "file": "E11_recipe_terminates.json",
+      "sha256_16": "0ad0a5498c22e19f"
+    },
+    {
+      "name": "E12_floor_from_infinitude",
+      "pass": true,
+      "elapsed_seconds": 0.011054515838623047,
+      "file": "E12_floor_from_infinitude.json",
+      "sha256_16": "d9f5bf84050ef447"
+    },
+    {
+      "name": "E13_partiality_forced",
+      "pass": true,
+      "elapsed_seconds": 0.5612144470214844,
+      "file": "E13_partiality_forced.json",
+      "sha256_16": "1041f5f57ecc88d4"
+    },
+    {
+      "name": "E14_residue_cells",
+      "pass": true,
+      "elapsed_seconds": 0.7041881084442139,
+      "file": "E14_residue_cells.json",
+      "sha256_16": "53064101f8f36a9e"
+    },
+    {
+      "name": "E15_scale_homomorphism",
+      "pass": true,
+      "elapsed_seconds": 0.00010967254638671875,
+      "file": "E15_scale_homomorphism.json",
+      "sha256_16": "a421ef375aae4d6c"
+    },
+    {
+      "name": "E16_master_theorem",
+      "pass": true,
+      "elapsed_seconds": 0.13440752029418945,
+      "file": "E16_master_theorem.json",
+      "sha256_16": "47b87b4de3179b8a"
+    }
+  ],
+  "summary": {
+    "total": 16,
+    "passed": 16,
+    "failed": 0,
+    "suite_pass": true,
+    "wall_clock_seconds": 32.59625434875488
+  },
+  "framework_self_path": "C:\\Users\\kunda\\Documents\\architecture\\buhera\\long-grass\\docs\\computational-systems-structure\\validation\\run_validation.py"
+}
