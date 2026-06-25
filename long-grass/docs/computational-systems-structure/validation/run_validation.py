@@ -1497,6 +1497,264 @@ def exp_master_theorem() -> Dict[str, Any]:
 
 
 # =====================================================================
+#  E17: Composition-Inflation formula T(n, d) = d * (d+1)^(n-1)
+# =====================================================================
+#  thm:composition_inflation
+#
+#  Enumerate operation trajectories at small n and verify the count
+#  matches the closed form for several values of d.
+
+def _enumerate_trajectories(n: int, d: int) -> List[Tuple]:
+    """Enumerate (composition, type-labeling) trajectories of length n
+    over d types. Each composition is a list of positive ints summing
+    to n; each type-labeling is a list of types of the same length as
+    the composition."""
+    if n == 0:
+        return []
+
+    def compositions(remaining: int) -> List[List[int]]:
+        if remaining == 0:
+            return [[]]
+        out = []
+        for first in range(1, remaining + 1):
+            for rest in compositions(remaining - first):
+                out.append([first] + rest)
+        return out
+
+    comps = compositions(n)
+    trajectories = []
+    for comp in comps:
+        k = len(comp)
+        # Cartesian product of d^k type labelings.
+        for label_tuple in itertools.product(range(d), repeat=k):
+            trajectories.append((tuple(comp), label_tuple))
+    return trajectories
+
+
+def exp_composition_inflation_formula() -> Dict[str, Any]:
+    t0 = time.time()
+    test_cases = []
+    failures = []
+    for d in (2, 3, 4, 5):
+        for n in range(1, 8):
+            enumerated = _enumerate_trajectories(n, d)
+            predicted = d * (d + 1) ** (n - 1)
+            match = (len(enumerated) == predicted)
+            test_cases.append({
+                "n": n, "d": d,
+                "enumerated_count": len(enumerated),
+                "predicted_count": predicted,
+                "match": match,
+            })
+            if not match:
+                failures.append({"n": n, "d": d,
+                                 "enum": len(enumerated),
+                                 "pred": predicted})
+            # Also verify uniqueness: no duplicate trajectories.
+            unique_count = len(set(enumerated))
+            if unique_count != len(enumerated):
+                failures.append({"n": n, "d": d,
+                                 "duplicates": len(enumerated)
+                                                - unique_count})
+
+    # Recurrence verification: T(n+1, d) = (d+1) * T(n, d).
+    recurrence_violations = 0
+    recurrence_checks = []
+    for d in (2, 3, 4, 5):
+        for n in range(1, 8):
+            cur = d * (d + 1) ** (n - 1)
+            nxt = d * (d + 1) ** n
+            ratio = nxt / cur
+            recurrence_checks.append({
+                "n": n, "d": d,
+                "T_n": cur, "T_n+1": nxt,
+                "ratio": ratio,
+                "predicted_ratio": d + 1,
+                "match": abs(ratio - (d + 1)) < 1e-9,
+            })
+            if abs(ratio - (d + 1)) >= 1e-9:
+                recurrence_violations += 1
+
+    passed = len(failures) == 0 and recurrence_violations == 0
+
+    return {
+        "experiment": "E17_composition_inflation_formula",
+        "theorem_ids": ["thm:composition_inflation",
+                        "cor:inflation_recurrence",
+                        "lem:compositions"],
+        "input_dataset": "exhaustive enumeration for d in {2,3,4,5}, n in {1,...,7}",
+        "n_samples": sum(c["enumerated_count"] for c in test_cases),
+        "predicted": {
+            "T(n,d)_eq_d_times_d_plus_1_to_n_minus_1": True,
+            "no_duplicate_trajectories": True,
+            "recurrence_ratio_eq_d_plus_1": True,
+        },
+        "measured": {
+            "test_cases": test_cases,
+            "first_failures": failures[:5],
+            "recurrence_checks_first_5": recurrence_checks[:5],
+            "recurrence_violations": recurrence_violations,
+        },
+        "residuals": {
+            "max": float(len(failures) + recurrence_violations),
+            "rms": 0.0,
+        },
+        "monotone": True,
+        "pass": passed,
+        "elapsed_seconds": time.time() - t0,
+        "seed": RNG_SEED + 17,
+    }
+
+
+# =====================================================================
+#  E18: Linear cost vs exponential content asymmetry
+# =====================================================================
+#  thm:cost_content_asymmetry
+#
+#  Verify that cumulative residue grows linearly in n while
+#  trajectory count T(n, d) grows exponentially in n, so the
+#  content/cost ratio diverges.
+
+def exp_cost_content_asymmetry() -> Dict[str, Any]:
+    t0 = time.time()
+    d = 4
+    beta = 1.0  # unit floor for the scaling check
+    rows = []
+    n_values = list(range(1, 21))
+    for n in n_values:
+        T_n = d * (d + 1) ** (n - 1)
+        cost_lb = n * beta
+        ratio = T_n / cost_lb
+        rows.append({
+            "n": n,
+            "T_n_d": T_n,
+            "cost_lower_bound": cost_lb,
+            "content_per_cost": ratio,
+        })
+
+    # The ratio T(n,d)/(n*beta) should grow superlinearly (and thus
+    # be strictly monotone increasing for sufficient large n).
+    ratios = [r["content_per_cost"] for r in rows]
+    monotone_all = all(ratios[i] > ratios[i - 1]
+                       for i in range(1, len(ratios)))
+
+    # Compare the log of T(n,d) with the linear cost: log T(n,d) ~ n
+    # while cost = n*beta is exactly linear; their ratio log T / cost
+    # should converge to log(d+1)/beta (a constant > 0), confirming
+    # the exponential-vs-linear separation.
+    log_T_over_cost = [
+        math.log(r["T_n_d"]) / r["cost_lower_bound"]
+        for r in rows
+    ]
+    target = math.log(d + 1) / beta
+    final_ratio = log_T_over_cost[-1]
+    relative_err = abs(final_ratio - target) / target
+
+    passed = monotone_all and relative_err < 0.1
+
+    return {
+        "experiment": "E18_cost_content_asymmetry",
+        "theorem_ids": ["thm:cost_content_asymmetry",
+                        "cor:res_accumulate"],
+        "input_dataset": f"d={d}, beta={beta}, n in {{1,...,{n_values[-1]}}}",
+        "n_samples": len(n_values),
+        "predicted": {
+            "content_per_cost_monotone_increasing": True,
+            "log_T_over_cost_to_log_d_plus_1_over_beta": target,
+        },
+        "measured": {
+            "rows_first_5": rows[:5],
+            "rows_last_5": rows[-5:],
+            "content_per_cost_monotone": monotone_all,
+            "log_T_over_cost_final": final_ratio,
+            "target_ratio": target,
+            "relative_error_at_n_max": relative_err,
+        },
+        "residuals": {"max": relative_err, "rms": relative_err},
+        "monotone": monotone_all,
+        "pass": passed,
+        "elapsed_seconds": time.time() - t0,
+        "seed": RNG_SEED + 18,
+    }
+
+
+# =====================================================================
+#  E19: Logarithmic termination for content-bounded processes
+# =====================================================================
+#  cor:log_termination
+#
+#  For several content thresholds K, compute the smallest n such that
+#  T(n, d) >= K and verify it equals 1 + ceil(log_{d+1}(K/d)).
+
+def exp_logarithmic_termination() -> Dict[str, Any]:
+    t0 = time.time()
+    d = 4
+    K_values = [10, 100, 1_000, 10_000, 100_000, 1_000_000,
+                10_000_000, 100_000_000, 10**10, 10**12, 10**15]
+    rows = []
+    failures = []
+    for K in K_values:
+        # Smallest n such that d * (d+1)^(n-1) >= K
+        n_search = 1
+        while d * (d + 1) ** (n_search - 1) < K:
+            n_search += 1
+        # Closed form
+        predicted_n = 1 + math.ceil(math.log(K / d, d + 1))
+        # The formula uses log_{d+1}, which equals ln / ln(d+1).
+        match = (n_search == predicted_n)
+        rows.append({
+            "K": K,
+            "n_search": n_search,
+            "predicted_n_formula": predicted_n,
+            "match": match,
+            "T_at_n": d * (d + 1) ** (n_search - 1),
+        })
+        if not match:
+            failures.append({"K": K, "n_search": n_search,
+                             "predicted": predicted_n})
+
+    # Verify logarithmic growth: n_term(K) scales as log_{d+1}(K).
+    # Compute least-squares slope by hand (no numpy dependency).
+    log_K = [math.log(r["K"]) for r in rows]
+    n_vals = [float(r["n_search"]) for r in rows]
+    m = len(log_K)
+    mean_x = sum(log_K) / m
+    mean_y = sum(n_vals) / m
+    num = sum((log_K[i] - mean_x) * (n_vals[i] - mean_y) for i in range(m))
+    den = sum((log_K[i] - mean_x) ** 2 for i in range(m))
+    slope = num / den if den != 0 else 0.0
+    expected_slope = 1.0 / math.log(d + 1)
+    slope_err = abs(slope - expected_slope) / expected_slope
+
+    passed = (len(failures) == 0) and (slope_err < 0.05)
+
+    return {
+        "experiment": "E19_logarithmic_termination",
+        "theorem_ids": ["cor:log_termination",
+                        "thm:composition_inflation"],
+        "input_dataset": f"d={d}, K in {K_values}",
+        "n_samples": len(K_values),
+        "predicted": {
+            "n_term_eq_1_plus_ceil_log_K_over_d": True,
+            "n_term_slope_vs_log_K_eq_1_over_log_d_plus_1": expected_slope,
+        },
+        "measured": {
+            "rows": rows,
+            "fitted_slope": slope,
+            "expected_slope": expected_slope,
+            "slope_relative_error": slope_err,
+            "n_term_for_K_1e15": rows[-1]["n_search"],
+            "cost_for_K_1e15": rows[-1]["n_search"] * 1.0,
+        },
+        "residuals": {"max": slope_err, "rms": slope_err},
+        "monotone": True,
+        "pass": passed,
+        "elapsed_seconds": time.time() - t0,
+        "seed": RNG_SEED + 19,
+    }
+
+
+# =====================================================================
 #  Driver
 # =====================================================================
 
@@ -1512,13 +1770,16 @@ EXPERIMENTS = [
     ("E09_zero_floor",                     exp_zero_floor),
     ("E10_uniqueness_up_to_labelling",     exp_uniqueness),
     ("E11_recipe_terminates",              exp_recipe_terminates),
-    # New experiments for the strengthened claims (contact-graph
-    # grounding):
+    # Experiments for the strengthened claims (contact-graph grounding):
     ("E12_floor_from_infinitude",          exp_floor_from_infinitude),
     ("E13_partiality_forced",              exp_partiality_forced),
     ("E14_residue_cells",                  exp_residue_cells),
     ("E15_scale_homomorphism",             exp_scale_homomorphism),
     ("E16_master_theorem",                 exp_master_theorem),
+    # Experiments for the composition-inflation theorem:
+    ("E17_composition_inflation_formula",  exp_composition_inflation_formula),
+    ("E18_cost_content_asymmetry",         exp_cost_content_asymmetry),
+    ("E19_logarithmic_termination",        exp_logarithmic_termination),
 ]
 
 

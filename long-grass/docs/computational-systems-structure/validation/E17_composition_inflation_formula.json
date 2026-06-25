@@ -1,0 +1,272 @@
+{
+  "experiment": "E17_composition_inflation_formula",
+  "theorem_ids": [
+    "thm:composition_inflation",
+    "cor:inflation_recurrence",
+    "lem:compositions"
+  ],
+  "input_dataset": "exhaustive enumeration for d in {2,3,4,5}, n in {1,...,7}",
+  "n_samples": 376628,
+  "predicted": {
+    "T(n,d)_eq_d_times_d_plus_1_to_n_minus_1": true,
+    "no_duplicate_trajectories": true,
+    "recurrence_ratio_eq_d_plus_1": true
+  },
+  "measured": {
+    "test_cases": [
+      {
+        "n": 1,
+        "d": 2,
+        "enumerated_count": 2,
+        "predicted_count": 2,
+        "match": true
+      },
+      {
+        "n": 2,
+        "d": 2,
+        "enumerated_count": 6,
+        "predicted_count": 6,
+        "match": true
+      },
+      {
+        "n": 3,
+        "d": 2,
+        "enumerated_count": 18,
+        "predicted_count": 18,
+        "match": true
+      },
+      {
+        "n": 4,
+        "d": 2,
+        "enumerated_count": 54,
+        "predicted_count": 54,
+        "match": true
+      },
+      {
+        "n": 5,
+        "d": 2,
+        "enumerated_count": 162,
+        "predicted_count": 162,
+        "match": true
+      },
+      {
+        "n": 6,
+        "d": 2,
+        "enumerated_count": 486,
+        "predicted_count": 486,
+        "match": true
+      },
+      {
+        "n": 7,
+        "d": 2,
+        "enumerated_count": 1458,
+        "predicted_count": 1458,
+        "match": true
+      },
+      {
+        "n": 1,
+        "d": 3,
+        "enumerated_count": 3,
+        "predicted_count": 3,
+        "match": true
+      },
+      {
+        "n": 2,
+        "d": 3,
+        "enumerated_count": 12,
+        "predicted_count": 12,
+        "match": true
+      },
+      {
+        "n": 3,
+        "d": 3,
+        "enumerated_count": 48,
+        "predicted_count": 48,
+        "match": true
+      },
+      {
+        "n": 4,
+        "d": 3,
+        "enumerated_count": 192,
+        "predicted_count": 192,
+        "match": true
+      },
+      {
+        "n": 5,
+        "d": 3,
+        "enumerated_count": 768,
+        "predicted_count": 768,
+        "match": true
+      },
+      {
+        "n": 6,
+        "d": 3,
+        "enumerated_count": 3072,
+        "predicted_count": 3072,
+        "match": true
+      },
+      {
+        "n": 7,
+        "d": 3,
+        "enumerated_count": 12288,
+        "predicted_count": 12288,
+        "match": true
+      },
+      {
+        "n": 1,
+        "d": 4,
+        "enumerated_count": 4,
+        "predicted_count": 4,
+        "match": true
+      },
+      {
+        "n": 2,
+        "d": 4,
+        "enumerated_count": 20,
+        "predicted_count": 20,
+        "match": true
+      },
+      {
+        "n": 3,
+        "d": 4,
+        "enumerated_count": 100,
+        "predicted_count": 100,
+        "match": true
+      },
+      {
+        "n": 4,
+        "d": 4,
+        "enumerated_count": 500,
+        "predicted_count": 500,
+        "match": true
+      },
+      {
+        "n": 5,
+        "d": 4,
+        "enumerated_count": 2500,
+        "predicted_count": 2500,
+        "match": true
+      },
+      {
+        "n": 6,
+        "d": 4,
+        "enumerated_count": 12500,
+        "predicted_count": 12500,
+        "match": true
+      },
+      {
+        "n": 7,
+        "d": 4,
+        "enumerated_count": 62500,
+        "predicted_count": 62500,
+        "match": true
+      },
+      {
+        "n": 1,
+        "d": 5,
+        "enumerated_count": 5,
+        "predicted_count": 5,
+        "match": true
+      },
+      {
+        "n": 2,
+        "d": 5,
+        "enumerated_count": 30,
+        "predicted_count": 30,
+        "match": true
+      },
+      {
+        "n": 3,
+        "d": 5,
+        "enumerated_count": 180,
+        "predicted_count": 180,
+        "match": true
+      },
+      {
+        "n": 4,
+        "d": 5,
+        "enumerated_count": 1080,
+        "predicted_count": 1080,
+        "match": true
+      },
+      {
+        "n": 5,
+        "d": 5,
+        "enumerated_count": 6480,
+        "predicted_count": 6480,
+        "match": true
+      },
+      {
+        "n": 6,
+        "d": 5,
+        "enumerated_count": 38880,
+        "predicted_count": 38880,
+        "match": true
+      },
+      {
+        "n": 7,
+        "d": 5,
+        "enumerated_count": 233280,
+        "predicted_count": 233280,
+        "match": true
+      }
+    ],
+    "first_failures": [],
+    "recurrence_checks_first_5": [
+      {
+        "n": 1,
+        "d": 2,
+        "T_n": 2,
+        "T_n+1": 6,
+        "ratio": 3.0,
+        "predicted_ratio": 3,
+        "match": true
+      },
+      {
+        "n": 2,
+        "d": 2,
+        "T_n": 6,
+        "T_n+1": 18,
+        "ratio": 3.0,
+        "predicted_ratio": 3,
+        "match": true
+      },
+      {
+        "n": 3,
+        "d": 2,
+        "T_n": 18,
+        "T_n+1": 54,
+        "ratio": 3.0,
+        "predicted_ratio": 3,
+        "match": true
+      },
+      {
+        "n": 4,
+        "d": 2,
+        "T_n": 54,
+        "T_n+1": 162,
+        "ratio": 3.0,
+        "predicted_ratio": 3,
+        "match": true
+      },
+      {
+        "n": 5,
+        "d": 2,
+        "T_n": 162,
+        "T_n+1": 486,
+        "ratio": 3.0,
+        "predicted_ratio": 3,
+        "match": true
+      }
+    ],
+    "recurrence_violations": 0
+  },
+  "residuals": {
+    "max": 0.0,
+    "rms": 0.0
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 0.17097234725952148,
+  "seed": 20260640
+}

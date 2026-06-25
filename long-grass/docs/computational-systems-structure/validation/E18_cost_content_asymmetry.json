@@ -1,0 +1,91 @@
+{
+  "experiment": "E18_cost_content_asymmetry",
+  "theorem_ids": [
+    "thm:cost_content_asymmetry",
+    "cor:res_accumulate"
+  ],
+  "input_dataset": "d=4, beta=1.0, n in {1,...,20}",
+  "n_samples": 20,
+  "predicted": {
+    "content_per_cost_monotone_increasing": true,
+    "log_T_over_cost_to_log_d_plus_1_over_beta": 1.6094379124341003
+  },
+  "measured": {
+    "rows_first_5": [
+      {
+        "n": 1,
+        "T_n_d": 4,
+        "cost_lower_bound": 1.0,
+        "content_per_cost": 4.0
+      },
+      {
+        "n": 2,
+        "T_n_d": 20,
+        "cost_lower_bound": 2.0,
+        "content_per_cost": 10.0
+      },
+      {
+        "n": 3,
+        "T_n_d": 100,
+        "cost_lower_bound": 3.0,
+        "content_per_cost": 33.333333333333336
+      },
+      {
+        "n": 4,
+        "T_n_d": 500,
+        "cost_lower_bound": 4.0,
+        "content_per_cost": 125.0
+      },
+      {
+        "n": 5,
+        "T_n_d": 2500,
+        "cost_lower_bound": 5.0,
+        "content_per_cost": 500.0
+      }
+    ],
+    "rows_last_5": [
+      {
+        "n": 16,
+        "T_n_d": 122070312500,
+        "cost_lower_bound": 16.0,
+        "content_per_cost": 7629394531.25
+      },
+      {
+        "n": 17,
+        "T_n_d": 610351562500,
+        "cost_lower_bound": 17.0,
+        "content_per_cost": 35903033088.23529
+      },
+      {
+        "n": 18,
+        "T_n_d": 3051757812500,
+        "cost_lower_bound": 18.0,
+        "content_per_cost": 169542100694.44446
+      },
+      {
+        "n": 19,
+        "T_n_d": 15258789062500,
+        "cost_lower_bound": 19.0,
+        "content_per_cost": 803094161184.2106
+      },
+      {
+        "n": 20,
+        "T_n_d": 76293945312500,
+        "cost_lower_bound": 20.0,
+        "content_per_cost": 3814697265625.0
+      }
+    ],
+    "content_per_cost_monotone": true,
+    "log_T_over_cost_final": 1.5982807348683898,
+    "target_ratio": 1.6094379124341003,
+    "relative_error_at_n_max": 0.006932344192660666
+  },
+  "residuals": {
+    "max": 0.006932344192660666,
+    "rms": 0.006932344192660666
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 5.91278076171875e-05,
+  "seed": 20260641
+}

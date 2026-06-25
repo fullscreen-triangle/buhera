@@ -6,7 +6,7 @@
 %          Technical University of Munich
 % =====================================================================
 
-\documentclass[11pt,a4paper]{article}
+\documentclass[11pt,twocolumn,a4paper]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -36,6 +36,7 @@
 \newtheorem{principle}[theorem]{Principle}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
 
 \crefname{axiom}{Premise}{Premises}
 \Crefname{axiom}{Premise}{Premises}
@@ -54,13 +55,12 @@
 \newcommand{\floor}{\beta}
 \newcommand{\OpStr}{\mathfrak{O}}
 
-\title{\textbf{Why Graph-Structured Systems Engaged by Finite Agents\\
-Must Admit Operational Structure}\\[4pt]
-\large A Conditional Derivation}
+\title{\textbf{On the Strict Necessity of Finite Weighted Graph Structures In Bounded Resolvable Space:\\ Conditional Derivation of Operational Structure Requirements for Finite Agents in Bounded Systems}}
 
 \author{%
 Kundai Farai Sachikonye\\
 \small Technical University of Munich\\
+\small AIMe Registry for Artificial Intelligence\\
 \small \texttt{kundai.sachikonye@wzw.tum.de}}
 
 \date{\today}
@@ -275,6 +275,17 @@ may be a human, a machine, a sensor network, a software process, a
 finite collective. The three finiteness conditions of
 \cref{def:agent} are the substantive content of \cref{ax:agent}.
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_02_graph_floor.png}
+    \caption{\textbf{Graph-Level Floor on Realised Distinguishability Paths.}
+    (\textbf{A})~Maximum edge weight on each realised path on the linear $y$-axis versus graph-level floor $\beta$ on the linear $x$-axis, $1{,}992$ realised distinguishability acts across $40$ random graphs ($|V|=15$, edge probability $0.3$). Steelblue points are realised acts; the neutral dashed line marks $\max\text{-edge} = \beta$. All $1{,}992$ points lie on or above the line; zero violations. Empirical content of Theorem~\ref{thm:floor} (Floor on Edge Measure): every realised distinguishability path contains an edge of measure $\geq \beta$.
+    (\textbf{B})~Residue $\rho$ on the linear $y$-axis versus graph-level floor $\beta$ on the linear $x$-axis for the same $1{,}992$ acts. The neutral dashed line marks $\rho = \beta$. All points lie above the line, with residues spreading upward as longer paths are traversed. This is the immediate consequence of (A): subadditivity of residue along realised paths gives $\rho \geq \max\text{-edge} \geq \beta$.
+    (\textbf{C})~Residue-floor ratio $\rho/\beta$ on the log $x$-axis ($10^{-1}$ to $10^{2}$) versus count on the linear $y$-axis. The crimson dashed reference at $\rho/\beta = 1$ marks the floor exactly; every observed value lies at or above $1$, with the bulk of the distribution at $\rho/\beta \in [1, 10]$. The histogram visualises the headroom realised acts carry above the floor.
+    (\textbf{D})~Three-dimensional cloud of $(\beta,\,\rho,\,|V|)$, viridis colourmap by $\rho/\beta$, viewing angle elevation $30^{\circ}$ azimuth $-60^{\circ}$. Each point is one realised act; the cloud lies entirely above the diagonal plane $\rho = \beta$ at every $|V|$ tested. Geometric realisation of Theorem~\ref{thm:floor}: the floor is a graph property and applies uniformly across vertex counts.}
+    \label{fig:panel-graph-floor}
+\end{figure*}
+
 \subsection{Non-completable whole}
 
 The agent engages a finite graph, but the graph is a
@@ -435,6 +446,17 @@ residual of the agent's finite individuating acts against the
 non-completable whole. $\qed$
 \end{proof}
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_01_floor_from_infinitude.png}
+    \caption{\textbf{Floor from Infinitude: the floor $\beta$ is the trace of the non-completable whole on its finitely-modelled parts.}
+    (\textbf{A})~Floor $\beta$ on a log $y$-axis ($10^{-2}$ to $10^{0}$) versus refinement stage $n$ on the linear $x$-axis ($0$ to $11$) across twelve stages of a non-completable whole $\mathcal{M}$. Steelblue circles connected by a line trace $\beta(n)$; the floor decreases monotonically from $\beta=0.5$ at stage $0$ to $\beta\approx 0.077$ at stage $11$ yet remains strictly positive at every tested stage. This is the empirical content of Theorem~\ref{thm:floor_from_infinitude} (Floor from Infinitude): finite individuation against a non-completable whole forces a strictly positive residual at every finite stage.
+    (\textbf{B})~Decay shape: measured $\beta(n)$ (steelblue circles) versus the theoretical refinement law $\beta_{\text{theory}}(n)=1/(n+2)$ (crimson solid reference) on the linear $y$-axis ($0$ to $0.5$) versus stage $n$ on the linear $x$-axis ($0$ to $11$). The measured values follow the prediction to floating-point precision, confirming that the refinement law in the harness reproduces the trace structure of Corollary~\ref{cor:floor_trace}.
+    (\textbf{C})~Graph size growth: $|V|$ (steelblue circles) and $|E|$ (teal squares) on the linear $y$-axis (up to $400$) versus stage $n$ on the linear $x$-axis ($0$ to $11$). Vertex count grows linearly ($|V|=5+3n$); edge count grows quadratically. The non-completable whole is unbounded in extension at every finite stage, capturing Definition~\ref{def:noncompletable} (no terminal stage).
+    (\textbf{D})~Three-dimensional scatter of edge-weight strata: $\log_{10} w$ on the vertical axis as a function of stage $n$ on the linear $x$-axis ($0$ to $7$) and normalised edge rank on the linear $y$-axis ($0$ to $1$), viridis colourmap by stage, viewing angle elevation $30^{\circ}$ azimuth $-60^{\circ}$. Each stage contributes a strictly finer family of edges, visible as descending viridis-coloured fans; the floor at each stage is the bottom of its fan and stays bounded below. Geometric realisation of Theorem~\ref{thm:floor_from_infinitude}: the floor is the bottom of an indefinitely extensible spectrum, never reaching zero.}
+    \label{fig:panel-floor-from-infinitude}
+\end{figure*}
+
 \subsection{The distinguishability floor}
 
 \begin{theorem}[Floor on edge measure for realisable
@@ -535,6 +557,19 @@ agent uses the concatenation $u \to v \to w$, equality holds;
 otherwise the agent has found a shorter path and the inequality is
 strict. $\qed$
 \end{proof}
+
+
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_03_residue_propagation.png}
+    \caption{\textbf{Residue Subadditivity and Cumulative Monotone Growth.}
+    (\textbf{A})~Composite residue $\rho(u,w)$ on the linear $y$-axis versus the sum $\rho(u,v)+\rho(v,w)$ on the linear $x$-axis for $1{,}174$ random triples across $30$ random graphs ($|V|=15$, edge probability $0.4$). Steelblue points lie at or below the neutral diagonal $y=x$, with $1{,}043$ trials strictly below (the agent found a shorter route than the $u\to v\to w$ concatenation) and $131$ trials exactly on the line (concatenation was the shortest). Zero subadditivity violations. Empirical content of Theorem~\ref{thm:residue_additive}: $\rho(u,w) \leq \rho(u,v) + \rho(v,w)$.
+    (\textbf{B})~Cumulative residue along $8$ independent realised walks on the linear $y$-axis ($0$ to $\sim 300$) versus act count $n$ on the linear $x$-axis ($0$ to $80$). Each steelblue curve is a separate walk; the corresponding crimson floor line $n\cdot\beta$ lies below it at every point. All eight cumulative trajectories are monotone non-decreasing, with $\sum\rho_i \geq n\beta$ holding throughout. Empirical content of Corollary~\ref{cor:res_accumulate}.
+    (\textbf{C})~Subadditivity gap $\rho(u,v)+\rho(v,w)-\rho(u,w)$ on the linear $x$-axis (up to $\sim 18$) versus count on the linear $y$-axis. The neutral vertical reference at $0$ marks the equality case; the distribution lies entirely in the non-negative half-line. The mode is at small positive values, with a heavy tail of triples where the agent found a substantially shorter composite path.
+    (\textbf{D})~Three-dimensional composition-triple cloud: $\rho(u,v)$ on the linear $x$-axis, $\rho(v,w)$ on the linear $y$-axis, $\rho(u,w)$ on the vertical axis, viridis colourmap by subadditivity gap, viewing angle elevation $30^{\circ}$ azimuth $-60^{\circ}$. The cloud lies below the diagonal plane $\rho(u,w) = \rho(u,v) + \rho(v,w)$; the subadditive structure is the geometric content of Theorem~\ref{thm:residue_additive}.}
+    \label{fig:panel-residue-propagation}
+\end{figure*}
 
 \begin{corollary}[Residue accumulates and does not refund]
 \label{cor:res_accumulate}
@@ -659,6 +694,8 @@ artefact of budget exhaustion; it is the structural consequence of
 modelling a non-completable whole with a finite agent.
 \end{theorem}
 
+
+
 \begin{proof}
 By \cref{thm:floor_from_infinitude}, every realised
 distinguishability act deposits residue $\geq \floor > 0$. The
@@ -734,6 +771,17 @@ updated, but the morphism remains the unique realised act between
 $u$ and $v$. The identity on $u$ exists when $u = v$. $\qed$
 \end{proof}
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_04_category.png}
+    \caption{\textbf{Small-Category Structure: Hom-Set Bound, Identity Laws, and Morphism Counts.}
+    (\textbf{A})~Hom-set size distribution on a log $y$-axis ($10^{0}$ to $10^{4}$) versus hom-set size on the linear $x$-axis ($\{0, 1, 2\}$). Across $9{,}000$ inspected hom-sets in $50$ random graphs, no hom-set has size $>2$ and the vast majority have size $1$ or $2$. Empirical content of Proposition~\ref{prop:hom_bound}: each hom-set $\mathrm{Hom}_{\mathbf{C}_{\mathcal{A},\mathcal{G}}}(u,v)$ contains at most one identity (if $u=v$) plus at most one realised non-identity morphism.
+    (\textbf{B})~Realised morphism count on the linear $y$-axis versus $n^{2}$ on the linear $x$-axis for graphs with $n \in [8, 22]$. Steelblue points are individual graphs; the neutral dashed line marks $|\mathrm{Mor}|=n^{2}$. All points lie at or below the line, with most graphs realising close to the full $n^{2}$ morphism count, confirming the finite morphism set bound $|\mathrm{Mor}(\mathbf{C}_{\mathcal{A},\mathcal{G}})| \leq |V|+|S_{\mathcal{A}}|^{2}$ of Theorem~\ref{thm:category}.
+    (\textbf{C})~Identity-law residual $\rho(f\circ\mathrm{id})-\rho(f)$ on the linear $y$-axis versus morphism index on the linear $x$-axis ($0$ to $\sim 130$), one random graph ($|V|=12$). The crimson dashed reference at $0$ marks the identity law; all $2{,}640$ identity checks return exactly zero residual. Empirical content of Lemma~\ref{lem:identity}: $f\circ\mathrm{id}_{u} = \mathrm{id}_{v}\circ f = f$ for every realised morphism $f:u\to v$.
+    (\textbf{D})~Three-dimensional Hom-graph: source $u$ on the linear $x$-axis, target $v$ on the linear $y$-axis, residue $\rho(f)$ on the vertical axis, viridis colourmap by residue, viewing angle elevation $30^{\circ}$ azimuth $-60^{\circ}$. Each marker is a realised morphism $u \to v$ in $\mathbf{C}_{\mathcal{A},\mathcal{G}}$; the cloud occupies the unit square $\{(u,v) : u \neq v\}$ exactly, with $z$-coordinate the residue. Geometric realisation of Theorem~\ref{thm:category}: the small category as a finite labelled morphism set with a residue function.}
+    \label{fig:panel-category}
+\end{figure*}
+
 % =====================================================================
 \section{The Operational Structure Theorem}
 \label{sec:main}
@@ -806,6 +854,18 @@ residue quotient is the operational structure's cell-structure, and
 the partial order on the quotient is the unique order forced by
 the conjunction of the three premises.
 \end{remark}
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_07_preorder.png}
+    \caption{\textbf{The Residue Preorder: Antisymmetry Fails on $\mathbf{C}_{\mathcal{A},\mathcal{G}}$, Holds on the Quotient.}
+    (\textbf{A})~Residue-cell count on the linear $y$-axis ($0$ to $\sim 600$) versus morphism count on the linear $x$-axis ($10$ to $600$). The neutral diagonal $y=x$ marks the hypothetical antisymmetric case where every morphism is its own cell. Steelblue circles trace the measured count of residue cells as the morphism set is enumerated; the curve lies strictly below the diagonal throughout, with a final ratio of cells-to-morphisms $\approx 0.5$. Empirical content of Definition~\ref{def:opstr}\,(O3): $\preceq$ is a preorder; the quotient collapses pairs of equal-residue morphisms.
+    (\textbf{B})~Residue collisions: residue $\rho$ on the linear $y$-axis versus ordered morphism index on the linear $x$-axis ($0$ to $\sim 380$). Crimson markers indicate residue collisions ($|\rho(f)-\rho(g)| < 10^{-9}$ between consecutive ordered morphisms), with $231$ such collisions in the $380$-morphism sample; steelblue markers indicate distinct residues. The collisions are exactly the antisymmetry-failure witnesses---pairs of distinct morphisms with equal residue.
+    (\textbf{C})~Transitivity check: residue $\rho(h)$ on the linear $y$-axis versus $\rho(f)$ on the linear $x$-axis, viridis colourmap by intermediate $\rho(g)$, $11{,}606$ triples with $\rho(f) \leq \rho(g) \leq \rho(h)$. The neutral diagonal $\rho(f) = \rho(h)$ is shown for reference; all points lie on or above it. Counts: $1{,}540$ pass, $0$ fail (the small displayed total reflects the random subsample plotted; the full check across $11{,}606$ triples returned zero violations). Empirical content of the reflexivity/transitivity clauses of the preorder.
+    (\textbf{D})~Three-dimensional cells with internal members: cell index on the linear $x$-axis ($0$ to $200$), residue on the linear $y$-axis ($0.5$ to $6$), intra-cell index on the vertical axis ($0$ to $1$), viridis colourmap by cell index, viewing angle elevation $30^{\circ}$ azimuth $-60^{\circ}$. Each cell has multiple members at the same residue (stacked vertically); the residue-quotient structure is visible as fan-shaped layers. Geometric realisation of Remark~\ref{rem:preorder_cell_truth}: the antisymmetry failure on $\mathbf{C}_{\mathcal{A},\mathcal{G}}$ is the structural cell-truth of operations, and the quotient is the natural object on which the order lives.}
+    \label{fig:panel-preorder}
+\end{figure*}
+
 
 \begin{definition}[Operational structure]
 \label{def:opstr}
@@ -1015,6 +1075,7 @@ non-identity components, each $\geq \floor$; the sum cannot be
 less than $\floor$ unless all components are identities, in which
 case the composite is itself the identity. $\qed$
 \end{proof}
+
 
 % =====================================================================
 \section{Classification of Operational Structures}
@@ -1264,6 +1325,311 @@ operates on the composites. As before, composition is partial
 operations is itself realised.
 \end{remark}
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_08_scale_homomorphism.png}
+    \caption{\textbf{Scale Homomorphism: Four Roles Surface as Four Loci.}
+    (\textbf{A})~Effect-tuple count per type on the linear $y$-axis ($0$ to $8$) versus operation type on the linear $x$-axis (identity, algebraic, dynamical, computational, internal). Bars are coloured by type: neutral grey for identity, teal for algebraic, crimson for dynamical, steelblue for computational, sand for internal. Across the exhaustive enumeration of $2^{3} \times \{\text{reads-edge}\} = 16$ effect tuples, the partition is $\{2, 4, 8, 1, 1\}$. Each non-identity type is realised by at least one effect tuple; identity covers the $(0,0,0)$ case under either value of reads-edge. Empirical content of Theorem~\ref{thm:three_types} (Four-Type Exhaustiveness).
+    (\textbf{B})~Effect-tuple matrix coloured by type: $(\Delta G, \Delta\sim)$ on the linear $y$-axis (00, 01, 10, 11) versus $(\Delta S, \text{reads})$ on the linear $x$-axis (00, 01, 10, 11), viridis colourmap by type index. The matrix has a block structure: the $\Delta G = 1$ rows are uniform crimson (dynamical, by~\ref{T:dyn}); the $\Delta G = 0, \Delta\sim = 1$ row is uniform teal (algebraic); the $\Delta G = 0, \Delta\sim = 0$ row splits into identity, internal, and computational subtypes by $(\Delta S, \text{reads})$. Geometric content of Definition~\ref{def:op_type}: type is a function of the effect tuple.
+    (\textbf{C})~Role-to-locus bijection: four roles on the left column (whole, selector, invariant, history) connected by lines to four loci on the right column ($\Delta G$, $\Delta\sim$, $\Delta S$, reads-$E$). Each role maps to exactly one locus; the assignment is a bijection. Empirical content of Theorem~\ref{thm:scale_homomorphism}: the four-place structure (unit, whole, selector, invariant, committed history) at the operations scale projects onto exactly four loci at the agent scale.
+    (\textbf{D})~Three-dimensional effect-tuple cube: $\Delta G$ on the linear $x$-axis ($0$ or $1$), $\Delta\sim$ on the linear $y$-axis ($0$ or $1$), $\Delta S$ on the vertical axis ($0$ or $1$), viewing angle elevation $30^{\circ}$ azimuth $-60^{\circ}$. Markers at the cube vertices are coloured by type (grey identity, teal algebraic, crimson dynamical, steelblue computational, sand internal) and shaped by the reads-edge bit (circle for reads $=0$, triangle for reads $=1$). The cube is fully populated; the geometric realisation of the scale homomorphism makes the four types visible as four colour-clusters on the eight-vertex cube.}
+    \label{fig:panel-scale-homomorphism}
+\end{figure*}
+
+
+
+
+% =====================================================================
+\section{Composition Inflation: Trajectory Counting in the
+Operational Structure}
+\label{sec:inflation}
+% =====================================================================
+
+The Operational Structure Theorem (\cref{thm:opstructure}) bounds the
+size of $\mathbf{C}_{\Agent,\Graph}$ at $|\Vrt| + |S_\Agent|^2$
+morphisms. This is the bound on \emph{individual} realised acts. The
+agent, however, does not realise acts in isolation: it commits a
+sequence of acts, and the sequence carries its own categorical
+structure. We now derive the count of distinguishable operation
+\emph{trajectories} as a function of trajectory length, and show
+that the count grows exponentially against a linearly-growing
+committed cost.
+
+The result is a closed-form formula
+$T(n, d) = d \cdot (d+1)^{n-1}$ for the number of categorically
+distinguishable operation trajectories of length $n$ in a structure
+with $d$ operation types. It is proved here from first principles
+using only the four-type taxonomy
+(\cref{thm:scale_homomorphism}) and the agent's commitment record
+(\cref{F:fin_descr}, \cref{F:fin_cost}). The closed form supplies
+the precise rate at which the operational structure's trajectory
+space inflates relative to the agent's committed-act count.
+
+\subsection{Operation trajectories and commitment blocks}
+
+\begin{definition}[Operation trajectory]
+\label{def:trajectory}
+An \emph{operation trajectory} of length $n$ in $\OpStr_\Agent$ is
+an ordered sequence
+\[
+  \tau \;=\; (f_1, f_2, \ldots, f_n)
+\]
+of $n$ realised non-identity morphisms $f_i \in \mathbf{C}_{\Agent,
+\Graph}$, recorded by the agent's descriptive scheme
+(\cref{F:fin_descr}) in commitment order. Each $f_i$ carries a type
+$t(f_i) \in \{\text{algebraic}, \text{dynamical}, \text{computational},
+\text{internal}\}$ from \cref{def:op_type}.
+\end{definition}
+
+\begin{definition}[Commitment block; type-segmentation]
+\label{def:block}
+A \emph{commitment block} of a trajectory $\tau$ is a maximal
+contiguous sub-sequence of acts that the agent records as a single
+recorded unit. Formally, given $\tau = (f_1, \ldots, f_n)$, a
+\emph{block structure} on $\tau$ is a composition
+$(c_1, c_2, \ldots, c_k)$ of $n$ with $c_1 + \cdots + c_k = n$,
+$c_i \geq 1$, indicating that the first $c_1$ acts form the first
+block, the next $c_2$ acts form the second block, and so on. The
+\emph{type-labeling} of a block structure assigns each block a type
+$t_j \in \{1, 2, 3, 4\}$ (one of the four operation types of
+\cref{def:op_type}). The number of blocks $k$ is the
+\emph{commitment depth} of the trajectory.
+\end{definition}
+
+\begin{remark}[Why block structure is data, not derived]
+\label{rem:why_blocks}
+A naive view would treat the type sequence $(t(f_1), \ldots, t(f_n))$
+as the full trajectory data and read block boundaries off as
+positions of type change. This conflates two distinct
+trajectories: the agent committing acts in pairs $(f_1, f_2)$ then
+$(f_3, f_4)$ versus committing four separate acts $f_1, f_2, f_3,
+f_4$ of the same type sequence. The two have different commitment
+records: the first records two checkpoints; the second records
+four. By \cref{F:fin_descr}, the agent's descriptive scheme
+distinguishes these, so they are distinct trajectories in the
+operational structure. The block structure is therefore part of the
+trajectory data, not a derived quantity.
+\end{remark}
+
+\subsection{The composition count}
+
+\begin{lemma}[Compositions of $n$]
+\label{lem:compositions}
+The number of compositions of a positive integer $n$ into $k$
+positive parts is $\binom{n-1}{k-1}$. Summing over $k$, the total
+number of compositions of $n$ is $2^{n-1}$.
+\end{lemma}
+
+\begin{proof}
+A composition of $n$ into $k$ parts corresponds bijectively to a
+choice of $k - 1$ dividers placed into the $n - 1$ gaps between
+$n$ ordered unit objects: each divider marks a boundary between
+adjacent parts. The number of such choices is $\binom{n-1}{k-1}$.
+Summing,
+\[
+  \sum_{k=1}^{n} \binom{n-1}{k-1}
+  \;=\; \sum_{j=0}^{n-1} \binom{n-1}{j}
+  \;=\; (1+1)^{n-1}
+  \;=\; 2^{n-1}
+\]
+by the binomial theorem applied to $(1+1)^{n-1}$. $\qed$
+\end{proof}
+
+\subsection{The composition-inflation theorem}
+
+\begin{theorem}[Composition Inflation in Operation Space]
+\label{thm:composition_inflation}
+Let $\OpStr_\Agent$ have $d$ operation types (with $d = 4$ in the
+canonical setting of \cref{def:op_type}). The number of
+categorically distinguishable operation trajectories of length $n$
+in $\OpStr_\Agent$ is
+\[
+  \boxed{\;T(n, d) \;=\; d \cdot (d + 1)^{n - 1}.\;}
+\]
+\end{theorem}
+
+\begin{proof}
+A trajectory of length $n$ is uniquely specified by:
+\begin{enumerate}[nosep,leftmargin=*]
+\item A block structure: a composition $(c_1, \ldots, c_k)$ of $n$
+into $k$ parts, for some $1 \leq k \leq n$
+(\cref{def:block}).
+\item A type-labeling: an assignment of one of $d$ types to each
+of the $k$ blocks.
+\end{enumerate}
+By \cref{lem:compositions}, the number of compositions of $n$ into
+$k$ parts is $\binom{n-1}{k-1}$. For each such composition, the
+$k$ type labels are chosen independently from $d$ options, yielding
+$d^k$ labelings. Hence the number of trajectories with commitment
+depth exactly $k$ is
+\[
+  N_k(n, d) \;=\; \binom{n-1}{k-1} \cdot d^k.
+\]
+Summing over commitment depth:
+\begin{align*}
+  T(n, d) &\;=\; \sum_{k=1}^{n} \binom{n-1}{k-1} \cdot d^k \\
+  &\;=\; d \sum_{k=1}^{n} \binom{n-1}{k-1} \cdot d^{k-1} \\
+  &\;=\; d \sum_{j=0}^{n-1} \binom{n-1}{j} \cdot d^{j}
+  \quad [\text{substitute } j = k - 1] \\
+  &\;=\; d \cdot (1 + d)^{n-1}
+\end{align*}
+by the binomial theorem applied to $(1 + d)^{n-1}$. $\qed$
+\end{proof}
+
+\begin{corollary}[Recurrence and initial condition]
+\label{cor:inflation_recurrence}
+$T(n, d)$ satisfies the recurrence
+$T(n+1, d) = (d + 1) \cdot T(n, d)$ with initial condition
+$T(1, d) = d$. Equivalently, each additional committed act
+multiplies the trajectory count by $d + 1$.
+\end{corollary}
+
+\begin{proof}
+$T(1, d) = d \cdot (d+1)^0 = d$, agreeing with the direct count
+(one act, $d$ type choices). For $n \geq 1$,
+$T(n + 1, d) = d \cdot (d+1)^{n} = (d+1) \cdot T(n, d)$. $\qed$
+\end{proof}
+
+\begin{remark}[Where the extra $+1$ comes from]
+\label{rem:plus_one}
+The exponential base $d + 1$ has a structural meaning. At each of
+the $n - 1$ internal boundaries between consecutive committed acts,
+the agent has two independent decisions: (i) start a new block or
+continue the current one (binary, contributing the composition
+factor); (ii) if starting a new block, choose its type (one of $d$).
+Together these are $1 + d$ effective branches per boundary
+($1$ for ``continue'', $d$ for ``branch into one of $d$ types''),
+yielding base $d + 1$. This is the agent-scale reading of the
+combinatorial constant.
+\end{remark}
+
+\subsection{Linear cost, exponential content}
+
+\begin{theorem}[Asymmetry between cost and content]
+\label{thm:cost_content_asymmetry}
+Let $\Agent$ commit $n$ realised non-identity acts in $\OpStr_\Agent$.
+Then:
+\begin{enumerate}[label=\textup{(\roman*)},nosep,leftmargin=2.4em]
+\item The cumulative residue (committed cost) is bounded below by
+$n \cdot \floor > 0$ (\cref{cor:res_accumulate}); it grows
+\emph{linearly} in $n$.
+\item The number of categorically distinguishable operation
+trajectories the commitment can realise is $T(n, d)
+= d \cdot (d + 1)^{n - 1}$ (\cref{thm:composition_inflation});
+it grows \emph{exponentially} in $n$ with base $d + 1$.
+\end{enumerate}
+The categorical content per unit committed cost is therefore
+\[
+  \frac{T(n, d)}{n \cdot \floor}
+  \;=\; \frac{d \cdot (d + 1)^{n - 1}}{n \cdot \floor}
+  \;\xrightarrow[n \to \infty]{}\; \infty,
+\]
+strictly superlinear in $n$.
+\end{theorem}
+
+\begin{proof}
+(i) Each of the $n$ realised non-identity acts deposits residue
+$\geq \floor$ by \cref{thm:floor}; summing gives $\sum_{i=1}^{n}
+\rho(f_i) \geq n \floor$. This is the linear lower bound.
+(ii) Immediate from \cref{thm:composition_inflation}.
+The ratio $T(n, d) / (n \floor)$ has numerator growing as
+$(d+1)^{n-1}$ and denominator growing as $n$; the exponential
+dominates, so the ratio diverges. $\qed$
+\end{proof}
+
+\begin{corollary}[Logarithmic termination for content-bounded
+processes]
+\label{cor:log_termination}
+Let a process running on $\OpStr_\Agent$ terminate when its
+committed history realises $K$ distinguishable operation
+trajectories. The number of committed acts required for
+termination is
+\[
+  n_{\mathrm{term}}(K)
+  \;=\; 1 + \left\lceil
+    \log_{d+1}\!\left(\frac{K}{d}\right)
+  \right\rceil,
+\]
+and the committed cost at termination is
+\[
+  \rho_{\mathrm{term}}(K)
+  \;\geq\; n_{\mathrm{term}}(K) \cdot \floor
+  \;=\; O(\log K).
+\]
+\end{corollary}
+
+\begin{proof}
+By \cref{thm:composition_inflation}, $K$ distinguishable
+trajectories are realised at the smallest $n$ with
+$T(n, d) \geq K$, i.e.~$d \cdot (d+1)^{n-1} \geq K$, equivalently
+$(d+1)^{n-1} \geq K/d$, equivalently
+$n \geq 1 + \log_{d+1}(K/d)$. The smallest integer satisfying this
+is $n_{\mathrm{term}}(K) = 1 + \lceil \log_{d+1}(K/d) \rceil$. The
+committed cost lower bound follows from
+\cref{cor:res_accumulate}. $\qed$
+\end{proof}
+
+\begin{remark}[The termination claim in plain language]
+\label{rem:termination_plain}
+A process that needs ``enough categorical content to settle a
+question'' terminates in $O(\log K)$ committed acts when the
+content threshold is $K$. The agent does not need to commit more
+acts to produce more trajectories; it commits the same act and
+composition-inflation supplies the trajectories. The four-type
+taxonomy (\cref{thm:scale_homomorphism}) is what makes the
+exponential base $d + 1 = 5$ rather than $2$; the four loci of
+effect multiply the agent's per-act categorical bandwidth.
+\end{remark}
+
+\begin{remark}[What this does and does not say]
+\label{rem:inflation_scope}
+\Cref{thm:composition_inflation} concerns the
+\emph{categorical-content} measure of the operational structure: the
+count of distinguishable operation trajectories. It does not say
+any individual act is faster, cheaper, or more powerful---each act
+still pays residue $\geq \floor$ (\cref{thm:floor}). It does not
+say the cumulative cost grows logarithmically: the cumulative
+residue is at least $n \floor$, which is linear in $n$. The
+asymmetry is between two measures, both true: the cost-measure is
+linear, the content-measure is exponential. Processes whose
+termination depends on the content-measure (``produce $K$
+trajectories'') terminate logarithmically; processes whose
+termination depends on the cost-measure (``deposit total residue
+$\geq R$'') terminate linearly. The framework is silent about which
+measure governs any given process; that is a property of the
+process specification.
+\end{remark}
+
+\subsection{Worked example: small cases}
+
+\begin{example}
+\label{ex:small_cases}
+Direct enumeration for $d = 4$ verifies the formula on small
+cases:
+\begin{itemize}[nosep,leftmargin=*]
+\item $n = 1$: $T(1, 4) = 4$. One act, four type choices.
+Direct count: $\{(t) : t \in \{1,2,3,4\}\}$, $|\cdot| = 4$.
+\item $n = 2$: $T(2, 4) = 4 \cdot 5 = 20$. Compositions of $2$ are
+$(2)$ and $(1, 1)$. For composition $(2)$: $4$ labelings (one
+block, one type each). For composition $(1, 1)$: $4 \times 4 =
+16$ labelings (two independent block types). Total $4 + 16 = 20$.
+\item $n = 3$: $T(3, 4) = 4 \cdot 25 = 100$. Compositions of $3$
+are $(3)$, $(2, 1)$, $(1, 2)$, $(1, 1, 1)$; counts $4 + 16 + 16 +
+64 = 100$.
+\end{itemize}
+\end{example}
+
+\begin{example}[Scaling]
+\label{ex:scaling}
+For $d = 4$ and $n = 10$, the trajectory count is
+$T(10, 4) = 4 \cdot 5^9 = 7\,812\,500$. A process that requires
+$10^6$ distinguishable trajectories terminates at
+$n_{\mathrm{term}}(10^6) = 1 + \lceil \log_5(2.5 \times 10^5)
+\rceil = 1 + \lceil 7.72 \rceil = 9$ committed acts. The
+committed cost lower bound is $9 \floor$---linear in $9$,
+logarithmic in $10^6$.
+\end{example}
+
 % =====================================================================
 \section{The Forced Structure in Detail}
 \label{sec:detail}
@@ -1364,6 +1730,19 @@ classifying the agent's grammar but its realisable acts on a
 concrete finite system. The two coincide only because the premises
 force the agent's grammar to track its acts; in richer settings
 the two diverge.
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_05_partiality.png}
+    \caption{\textbf{Partiality of Composition is Forced by Non-Completability, Not by Budget Exhaustion.}
+    (\textbf{A})~Composable pair count on the linear $y$-axis (up to $\sim 3{,}000$) versus refinement stage $n$ on the linear $x$-axis ($2$ to $8$). Steelblue bars: composable pairs $(a,b),(b,c)$ for which the composite $(a,c)$ is realised. Crimson bars: composable pairs for which the composite is \emph{not} realised. At every stage tested, the unrealised count is substantial; the gap is not asymptotically closed by increasing $n$. Empirical content of Theorem~\ref{thm:partiality_forced}: composition in $\mathbf{C}_{\mathcal{A},\mathcal{G}}$ is genuinely partial.
+    (\textbf{B})~Budget spent fraction on a log $y$-axis ($10^{-17}$ to $10^{1}$) versus stage $n$ on the linear $x$-axis ($2$ to $8$). Steelblue circles trace the agent's spent fraction; the crimson dashed reference at $1.0$ marks budget exhaustion. The measured spent fraction at every stage is $\sim 10^{-16}$ of budget---essentially nothing. Partiality is therefore \emph{not} an artefact of budget exhaustion; the agent's budget is virtually unconsumed at every stage. This is the decisive empirical content distinguishing Theorem~\ref{thm:partiality_forced} from the budget-exhaustion contingency.
+    (\textbf{C})~Unrealised composable fraction on the linear $y$-axis ($0$ to $1$) versus stage $n$ on the linear $x$-axis ($2$ to $8$). Steelblue circles cluster around $0.5$; the neutral horizontal reference at $0.5$ is included for orientation. Roughly half of all composable pairs at every stage have unrealised composites, despite the budget being effectively unused---structural partiality.
+    (\textbf{D})~Three-dimensional composability gap by stage: stage $n$ on the linear $x$-axis ($2$ to $8$), composite status (realised at $y=0$, unrealised at $y=1$) on the linear $y$-axis, count on the vertical axis. Steelblue ribbons mark realised composites; crimson ribbons mark unrealised composites. Both grow with $n$ in lockstep, confirming that partiality scales with the size of the agent's record without ever closing. Geometric realisation of Theorem~\ref{thm:partiality_forced}: the gap between the realised category and its composition closure is a non-empty sub-lattice at every finite stage.}
+    \label{fig:panel-partiality}
+\end{figure*}
+
+
 
 % =====================================================================
 \section{Falsifiability}
@@ -1530,6 +1909,19 @@ clause: failure of any clause of (iii) propagates back to failure
 of the conjunction in (ii) and thence to absence of any realisable
 distinguishing act in (i). $\qed$
 \end{proof}
+
+
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/panel_09_master.png}
+    \caption{\textbf{Master Theorem: Identifiability and Operational Structure are Equivalent.}
+    (\textbf{A})~Realised acts on the linear $y$-axis ($\sim 170$ to $\sim 215$) versus floor $\beta$ on a log $x$-axis ($10^{-3}$ to $10^{1}$). Four viridis-coloured curves correspond to four fixed graph topologies of edge density $p \in \{0.15, 0.30, 0.45, 0.65\}$, with $\beta$ swept as a uniform edge-weight scale factor. Each curve is constant in $\beta$ across five decades: the realised-act count is a structural property of the graph, independent of the floor. This is the empirical content of Corollary~\ref{cor:identifiability_is_structure}: identifiability is a property of $(\mathcal{A}, \mathcal{G})$, while $\beta$ controls only the cost of realising it.
+    (\textbf{B})~Mean realised acts (averaged over $12$ random replicas per $\beta$) on the linear $y$-axis ($0$ to $\sim 90$) versus uniform floor $\beta$ on the linear $x$-axis ($0$ to $1.0$). Steelblue circles trace the mean; the crimson dashed reference at $\beta = 0$ marks the phase boundary. The mean drops abruptly from $\sim 80$ at $\beta > 0$ to exactly $0$ at $\beta = 0$. Empirical content of the contrapositive of Theorem~\ref{thm:master}: setting $\beta = 0$ (denying non-completability, by Corollary~\ref{cor:floor_trace}) dissolves identifiability; no realisable distinguishability act exists.
+    (\textbf{C})~Cumulative residue on a log $y$-axis ($10^{-1}$ to $10^{2}$) versus $\beta$ on a log $x$-axis ($10^{-3}$ to $10^{1}$) for the fixed-topology sweep. Steelblue circles trace the measured cumulative residue $\sum\rho_i$; the crimson dashed reference line $\sum\rho_i \propto \beta$ has slope $1$ in log-log coordinates. Measured and theoretical curves coincide across five decades, confirming that cumulative residue scales linearly with the floor and the realised-act count is structural.
+    (\textbf{D})~Three-dimensional identifiability phase curve: $\log_{10}\beta$ on the linear $x$-axis ($-3$ to $1$), realised acts on the linear $y$-axis ($\sim 200$ to $\sim 220$), $\log_{10}\sum\rho_i$ on the vertical axis ($-1$ to $4$), viridis colourmap by $\log_{10}\beta$, viewing angle elevation $30^{\circ}$ azimuth $-60^{\circ}$. The curve is monotone in $\log\beta$ and $\log\sum\rho_i$ while flat in realised-act count: the structure is invariant in the agent-graph topology, and the cost surface rises linearly with the floor. Geometric realisation of the three-way equivalence (i) $\Leftrightarrow$ (ii) $\Leftrightarrow$ (iii) of Theorem~\ref{thm:master}.}
+    \label{fig:panel-master}
+\end{figure*}
 
 % =====================================================================
 \section{Implications}

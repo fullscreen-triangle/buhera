@@ -1,0 +1,52 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}The conditional question}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Why this matters}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Method}{2}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Relation to existing frameworks}{3}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Three Premises}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Finite graph-structured system}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Finite agent}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Non-completable whole}{4}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}What the premises do not say}{4}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Scope}{4}{subsection.2.5}%
+\contentsline {section}{\numberline {3}Consequences of the Three Premises}{4}{section.3}%
+\contentsline {subsection}{\numberline {3.1}The Floor from Infinitude}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}The distinguishability floor}{6}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Residue: every distinguishability act deposits content}{6}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Closure: distinguishability acts form a small category}{9}{subsection.3.4}%
+\contentsline {section}{\numberline {4}The Operational Structure Theorem}{10}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Operational structure}{10}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Consequences of the theorem}{14}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Classification of Operational Structures}{15}{section.5}%
+\contentsline {subsection}{\numberline {5.1}The four loci of effect}{15}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}The four types}{15}{subsection.5.2}%
+\contentsline {paragraph}{Algebraic.}{15}{section*.3}%
+\contentsline {paragraph}{Dynamical.}{15}{section*.4}%
+\contentsline {paragraph}{Computational.}{15}{section*.5}%
+\contentsline {paragraph}{Internal.}{15}{section*.6}%
+\contentsline {subsection}{\numberline {5.3}Four-type exhaustiveness}{16}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Composition Inflation: Trajectory Counting in the Operational Structure}{17}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Operation trajectories and commitment blocks}{17}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}The composition count}{19}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}The composition-inflation theorem}{19}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Linear cost, exponential content}{19}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Worked example: small cases}{20}{subsection.6.5}%
+\contentsline {section}{\numberline {7}The Forced Structure in Detail}{20}{section.7}%
+\contentsline {subsection}{\numberline {7.1}The structure recipe}{20}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}What the structure looks like}{21}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Why the structure is operational rather than only combinatorial}{21}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Falsifiability}{21}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Where the argument can fail}{21}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Zero-floor distinguishability is structurally impossible}{21}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Honest scope}{23}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}The Master Theorem}{23}{subsection.8.4}%
+\contentsline {section}{\numberline {9}Implications}{24}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Software architecture under the conditional}{24}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Database query algebras}{24}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Knowledge graphs and reasoning}{24}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Conclusion}{24}{section.10}%
+\contentsline {subsection}{\numberline {10.1}What we have established}{24}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}What we have not claimed}{26}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}The narrowness of the result is the point}{26}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}What this enables}{26}{subsection.10.4}%
+\contentsline {subsection}{\numberline {10.5}Closing}{26}{subsection.10.5}%

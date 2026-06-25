@@ -5,122 +5,143 @@
     {
       "name": "E01_floor",
       "pass": true,
-      "elapsed_seconds": 1.7311456203460693,
+      "elapsed_seconds": 0.105712890625,
       "file": "E01_floor.json",
-      "sha256_16": "025c2c1faa0dde59"
+      "sha256_16": "faf7f0a1292ed6fd"
     },
     {
       "name": "E02_residue_additive",
       "pass": true,
-      "elapsed_seconds": 1.8873164653778076,
+      "elapsed_seconds": 0.1012873649597168,
       "file": "E02_residue_additive.json",
-      "sha256_16": "8a6c219dd381fae9"
+      "sha256_16": "5a52270783724f5b"
     },
     {
       "name": "E03_cumulative_residue",
       "pass": true,
-      "elapsed_seconds": 3.8458199501037598,
+      "elapsed_seconds": 0.2880280017852783,
       "file": "E03_cumulative_residue.json",
-      "sha256_16": "2a3f944db15898f8"
+      "sha256_16": "423e680dd94e3825"
     },
     {
       "name": "E04_category_axioms",
       "pass": true,
-      "elapsed_seconds": 0.5189359188079834,
+      "elapsed_seconds": 0.06254220008850098,
       "file": "E04_category_axioms.json",
-      "sha256_16": "026a6dca9885b9cd"
+      "sha256_16": "5f936a9312be0686"
     },
     {
       "name": "E05_hom_bound",
       "pass": true,
-      "elapsed_seconds": 3.7501087188720703,
+      "elapsed_seconds": 0.2790539264678955,
       "file": "E05_hom_bound.json",
-      "sha256_16": "2c0dda2ff5f69abb"
+      "sha256_16": "bf54e39beee8878b"
     },
     {
       "name": "E06_partial_composition",
       "pass": true,
-      "elapsed_seconds": 0.42475461959838867,
+      "elapsed_seconds": 0.023102521896362305,
       "file": "E06_partial_composition.json",
-      "sha256_16": "13da9cdf1e946c1c"
+      "sha256_16": "9d69bfe7097bcdee"
     },
     {
       "name": "E07_preorder",
       "pass": true,
-      "elapsed_seconds": 0.5584244728088379,
+      "elapsed_seconds": 0.03212928771972656,
       "file": "E07_preorder.json",
-      "sha256_16": "de220600d20cc8dc"
+      "sha256_16": "999cc89cb0768208"
     },
     {
       "name": "E08_four_type_exhaustiveness",
       "pass": true,
-      "elapsed_seconds": 0.00031256675720214844,
+      "elapsed_seconds": 4.792213439941406e-05,
       "file": "E08_four_type_exhaustiveness.json",
-      "sha256_16": "479ab7460e697e99"
+      "sha256_16": "b5196c2bbd735249"
     },
     {
       "name": "E09_zero_floor",
       "pass": true,
-      "elapsed_seconds": 0.13430237770080566,
+      "elapsed_seconds": 0.00656437873840332,
       "file": "E09_zero_floor.json",
-      "sha256_16": "2ddd3d3947b73aa3"
+      "sha256_16": "8c75767aae242aa5"
     },
     {
       "name": "E10_uniqueness_up_to_labelling",
       "pass": true,
-      "elapsed_seconds": 0.18513250350952148,
+      "elapsed_seconds": 0.014121770858764648,
       "file": "E10_uniqueness_up_to_labelling.json",
-      "sha256_16": "1eef4277f2c57620"
+      "sha256_16": "627eb7f27d9a10d2"
     },
     {
       "name": "E11_recipe_terminates",
       "pass": true,
-      "elapsed_seconds": 16.903886318206787,
+      "elapsed_seconds": 0.9679470062255859,
       "file": "E11_recipe_terminates.json",
-      "sha256_16": "0ad0a5498c22e19f"
+      "sha256_16": "a09cede50a5a96bd"
     },
     {
       "name": "E12_floor_from_infinitude",
       "pass": true,
-      "elapsed_seconds": 0.011054515838623047,
+      "elapsed_seconds": 0.001355886459350586,
       "file": "E12_floor_from_infinitude.json",
-      "sha256_16": "d9f5bf84050ef447"
+      "sha256_16": "17134419b859961e"
     },
     {
       "name": "E13_partiality_forced",
       "pass": true,
-      "elapsed_seconds": 0.5612144470214844,
+      "elapsed_seconds": 0.07280898094177246,
       "file": "E13_partiality_forced.json",
-      "sha256_16": "1041f5f57ecc88d4"
+      "sha256_16": "d4c7ff36356c4a8a"
     },
     {
       "name": "E14_residue_cells",
       "pass": true,
-      "elapsed_seconds": 0.7041881084442139,
+      "elapsed_seconds": 0.060042619705200195,
       "file": "E14_residue_cells.json",
-      "sha256_16": "53064101f8f36a9e"
+      "sha256_16": "7ea2941bd6b8baf5"
     },
     {
       "name": "E15_scale_homomorphism",
       "pass": true,
-      "elapsed_seconds": 0.00010967254638671875,
+      "elapsed_seconds": 2.3126602172851562e-05,
       "file": "E15_scale_homomorphism.json",
-      "sha256_16": "a421ef375aae4d6c"
+      "sha256_16": "4542c666d5aefa14"
     },
     {
       "name": "E16_master_theorem",
       "pass": true,
-      "elapsed_seconds": 0.13440752029418945,
+      "elapsed_seconds": 0.006959199905395508,
       "file": "E16_master_theorem.json",
-      "sha256_16": "47b87b4de3179b8a"
+      "sha256_16": "d6e82d1709a3203d"
+    },
+    {
+      "name": "E17_composition_inflation_formula",
+      "pass": true,
+      "elapsed_seconds": 0.17097234725952148,
+      "file": "E17_composition_inflation_formula.json",
+      "sha256_16": "4cfee16349570b39"
+    },
+    {
+      "name": "E18_cost_content_asymmetry",
+      "pass": true,
+      "elapsed_seconds": 5.91278076171875e-05,
+      "file": "E18_cost_content_asymmetry.json",
+      "sha256_16": "7081001afabfaf73"
+    },
+    {
+      "name": "E19_logarithmic_termination",
+      "pass": true,
+      "elapsed_seconds": 6.866455078125e-05,
+      "file": "E19_logarithmic_termination.json",
+      "sha256_16": "db88b8382ef1569d"
     }
   ],
   "summary": {
-    "total": 16,
-    "passed": 16,
+    "total": 19,
+    "passed": 19,
     "failed": 0,
     "suite_pass": true,
-    "wall_clock_seconds": 32.59625434875488
+    "wall_clock_seconds": 2.4143319129943848
   },
   "framework_self_path": "C:\\Users\\kunda\\Documents\\architecture\\buhera\\long-grass\\docs\\computational-systems-structure\\validation\\run_validation.py"
 }

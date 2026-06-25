@@ -16,48 +16,48 @@
         "n_edges": 3,
         "beta": 0.8942932262517305,
         "n_realised": 12,
-        "t_floor_s": 2.5987625122070312e-05,
-        "t_realise_s": 0.0013000965118408203,
-        "t_classify_s": 0.0001513957977294922
+        "t_floor_s": 5.245208740234375e-06,
+        "t_realise_s": 0.00010037422180175781,
+        "t_classify_s": 6.198883056640625e-06
       },
       {
         "n_vertices": 10,
         "n_edges": 8,
         "beta": 0.580786215110353,
         "n_realised": 48,
-        "t_floor_s": 3.552436828613281e-05,
-        "t_realise_s": 0.004329681396484375,
-        "t_classify_s": 5.14984130859375e-05
+        "t_floor_s": 2.86102294921875e-06,
+        "t_realise_s": 0.0005524158477783203,
+        "t_classify_s": 9.5367431640625e-06
       },
       {
         "n_vertices": 20,
         "n_edges": 56,
         "beta": 0.6057193008344253,
         "n_realised": 380,
-        "t_floor_s": 4.6253204345703125e-05,
-        "t_realise_s": 0.19654369354248047,
-        "t_classify_s": 0.0005829334259033203
+        "t_floor_s": 8.821487426757812e-06,
+        "t_realise_s": 0.01858043670654297,
+        "t_classify_s": 6.604194641113281e-05
       },
       {
         "n_vertices": 30,
         "n_edges": 132,
         "beta": 0.5752896354594155,
         "n_realised": 870,
-        "t_floor_s": 0.0002474784851074219,
-        "t_realise_s": 2.2786378860473633,
-        "t_classify_s": 0.002468109130859375
+        "t_floor_s": 2.0503997802734375e-05,
+        "t_realise_s": 0.12891221046447754,
+        "t_classify_s": 0.00016045570373535156
       },
       {
         "n_vertices": 45,
         "n_edges": 281,
         "beta": 0.5135112721271646,
         "n_realised": 1980,
-        "t_floor_s": 0.0004210472106933594,
-        "t_realise_s": 14.41105842590332,
-        "t_classify_s": 0.0025680065155029297
+        "t_floor_s": 4.0531158447265625e-05,
+        "t_realise_s": 0.8186583518981934,
+        "t_classify_s": 0.0003502368927001953
       }
     ],
-    "max_realise_seconds": 14.41105842590332,
+    "max_realise_seconds": 0.8186583518981934,
     "n_realised_monotone_in_n": true
   },
   "residuals": {
@@ -66,6 +66,6 @@
   },
   "monotone": true,
   "pass": true,
-  "elapsed_seconds": 16.903886318206787,
+  "elapsed_seconds": 0.9679470062255859,
   "seed": 20260634
 }

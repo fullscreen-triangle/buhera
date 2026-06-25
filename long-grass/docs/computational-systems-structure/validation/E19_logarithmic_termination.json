@@ -1,0 +1,107 @@
+{
+  "experiment": "E19_logarithmic_termination",
+  "theorem_ids": [
+    "cor:log_termination",
+    "thm:composition_inflation"
+  ],
+  "input_dataset": "d=4, K in [10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 10000000000, 1000000000000, 1000000000000000]",
+  "n_samples": 11,
+  "predicted": {
+    "n_term_eq_1_plus_ceil_log_K_over_d": true,
+    "n_term_slope_vs_log_K_eq_1_over_log_d_plus_1": 0.6213349345596119
+  },
+  "measured": {
+    "rows": [
+      {
+        "K": 10,
+        "n_search": 2,
+        "predicted_n_formula": 2,
+        "match": true,
+        "T_at_n": 20
+      },
+      {
+        "K": 100,
+        "n_search": 3,
+        "predicted_n_formula": 3,
+        "match": true,
+        "T_at_n": 100
+      },
+      {
+        "K": 1000,
+        "n_search": 5,
+        "predicted_n_formula": 5,
+        "match": true,
+        "T_at_n": 2500
+      },
+      {
+        "K": 10000,
+        "n_search": 6,
+        "predicted_n_formula": 6,
+        "match": true,
+        "T_at_n": 12500
+      },
+      {
+        "K": 100000,
+        "n_search": 8,
+        "predicted_n_formula": 8,
+        "match": true,
+        "T_at_n": 312500
+      },
+      {
+        "K": 1000000,
+        "n_search": 9,
+        "predicted_n_formula": 9,
+        "match": true,
+        "T_at_n": 1562500
+      },
+      {
+        "K": 10000000,
+        "n_search": 11,
+        "predicted_n_formula": 11,
+        "match": true,
+        "T_at_n": 39062500
+      },
+      {
+        "K": 100000000,
+        "n_search": 12,
+        "predicted_n_formula": 12,
+        "match": true,
+        "T_at_n": 195312500
+      },
+      {
+        "K": 10000000000,
+        "n_search": 15,
+        "predicted_n_formula": 15,
+        "match": true,
+        "T_at_n": 24414062500
+      },
+      {
+        "K": 1000000000000,
+        "n_search": 18,
+        "predicted_n_formula": 18,
+        "match": true,
+        "T_at_n": 3051757812500
+      },
+      {
+        "K": 1000000000000000,
+        "n_search": 22,
+        "predicted_n_formula": 22,
+        "match": true,
+        "T_at_n": 1907348632812500
+      }
+    ],
+    "fitted_slope": 0.6296641789214455,
+    "expected_slope": 0.6213349345596119,
+    "slope_relative_error": 0.01340540165786311,
+    "n_term_for_K_1e15": 22,
+    "cost_for_K_1e15": 22.0
+  },
+  "residuals": {
+    "max": 0.01340540165786311,
+    "rms": 0.01340540165786311
+  },
+  "monotone": true,
+  "pass": true,
+  "elapsed_seconds": 6.866455078125e-05,
+  "seed": 20260642
+}
