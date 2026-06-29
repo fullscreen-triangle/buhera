@@ -1032,6 +1032,34 @@ const BUILTINS = {
     const { ask } = await import("./models.js");
     return jsToTb(await ask(String(args[0] ?? ""), String(args[1] ?? ""), interp.onStatus));
   },
+
+  // --- Buhera federation dispatch ---
+  // dispatch(moduleId, instruction, actBudget?) -> ActResult as a turbulance map
+  //
+  // Routes a turbulance call into the Buhera module registry. The orchestrator's
+  // own evaluation order acts as the scheduler in v1; the registry appends to
+  // the audit log on every call. See operations-architecture.md §5.4 and §6.
+  async dispatch(interp, args) {
+    const moduleId = String(args[0] ?? "");
+    const instruction = args[1] != null ? tbToJS(args[1]) : "";
+    const actBudget = args[2] != null ? Number(args[2]) || 1 : 1;
+    if (!moduleId) {
+      throw new TbError("dispatch: first argument (module id) is required");
+    }
+    // Lazy import to keep turbulance free of a registry dependency at module
+    // load time (and avoid circular imports when other modules reach back
+    // into turbulance).
+    const { dispatch: dispatchModule } = await import("../modules/registry.js");
+    const result = await dispatchModule(moduleId, instruction, actBudget);
+    return jsToTb(result);
+  },
+
+  // --- Buhera federation introspection ---
+  // modules() -> list of { id, description, instructions } entries
+  async modules(_interp, _args) {
+    const { listModules } = await import("../modules/registry.js");
+    return jsToTb(listModules());
+  },
 };
 
 /* --------------------------- 6. ENTRY POINT ------------------------------- */

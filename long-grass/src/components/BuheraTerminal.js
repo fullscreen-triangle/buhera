@@ -7,6 +7,7 @@ import { PROTEINS } from "@/lib/proteins";
 import { run as runTurbulance, tbToString } from "@/lib/turbulance";
 import { register, listModules, dispatch as dispatchModule, getAuditLog } from "@/lib/modules/registry";
 import { vaheraModule } from "@/lib/modules/vahera-module";
+import { echoModule } from "@/lib/modules/echo-module";
 
 // ────────────────────────────────────────────────────────────
 //  Kernel boot.
@@ -198,6 +199,13 @@ or a turbulance (kwasa-kwasa) script:
   funxn double(x): return x * 2
   item r = double(21)
   proposition Greeting: motion Hello("world")
+
+  // call any registered Buhera module:
+  item out = dispatch("echo", "hello federation")
+  print(out.output_delta.value)
+
+  // route vaHera through the orchestrator:
+  item r = dispatch("vahera", "memory store \"n\" = \"hi\"")
 `;
 
 const HELP = `\
@@ -548,8 +556,10 @@ export default function BuheraTerminal() {
 
   useEffect(() => {
     kernelRef.current = bootBlank();
-    // Register the federation. v1: vaHera only. More modules come next.
+    // Register the federation. v1: vaHera + echo (smoke-test).
+    // More modules (purpose, geolocate, etc.) come next.
     register(vaheraModule);
+    register(echoModule);
   }, []);
 
   useEffect(() => {
