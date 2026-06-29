@@ -4,6 +4,9 @@ import { embedProtein } from "@/lib/substrate";
 import { translate } from "@/lib/translator";
 import { executeVahera } from "@/lib/vahera";
 import { PROTEINS } from "@/lib/proteins";
+import { run as runTurbulance, tbToString } from "@/lib/turbulance";
+import { register, listModules, dispatch as dispatchModule, getAuditLog } from "@/lib/modules/registry";
+import { vaheraModule } from "@/lib/modules/vahera-module";
 
 // ────────────────────────────────────────────────────────────
 //  Kernel boot.
@@ -47,6 +50,20 @@ const VAHERA_PREFIXES = [
   "process ",
 ];
 
+// A line starting with one of these is a turbulance (kwasa-kwasa) script.
+const TURBULANCE_PREFIXES = [
+  "funxn ",
+  "item ",
+  "proposition ",
+  "hypothesis ",
+  "point ",
+  "given ",
+  "considering ",
+  "within ",
+  "research ",
+  "for each ",
+];
+
 function stripQuotes(s) {
   const t = s.trim();
   if (t.length >= 2 && t.startsWith('"') && t.endsWith('"')) return t.slice(1, -1);
@@ -65,6 +82,15 @@ export function routeInput(line) {
   if (trimmed === ":clear") return { type: "meta", meta: "clear" };
   if (trimmed === ":tour") return { type: "meta", meta: "tour" };
   if (trimmed === ":proteins") return { type: "meta", meta: "proteins" };
+  if (trimmed === ":modules") return { type: "meta", meta: "modules" };
+  if (trimmed === ":audit") return { type: "meta", meta: "audit" };
+
+  // Turbulance script (kwasa-kwasa). Multi-line scripts are supported via
+  // the textarea; a single-line input also routes here if it starts with
+  // a turbulance keyword.
+  if (TURBULANCE_PREFIXES.some((p) => lower.startsWith(p))) {
+    return { type: "turbulance", source: trimmed };
+  }
 
   // Already vaHera.
   if (VAHERA_PREFIXES.some((p) => lower.startsWith(p))) {
@@ -154,6 +180,8 @@ other commands
   stats                   per-subsystem statistics
   dump <name>             show one object in detail
   sort                    zero-cost categorical sort
+  :modules                list the federation
+  :audit                  show recent acts
   :tour                   load five sample notes and search them
   :proteins               load a hardcoded biology database for the
                           natural-language demo
@@ -165,6 +193,11 @@ you can also type vaHera directly:
   memory find nearest "query" k=5
   describe X with "text", spawn p from X, navigate to penultimate,
   complete trajectory, kernel stats, controller verify ...
+
+or a turbulance (kwasa-kwasa) script:
+  funxn double(x): return x * 2
+  item r = double(21)
+  proposition Greeting: motion Hello("world")
 `;
 
 const HELP = `\
@@ -429,6 +462,42 @@ function ArtifactText({ lines }) {
   );
 }
 
+function ArtifactTurbulance({ tb }) {
+  if (!tb) return null;
+  const lines = (tb.output || []).map((v) => {
+    try { return tbToString ? tbToString(v) : String(v); }
+    catch { return String(v); }
+  });
+  return (
+    <div className="text-gray-300">
+      {tb.ok === false && tb.error && (
+        <p className="text-red-400 mb-2">
+          turbulance error{tb.error.line ? ` (line ${tb.error.line})` : ""}: {tb.error.message}
+        </p>
+      )}
+      {lines.length > 0 && (
+        <pre className="font-mono text-sm whitespace-pre-wrap">{lines.join("\n")}</pre>
+      )}
+      {tb.propositions && tb.propositions.length > 0 && (
+        <div className="mt-3 text-xs text-gray-500">
+          <span className="text-gray-400">propositions: </span>
+          {tb.propositions.map((p, i) => (
+            <span key={i}>{p.name}{i < tb.propositions.length - 1 ? ", " : ""}</span>
+          ))}
+        </div>
+      )}
+      {tb.points && tb.points.length > 0 && (
+        <div className="mt-1 text-xs text-gray-500">
+          <span className="text-gray-400">points: </span>{tb.points.length}
+        </div>
+      )}
+      {lines.length === 0 && !tb.error && (
+        <p className="text-gray-500">(script ran; no output emitted)</p>
+      )}
+    </div>
+  );
+}
+
 function Artifact({ result }) {
   if (!result) return null;
   switch (result.kind) {
@@ -443,6 +512,7 @@ function Artifact({ result }) {
     case "trace":           return <ArtifactTrace log={result.log} />;
     case "processes":       return <ArtifactProcesses items={result.items} />;
     case "verify":          return <ArtifactVerify samples={result.samples} message={result.message} />;
+    case "turbulance_result": return <ArtifactTurbulance tb={result.tb} />;
     case "text":            return <ArtifactText lines={result.lines} />;
     case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
     default:                return null;
@@ -478,6 +548,8 @@ export default function BuheraTerminal() {
 
   useEffect(() => {
     kernelRef.current = bootBlank();
+    // Register the federation. v1: vaHera only. More modules come next.
+    register(vaheraModule);
   }, []);
 
   useEffect(() => {
@@ -546,6 +618,25 @@ export default function BuheraTerminal() {
               ],
             },
           });
+        } else if (route.meta === "modules") {
+          const mods = listModules();
+          const lines = mods.length === 0
+            ? ["(no modules registered)"]
+            : mods.flatMap((m) => [
+                `[${m.id}]${m.description ? "  " + m.description : ""}`,
+                ...(m.instructions || []).map((i) => "    " + i),
+              ]);
+          patchLast({ result: { kind: "text", lines } });
+        } else if (route.meta === "audit") {
+          const log = getAuditLog().slice(-15);
+          const lines = log.length === 0
+            ? ["(audit log is empty)"]
+            : log.map((e) => `#${e.act_id} ${e.module_id} (${e.wall_clock_ms}ms) — ${
+                typeof e.instruction === "string"
+                  ? e.instruction.slice(0, 60)
+                  : "[non-string instruction]"
+              }`);
+          patchLast({ result: { kind: "text", lines } });
         } else if (route.meta === "quit") {
           patchLast({ result: { kind: "text", lines: ["(can't quit a browser tab from here)"] } });
         }
@@ -566,6 +657,12 @@ export default function BuheraTerminal() {
         } else {
           patchLast({ result: { kind: "text", lines: ["ok"] } });
         }
+        return;
+      }
+
+      if (route.type === "turbulance") {
+        const tb = await runTurbulance(route.source);
+        patchLast({ result: { kind: "turbulance_result", tb } });
         return;
       }
 
