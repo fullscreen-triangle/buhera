@@ -102,3 +102,52 @@ htmlcov/
 # OS-spezifisch
 Thumbs.db
 Desktop.ini
+
+# ---------------------------------------------------------------------------
+# Large / regeneratable artefacts. Never track these.
+# ---------------------------------------------------------------------------
+
+# fastembed / huggingface model caches (auto-downloaded ONNX models)
+.fastembed_cache/
+**/.fastembed_cache/
+.cache/huggingface/
+**/.cache/huggingface/
+huggingface_cache/
+**/huggingface_cache/
+
+# Next.js build / cache
+.next/
+**/.next/
+
+# Model binaries
+*.onnx
+*.safetensors
+*.gguf
+*.pt
+*.pth
+
+# Built PDFs (LaTeX sources are tracked; PDF outputs are not)
+*.pdf
+
+# LaTeX intermediate files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+*.run.xml
+
+# Rust build outputs
+**/target/
+Cargo.lock.bak
+
+# Misc heavy binaries
+*.iso
+*.dmg
