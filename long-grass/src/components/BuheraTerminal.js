@@ -8,6 +8,7 @@ import { run as runTurbulance, tbToString } from "@/lib/turbulance";
 import { register, listModules, dispatch as dispatchModule, getAuditLog } from "@/lib/modules/registry";
 import { vaheraModule } from "@/lib/modules/vahera-module";
 import { echoModule } from "@/lib/modules/echo-module";
+import { lavoisierModule } from "@/lib/modules/lavoisier-module";
 
 // ────────────────────────────────────────────────────────────
 //  Kernel boot.
@@ -206,6 +207,10 @@ or a turbulance (kwasa-kwasa) script:
 
   // route vaHera through the orchestrator:
   item r = dispatch("vahera", "memory store \"n\" = \"hi\"")
+
+  // run a virtual mass-spec experiment (lavoisier):
+  item ms = dispatch("lavoisier", "demo")
+  print("records: {}", ms.output_delta.summary.count)
 `;
 
 const HELP = `\
@@ -506,6 +511,100 @@ function ArtifactTurbulance({ tb }) {
   );
 }
 
+function ArtifactLavoisier({ summary, records, config }) {
+  const [expanded, setExpanded] = useState(false);
+  if (!summary) return null;
+
+  const perClass = Object.entries(summary.perClass || {});
+  const perAdduct = Object.entries(summary.perAdduct || {});
+  const [mzLo, mzHi] = summary.mzRange || [0, 0];
+  const [iLo, iHi] = summary.intensityRange || [0, 0];
+  const fmt = (n) => (typeof n === "number" ? n.toFixed(4) : String(n));
+
+  return (
+    <div className="text-gray-300">
+      <div className="mb-2">
+        <span className="text-gray-400">
+          {config?.experimentType || "run"}, {config?.analyser || "?"},
+          polarity {config?.polarity || "?"}, CE{" "}
+          {config?.collisionEnergy_eV ?? "?"} eV
+        </span>
+      </div>
+
+      <div className="text-sm">
+        <p>records: <span className="text-white">{summary.count}</span></p>
+        <p>
+          m/z range: <span className="text-white">{fmt(mzLo)} – {fmt(mzHi)}</span>
+        </p>
+        <p>
+          intensity range:{" "}
+          <span className="text-white">{fmt(iLo)} – {fmt(iHi)}</span>
+        </p>
+        <p>
+          mean partition entropy:{" "}
+          <span className="text-white">{fmt(summary.avgEntropy)}</span>
+        </p>
+      </div>
+
+      {perClass.length > 0 && (
+        <div className="mt-2 text-xs text-gray-500">
+          <span className="text-gray-400">by class: </span>
+          {perClass.map(([k, v], i) => (
+            <span key={k}>
+              {k}={v}
+              {i < perClass.length - 1 ? ", " : ""}
+            </span>
+          ))}
+        </div>
+      )}
+      {perAdduct.length > 0 && (
+        <div className="mt-1 text-xs text-gray-500">
+          <span className="text-gray-400">by adduct: </span>
+          {perAdduct.map(([k, v], i) => (
+            <span key={k}>
+              {k}={v}
+              {i < perAdduct.length - 1 ? ", " : ""}
+            </span>
+          ))}
+        </div>
+      )}
+      {summary.shellsHistogram && summary.shellsHistogram.length > 0 && (
+        <div className="mt-1 text-xs text-gray-500">
+          <span className="text-gray-400">principal shells: </span>
+          {summary.shellsHistogram.map((b, i) => (
+            <span key={b.n}>
+              n={b.n}:{b.count}
+              {i < summary.shellsHistogram.length - 1 ? ", " : ""}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {records && records.length > 0 && (
+        <div className="mt-3">
+          <button
+            onClick={() => setExpanded((e) => !e)}
+            className="text-xs text-blue-400 hover:text-blue-300"
+          >
+            {expanded ? "hide records" : `show ${records.length} records`}
+          </button>
+          {expanded && (
+            <pre className="mt-2 text-xs font-mono whitespace-pre-wrap text-gray-400">
+              {records.slice(0, 50).map((r) =>
+                `${(r.name || r.analyteClass || "?").padEnd(14)} ` +
+                `${(r.adduct || "").padEnd(8)} ` +
+                `m/z=${fmt(r.precursorMz)}  ` +
+                `I=${fmt(r.intensity)}`
+              ).join("\n")}
+              {records.length > 50 ? `\n… and ${records.length - 50} more` : ""}
+            </pre>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Artifact({ result }) {
   if (!result) return null;
   switch (result.kind) {
@@ -521,6 +620,7 @@ function Artifact({ result }) {
     case "processes":       return <ArtifactProcesses items={result.items} />;
     case "verify":          return <ArtifactVerify samples={result.samples} message={result.message} />;
     case "turbulance_result": return <ArtifactTurbulance tb={result.tb} />;
+    case "lavoisier_run":   return <ArtifactLavoisier summary={result.summary} records={result.records} config={result.config} />;
     case "text":            return <ArtifactText lines={result.lines} />;
     case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
     default:                return null;
@@ -556,10 +656,10 @@ export default function BuheraTerminal() {
 
   useEffect(() => {
     kernelRef.current = bootBlank();
-    // Register the federation. v1: vaHera + echo (smoke-test).
-    // More modules (purpose, geolocate, etc.) come next.
+    // Register the federation.
     register(vaheraModule);
     register(echoModule);
+    register(lavoisierModule);
   }, []);
 
   useEffect(() => {
