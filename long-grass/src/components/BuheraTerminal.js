@@ -9,6 +9,9 @@ import { register, listModules, dispatch as dispatchModule, getAuditLog } from "
 import { vaheraModule } from "@/lib/modules/vahera-module";
 import { echoModule } from "@/lib/modules/echo-module";
 import { lavoisierModule } from "@/lib/modules/lavoisier-module";
+// purposeModule intentionally not imported here — it pulls in server-only
+// deps (fs, HF SDK). Wired in once /api/purpose-federation lands.
+import { zangalewaModule } from "@/lib/modules/zangalewa-module";
 
 // ────────────────────────────────────────────────────────────
 //  Kernel boot.
@@ -605,6 +608,30 @@ function ArtifactLavoisier({ summary, records, config }) {
   );
 }
 
+function ArtifactPurpose({ synthesis, model, federation, floor }) {
+  return (
+    <div className="text-gray-300">
+      <div className="mb-2 text-xs text-gray-500">
+        <span className="text-gray-400">model:</span> {model || "?"}
+        {typeof floor === "number" && (
+          <>
+            {" · "}
+            <span className="text-gray-400">floor:</span> {floor.toFixed(2)}
+          </>
+        )}
+        {federation?.active_drafts?.length > 0 && (
+          <>
+            {" · "}
+            <span className="text-gray-400">federation:</span>{" "}
+            {federation.active_drafts.length} drafts
+          </>
+        )}
+      </div>
+      <pre className="whitespace-pre-wrap text-sm font-mono">{synthesis}</pre>
+    </div>
+  );
+}
+
 function Artifact({ result }) {
   if (!result) return null;
   switch (result.kind) {
@@ -621,6 +648,7 @@ function Artifact({ result }) {
     case "verify":          return <ArtifactVerify samples={result.samples} message={result.message} />;
     case "turbulance_result": return <ArtifactTurbulance tb={result.tb} />;
     case "lavoisier_run":   return <ArtifactLavoisier summary={result.summary} records={result.records} config={result.config} />;
+    case "purpose_synthesis": return <ArtifactPurpose synthesis={result.synthesis} model={result.model} federation={result.federation} floor={result.floor} />;
     case "text":            return <ArtifactText lines={result.lines} />;
     case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
     default:                return null;
@@ -660,6 +688,10 @@ export default function BuheraTerminal() {
     register(vaheraModule);
     register(echoModule);
     register(lavoisierModule);
+    // purposeModule is server-side (reads knowledge packs via fs, calls HF).
+    // Landing it needs an API route wrapper — register once /api/purpose-federation
+    // exists. The adapter file is ready.
+    register(zangalewaModule);
   }, []);
 
   useEffect(() => {

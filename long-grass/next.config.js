@@ -11,6 +11,11 @@ const nextConfig = {
     config.resolve.fallback = {
       ...(config.resolve.fallback || {}),
       "@xenova/transformers": false,
+      // purpose's llm.js imports the Anthropic SDK unconditionally, but it is
+      // only invoked when LLM_PROVIDER=anthropic. Marking it as a fallback
+      // keeps the build green for the HuggingFace-only path (recommended).
+      // Install @anthropic-ai/sdk to unlock the Anthropic provider.
+      "@anthropic-ai/sdk": false,
     };
     return config;
   },
