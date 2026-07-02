@@ -12,6 +12,7 @@ import { lavoisierModule } from "@/lib/modules/lavoisier-module";
 // purposeModule intentionally not imported here — it pulls in server-only
 // deps (fs, HF SDK). Wired in once /api/purpose-federation lands.
 import { zangalewaModule } from "@/lib/modules/zangalewa-module";
+import { graffitiModule } from "@/lib/modules/graffiti-module";
 
 // ────────────────────────────────────────────────────────────
 //  Kernel boot.
@@ -214,6 +215,10 @@ or a turbulance (kwasa-kwasa) script:
   // run a virtual mass-spec experiment (lavoisier):
   item ms = dispatch("lavoisier", "demo")
   print("records: {}", ms.output_delta.summary.count)
+
+  // run an individuation-theoretic search (graffiti / .grf):
+  item g = dispatch("graffiti", "demo")
+  print("floor: {}", g.output_delta.ambient_floor)
 `;
 
 const HELP = `\
@@ -608,6 +613,66 @@ function ArtifactLavoisier({ summary, records, config }) {
   );
 }
 
+function ArtifactGraffiti({ projects, diagnostics, ambient_floor }) {
+  const projectNames = Object.keys(projects || {});
+  return (
+    <div className="text-gray-300">
+      <div className="mb-2 text-xs text-gray-500">
+        <span className="text-gray-400">floor:</span>{" "}
+        {typeof ambient_floor === "number" ? ambient_floor.toFixed(3) : "?"}
+        {" · "}
+        <span className="text-gray-400">projects:</span> {projectNames.length}
+      </div>
+      {projectNames.length === 0 && (
+        <p className="text-gray-500">(no projects yielded)</p>
+      )}
+      {projectNames.map((name) => {
+        const yields = projects[name] || {};
+        const yieldNames = Object.keys(yields);
+        return (
+          <div key={name} className="mb-3">
+            <p className="text-white text-sm">{name}</p>
+            {yieldNames.length === 0 ? (
+              <p className="ml-2 text-xs text-gray-500">(no yields)</p>
+            ) : (
+              <ul className="ml-4 text-xs">
+                {yieldNames.map((y) => {
+                  const v = yields[y];
+                  const preview =
+                    typeof v === "string" ? v : JSON.stringify(v);
+                  return (
+                    <li key={y}>
+                      <span className="text-gray-400">{y}:</span>{" "}
+                      <span className="text-white">{preview}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        );
+      })}
+      {diagnostics && diagnostics.length > 0 && (
+        <div className="mt-2 text-xs">
+          <span className="text-gray-400">diagnostics:</span>
+          <ul className="ml-4">
+            {diagnostics.map((d, i) => (
+              <li
+                key={i}
+                className={
+                  d.severity === "error" ? "text-red-400" : "text-yellow-400"
+                }
+              >
+                {d.severity}: {d.message}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ArtifactPurpose({ synthesis, model, federation, floor }) {
   return (
     <div className="text-gray-300">
@@ -649,6 +714,7 @@ function Artifact({ result }) {
     case "turbulance_result": return <ArtifactTurbulance tb={result.tb} />;
     case "lavoisier_run":   return <ArtifactLavoisier summary={result.summary} records={result.records} config={result.config} />;
     case "purpose_synthesis": return <ArtifactPurpose synthesis={result.synthesis} model={result.model} federation={result.federation} floor={result.floor} />;
+    case "graffiti_result": return <ArtifactGraffiti projects={result.projects} diagnostics={result.diagnostics} ambient_floor={result.ambient_floor} />;
     case "text":            return <ArtifactText lines={result.lines} />;
     case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
     default:                return null;
@@ -692,6 +758,7 @@ export default function BuheraTerminal() {
     // Landing it needs an API route wrapper — register once /api/purpose-federation
     // exists. The adapter file is ready.
     register(zangalewaModule);
+    register(graffitiModule);
   }, []);
 
   useEffect(() => {
