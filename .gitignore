@@ -11,7 +11,7 @@ yarn.lock          # optional, je nach Team-Präferenz
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
-
+.env.local
 # Python
 __pycache__/
 *.py[cod]
