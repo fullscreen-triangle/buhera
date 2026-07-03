@@ -19,7 +19,7 @@ import { executeVahera } from "@/lib/vahera";
 
 let _kernel = null;
 
-function getKernel() {
+export function getKernel() {
   if (!_kernel) {
     _kernel = new Kernel(12); // depth-12 ternary refinement
   }

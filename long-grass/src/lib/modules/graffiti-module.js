@@ -25,6 +25,11 @@ import {
   createMockInferenceCatalyst,
   runSource,
 } from "@/graffiti";
+import { getKernel } from "./vahera-module";
+import {
+  createKernelSearchCatalyst,
+  createHfInferenceCatalyst,
+} from "./graffiti-catalysts";
 
 // --------------------------------------------------------------------------
 // Default catalyst registry: two harmless mock catalysts so .grf scripts can
@@ -34,18 +39,28 @@ import {
 
 function buildDefaultRegistry() {
   const registry = new CatalystRegistry();
+
+  // Fixture catalyst kept for smoke tests and the demo — pure, offline.
   registry.register(
     createFixtureSearchCatalyst(
       "local_search",
       {
-        // A few fixture answers demonstrating the interface. Real corpora
-        // land when we wire vahera's kernel into a catalyst.
         "founding_year_of(TUM)": "1868",
         "founding_year_of(Technical University of Munich)": "1868",
       },
       0.7,
     ),
   );
+
+  // Real catalyst: kernel_search reads vahera's live kernel. Whatever the
+  // user has stored via `memory store` becomes searchable through graffiti.
+  registry.register(createKernelSearchCatalyst("kernel_search", getKernel()));
+
+  // Real catalyst: hf_inference calls the HF chat API through the server
+  // route. Falls back to zero power if HUGGINGFACE_API_KEY is missing.
+  registry.register(createHfInferenceCatalyst("hf_inference"));
+
+  // Reference catalyst kept for demos of the transform-inference path.
   registry.register(
     createMockInferenceCatalyst(
       "restate",
@@ -53,6 +68,7 @@ function buildDefaultRegistry() {
       0.5,
     ),
   );
+
   return registry;
 }
 
@@ -65,6 +81,10 @@ const DEMO_SOURCE = `
 floor 0.02
 
 catalyst local_search {
+  namespace: local
+  input: Region output: Claim
+}
+catalyst kernel_search {
   namespace: local
   input: Region output: Claim
 }
@@ -122,6 +142,7 @@ export const graffitiModule = {
       instructions: [
         'dispatch("graffiti", "demo")',
         'dispatch("graffiti", "floor 0.02\\n\\ncatalyst local_search { ... }\\n\\nproject P { seek ... yield x }")',
+        "available catalysts: local_search (fixture), kernel_search (vahera), hf_inference (HF), restate (mock)",
       ],
     };
   },

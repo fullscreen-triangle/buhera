@@ -218,6 +218,10 @@ or a turbulance (kwasa-kwasa) script:
   // run an individuation-theoretic search (graffiti / .grf):
   item g = dispatch("graffiti", "demo")
   print("floor: {}", g.output_delta.ambient_floor)
+
+  // ask a natural-language question via the MSI (zangalewa, needs OPENAI_API_KEY):
+  item z = dispatch("zangalewa", "what is p53?")
+  print(z.output_delta.title)
 `;
 
 const HELP = `\
@@ -612,6 +616,68 @@ function ArtifactLavoisier({ summary, records, config }) {
   );
 }
 
+function ArtifactZangalewa({ caption, leaves, coord }) {
+  const primary = Array.isArray(leaves) && leaves.length > 0 ? leaves[0] : null;
+  const params = primary?.params;
+  return (
+    <div className="text-gray-300">
+      {caption && <div className="mb-2 text-xs text-gray-500">{caption}</div>}
+      {coord && (
+        <div className="mb-2 text-xs text-gray-500">
+          <span className="text-gray-400">coord:</span> S_k={coord.S_k?.toFixed?.(2) ?? coord.S_k},{" "}
+          S_t={coord.S_t?.toFixed?.(2) ?? coord.S_t}, S_e={coord.S_e?.toFixed?.(2) ?? coord.S_e}
+        </div>
+      )}
+      {params && (
+        <div>
+          <div className="mb-1">
+            <span className="text-white text-sm">{params.title}</span>
+            {params.kind && (
+              <span className="ml-2 text-xs text-gray-500">({params.kind})</span>
+            )}
+          </div>
+          {params.tag && (
+            <div className="mb-2 text-xs text-yellow-400">{params.tag}</div>
+          )}
+          {Array.isArray(params.sections) &&
+            params.sections.map((s, i) => (
+              <div key={i} className="mb-2">
+                <p className="text-xs text-gray-400">{s.heading}</p>
+                <p className="text-sm">{s.body}</p>
+              </div>
+            ))}
+          {Array.isArray(params.references) && params.references.length > 0 && (
+            <div className="mt-3 text-xs">
+              <span className="text-gray-400">references:</span>
+              <ul className="ml-4 mt-1">
+                {params.references.map((r, i) => (
+                  <li key={i}>
+                    {r.url ? (
+                      <a
+                        href={r.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-blue-400 hover:text-blue-300"
+                      >
+                        {r.citation}
+                      </a>
+                    ) : (
+                      <span>{r.citation}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+      {!primary && (
+        <p className="text-gray-500">(no leaves returned)</p>
+      )}
+    </div>
+  );
+}
+
 function ArtifactGraffiti({ projects, diagnostics, ambient_floor }) {
   const projectNames = Object.keys(projects || {});
   return (
@@ -714,6 +780,7 @@ function Artifact({ result }) {
     case "lavoisier_run":   return <ArtifactLavoisier summary={result.summary} records={result.records} config={result.config} />;
     case "purpose_synthesis": return <ArtifactPurpose synthesis={result.synthesis} model={result.model} federation={result.federation} floor={result.floor} />;
     case "graffiti_result": return <ArtifactGraffiti projects={result.projects} diagnostics={result.diagnostics} ambient_floor={result.ambient_floor} />;
+    case "zangalewa_render": return <ArtifactZangalewa caption={result.caption} leaves={result.leaves} coord={result.coord} />;
     case "text":            return <ArtifactText lines={result.lines} />;
     case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
     default:                return null;
