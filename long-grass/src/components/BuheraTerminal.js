@@ -9,8 +9,7 @@ import { register, listModules, dispatch as dispatchModule, getAuditLog } from "
 import { vaheraModule } from "@/lib/modules/vahera-module";
 import { echoModule } from "@/lib/modules/echo-module";
 import { lavoisierModule } from "@/lib/modules/lavoisier-module";
-// purposeModule intentionally not imported here — it pulls in server-only
-// deps (fs, HF SDK). Wired in once /api/purpose-federation lands.
+import { purposeModule } from "@/lib/modules/purpose-module";
 import { zangalewaModule } from "@/lib/modules/zangalewa-module";
 import { graffitiModule } from "@/lib/modules/graffiti-module";
 
@@ -754,9 +753,7 @@ export default function BuheraTerminal() {
     register(vaheraModule);
     register(echoModule);
     register(lavoisierModule);
-    // purposeModule is server-side (reads knowledge packs via fs, calls HF).
-    // Landing it needs an API route wrapper — register once /api/purpose-federation
-    // exists. The adapter file is ready.
+    register(purposeModule);
     register(zangalewaModule);
     register(graffitiModule);
   }, []);

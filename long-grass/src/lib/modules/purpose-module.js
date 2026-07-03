@@ -1,39 +1,20 @@
 /* ============================================================================
  * Purpose Module Adapter
  *
- * Wraps the JS federation in src/lib/purpose/ (federation + llm + knowledge
- * packs + storage) as a Buhera module. The module is a "synthesis" primitive:
- * given a description and optional followups, it runs a knapsack-allocated
- * cascade of federated models and returns a synthesis document.
+ * Client-side adapter that dispatches to the server-side federation via the
+ * /api/purpose-federation route. The API route hosts the JS federation (fs,
+ * knowledge packs, HF/Anthropic SDKs); the browser only sees JSON.
  *
- * v1 instruction shape (accepts either):
+ * v1 instruction shapes:
  *   • { kind: "synthesise", description, followups?, field? }
  *   • a plain string — treated as the description with no followups
  *
- * v1 also carries a graceful degradation path: if no LLM provider is
- * configured (no HUGGINGFACE_API_KEY / ANTHROPIC_API_KEY / LLM_PROVIDER),
- * the module returns ok:false with a clear message pointing to .env.local.
+ * If the server returns ok:false (no provider configured, upstream error,
+ * etc.), we surface the message directly in the ActResult so the terminal
+ * shows it verbatim.
  * ========================================================================== */
 
-// The purpose lib exposes the primitives; we compose one straight-shot
-// synthesis call here. Real multi-turn / storage flows can be added later
-// as additional instruction kinds.
-import { getProvider, synthesisModel } from "../purpose/llm.js";
-import { selectPacks, buildPackContext } from "../purpose/knowledge-packs.js";
-import {
-  getFederationModels,
-  aggregateFloor,
-  federationMetadata,
-} from "../purpose/federation.js";
-
-function providerAvailable() {
-  try {
-    getProvider();
-    return { ok: true };
-  } catch (err) {
-    return { ok: false, error: err.message || String(err) };
-  }
-}
+const API_ROUTE = "/api/purpose-federation";
 
 function normaliseInstruction(instruction) {
   if (instruction == null || instruction === "") {
@@ -41,15 +22,6 @@ function normaliseInstruction(instruction) {
   }
   if (typeof instruction === "string") {
     return { description: instruction, followups: [], field: null };
-  }
-  if (typeof instruction === "object" && instruction.kind === "synthesise") {
-    return {
-      description: String(instruction.description || ""),
-      followups: Array.isArray(instruction.followups)
-        ? instruction.followups.map(String)
-        : [],
-      field: instruction.field || null,
-    };
   }
   if (typeof instruction === "object") {
     return {
@@ -71,7 +43,8 @@ export const purposeModule = {
       id: "purpose",
       description:
         "Purpose: federated knapsack-allocated cascade over LLMs. " +
-        "Takes a description, returns a synthesis document.",
+        "Takes a description, returns a synthesis document. Requires " +
+        "HUGGINGFACE_API_KEY or ANTHROPIC_API_KEY in .env.local.",
       instructions: [
         'dispatch("purpose", "your research description")',
         'dispatch("purpose", { kind: "synthesise", description: "...", followups: ["..."] })',
@@ -80,25 +53,7 @@ export const purposeModule = {
   },
 
   async execute(instruction, _actBudget = 1) {
-    const provider = providerAvailable();
-    if (!provider.ok) {
-      return {
-        ok: false,
-        output_delta: {
-          kind: "text",
-          lines: [
-            "purpose: no LLM provider configured.",
-            "set HUGGINGFACE_API_KEY or ANTHROPIC_API_KEY in .env.local",
-            `(details: ${provider.error})`,
-          ],
-        },
-        residue: 0,
-        completed: true,
-        error: provider.error,
-      };
-    }
-
-    const { description, followups } = normaliseInstruction(instruction);
+    const { description, followups, field } = normaliseInstruction(instruction);
     if (!description.trim()) {
       return {
         ok: false,
@@ -111,64 +66,73 @@ export const purposeModule = {
       };
     }
 
+    let res;
     try {
-      // Compose the prompt: description + any followups, plus the
-      // knowledge-pack context most relevant to the query.
-      const haystack = [description, ...followups].join("\n");
-      const packs = selectPacks(haystack, { budget: 60_000 });
-      const packContext = buildPackContext(packs.map((p) => p.id));
-
-      const prov = getProvider();
-      const model = synthesisModel();
-
-      const userText = [
-        packContext ? `Context:\n${packContext}\n` : "",
-        `Description:\n${description}`,
-        followups.length
-          ? `\nFollowups:\n${followups.map((f) => `- ${f}`).join("\n")}`
-          : "",
-      ]
-        .join("")
-        .trim();
-
-      const synthesis = await prov.chat({
-        system:
-          "You are Purpose, a federated research synthesis engine. " +
-          "Produce a concise, well-cited synthesis document.",
-        messages: [{ role: "user", content: userText }],
-        model,
-        maxTokens: 2048,
+      res = await fetch(API_ROUTE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ description, followups, field }),
       });
-
-      const federationIds = getFederationModels();
-      const floor = aggregateFloor([...federationIds, model]);
-      const meta = federationMetadata(federationIds);
-
-      return {
-        ok: true,
-        output_delta: {
-          kind: "purpose_synthesis",
-          synthesis,
-          model,
-          federation: meta,
-          floor,
-          packs_used: packs.map((p) => ({ id: p.id })),
-        },
-        residue: floor,
-        completed: true,
-      };
     } catch (err) {
       return {
         ok: false,
         output_delta: {
           kind: "text",
-          lines: [`purpose error: ${err.message || String(err)}`],
+          lines: [
+            `purpose: network error contacting ${API_ROUTE}.`,
+            err.message || String(err),
+          ],
         },
         residue: 0,
         completed: true,
         error: err.message || String(err),
       };
     }
+
+    // The API returns JSON on both success and failure — parse either way.
+    let body;
+    try {
+      body = await res.json();
+    } catch (err) {
+      return {
+        ok: false,
+        output_delta: {
+          kind: "text",
+          lines: [`purpose: non-JSON response (HTTP ${res.status})`],
+        },
+        residue: 0,
+        completed: true,
+        error: `non-JSON response (HTTP ${res.status})`,
+      };
+    }
+
+    if (!body.ok) {
+      const lines = ["purpose: " + (body.error || `HTTP ${res.status}`)];
+      if (body.stage === "provider") {
+        lines.push("set HUGGINGFACE_API_KEY or ANTHROPIC_API_KEY in .env.local");
+      }
+      return {
+        ok: false,
+        output_delta: { kind: "text", lines },
+        residue: 0,
+        completed: true,
+        error: body.error || `HTTP ${res.status}`,
+      };
+    }
+
+    return {
+      ok: true,
+      output_delta: {
+        kind: "purpose_synthesis",
+        synthesis: body.synthesis,
+        model: body.model,
+        federation: body.federation,
+        floor: body.floor,
+        packs_used: body.packs_used,
+      },
+      residue: typeof body.floor === "number" ? body.floor : 0,
+      completed: true,
+    };
   },
 
   outputCell(_instruction) {
