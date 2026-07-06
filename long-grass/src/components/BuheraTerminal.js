@@ -5,13 +5,16 @@ import { translate } from "@/lib/translator";
 import { executeVahera } from "@/lib/vahera";
 import { PROTEINS } from "@/lib/proteins";
 import { run as runTurbulance, tbToString } from "@/lib/turbulance";
-import { register, listModules, dispatch as dispatchModule, getAuditLog } from "@/lib/modules/registry";
+import { register, listModules, dispatch as dispatchModule, getAuditLog, onDispatch } from "@/lib/modules/registry";
 import { vaheraModule } from "@/lib/modules/vahera-module";
 import { echoModule } from "@/lib/modules/echo-module";
 import { lavoisierModule } from "@/lib/modules/lavoisier-module";
 import { purposeModule } from "@/lib/modules/purpose-module";
 import { zangalewaModule } from "@/lib/modules/zangalewa-module";
 import { graffitiModule } from "@/lib/modules/graffiti-module";
+import { purposeCarryModule, getSession as getPurposeSession } from "@/lib/modules/purpose-carry-module";
+import { extractTermsFromInstruction } from "@/lib/purpose-terms";
+import { estimateCostFromInstruction } from "@/lib/purpose-cost";
 
 // ────────────────────────────────────────────────────────────
 //  Kernel boot.
@@ -219,9 +222,14 @@ or a turbulance (kwasa-kwasa) script:
   item g = dispatch("graffiti", "demo")
   print("floor: {}", g.output_delta.ambient_floor)
 
-  // ask a natural-language question via the MSI (zangalewa, needs OPENAI_API_KEY):
+  // ask a natural-language question via the MSI (zangalewa; needs an LLM key —
+  // OLLAMA_URL, GEMINI_API_KEY, or OPENAI_API_KEY):
   item z = dispatch("zangalewa", "what is p53?")
   print(z.output_delta.title)
+
+  // compute the minimum-sufficient carry toward a goal (purpose):
+  item c = dispatch("purpose-carry", { kind: "carry", goal: ["TUM", "AIMe"] })
+  print("keep: {}", c.output_delta.keep)
 `;
 
 const HELP = `\
@@ -616,12 +624,18 @@ function ArtifactLavoisier({ summary, records, config }) {
   );
 }
 
-function ArtifactZangalewa({ caption, leaves, coord }) {
+function ArtifactZangalewa({ caption, leaves, coord, provider, model }) {
   const primary = Array.isArray(leaves) && leaves.length > 0 ? leaves[0] : null;
   const params = primary?.params;
   return (
     <div className="text-gray-300">
       {caption && <div className="mb-2 text-xs text-gray-500">{caption}</div>}
+      {(provider || model) && (
+        <div className="mb-1 text-xs text-gray-600">
+          <span className="text-gray-400">via:</span> {provider}
+          {model && <> · {model}</>}
+        </div>
+      )}
       {coord && (
         <div className="mb-2 text-xs text-gray-500">
           <span className="text-gray-400">coord:</span> S_k={coord.S_k?.toFixed?.(2) ?? coord.S_k},{" "}
@@ -673,6 +687,114 @@ function ArtifactZangalewa({ caption, leaves, coord }) {
       )}
       {!primary && (
         <p className="text-gray-500">(no leaves returned)</p>
+      )}
+    </div>
+  );
+}
+
+function ArtifactPurposeCarry({
+  keep,
+  regenerable,
+  dropped,
+  ambientFloor,
+  residue_entries,
+  diagnostics,
+  goal_terms,
+  budget,
+  session_step_count,
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const keepCount = Array.isArray(keep) ? keep.length : 0;
+  const regCount = Array.isArray(regenerable) ? regenerable.length : 0;
+  const dropCount = Array.isArray(dropped) ? dropped.length : 0;
+  const residuePairs = Array.isArray(residue_entries) ? residue_entries : [];
+
+  const totalKeptCost = diagnostics?.totalKeptCost ?? 0;
+  const budgetRemaining = diagnostics?.budgetRemaining ?? 0;
+  const gap = diagnostics?.knapsackRelaxationGap ?? 0;
+
+  return (
+    <div className="text-gray-300">
+      <div className="mb-2 text-xs text-gray-500">
+        <span className="text-gray-400">session:</span> {session_step_count} steps
+        {" · "}
+        <span className="text-gray-400">floor:</span>{" "}
+        {typeof ambientFloor === "number" ? ambientFloor.toFixed(3) : "?"}
+        {" · "}
+        <span className="text-gray-400">budget:</span> {budget}
+      </div>
+
+      {goal_terms && goal_terms.length > 0 && (
+        <div className="mb-2 text-xs text-gray-500">
+          <span className="text-gray-400">goal:</span> {goal_terms.join(", ")}
+        </div>
+      )}
+
+      <div className="text-sm mb-2">
+        <p>
+          <span className="text-green-400">keep:</span> {keepCount}
+          {"  ·  "}
+          <span className="text-blue-400">regenerable:</span> {regCount}
+          {"  ·  "}
+          <span className="text-gray-500">dropped:</span> {dropCount}
+        </p>
+        <p className="text-xs text-gray-500 mt-1">
+          cost {totalKeptCost}/{budget} (remaining {budgetRemaining})
+          {gap > 0 && `, relaxation gap ${gap.toFixed(3)}`}
+        </p>
+      </div>
+
+      {keepCount + regCount + dropCount > 0 && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-xs text-blue-400 hover:text-blue-300"
+        >
+          {expanded ? "hide breakdown" : "show breakdown"}
+        </button>
+      )}
+
+      {expanded && (
+        <div className="mt-2 text-xs">
+          {keepCount > 0 && (
+            <div>
+              <p className="text-gray-400">keep ({keepCount}):</p>
+              <ul className="ml-4">
+                {keep.map((id) => {
+                  const rentry = residuePairs.find(([k]) => k === id);
+                  const r = rentry ? rentry[1] : null;
+                  return (
+                    <li key={id}>
+                      <span className="text-green-400">{id}</span>
+                      {r != null && (
+                        <span className="text-gray-500"> — ρ={r.toFixed(3)}</span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+          {regCount > 0 && (
+            <div className="mt-2">
+              <p className="text-gray-400">regenerable ({regCount}):</p>
+              <ul className="ml-4">
+                {regenerable.map((id) => (
+                  <li key={id} className="text-blue-400">{id}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {dropCount > 0 && (
+            <div className="mt-2">
+              <p className="text-gray-400">dropped ({dropCount}):</p>
+              <ul className="ml-4">
+                {dropped.map((id) => (
+                  <li key={id} className="text-gray-500">{id}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
@@ -738,10 +860,16 @@ function ArtifactGraffiti({ projects, diagnostics, ambient_floor }) {
   );
 }
 
-function ArtifactPurpose({ synthesis, model, federation, floor }) {
+function ArtifactPurpose({ synthesis, model, provider, federation, floor }) {
   return (
     <div className="text-gray-300">
       <div className="mb-2 text-xs text-gray-500">
+        {provider && (
+          <>
+            <span className="text-gray-400">via:</span> {provider}
+            {" · "}
+          </>
+        )}
         <span className="text-gray-400">model:</span> {model || "?"}
         {typeof floor === "number" && (
           <>
@@ -778,9 +906,11 @@ function Artifact({ result }) {
     case "verify":          return <ArtifactVerify samples={result.samples} message={result.message} />;
     case "turbulance_result": return <ArtifactTurbulance tb={result.tb} />;
     case "lavoisier_run":   return <ArtifactLavoisier summary={result.summary} records={result.records} config={result.config} />;
-    case "purpose_synthesis": return <ArtifactPurpose synthesis={result.synthesis} model={result.model} federation={result.federation} floor={result.floor} />;
+    case "purpose_synthesis": return <ArtifactPurpose synthesis={result.synthesis} model={result.model} provider={result.provider} federation={result.federation} floor={result.floor} />;
     case "graffiti_result": return <ArtifactGraffiti projects={result.projects} diagnostics={result.diagnostics} ambient_floor={result.ambient_floor} />;
-    case "zangalewa_render": return <ArtifactZangalewa caption={result.caption} leaves={result.leaves} coord={result.coord} />;
+    case "purpose_carry":   return <ArtifactPurposeCarry keep={result.keep} regenerable={result.regenerable} dropped={result.dropped} ambientFloor={result.ambientFloor} residue_entries={result.residue_entries} diagnostics={result.diagnostics} goal_terms={result.goal_terms} budget={result.budget} session_step_count={result.session_step_count} />;
+    case "purpose_carry_stats": return <ArtifactText lines={[`purpose-carry: ${result.stepCount} steps in session`, `ambient floor β = ${typeof result.ambientFloor === "number" ? result.ambientFloor.toFixed(3) : "?"}`]} />;
+    case "zangalewa_render": return <ArtifactZangalewa caption={result.caption} leaves={result.leaves} coord={result.coord} provider={result.provider} model={result.model} />;
     case "text":            return <ArtifactText lines={result.lines} />;
     case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
     default:                return null;
@@ -823,6 +953,36 @@ export default function BuheraTerminal() {
     register(purposeModule);
     register(zangalewaModule);
     register(graffitiModule);
+    register(purposeCarryModule);
+
+    // Purpose audit-log feeder: every dispatched act becomes a Step in the
+    // purpose session, so `dispatch("purpose-carry", ...)` sees the running
+    // history without callers having to manually add steps. We skip
+    // dispatches to purpose-carry itself to avoid recursive noise.
+    const session = getPurposeSession();
+    const unhook = onDispatch((entry) => {
+      if (entry.module_id === "purpose-carry") return;
+      try {
+        const id = `act-${entry.act_id}`;
+        const terms = extractTermsFromInstruction(entry.instruction);
+        if (terms.size === 0) return; // no terms → no graph contribution
+        const cost = estimateCostFromInstruction(entry.instruction);
+        session.addStep({
+          id,
+          terms,
+          cost,
+          timestamp: Date.parse(entry.timestamp) || Date.now(),
+          payload: {
+            module_id: entry.module_id,
+            act_id: entry.act_id,
+          },
+        });
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn("purpose feeder failed for act", entry.act_id, err);
+      }
+    });
+    return () => { unhook(); };
   }, []);
 
   useEffect(() => {

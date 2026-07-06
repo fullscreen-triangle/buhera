@@ -43,8 +43,8 @@ export const purposeModule = {
       id: "purpose",
       description:
         "Purpose: federated knapsack-allocated cascade over LLMs. " +
-        "Takes a description, returns a synthesis document. Requires " +
-        "HUGGINGFACE_API_KEY or ANTHROPIC_API_KEY in .env.local.",
+        "Takes a description, returns a synthesis document. Uses whichever " +
+        "LLM provider is configured (Ollama > Gemini > HF > OpenAI).",
       instructions: [
         'dispatch("purpose", "your research description")',
         'dispatch("purpose", { kind: "synthesise", description: "...", followups: ["..."] })',
@@ -126,6 +126,7 @@ export const purposeModule = {
         kind: "purpose_synthesis",
         synthesis: body.synthesis,
         model: body.model,
+        provider: body.provider,
         federation: body.federation,
         floor: body.floor,
         packs_used: body.packs_used,

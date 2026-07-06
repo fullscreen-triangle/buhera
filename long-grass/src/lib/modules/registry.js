@@ -57,6 +57,40 @@ export function getModule(moduleId) {
 }
 
 // --------------------------------------------------------------------------
+// Post-dispatch hooks.
+//
+// Any consumer that needs to observe every dispatched act (audit log, purpose
+// session step-feeder, tracing, etc.) registers a hook here. Hooks run after
+// the module's execute() returns and after the audit-log entry is appended.
+// They are best-effort: an exception in one hook does not block others or
+// the caller.
+// --------------------------------------------------------------------------
+
+const _postDispatchHooks = [];
+
+/**
+ * Register a hook that runs after every dispatched act. The hook receives
+ * the audit-log entry as its only argument. Returns an unregister function.
+ *
+ * @param {(entry: object) => void} hook
+ * @returns {() => void} unregister
+ */
+export function onDispatch(hook) {
+  if (typeof hook !== "function") {
+    throw new Error("onDispatch: hook must be a function");
+  }
+  _postDispatchHooks.push(hook);
+  return () => {
+    const i = _postDispatchHooks.indexOf(hook);
+    if (i >= 0) _postDispatchHooks.splice(i, 1);
+  };
+}
+
+export function clearDispatchHooks() {
+  _postDispatchHooks.length = 0;
+}
+
+// --------------------------------------------------------------------------
 // Dispatch: the one entry point. Per architecture doc §5.4 (in JS form).
 // --------------------------------------------------------------------------
 
@@ -90,6 +124,17 @@ export async function dispatch(moduleId, instruction, actBudget = 1) {
     timestamp: new Date().toISOString(),
   };
   _auditLog.push(entry);
+
+  // Post-dispatch hooks: best-effort, isolated from each other and from the
+  // caller. A failing hook logs and continues; it never breaks the dispatch.
+  for (const hook of _postDispatchHooks) {
+    try {
+      hook(entry);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn("registry: post-dispatch hook failed", err);
+    }
+  }
 
   return result;
 }

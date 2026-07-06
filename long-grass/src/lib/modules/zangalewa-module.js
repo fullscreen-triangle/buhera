@@ -32,8 +32,9 @@ export const zangalewaModule = {
       id: "zangalewa",
       description:
         "Zangalewa: Minimum Sufficient Interceptor. Turns a natural-language " +
-        "utterance into an S-coord and a research card. Requires " +
-        "OPENAI_API_KEY in .env.local.",
+        "utterance into an S-coord and a research card. Uses whichever LLM " +
+        "provider is configured (Ollama > Gemini > OpenAI; HF skipped — no " +
+        "native JSON-schema).",
       instructions: [
         'dispatch("zangalewa", "your natural-language query")',
       ],
@@ -121,6 +122,8 @@ export const zangalewaModule = {
         // turbulance scripts can grab it without index gymnastics.
         coord: primary?.coord ?? null,
         title: primary?.params?.title ?? null,
+        provider: body._meta?.provider ?? null,
+        model: body._meta?.model ?? null,
       },
       // Residue = 1 - S_e proxy: a well-settled lookup (low S_e) is
       // "close to done"; a frontier query (high S_e) needs more work.
