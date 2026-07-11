@@ -1,0 +1,13 @@
+{
+  "name": "@sachikonye/sbs",
+  "version": "0.0.0-stub",
+  "private": true,
+  "description": "Placeholder for the real @sachikonye/sbs package (Systems Biology Shaders DSL). This stub returns a clear 'not installed' error at dispatch time so the Buhera build passes. Replace with the real package (npm link from hegel/sbs, or npm install once published) when it exists.",
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./react": "./react/index.js"
+  },
+  "sideEffects": false
+}

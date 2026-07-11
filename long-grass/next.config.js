@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // @sachikonye/sbs is an ESM package linked in via `npm link` (its source of
+  // truth lives in the hegel repo at consequences/src/lib/sbs). Next does not
+  // transpile node_modules by default, and a linked package resolves there;
+  // listing it here makes Next compile it like local source, so its ESM and
+  // browser globals (document, WebGL2) work in the client bundle.
+  transpilePackages: ["@sachikonye/sbs"],
   webpack: (config) => {
     // @xenova/transformers is dynamically imported by the turbulance
     // model resolvers (research / ask primitives). The package is heavy

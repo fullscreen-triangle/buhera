@@ -13,6 +13,10 @@ import { purposeModule } from "@/lib/modules/purpose-module";
 import { zangalewaModule } from "@/lib/modules/zangalewa-module";
 import { graffitiModule } from "@/lib/modules/graffiti-module";
 import { purposeCarryModule, getSession as getPurposeSession } from "@/lib/modules/purpose-carry-module";
+import { shapeshifterModule } from "@/lib/modules/shapeshifter-module";
+import { sbsModule } from "@/lib/modules/sbs-module";
+import { MetricsDashboard } from "@sachikonye/sbs/react";
+import WorkspaceValue from "@/components/shapeshifter/WorkspaceValue";
 import { extractTermsFromInstruction } from "@/lib/purpose-terms";
 import { estimateCostFromInstruction } from "@/lib/purpose-cost";
 
@@ -890,6 +894,62 @@ function ArtifactPurpose({ synthesis, model, provider, federation, floor }) {
   );
 }
 
+function ArtifactShapeshifter({ term, workspace }) {
+  const streamColor = (s) =>
+    s === "stderr" ? "text-rose-400" : s === "stage" ? "text-sky-400" : "text-gray-300";
+  return (
+    <div className="text-gray-300 font-mono text-sm">
+      {/* terminal stream: compile/run stages, logs, summary */}
+      <div className="mb-3">
+        {(term || []).map((line, i) => (
+          <div key={i} className={`whitespace-pre-wrap ${streamColor(line.stream)}`}>
+            {line.stream === "stage" ? `— ${line.text} —` : line.text}
+          </div>
+        ))}
+      </div>
+      {/* one inline panel/chart per produced workspace value (notebook cell) */}
+      {workspace && workspace.length > 0 && (
+        <div className="space-y-4 border-t border-gray-800 pt-3">
+          {workspace.map((w, i) => (
+            <div key={i}>
+              <div className="mb-1 text-[10px] uppercase tracking-wider text-gray-500">
+                {w.name} · {w.kind}
+              </div>
+              <WorkspaceValue entry={w} />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ArtifactSBS({ summary, circuit, metrics, navigation, warnings }) {
+  return (
+    <div className="text-gray-300 space-y-3">
+      <div className="font-mono text-sm text-white">{summary}</div>
+      {warnings && warnings.length > 0 && (
+        <div className="text-xs text-yellow-500/80 font-mono">
+          {warnings.map((w, i) => (
+            <div key={i}>warning: {w.message}</div>
+          ))}
+        </div>
+      )}
+      {metrics && circuit ? (
+        <MetricsDashboard
+          metrics={metrics}
+          circuit={circuit}
+          navigation={navigation}
+        />
+      ) : (
+        <div className="text-xs text-gray-500">
+          compiled; no circuit declared (nothing to observe)
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Artifact({ result }) {
   if (!result) return null;
   switch (result.kind) {
@@ -906,6 +966,8 @@ function Artifact({ result }) {
     case "verify":          return <ArtifactVerify samples={result.samples} message={result.message} />;
     case "turbulance_result": return <ArtifactTurbulance tb={result.tb} />;
     case "lavoisier_run":   return <ArtifactLavoisier summary={result.summary} records={result.records} config={result.config} />;
+    case "shapeshifter_run": return <ArtifactShapeshifter term={result.term} workspace={result.workspace} />;
+    case "sbs_result":      return <ArtifactSBS summary={result.summary} circuit={result.circuit} metrics={result.metrics} navigation={result.navigation} warnings={result.warnings} />;
     case "purpose_synthesis": return <ArtifactPurpose synthesis={result.synthesis} model={result.model} provider={result.provider} federation={result.federation} floor={result.floor} />;
     case "graffiti_result": return <ArtifactGraffiti projects={result.projects} diagnostics={result.diagnostics} ambient_floor={result.ambient_floor} />;
     case "purpose_carry":   return <ArtifactPurposeCarry keep={result.keep} regenerable={result.regenerable} dropped={result.dropped} ambientFloor={result.ambientFloor} residue_entries={result.residue_entries} diagnostics={result.diagnostics} goal_terms={result.goal_terms} budget={result.budget} session_step_count={result.session_step_count} />;
@@ -954,6 +1016,8 @@ export default function BuheraTerminal() {
     register(zangalewaModule);
     register(graffitiModule);
     register(purposeCarryModule);
+    register(shapeshifterModule);
+    register(sbsModule);
 
     // Purpose audit-log feeder: every dispatched act becomes a Step in the
     // purpose session, so `dispatch("purpose-carry", ...)` sees the running
