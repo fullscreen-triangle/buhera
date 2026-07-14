@@ -1,0 +1,9 @@
+{
+  "name": "scope-lang",
+  "version": "0.0.0-stub",
+  "private": true,
+  "description": "Placeholder for the real scope-lang package. The stub returns a clear 'not installed' response so the Buhera build passes. Replace with the real package when it exists.",
+  "type": "module",
+  "main": "./index.js",
+  "sideEffects": false
+}

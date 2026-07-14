@@ -15,6 +15,9 @@ import { graffitiModule } from "@/lib/modules/graffiti-module";
 import { purposeCarryModule, getSession as getPurposeSession } from "@/lib/modules/purpose-carry-module";
 import { shapeshifterModule } from "@/lib/modules/shapeshifter-module";
 import { sbsModule } from "@/lib/modules/sbs-module";
+import { scopeModule, linkScopeImage } from "@/lib/modules/scope-module";
+import { catalystRegistryModule } from "@/lib/modules/catalyst-registry-module";
+import { computeModule } from "@/lib/modules/compute-module";
 import { MetricsDashboard } from "@sachikonye/sbs/react";
 import WorkspaceValue from "@/components/shapeshifter/WorkspaceValue";
 import { extractTermsFromInstruction } from "@/lib/purpose-terms";
@@ -62,6 +65,20 @@ const VAHERA_PREFIXES = [
   "process ",
 ];
 
+// A line starting with one of these is a SCOPE REPL cell (declaration block).
+const SCOPE_PREFIXES = [
+  "coordinate_space",
+  "channels ",
+  "channels{",
+  "goal ",
+  "goal{",
+  "rule ",
+  "dispatch ",
+  "dispatch{",
+];
+// A morphism cell: `<ident> = observe(...` — the assignment form.
+const SCOPE_MORPHISM_RE = /^[a-zA-Z_]\w*\s*=\s*observe\s*\(/;
+
 // A line starting with one of these is a turbulance (kwasa-kwasa) script.
 const TURBULANCE_PREFIXES = [
   "funxn ",
@@ -82,6 +99,42 @@ function stripQuotes(s) {
   return t;
 }
 
+/**
+ * Decode a PNG/JPEG image URL to a grayscale ImagePayload for the SCOPE runtime.
+ * Reuses the browser-native decode chain (fetch → blob → createImageBitmap →
+ * canvas → getImageData), then collapses RGBA to a single luminance channel.
+ * TIFF is not supported — browsers cannot decode it via createImageBitmap.
+ */
+async function loadImagePayload(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const blob = await response.blob();
+
+  let bitmap;
+  try {
+    bitmap = await createImageBitmap(blob);
+  } catch {
+    throw new Error("unsupported image format (use PNG or JPEG)");
+  }
+
+  const { width, height } = bitmap;
+  const canvas =
+    typeof OffscreenCanvas !== "undefined"
+      ? new OffscreenCanvas(width, height)
+      : Object.assign(document.createElement("canvas"), { width, height });
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("no 2d canvas context");
+  ctx.drawImage(bitmap, 0, 0);
+  const { data } = ctx.getImageData(0, 0, width, height);
+
+  // RGBA → grayscale Float32Array (Rec. 601 luma), normalised to [0,1].
+  const gray = new Float32Array(width * height);
+  for (let i = 0, p = 0; i < data.length; i += 4, p++) {
+    gray[p] = (0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]) / 255;
+  }
+  return { data: gray, width, height };
+}
+
 export function routeInput(line) {
   const trimmed = line.trim();
   if (!trimmed) return { type: "noop" };
@@ -96,6 +149,22 @@ export function routeInput(line) {
   if (trimmed === ":proteins") return { type: "meta", meta: "proteins" };
   if (trimmed === ":modules") return { type: "meta", meta: "modules" };
   if (trimmed === ":audit") return { type: "meta", meta: "audit" };
+
+  // SCOPE meta-commands: `:scope load <url>`, `:scope reset`, `:scope` (state).
+  if (lower === ":scope") return { type: "scope_ctl", ctl: "state" };
+  if (lower === ":scope reset") return { type: "scope_ctl", ctl: "reset" };
+  if (lower.startsWith(":scope load ")) {
+    return { type: "scope_ctl", ctl: "load", url: trimmed.slice(":scope load ".length).trim() };
+  }
+
+  // SCOPE REPL cell. A cell is one or more of SCOPE's declarations, typed
+  // without the `scope name { ... }` wrapper: a coordinate_space/channels/goal/
+  // rule/dispatch block, or a morphism `name = observe(...) |> ...`. Detected
+  // by a leading SCOPE keyword or a `<ident> = observe` assignment. Routes
+  // straight to the scope module — never through the orchestrator.
+  if (SCOPE_PREFIXES.some((p) => lower.startsWith(p)) || SCOPE_MORPHISM_RE.test(trimmed)) {
+    return { type: "scope", source: trimmed };
+  }
 
   // Turbulance script (kwasa-kwasa). Multi-line scripts are supported via
   // the textarea; a single-line input also routes here if it starts with
@@ -534,6 +603,81 @@ function ArtifactTurbulance({ tb }) {
   );
 }
 
+function ArtifactScope({ result, log }) {
+  const [showLog, setShowLog] = useState(false);
+  if (!result) return null;
+
+  const fmt = (n, d = 3) => (typeof n === "number" && isFinite(n) ? n.toFixed(d) : "—");
+  const se = result.sEntropy || {};
+  const vis = result.visualData || {};
+  const goals = result.goalStatus || [];
+
+  return (
+    <div className="text-gray-300 font-mono text-sm">
+      <div className="mb-2">
+        <span className="text-gray-400">structure: </span>
+        <span className="text-white">{result.structure || "—"}</span>
+        {vis.activeVisMode && (
+          <span className="ml-3 text-gray-500">
+            visualise: <span className="text-white">{vis.activeVisMode}</span>
+          </span>
+        )}
+      </div>
+
+      <div className="text-xs text-gray-400 mb-2">
+        <span>
+          S = <span className="text-white">{fmt(se.sum)}</span>
+          {"  "}(k {fmt(se.sk)} · t {fmt(se.st)} · e {fmt(se.se)})
+        </span>
+        {result.distance != null && (
+          <span className="ml-3">
+            d = <span className="text-white">{fmt(result.distance, 2)} µm</span>
+            {result.uncertainty != null && (
+              <span className="text-gray-500"> ± {fmt(result.uncertainty, 2)}</span>
+            )}
+          </span>
+        )}
+      </div>
+
+      {goals.length > 0 && (
+        <div className="mb-2 flex flex-wrap gap-1">
+          {goals.map((g, i) => (
+            <span
+              key={i}
+              className={`text-xs px-1.5 py-0.5 rounded ${
+                g.passed ? "bg-green-900/40 text-green-300" : "bg-red-900/40 text-red-300"
+              }`}
+            >
+              {g.metric} {g.op} {g.threshold}{g.unit} {g.passed ? "✓" : "✗"} ({fmt(g.actual, 2)})
+            </span>
+          ))}
+        </div>
+      )}
+
+      <div className="text-xs text-gray-500">
+        field {vis.width || "?"}×{vis.height || "?"}
+        {typeof result.channelCapacity?.snr === "number" && (
+          <span> · SNR {fmt(result.channelCapacity.snr, 1)}</span>
+        )}
+      </div>
+
+      {log && log.length > 0 && (
+        <div className="mt-2">
+          <button
+            className="text-xs text-gray-500 hover:text-gray-300"
+            onClick={() => setShowLog((v) => !v)}
+          >
+            {showLog ? "▾ hide log" : "▸ show log"} ({log.length})
+          </button>
+          {showLog && (
+            <pre className="mt-1 whitespace-pre-wrap text-xs text-gray-500">{log.join("\n")}</pre>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ArtifactLavoisier({ summary, records, config }) {
   const [expanded, setExpanded] = useState(false);
   if (!summary) return null;
@@ -691,6 +835,100 @@ function ArtifactZangalewa({ caption, leaves, coord, provider, model }) {
       )}
       {!primary && (
         <p className="text-gray-500">(no leaves returned)</p>
+      )}
+    </div>
+  );
+}
+
+function ArtifactCatalystList({ entries }) {
+  if (!Array.isArray(entries) || entries.length === 0) {
+    return <p className="text-gray-500 text-sm">(no catalysts registered)</p>;
+  }
+  return (
+    <div className="text-gray-300 text-sm">
+      <p className="text-xs text-gray-500 mb-2">{entries.length} catalyst{entries.length === 1 ? "" : "s"}</p>
+      <ul>
+        {entries.map((e) => (
+          <li key={e.name} className="mb-2">
+            <span className="text-white font-mono">{e.name}</span>
+            <span className="text-gray-500"> — {e.availability || "?"}</span>
+            <span className="text-gray-500"> · {e.cost_hint || "?"}</span>
+            <div className="ml-4 text-xs">
+              <p className="text-blue-400 font-mono">{e.url}</p>
+              {Array.isArray(e.capabilities) && e.capabilities.length > 0 && (
+                <p className="text-gray-500">caps: {e.capabilities.join(", ")}</p>
+              )}
+              {e.notes && <p className="text-gray-500">note: {e.notes}</p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ArtifactCatalystEntry({ entry }) {
+  if (!entry) return null;
+  return (
+    <div className="text-gray-300 text-sm">
+      <p><span className="text-gray-400">name:</span> <span className="text-white font-mono">{entry.name}</span></p>
+      <p><span className="text-gray-400">url:</span> <span className="text-blue-400 font-mono text-xs">{entry.url}</span></p>
+      <p><span className="text-gray-400">auth:</span> {entry.auth?.kind || "none"}</p>
+      <p><span className="text-gray-400">cost:</span> {entry.cost_hint || "?"}</p>
+      <p><span className="text-gray-400">availability:</span> {entry.availability || "?"}</p>
+      {Array.isArray(entry.capabilities) && entry.capabilities.length > 0 && (
+        <p><span className="text-gray-400">capabilities:</span> {entry.capabilities.join(", ")}</p>
+      )}
+      {entry.notes && <p><span className="text-gray-400">notes:</span> {entry.notes}</p>}
+      {entry.added_at && <p className="text-xs text-gray-500 mt-1">added {entry.added_at}</p>}
+    </div>
+  );
+}
+
+function ArtifactCatalystPing({ name, url, result, lines }) {
+  const ok = result?.ok;
+  return (
+    <div className="text-gray-300 text-sm">
+      <p>
+        <span className={ok ? "text-green-400" : "text-red-400"}>{ok ? "●" : "○"}</span>{" "}
+        <span className="text-white font-mono">{name}</span>
+        <span className="text-gray-500 text-xs"> — {url}</span>
+      </p>
+      <div className="ml-4 text-xs">
+        {Array.isArray(lines) && lines.slice(1).map((line, i) => (
+          <p key={i}>{line}</p>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ArtifactRemoteDispatch({ target, moduleId, url, elapsed_ms, status, remote, error_stage, error_message }) {
+  const remoteOk = !!remote?.ok;
+  return (
+    <div className="text-gray-300 text-sm">
+      <div className="text-xs text-gray-500 mb-2">
+        <span className="text-gray-400">via:</span> {target}{" "}
+        <span className="text-gray-400">→</span>{" "}
+        <span className="text-white">{moduleId}</span>
+        {typeof elapsed_ms === "number" && <> · {elapsed_ms} ms</>}
+        {typeof status === "number" && <> · HTTP {status}</>}
+      </div>
+      {error_stage && (
+        <div className="mb-2 text-red-400 text-xs">
+          {error_stage} error: {error_message}
+        </div>
+      )}
+      {remote && (
+        <div className="mt-2">
+          <p className={remoteOk ? "text-green-400 text-xs mb-1" : "text-red-400 text-xs mb-1"}>
+            remote returned ok={String(remoteOk)}
+            {remote._catalyst?.name && <> from {remote._catalyst.name}</>}
+          </p>
+          <pre className="text-xs text-gray-500 whitespace-pre-wrap overflow-x-auto">
+            {JSON.stringify(remote.output_delta ?? remote, null, 2)}
+          </pre>
+        </div>
       )}
     </div>
   );
@@ -966,11 +1204,16 @@ function Artifact({ result }) {
     case "verify":          return <ArtifactVerify samples={result.samples} message={result.message} />;
     case "turbulance_result": return <ArtifactTurbulance tb={result.tb} />;
     case "lavoisier_run":   return <ArtifactLavoisier summary={result.summary} records={result.records} config={result.config} />;
+    case "scope_run":       return <ArtifactScope result={result.result} log={result.log} />;
     case "shapeshifter_run": return <ArtifactShapeshifter term={result.term} workspace={result.workspace} />;
     case "sbs_result":      return <ArtifactSBS summary={result.summary} circuit={result.circuit} metrics={result.metrics} navigation={result.navigation} warnings={result.warnings} />;
     case "purpose_synthesis": return <ArtifactPurpose synthesis={result.synthesis} model={result.model} provider={result.provider} federation={result.federation} floor={result.floor} />;
     case "graffiti_result": return <ArtifactGraffiti projects={result.projects} diagnostics={result.diagnostics} ambient_floor={result.ambient_floor} />;
     case "purpose_carry":   return <ArtifactPurposeCarry keep={result.keep} regenerable={result.regenerable} dropped={result.dropped} ambientFloor={result.ambientFloor} residue_entries={result.residue_entries} diagnostics={result.diagnostics} goal_terms={result.goal_terms} budget={result.budget} session_step_count={result.session_step_count} />;
+    case "catalyst_list":   return <ArtifactCatalystList entries={result.entries} />;
+    case "catalyst_entry":  return <ArtifactCatalystEntry entry={result.entry} />;
+    case "catalyst_ping":   return <ArtifactCatalystPing name={result.name} url={result.url} result={result.result} lines={result.lines} />;
+    case "remote_dispatch": return <ArtifactRemoteDispatch target={result.target} moduleId={result.moduleId} url={result.url} elapsed_ms={result.elapsed_ms} status={result.status} remote={result.remote} error_stage={result.error_stage} error_message={result.error_message} />;
     case "purpose_carry_stats": return <ArtifactText lines={[`purpose-carry: ${result.stepCount} steps in session`, `ambient floor β = ${typeof result.ambientFloor === "number" ? result.ambientFloor.toFixed(3) : "?"}`]} />;
     case "zangalewa_render": return <ArtifactZangalewa caption={result.caption} leaves={result.leaves} coord={result.coord} provider={result.provider} model={result.model} />;
     case "text":            return <ArtifactText lines={result.lines} />;
@@ -1018,6 +1261,9 @@ export default function BuheraTerminal() {
     register(purposeCarryModule);
     register(shapeshifterModule);
     register(sbsModule);
+    register(scopeModule);
+    register(catalystRegistryModule);
+    register(computeModule);
 
     // Purpose audit-log feeder: every dispatched act becomes a Step in the
     // purpose session, so `dispatch("purpose-carry", ...)` sees the running
@@ -1160,6 +1406,39 @@ export default function BuheraTerminal() {
       if (route.type === "turbulance") {
         const tb = await runTurbulance(route.source);
         patchLast({ result: { kind: "turbulance_result", tb } });
+        return;
+      }
+
+      if (route.type === "scope_ctl") {
+        if (route.ctl === "load") {
+          if (!route.url) {
+            patchLast({ result: { kind: "text", lines: ["usage: :scope load <png-or-jpeg-url>"] } });
+            return;
+          }
+          try {
+            const payload = await loadImagePayload(route.url);
+            linkScopeImage(payload);
+            patchLast({
+              result: {
+                kind: "text",
+                lines: [`scope: image linked (${payload.width}×${payload.height}) from ${route.url}`],
+              },
+            });
+          } catch (err) {
+            patchLast({ result: { kind: "text", lines: [`scope: could not load image — ${err.message || String(err)}`] } });
+          }
+          return;
+        }
+        // reset / state go through the module so the audit log sees them.
+        const instr = route.ctl === "reset" ? { kind: "reset" } : { kind: "state" };
+        const res = await dispatchModule("scope", instr);
+        patchLast({ result: res.output_delta });
+        return;
+      }
+
+      if (route.type === "scope") {
+        const res = await dispatchModule("scope", route.source);
+        patchLast({ result: res.output_delta });
         return;
       }
 

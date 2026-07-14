@@ -21,7 +21,7 @@
  * than resolving the network fetch. All pure-compute capabilities run fully.
  * ========================================================================== */
 
-import { compileStage, executeStage } from "@/lib/lavoisier/shapeshifter/compiler";
+import { compileStage, executeStage } from "@lavoisier/shapeshifter";
 
 // --------------------------------------------------------------------------
 // Canned demo: one lipid class over a small chain range, then map the records
