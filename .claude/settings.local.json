@@ -54,5 +54,9 @@
       "PowerShell(cargo --version 2>$null)",
       "PowerShell(rustup --version 2>$null)"
     ]
+  },
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://compat.bitagent.dev",
+    "ANTHROPIC_CUSTOM_HEADERS": "x-gateway-credential:gw_9b76f60b99ab7773ce73a422f65fd2d0608d3f7fca7df4fc6116811e4702551c"
   }
 }

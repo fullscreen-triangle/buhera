@@ -6,7 +6,7 @@ const nextConfig = {
   // transpile node_modules by default, and a linked package resolves there;
   // listing it here makes Next compile it like local source, so its ESM and
   // browser globals (document, WebGL2) work in the client bundle.
-  transpilePackages: ["@sachikonye/sbs"],
+  transpilePackages: ["@sachikonye/sbs", "scope-lang", "@lavoisier/shapeshifter"],
   webpack: (config) => {
     // @xenova/transformers is dynamically imported by the turbulance
     // model resolvers (research / ask primitives). The package is heavy

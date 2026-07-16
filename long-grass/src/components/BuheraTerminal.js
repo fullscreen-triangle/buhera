@@ -18,6 +18,9 @@ import { sbsModule } from "@/lib/modules/sbs-module";
 import { scopeModule, linkScopeImage } from "@/lib/modules/scope-module";
 import { catalystRegistryModule } from "@/lib/modules/catalyst-registry-module";
 import { computeModule } from "@/lib/modules/compute-module";
+import { deskModule, observeAct as deskObserveAct } from "@/lib/modules/desk-module";
+import { dslWriterModule } from "@/lib/modules/dsl-writer-module";
+import { srnModule } from "@/lib/modules/srn-module";
 import { MetricsDashboard } from "@sachikonye/sbs/react";
 import WorkspaceValue from "@/components/shapeshifter/WorkspaceValue";
 import { extractTermsFromInstruction } from "@/lib/purpose-terms";
@@ -78,6 +81,14 @@ const SCOPE_PREFIXES = [
 ];
 // A morphism cell: `<ident> = observe(...` — the assignment form.
 const SCOPE_MORPHISM_RE = /^[a-zA-Z_]\w*\s*=\s*observe\s*\(/;
+
+// SRN expression prefixes — routes to the srn module.
+// "srn ..."      → NL statement forwarded to SRN module
+// "◈..."         → pre-formed SRN glyph (direct eval)
+// "srn:peers"    → list forest peers
+// "srn:probe ... → probe a specific node
+// "srn:gossip"   → trigger gossip
+const SRN_GLYPH_RE = /^◈\s*\(/;
 
 // A line starting with one of these is a turbulance (kwasa-kwasa) script.
 const TURBULANCE_PREFIXES = [
@@ -164,6 +175,28 @@ export function routeInput(line) {
   // straight to the scope module — never through the orchestrator.
   if (SCOPE_PREFIXES.some((p) => lower.startsWith(p)) || SCOPE_MORPHISM_RE.test(trimmed)) {
     return { type: "scope", source: trimmed };
+  }
+
+  // SRN: pre-formed glyph (starts with ◈)
+  if (SRN_GLYPH_RE.test(trimmed)) {
+    return { type: "srn", instruction: { kind: "eval", glyph: trimmed } };
+  }
+
+  // SRN: control commands
+  if (lower === "srn:peers") {
+    return { type: "srn", instruction: { kind: "peers" } };
+  }
+  if (lower === "srn:gossip") {
+    return { type: "srn", instruction: { kind: "gossip" } };
+  }
+  if (lower.startsWith("srn:probe ")) {
+    return { type: "srn", instruction: { kind: "probe", node: trimmed.slice("srn:probe ".length).trim() } };
+  }
+
+  // SRN: NL statement ("srn <anything>" or "link <anything>")
+  if (lower.startsWith("srn ") || lower.startsWith("link ")) {
+    const text = trimmed.slice(trimmed.indexOf(" ") + 1).trim();
+    return { type: "srn", instruction: { kind: "nl", text } };
   }
 
   // Turbulance script (kwasa-kwasa). Multi-line scripts are supported via
@@ -1102,6 +1135,108 @@ function ArtifactGraffiti({ projects, diagnostics, ambient_floor }) {
   );
 }
 
+function ArtifactSrnResult({ glyph, provider, model, node, elapsed_ms, value, chart }) {
+  const [expanded, setExpanded] = useState(false);
+  const scalar =
+    value != null && typeof value === "object" && !Array.isArray(value)
+      ? value.result ?? value.value ?? null
+      : value;
+  return (
+    <div className="text-gray-300 font-mono text-sm">
+      {glyph && (
+        <div className="mb-2 text-xs text-gray-500">
+          <span className="text-gray-400">glyph:</span>{" "}
+          <span className="text-purple-300">{glyph}</span>
+        </div>
+      )}
+      {(provider || node) && (
+        <div className="mb-1 text-xs text-gray-600">
+          {provider && <><span className="text-gray-400">via:</span> {provider}{model ? ` · ${model}` : ""} · </>}
+          {node && <><span className="text-gray-400">node:</span> {node.replace(/^https?:\/\//, "")}</>}
+          {elapsed_ms != null && <> · {elapsed_ms}ms</>}
+        </div>
+      )}
+      {chart ? (
+        <div className="mt-2">
+          <div className="text-xs text-gray-500 mb-1">series ({chart.values.length})</div>
+          <div className="flex items-end gap-px h-12 overflow-hidden">
+            {(() => {
+              const max = Math.max(...chart.values, 1);
+              return chart.values.slice(0, 80).map((v, i) => (
+                <div
+                  key={i}
+                  className="flex-1 min-w-px bg-purple-500/60 rounded-sm"
+                  style={{ height: `${Math.round((v / max) * 100)}%` }}
+                />
+              ));
+            })()}
+          </div>
+        </div>
+      ) : scalar != null ? (
+        <div className="text-white">{typeof scalar === "number" ? scalar.toFixed(6) : String(scalar)}</div>
+      ) : null}
+      {value != null && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-xs text-gray-500 hover:text-gray-300"
+        >
+          {expanded ? "▾ hide raw" : "▸ raw response"}
+        </button>
+      )}
+      {expanded && (
+        <pre className="mt-1 text-xs text-gray-500 whitespace-pre-wrap overflow-x-auto">
+          {JSON.stringify(value, null, 2)}
+        </pre>
+      )}
+    </div>
+  );
+}
+
+function ArtifactSrnPeers({ peers, node, elapsed_ms }) {
+  return (
+    <div className="text-gray-300 text-sm">
+      <div className="text-xs text-gray-500 mb-2">
+        <span className="text-gray-400">forest peers</span>
+        {node && <> · from {node.replace(/^https?:\/\//, "")}</>}
+        {elapsed_ms != null && <> · {elapsed_ms}ms</>}
+      </div>
+      {(!peers || peers.length === 0) ? (
+        <p className="text-gray-500">(no peers known yet)</p>
+      ) : (
+        <ul>
+          {peers.map((p, i) => (
+            <li key={i} className="py-0.5 text-xs font-mono">
+              <span className="text-purple-300">{typeof p === "string" ? p : p.addr || JSON.stringify(p)}</span>
+              {p.coord && <span className="text-gray-500"> coord=({p.coord.n},{p.coord.l},{p.coord.m},{p.coord.s})</span>}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function ArtifactSrnProbe({ target, ok, elapsed_ms, ...rest }) {
+  return (
+    <div className="text-gray-300 text-sm">
+      <p>
+        <span className={ok ? "text-green-400" : "text-red-400"}>{ok ? "●" : "○"}</span>{" "}
+        <span className="font-mono text-purple-300">{(target || "").replace(/^https?:\/\//, "")}</span>
+        {elapsed_ms != null && <span className="text-gray-500 text-xs"> · {elapsed_ms}ms</span>}
+      </p>
+      {Object.keys(rest).length > 0 && (
+        <pre className="mt-1 text-xs text-gray-500 whitespace-pre-wrap">
+          {JSON.stringify(rest, null, 2)}
+        </pre>
+      )}
+    </div>
+  );
+}
+
+function ArtifactSrnError({ message }) {
+  return <p className="text-red-400 text-sm font-mono">srn: {message}</p>;
+}
+
 function ArtifactPurpose({ synthesis, model, provider, federation, floor }) {
   return (
     <div className="text-gray-300">
@@ -1216,10 +1351,58 @@ function Artifact({ result }) {
     case "remote_dispatch": return <ArtifactRemoteDispatch target={result.target} moduleId={result.moduleId} url={result.url} elapsed_ms={result.elapsed_ms} status={result.status} remote={result.remote} error_stage={result.error_stage} error_message={result.error_message} />;
     case "purpose_carry_stats": return <ArtifactText lines={[`purpose-carry: ${result.stepCount} steps in session`, `ambient floor β = ${typeof result.ambientFloor === "number" ? result.ambientFloor.toFixed(3) : "?"}`]} />;
     case "zangalewa_render": return <ArtifactZangalewa caption={result.caption} leaves={result.leaves} coord={result.coord} provider={result.provider} model={result.model} />;
+    case "desk_tag":        return <ArtifactText lines={[`desk: intent tagged.`, `reason: ${result.reason}`, `goal g = { ${result.terms.join(", ")} }`, `every act from now is scored for contribution toward this reason.`]} />;
+    case "desk_stats":      return <ArtifactText lines={result.tagged ? [`desk: intent = "${result.reason}"`, `goal terms: ${result.term_count}`, `acts seen: ${result.acts_seen}  (necessary ${result.necessary} · purposeless ${result.purposeless})`] : ["desk: no intent tagged — the surface is blank."]} />;
+    case "desk_surface":    return <ArtifactText lines={deskSurfaceLines(result)} />;
+    case "srn_result":      return <ArtifactSrnResult glyph={result.glyph} provider={result.provider} model={result.model} node={result.node} elapsed_ms={result.elapsed_ms} value={result.value} chart={result.chart} />;
+    case "srn_peers":       return <ArtifactSrnPeers peers={result.peers} node={result.node} elapsed_ms={result.elapsed_ms} />;
+    case "srn_probe":       return <ArtifactSrnProbe target={result.target} ok={result.ok} elapsed_ms={result.elapsed_ms} />;
+    case "srn_error":       return <ArtifactSrnError message={result.message} />;
     case "text":            return <ArtifactText lines={result.lines} />;
     case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
     default:                return null;
   }
+}
+
+// ────────────────────────────────────────────────────────────
+//  Desk surface renderer. The blank surface, filled: the tagged reason,
+//  its term-coverage, and the acts split into necessary (contributed toward
+//  the intent) vs. purposeless (correct but did not advance g).
+// ────────────────────────────────────────────────────────────
+
+function deskSurfaceLines(result) {
+  const lines = [];
+  lines.push(`desk — the reason: ${result.reason}`);
+  const cov = Math.round((result.coverage || 0) * 100);
+  lines.push(
+    `goal g = { ${result.goal_terms.join(", ")} }   covered ${cov}% (${result.covered_terms.length}/${result.goal_terms.length})`
+  );
+  lines.push("");
+
+  if (result.necessary.length === 0 && result.purposeless.length === 0) {
+    lines.push("no acts yet — dispatch some work, then surface again.");
+    return lines;
+  }
+
+  lines.push(`necessary — advanced the reason (${result.necessary.length}):`);
+  if (result.necessary.length === 0) {
+    lines.push("  (none yet)");
+  } else {
+    for (const a of result.necessary) {
+      const c = a.contribution.toFixed(2);
+      lines.push(`  act ${a.act_id}  [${a.module_id}]  δS=${c}`);
+    }
+  }
+  lines.push("");
+  lines.push(`purposeless — correct but off the reason (${result.purposeless.length}):`);
+  if (result.purposeless.length === 0) {
+    lines.push("  (none)");
+  } else {
+    for (const a of result.purposeless) {
+      lines.push(`  act ${a.act_id}  [${a.module_id}]  δS=0`);
+    }
+  }
+  return lines;
 }
 
 // ────────────────────────────────────────────────────────────
@@ -1264,6 +1447,9 @@ export default function BuheraTerminal() {
     register(scopeModule);
     register(catalystRegistryModule);
     register(computeModule);
+    register(deskModule);
+    register(dslWriterModule);
+    register(srnModule);
 
     // Purpose audit-log feeder: every dispatched act becomes a Step in the
     // purpose session, so `dispatch("purpose-carry", ...)` sees the running
@@ -1292,7 +1478,20 @@ export default function BuheraTerminal() {
         console.warn("purpose feeder failed for act", entry.act_id, err);
       }
     });
-    return () => { unhook(); };
+    // Desk observer: every dispatched act is scored for its contribution
+    // toward the standing intent tagged on the desk (no-op until one is
+    // tagged). Same seam as the purpose feeder above; desk holds the intent,
+    // this feeds it the acts to gate.
+    const unhookDesk = onDispatch((entry) => {
+      try {
+        deskObserveAct(entry);
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn("desk observer failed for act", entry.act_id, err);
+      }
+    });
+
+    return () => { unhook(); unhookDesk(); };
   }, []);
 
   useEffect(() => {
@@ -1438,6 +1637,12 @@ export default function BuheraTerminal() {
 
       if (route.type === "scope") {
         const res = await dispatchModule("scope", route.source);
+        patchLast({ result: res.output_delta });
+        return;
+      }
+
+      if (route.type === "srn") {
+        const res = await dispatchModule("srn", route.instruction);
         patchLast({ result: res.output_delta });
         return;
       }

@@ -1,9 +1,0 @@
-{
-  "name": "@lavoisier/shapeshifter",
-  "version": "0.0.0-stub",
-  "private": true,
-  "description": "Placeholder for the real @lavoisier/shapeshifter package. The stub returns a clear 'not installed' response so the Buhera build passes.",
-  "type": "module",
-  "main": "./index.js",
-  "sideEffects": false
-}
