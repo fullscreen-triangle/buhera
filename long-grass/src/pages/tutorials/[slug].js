@@ -1,17 +1,29 @@
 /* /tutorials/[slug] — a single tutorial page.
  *
  * At build time, reads long-grass/tutorials/<slug>.md, parses it via the
- * tiny in-repo markdown parser, and renders it through TutorialRenderer.
- * Also computes previous/next links based on file order + a canonical
- * reading order for the well-known tutorials.
+ * in-repo markdown parser, computes prev/next links. At mount time,
+ * bootstraps the federation and creates a runtime context shared across
+ * every RunnableCell on the page — so cells see each other's state
+ * (kernel, purpose session, etc.) exactly as in the main terminal.
  */
 
 import fs from "fs";
 import path from "path";
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import Link from "next/link";
 import { parseTutorial, extractMeta } from "@/lib/tutorial-markdown";
-import TutorialRenderer from "@/components/TutorialRenderer";
+import { createRuntimeContext } from "@/lib/runtime/run-input";
+import { bootstrapFederation } from "@/lib/runtime/bootstrap";
+
+// TutorialRenderer imports RunnableCell → Artifact → the whole render tree.
+// Load ssr-off so the tutorial content is SSG-friendly and the heavy render
+// tree only lands after hydration.
+const TutorialRenderer = dynamic(
+  () => import("@/components/TutorialRenderer"),
+  { ssr: false }
+);
 
 const ORDER = [
   "basic-routines",
@@ -48,9 +60,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const dir = path.join(process.cwd(), "tutorials");
   const file = path.join(dir, `${params.slug}.md`);
-  if (!fs.existsSync(file)) {
-    return { notFound: true };
-  }
+  if (!fs.existsSync(file)) return { notFound: true };
   const raw = fs.readFileSync(file, "utf-8");
   const blocks = parseTutorial(raw);
   const { title, description } = extractMeta(blocks);
@@ -63,12 +73,10 @@ export async function getStaticProps({ params }) {
   let prevTitle = "";
   let nextTitle = "";
   if (prevSlug) {
-    const prev = fs.readFileSync(path.join(dir, `${prevSlug}.md`), "utf-8");
-    prevTitle = extractMeta(parseTutorial(prev)).title || prevSlug;
+    prevTitle = extractMeta(parseTutorial(fs.readFileSync(path.join(dir, `${prevSlug}.md`), "utf-8"))).title || prevSlug;
   }
   if (nextSlug) {
-    const next = fs.readFileSync(path.join(dir, `${nextSlug}.md`), "utf-8");
-    nextTitle = extractMeta(parseTutorial(next)).title || nextSlug;
+    nextTitle = extractMeta(parseTutorial(fs.readFileSync(path.join(dir, `${nextSlug}.md`), "utf-8"))).title || nextSlug;
   }
 
   return {
@@ -84,6 +92,18 @@ export async function getStaticProps({ params }) {
 }
 
 export default function TutorialPage({ title, description, blocks, prev, next }) {
+  const ctxRef = useRef(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    // Instantiate the runtime context once per page mount.
+    ctxRef.current = createRuntimeContext();
+    // Register the federation (idempotent — no-op if already registered).
+    const cleanup = bootstrapFederation();
+    setReady(true);
+    return () => { /* keep the federation registered; other pages share it */ };
+  }, []);
+
   return (
     <>
       <Head>
@@ -101,7 +121,15 @@ export default function TutorialPage({ title, description, blocks, prev, next })
             </Link>
           </nav>
 
-          <TutorialRenderer blocks={blocks} />
+          <div className="mb-4 text-xs text-gray-500">
+            {ready ? (
+              <span>▶ this page is live. code cells run against the real federation.</span>
+            ) : (
+              <span>booting federation…</span>
+            )}
+          </div>
+
+          <TutorialRenderer blocks={blocks} ctxRef={ctxRef} />
 
           <hr className="my-8 border-gray-800" />
 

@@ -26,6 +26,7 @@ import { MetricsDashboard } from "@sachikonye/sbs/react";
 import WorkspaceValue from "@/components/shapeshifter/WorkspaceValue";
 import { extractTermsFromInstruction } from "@/lib/purpose-terms";
 import { estimateCostFromInstruction } from "@/lib/purpose-cost";
+import { bootstrapFederation } from "@/lib/runtime/bootstrap";
 
 // ────────────────────────────────────────────────────────────
 //  Kernel boot.
@@ -1326,7 +1327,7 @@ function ArtifactSBS({ summary, circuit, metrics, navigation, warnings }) {
   );
 }
 
-function Artifact({ result }) {
+export function Artifact({ result }) {
   if (!result) return null;
   switch (result.kind) {
     case "protein":         return <ArtifactProtein name={result.name} payload={result.payload} aspect={result.aspect} />;
@@ -1437,64 +1438,10 @@ export default function BuheraTerminal() {
 
   useEffect(() => {
     kernelRef.current = bootBlank();
-    // Register the federation.
-    register(vaheraModule);
-    register(echoModule);
-    register(lavoisierModule);
-    register(purposeModule);
-    register(zangalewaModule);
-    register(graffitiModule);
-    register(purposeCarryModule);
-    register(shapeshifterModule);
-    register(sbsModule);
-    register(scopeModule);
-    register(catalystRegistryModule);
-    register(computeModule);
-    register(deskModule);
-    register(dslWriterModule);
-    register(srnModule);
-
-    // Purpose audit-log feeder: every dispatched act becomes a Step in the
-    // purpose session, so `dispatch("purpose-carry", ...)` sees the running
-    // history without callers having to manually add steps. We skip
-    // dispatches to purpose-carry itself to avoid recursive noise.
-    const session = getPurposeSession();
-    const unhook = onDispatch((entry) => {
-      if (entry.module_id === "purpose-carry") return;
-      try {
-        const id = `act-${entry.act_id}`;
-        const terms = extractTermsFromInstruction(entry.instruction);
-        if (terms.size === 0) return; // no terms → no graph contribution
-        const cost = estimateCostFromInstruction(entry.instruction);
-        session.addStep({
-          id,
-          terms,
-          cost,
-          timestamp: Date.parse(entry.timestamp) || Date.now(),
-          payload: {
-            module_id: entry.module_id,
-            act_id: entry.act_id,
-          },
-        });
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.warn("purpose feeder failed for act", entry.act_id, err);
-      }
-    });
-    // Desk observer: every dispatched act is scored for its contribution
-    // toward the standing intent tagged on the desk (no-op until one is
-    // tagged). Same seam as the purpose feeder above; desk holds the intent,
-    // this feeds it the acts to gate.
-    const unhookDesk = onDispatch((entry) => {
-      try {
-        deskObserveAct(entry);
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.warn("desk observer failed for act", entry.act_id, err);
-      }
-    });
-
-    return () => { unhook(); unhookDesk(); };
+    // Register the whole federation + hooks in one call. Idempotent — the
+    // tutorial pages call the same function.
+    const cleanup = bootstrapFederation();
+    return () => { cleanup(); };
   }, []);
 
   useEffect(() => {

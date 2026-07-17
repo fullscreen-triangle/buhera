@@ -2,11 +2,13 @@
  * TutorialRenderer
  *
  * Renders a block array (from tutorial-markdown.js parseTutorial) as React.
- * Pure — takes blocks in, produces JSX out. No hooks, no state. Callers pass
- * blocks pre-parsed from getStaticProps.
+ * Code blocks become RunnableCells that dispatch against the real
+ * federation, sharing a single runtime context across the page (so cells
+ * see each other's state).
  * ========================================================================== */
 
 import Link from "next/link";
+import RunnableCell from "@/components/RunnableCell";
 
 function Inline({ tokens }) {
   return (
@@ -51,7 +53,10 @@ function Inline({ tokens }) {
   );
 }
 
-function CodeBlock({ code, lang }) {
+function CodeBlock({ code, lang, ctxRef, runnable }) {
+  if (runnable && ctxRef) {
+    return <RunnableCell source={code} ctxRef={ctxRef} />;
+  }
   return (
     <pre className="bg-gray-900 border border-gray-800 rounded p-3 my-3 overflow-x-auto">
       <code className={`text-sm font-mono text-gray-100 language-${lang || "text"}`}>
@@ -61,7 +66,33 @@ function CodeBlock({ code, lang }) {
   );
 }
 
-export default function TutorialRenderer({ blocks }) {
+// A code block is runnable if:
+//   • the language tag is empty or one of the "buhera" family, AND
+//   • the paragraph immediately preceding it is not a static-output
+//     marker like "Expected" / "Output" / "Result".
+// Language tags `text`, `bash`, `json`, `output`, `expected` are always
+// static.
+function isRunnableCode({ lang, precedingLabel }) {
+  const l = String(lang || "").toLowerCase();
+  if (l && l !== "buhera" && l !== "terminal" && l !== "cell") return false;
+  if (precedingLabel) {
+    const p = precedingLabel.trim();
+    if (
+      p === "expected" ||
+      p === "output" ||
+      p === "result" ||
+      p === "response" ||
+      p.startsWith("expected ") ||
+      p.startsWith("output ") ||
+      p.startsWith("result ")
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export default function TutorialRenderer({ blocks, ctxRef }) {
   return (
     <article className="prose prose-invert max-w-none">
       {blocks.map((b, i) => {
@@ -88,7 +119,16 @@ export default function TutorialRenderer({ blocks }) {
           );
         }
         if (b.type === "code") {
-          return <CodeBlock key={i} code={b.code} lang={b.lang} />;
+          const runnable = isRunnableCode(b);
+          return (
+            <CodeBlock
+              key={i}
+              code={b.code}
+              lang={b.lang}
+              runnable={runnable}
+              ctxRef={ctxRef}
+            />
+          );
         }
         if (b.type === "ul") {
           return (

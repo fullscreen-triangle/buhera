@@ -103,7 +103,19 @@ export function parseTutorial(source) {
         i++;
       }
       i++; // skip closing fence
-      blocks.push({ type: "code", lang, code: codeLines.join("\n") });
+      // Look at the block immediately preceding this one. If it's a bold
+      // marker like "Expected" / "Output" / "Result", the code is static
+      // output, not a runnable command. This decorates the block so the
+      // renderer can pick the right rendering.
+      const preceding = blocks[blocks.length - 1];
+      let precedingLabel = null;
+      if (preceding && preceding.type === "p" && Array.isArray(preceding.inline)) {
+        const boldTokens = preceding.inline.filter((t) => t.kind === "bold");
+        if (boldTokens.length > 0) {
+          precedingLabel = boldTokens[0].text.trim().toLowerCase();
+        }
+      }
+      blocks.push({ type: "code", lang, code: codeLines.join("\n"), precedingLabel });
       continue;
     }
 
