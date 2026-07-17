@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Kernel } from "@/lib/kernel";
 import { embedProtein } from "@/lib/substrate";
 import { translate } from "@/lib/translator";
@@ -160,6 +161,7 @@ export function routeInput(line) {
   if (trimmed === ":proteins") return { type: "meta", meta: "proteins" };
   if (trimmed === ":modules") return { type: "meta", meta: "modules" };
   if (trimmed === ":audit") return { type: "meta", meta: "audit" };
+  if (trimmed === ":tutorials") return { type: "meta", meta: "tutorials" };
 
   // SCOPE meta-commands: `:scope load <url>`, `:scope reset`, `:scope` (state).
   if (lower === ":scope") return { type: "scope_ctl", ctl: "state" };
@@ -296,6 +298,7 @@ other commands
   sort                    zero-cost categorical sort
   :modules                list the federation
   :audit                  show recent acts
+  :tutorials              open the tutorial index
   :tour                   load five sample notes and search them
   :proteins               load a hardcoded biology database for the
                           natural-language demo
@@ -1579,6 +1582,24 @@ export default function BuheraTerminal() {
                   : "[non-string instruction]"
               }`);
           patchLast({ result: { kind: "text", lines } });
+        } else if (route.meta === "tutorials") {
+          // Open the tutorials index in a new tab so the terminal session
+          // is preserved. Fall back to same-tab navigation if popups blocked.
+          if (typeof window !== "undefined") {
+            const w = window.open("/tutorials", "_blank", "noopener");
+            if (!w) {
+              window.location.href = "/tutorials";
+            }
+          }
+          patchLast({
+            result: {
+              kind: "text",
+              lines: [
+                "opening tutorials …",
+                "if a new tab did not open, go to /tutorials directly.",
+              ],
+            },
+          });
         } else if (route.meta === "quit") {
           patchLast({ result: { kind: "text", lines: ["(can't quit a browser tab from here)"] } });
         }
@@ -1724,6 +1745,13 @@ export default function BuheraTerminal() {
 
   return (
     <div className="fixed inset-0 bg-black text-gray-300 flex flex-col px-16 py-10 md:px-8 md:py-6 font-mono text-sm leading-relaxed">
+      <Link
+        href="/tutorials"
+        className="fixed top-3 right-4 text-xs text-gray-600 hover:text-gray-300 z-10 no-underline"
+        style={{ fontFamily: "inherit" }}
+      >
+        tutorials →
+      </Link>
       <div
         ref={historyRef}
         className="flex-1 overflow-y-auto pb-4"
