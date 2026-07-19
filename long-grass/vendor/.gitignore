@@ -1,0 +1,8 @@
+# Everything under vendor/ MUST be committed. It contains the vendored
+# copies of @buhera/purpose, @lavoisier/shapeshifter, and stubs that this
+# repo depends on via file:./vendor/... specifiers in package.json. The
+# parent .gitignore excludes generic `dist/` directories, and several
+# vendored packages ship their built dist/ folder — this file overrides
+# those rules for anything inside vendor/.
+!*
+!**/*

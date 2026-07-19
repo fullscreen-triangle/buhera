@@ -12,7 +12,7 @@
     "dependencies": {
         "@buhera/purpose": "file:./vendor/purpose",
         "@codemirror/language": "^6.0.0",
-        "@lavoisier/shapeshifter": "file:../../../bioinformatics/lavoisier/web/src/lib",
+        "@lavoisier/shapeshifter": "file:./vendor/shapeshifter",
         "@sachikonye/sbs": "file:sachikonye-sbs-0.1.0.tgz",
         "d3": "^7.9.0",
         "eslint": "^8.35.0",
