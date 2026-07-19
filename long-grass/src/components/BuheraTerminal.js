@@ -1415,9 +1415,23 @@ function deskSurfaceLines(result) {
 
 function WelcomePanel() {
   return (
-    <pre className="text-gray-400 text-xs leading-relaxed whitespace-pre-wrap font-mono">
+    <div>
+      <div className="mb-6 flex items-baseline justify-between gap-4 flex-wrap">
+        <div>
+          <div className="text-white text-lg font-mono">buhera OS</div>
+          <div className="text-gray-500 text-xs mt-0.5">a research operating system</div>
+        </div>
+        <Link
+          href="/tutorials"
+          className="text-sm text-green-300 hover:text-green-200 font-mono border border-green-800 hover:border-green-600 rounded px-3 py-1 no-underline"
+        >
+          ▶ tutorials
+        </Link>
+      </div>
+      <pre className="text-gray-400 text-xs leading-relaxed whitespace-pre-wrap font-mono">
 {WELCOME}
-    </pre>
+      </pre>
+    </div>
   );
 }
 
@@ -1694,10 +1708,10 @@ export default function BuheraTerminal() {
     <div className="fixed inset-0 bg-black text-gray-300 flex flex-col px-16 py-10 md:px-8 md:py-6 font-mono text-sm leading-relaxed">
       <Link
         href="/tutorials"
-        className="fixed top-3 right-4 text-xs text-gray-600 hover:text-gray-300 z-10 no-underline"
+        className="fixed top-3 right-4 text-xs text-green-400 hover:text-green-300 z-10 no-underline font-mono"
         style={{ fontFamily: "inherit" }}
       >
-        tutorials →
+        ▶ tutorials
       </Link>
       <div
         ref={historyRef}
