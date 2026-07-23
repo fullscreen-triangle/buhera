@@ -11,6 +11,7 @@
     },
     "dependencies": {
         "@buhera/purpose": "file:./vendor/purpose",
+        "@buhera/pylon": "file:./vendor/pylon",
         "@codemirror/language": "^6.0.0",
         "@lavoisier/shapeshifter": "file:./vendor/shapeshifter",
         "@sachikonye/sbs": "file:sachikonye-sbs-0.1.0.tgz",
