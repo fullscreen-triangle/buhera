@@ -17,12 +17,9 @@ the service is always runnable.
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from fastapi import FastAPI, Form, HTTPException, Query, Request, Response
 from fastapi.responses import JSONResponse, PlainTextResponse
 from rdflib import Graph
-from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
 
 from . import __version__
 from .build import DEFAULT_OUT, TTL_FILENAME
