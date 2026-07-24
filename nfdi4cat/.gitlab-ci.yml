@@ -1,0 +1,63 @@
+# GitLab CI/CD for the transaminase knowledge-graph service.
+#
+# Two stages:
+#   test   — lint + the pytest suite (chemistry balance, graph integrity, SPARQL)
+#   build  — build the Docker image and push it to the GitLab Container Registry
+#
+# The build stage uses Kaniko (no privileged Docker-in-Docker needed) and pushes
+# to $CI_REGISTRY_IMAGE, tagged with the commit SHA and — on the default branch —
+# also `latest`.
+
+stages:
+  - test
+  - build
+
+default:
+  # The whole project lives in the nfdi4cat/ subdirectory of the repo.
+  # Adjust or drop this if the project is pushed as the repository root.
+  # (Kept explicit so the pipeline is honest about where it runs.)
+  tags: []
+
+variables:
+  UV_VERSION: "0.5"
+  PROJECT_DIR: "nfdi4cat"
+
+# --- test -------------------------------------------------------------------
+test:
+  stage: test
+  image: ghcr.io/astral-sh/uv:python3.12-bookworm-slim
+  variables:
+    UV_CACHE_DIR: "$CI_PROJECT_DIR/.uv-cache"
+  cache:
+    key:
+      files:
+        - $PROJECT_DIR/uv.lock
+    paths:
+      - .uv-cache
+  before_script:
+    - cd "$PROJECT_DIR"
+    - uv sync --all-extras
+  script:
+    - uv run ruff check .
+    - uv run pytest -q
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH
+
+# --- build & register -------------------------------------------------------
+build-image:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    entrypoint: [""]
+  script:
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}/${PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/${PROJECT_DIR}/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+      $( [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ] && echo "--destination ${CI_REGISTRY_IMAGE}:latest" )
+  rules:
+    # Build images only on branch pushes (not merge-request pipelines), and only
+    # after tests have passed (stage ordering enforces this).
+    - if: $CI_COMMIT_BRANCH

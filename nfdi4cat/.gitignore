@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# environments
+.venv/
+.venv-test/
+
+# uv
+# (uv.lock IS committed — it pins the reproducible environment)
+
+# generated build artefacts (rebuilt by `build-kg` / the Docker build)
+src/transaminase_kg/data/
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store

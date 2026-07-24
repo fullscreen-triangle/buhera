@@ -1,0 +1,14 @@
+# keep the build context small and reproducible
+.git
+.gitignore
+.venv
+.venv-test
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+tests
+docs
+*.md
+!README.md
+src/transaminase_kg/data

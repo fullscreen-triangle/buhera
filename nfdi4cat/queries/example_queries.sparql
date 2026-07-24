@@ -1,0 +1,56 @@
+# Example SPARQL queries against the transaminase knowledge graph.
+# Each block is an independent query; send it to /sparql?query=... (URL-encoded)
+# or POST it to /sparql.
+
+# ---------------------------------------------------------------------------
+# 1. All transaminase reactions with their labels.
+# ---------------------------------------------------------------------------
+PREFIX ta: <https://w3id.org/nfdi4cat/transaminase-kg/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?reaction ?label WHERE {
+  ?reaction a ta:Transamination ;
+            rdfs:label ?label .
+}
+
+# ---------------------------------------------------------------------------
+# 2. Substrates and products of every reaction, with EC number.
+# ---------------------------------------------------------------------------
+PREFIX ta: <https://w3id.org/nfdi4cat/transaminase-kg/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?ec ?substrate ?product WHERE {
+  ?reaction ta:catalyzedBy ?enz ;
+            ta:hasSubstrate ?s ;
+            ta:hasProduct ?p .
+  ?enz ta:ecNumber ?ec .
+  ?s rdfs:label ?substrate .
+  ?p rdfs:label ?product .
+}
+ORDER BY ?ec
+
+# ---------------------------------------------------------------------------
+# 3. Every reaction that depends on pyridoxal 5'-phosphate (ChEBI:18405).
+#    Demonstrates querying THROUGH the ChEBI cross-reference.
+# ---------------------------------------------------------------------------
+PREFIX ta: <https://w3id.org/nfdi4cat/transaminase-kg/ontology#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?enzymeName WHERE {
+  ?reaction ta:catalyzedBy ?enz .
+  ?enz ta:hasCofactor ?cof ; rdfs:label ?enzymeName .
+  ?cof skos:exactMatch obo:CHEBI_18405 .
+}
+
+# ---------------------------------------------------------------------------
+# 4. The shared chemistry: which species appear in more than one reaction?
+# ---------------------------------------------------------------------------
+PREFIX ta: <https://w3id.org/nfdi4cat/transaminase-kg/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?species (COUNT(DISTINCT ?reaction) AS ?nReactions) WHERE {
+  ?reaction a ta:Transamination .
+  { ?reaction ta:hasSubstrate ?sp } UNION { ?reaction ta:hasProduct ?sp }
+  ?sp rdfs:label ?species .
+}
+GROUP BY ?species
+HAVING (COUNT(DISTINCT ?reaction) > 1)
+ORDER BY DESC(?nReactions)

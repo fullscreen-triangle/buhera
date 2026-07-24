@@ -1,0 +1,24 @@
+# docker-compose for the transaminase knowledge-graph SPARQL service.
+#
+#   docker compose up --build
+#   -> http://localhost:8000/        (service info + example queries)
+#   -> http://localhost:8000/docs    (interactive OpenAPI docs)
+#   -> http://localhost:8000/sparql?query=...
+
+services:
+  kg-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: transaminase-kg:latest
+    container_name: transaminase-kg
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').read()==b'ok' else 1)"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
