@@ -1,0 +1,126 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ta: <https://w3id.org/nfdi4cat/transaminase-kg/ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/nfdi4cat/transaminase-kg> a owl:Ontology ;
+    dcterms:description "Three PLP-dependent aminotransferase reactions (EC 2.6.1.1/.2/.3), sourced from KEGG, BRENDA and ChEBI."@en ;
+    dcterms:source "cofactor: pyridoxal 5'-phosphate, ChEBI:18405",
+        "compound_ids: ChEBI (via KEGG conv/chebi cross-reference)",
+        "reactions_ec: KEGG ENZYME; BRENDA" ;
+    dcterms:title "Transaminase reactions knowledge graph"@en ;
+    owl:imports <https://w3id.org/nfdi4cat/transaminase-kg/ontology> .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/reaction/ALT> a ta:Transamination ;
+    rdfs:label "alanine transaminase reaction"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.reaction:R00258> ;
+    ta:catalyzedBy <https://w3id.org/nfdi4cat/transaminase-kg/resource/enzyme/2.6.1.2> ;
+    ta:hasAminoAcceptor <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/2-oxoglutarate> ;
+    ta:hasAminoDonor <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-alanine> ;
+    ta:hasProduct <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-glutamate>,
+        <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/pyruvate> ;
+    ta:hasSubstrate <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/2-oxoglutarate>,
+        <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-alanine> ;
+    ta:keggReaction "R00258" ;
+    ta:mechanism "ping-pong bi-bi"@en ;
+    ta:reversible true ;
+    ta:systematicName "L-alanine:2-oxoglutarate aminotransferase"@en .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/reaction/AST> a ta:Transamination ;
+    rdfs:label "aspartate transaminase reaction"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.reaction:R00355> ;
+    ta:catalyzedBy <https://w3id.org/nfdi4cat/transaminase-kg/resource/enzyme/2.6.1.1> ;
+    ta:hasAminoAcceptor <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/2-oxoglutarate> ;
+    ta:hasAminoDonor <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-aspartate> ;
+    ta:hasProduct <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-glutamate>,
+        <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/oxaloacetate> ;
+    ta:hasSubstrate <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/2-oxoglutarate>,
+        <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-aspartate> ;
+    ta:keggReaction "R00355" ;
+    ta:mechanism "ping-pong bi-bi"@en ;
+    ta:reversible true ;
+    ta:systematicName "L-aspartate:2-oxoglutarate aminotransferase"@en .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/reaction/CysAT> a ta:Transamination ;
+    rdfs:label "cysteine transaminase reaction"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.reaction:R00895> ;
+    ta:catalyzedBy <https://w3id.org/nfdi4cat/transaminase-kg/resource/enzyme/2.6.1.3> ;
+    ta:hasAminoAcceptor <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/2-oxoglutarate> ;
+    ta:hasAminoDonor <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-cysteine> ;
+    ta:hasProduct <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/2-oxo-3-sulfanylpropanoate>,
+        <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-glutamate> ;
+    ta:hasSubstrate <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/2-oxoglutarate>,
+        <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-cysteine> ;
+    ta:keggReaction "R00895" ;
+    ta:mechanism "ping-pong bi-bi"@en ;
+    ta:reversible true ;
+    ta:systematicName "L-cysteine:2-oxoglutarate aminotransferase"@en .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/enzyme/2.6.1.1> a ta:Enzyme ;
+    rdfs:label "aspartate transaminase"@en ;
+    skos:exactMatch <https://identifiers.org/ec-code:2.6.1.1> ;
+    ta:ecNumber "2.6.1.1" ;
+    ta:hasCofactor <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/pyridoxal-5-phosphate> ;
+    ta:systematicName "L-aspartate:2-oxoglutarate aminotransferase"@en .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/enzyme/2.6.1.2> a ta:Enzyme ;
+    rdfs:label "alanine transaminase"@en ;
+    skos:exactMatch <https://identifiers.org/ec-code:2.6.1.2> ;
+    ta:ecNumber "2.6.1.2" ;
+    ta:hasCofactor <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/pyridoxal-5-phosphate> ;
+    ta:systematicName "L-alanine:2-oxoglutarate aminotransferase"@en .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/enzyme/2.6.1.3> a ta:Enzyme ;
+    rdfs:label "cysteine transaminase"@en ;
+    skos:exactMatch <https://identifiers.org/ec-code:2.6.1.3> ;
+    ta:ecNumber "2.6.1.3" ;
+    ta:hasCofactor <https://w3id.org/nfdi4cat/transaminase-kg/resource/species/pyridoxal-5-phosphate> ;
+    ta:systematicName "L-cysteine:2-oxoglutarate aminotransferase"@en .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/species/2-oxo-3-sulfanylpropanoate> a ta:ChemicalSpecies ;
+    rdfs:label "2-oxo-3-sulfanylpropanoate"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.compound:C00957> ;
+    skos:exactMatch <http://purl.obolibrary.org/obo/CHEBI_16208> .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/species/oxaloacetate> a ta:ChemicalSpecies ;
+    rdfs:label "oxaloacetate"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.compound:C00036> ;
+    skos:exactMatch <http://purl.obolibrary.org/obo/CHEBI_16452> .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/species/pyruvate> a ta:ChemicalSpecies ;
+    rdfs:label "pyruvate"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.compound:C00022> ;
+    skos:exactMatch <http://purl.obolibrary.org/obo/CHEBI_15361> .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-alanine> a ta:ChemicalSpecies ;
+    rdfs:label "L-alanine"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.compound:C00041> ;
+    skos:exactMatch <http://purl.obolibrary.org/obo/CHEBI_16977> .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-aspartate> a ta:ChemicalSpecies ;
+    rdfs:label "L-aspartate"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.compound:C00049> ;
+    skos:exactMatch <http://purl.obolibrary.org/obo/CHEBI_17053> .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-cysteine> a ta:ChemicalSpecies ;
+    rdfs:label "L-cysteine"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.compound:C00097> ;
+    skos:exactMatch <http://purl.obolibrary.org/obo/CHEBI_17561> .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/species/L-glutamate> a ta:ChemicalSpecies ;
+    rdfs:label "L-glutamate"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.compound:C00025> ;
+    skos:exactMatch <http://purl.obolibrary.org/obo/CHEBI_16015> .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/species/pyridoxal-5-phosphate> a ta:Cofactor ;
+    rdfs:label "pyridoxal 5'-phosphate"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.compound:C00018> ;
+    skos:exactMatch <http://purl.obolibrary.org/obo/CHEBI_18405> .
+
+<https://w3id.org/nfdi4cat/transaminase-kg/resource/species/2-oxoglutarate> a ta:ChemicalSpecies ;
+    rdfs:label "2-oxoglutarate"@en ;
+    skos:closeMatch <https://identifiers.org/kegg.compound:C00026> ;
+    skos:exactMatch <http://purl.obolibrary.org/obo/CHEBI_16810> .
+

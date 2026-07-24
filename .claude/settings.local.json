@@ -52,11 +52,22 @@
       "PowerShell(Get-Command cargo 2>$null)",
       "PowerShell(rustc --version 2>$null)",
       "PowerShell(cargo --version 2>$null)",
-      "PowerShell(rustup --version 2>$null)"
+      "PowerShell(rustup --version 2>$null)",
+      "Bash(purpose --version)",
+      "Bash(purpose ask:*)",
+      "Bash(purpose operations)",
+      "Bash(purpose query:*)",
+      "PowerShell(purpose ask:*)",
+      "PowerShell(& purpose ask:*)",
+      "PowerShell(purpose.exe ask:*)",
+      "PowerShell(& \"$env:USERPROFILE\\.cargo\\bin\\purpose.exe\" ask:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File scripts/purpose-reindex.ps1)",
+      "PowerShell(scripts/purpose-reindex.ps1)",
+      "PowerShell(.\\scripts\\purpose-reindex.ps1)"
     ]
   },
   "env": {
     "ANTHROPIC_BASE_URL": "https://compat.bitagent.dev",
-    "ANTHROPIC_CUSTOM_HEADERS": "x-gateway-credential:gw_cff006e29f216bbf0c392bd068cef87eb8ba6f03d59c72c5a9d594b32430d52f"
+    "ANTHROPIC_CUSTOM_HEADERS": "x-gateway-credential:gw_4c01520cca58e1ad8c754f29ed6fb651012ca654dade0736b6bc58a813604465"
   }
 }
