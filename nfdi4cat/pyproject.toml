@@ -47,3 +47,12 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra -q"
+# Be strict: any warning is an error, so a real regression can't hide in the
+# noise. The one exception is a deprecation *inside* Starlette's TestClient
+# (it imports httpx in a way it now warns about) — third-party, not ours, and
+# only present under test. We silence that single message rather than mask the
+# whole category.
+filterwarnings = [
+    "error",
+    "ignore::starlette.exceptions.StarletteDeprecationWarning",
+]
