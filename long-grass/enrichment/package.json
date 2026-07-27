@@ -1,0 +1,17 @@
+{
+  "name": "buhera-enrichment",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Buhera-side ping-pong enrichment: ingest a partner pipeline's RDF graph, derive new facts through the Buhera module federation, emit a detachable enrichment graph back over the wire.",
+  "bin": {
+    "buhera-enrich": "./bin/enrich.mjs"
+  },
+  "scripts": {
+    "enrich": "node bin/enrich.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "n3": "^1.17.3"
+  }
+}

@@ -17,13 +17,33 @@ the service is always runnable.
 
 from __future__ import annotations
 
+import os
+from pathlib import Path
+
 from fastapi import FastAPI, Form, HTTPException, Query, Request, Response
 from fastapi.responses import JSONResponse, PlainTextResponse
-from rdflib import Graph
+from rdflib import Dataset, Graph, URIRef
 
 from . import __version__
 from .build import DEFAULT_OUT, TTL_FILENAME
 from .graph import build_graph, graph_stats
+
+# --- ping-pong enrichment (Buhera peer pipeline) ----------------------------
+# The Buhera pipeline consumes our served graph and hands back a *detachable*
+# enrichment graph (derived facts: mass/charge balance, and later spectra and
+# emergent topology). We never depend on it: merging is opt-in, the enrichment
+# lives in its own named graph, and DROP GRAPH restores our artefact exactly.
+ENRICHMENT_GRAPH_IRI = URIRef(
+    "https://w3id.org/nfdi4cat/transaminase-kg/enrichment"
+)
+# default location of the artefact Buhera writes back over the wire
+DEFAULT_ENRICHMENT_TTL = (
+    Path(__file__).resolve().parents[3]
+    / "long-grass"
+    / "enrichment"
+    / "out"
+    / "enrichment.ttl"
+)
 
 # --- media types (SPARQL 1.1) -----------------------------------------------
 SPARQL_JSON = "application/sparql-results+json"
@@ -74,9 +94,57 @@ def load_graph() -> Graph:
     return build_graph()
 
 
+def load_dataset(enrichment: Path | None = None) -> Dataset:
+    """Load the base graph plus, optionally, the Buhera enrichment graph.
+
+    The base A-Box goes into the dataset's default graph, byte-for-byte the
+    same triples ``load_graph`` returns. If an enrichment artefact is supplied
+    it is parsed into a *separate named graph* (:data:`ENRICHMENT_GRAPH_IRI`),
+    so a consumer can ``DROP GRAPH <…/enrichment>`` and recover the base
+    exactly. This is the receiving half of the ping-pong: we accept derived
+    facts without letting them mutate anything we minted.
+    """
+    # default_union=True so a plain SPARQL pattern sees base ∪ enrichment as
+    # one queryable surface (a derived fact joins the base subject it enriches),
+    # while each graph keeps its own context for DROP GRAPH detachability.
+    ds = Dataset(default_union=True)
+    base = ds.graph(URIRef("urn:x-rdflib:default"))
+    for triple in load_graph():
+        base.add(triple)
+
+    if enrichment is not None and enrichment.exists():
+        ds.graph(ENRICHMENT_GRAPH_IRI).parse(enrichment, format="turtle")
+
+    return ds
+
+
+def _enrichment_enabled() -> Path | None:
+    """Resolve opt-in enrichment from the environment.
+
+    ``TAKG_ENRICHMENT=1`` uses the default artefact path; ``TAKG_ENRICHMENT=<path>``
+    names one explicitly. Unset -> ``None`` -> base-only, today's behaviour.
+    """
+    val = os.environ.get("TAKG_ENRICHMENT")
+    if not val:
+        return None
+    if val in ("1", "true", "yes"):
+        return DEFAULT_ENRICHMENT_TTL
+    return Path(val)
+
+
 def create_app(graph: Graph | None = None) -> FastAPI:
-    """Application factory — injectable graph makes the app trivially testable."""
-    g = graph if graph is not None else load_graph()
+    """Application factory — injectable graph makes the app trivially testable.
+
+    With no injected graph, enrichment is opt-in via the ``TAKG_ENRICHMENT``
+    environment variable (see :func:`_enrichment_enabled`). When enabled the
+    query target is a :class:`~rdflib.Dataset` carrying the Buhera enrichment
+    in its own named graph; when not, behaviour is byte-identical to base-only.
+    """
+    if graph is not None:
+        g: Graph = graph
+    else:
+        enrichment = _enrichment_enabled()
+        g = load_dataset(enrichment) if enrichment else load_graph()
 
     app = FastAPI(
         title="Transaminase Knowledge Graph — SPARQL endpoint",

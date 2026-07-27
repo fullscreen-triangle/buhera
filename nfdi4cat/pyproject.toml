@@ -55,4 +55,8 @@ addopts = "-ra -q"
 filterwarnings = [
     "error",
     "ignore::starlette.exceptions.StarletteDeprecationWarning",
+    # rdflib raises this from its own query machinery whenever a Dataset is
+    # queried with default_union=True (which we use so a Buhera enrichment fact
+    # joins the base subject it enriches). Internal to rdflib, not our call.
+    "ignore:Dataset.default_context is deprecated:DeprecationWarning",
 ]
