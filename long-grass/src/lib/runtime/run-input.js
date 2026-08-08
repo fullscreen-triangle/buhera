@@ -140,6 +140,11 @@ export async function runInput(text, ctx) {
       return { kind: "artifact", result: res.output_delta };
     }
 
+    if (route.type === "smith") {
+      const res = await dispatchModule("smith", route.instruction);
+      return { kind: "artifact", result: res.output_delta };
+    }
+
     // NL input.
     if (ctx.proteinsMode) {
       const vh = translate(route.text);

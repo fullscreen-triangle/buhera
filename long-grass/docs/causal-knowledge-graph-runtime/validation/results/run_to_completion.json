@@ -1,0 +1,228 @@
+{
+  "claim": "run_to_completion",
+  "theorem": "Thm. 2 (no exit code), Cor. 4 (run to completion), Def. 3 (multi-chunk)",
+  "passed": true,
+  "core": {
+    "report": {
+      "measure": {
+        "quantity": 42
+      },
+      "derive": {
+        "derived_a": "shape",
+        "derived_b": "graff"
+      },
+      "anomaly": {
+        "error": "RuntimeError('unexpected reading')"
+      },
+      "after": {
+        "tail": "reached"
+      }
+    },
+    "audit": [
+      {
+        "act_id": 1,
+        "tau": "measure",
+        "chunk": "quantify",
+        "emitted_kind": "quantity",
+        "raised": false
+      },
+      {
+        "act_id": 2,
+        "tau": "derive",
+        "chunk": "shapeshifter_chunk",
+        "emitted_kind": "derived_a",
+        "raised": false
+      },
+      {
+        "act_id": 3,
+        "tau": "derive",
+        "chunk": "graffiti_chunk",
+        "emitted_kind": "derived_b",
+        "raised": false
+      },
+      {
+        "act_id": 4,
+        "tau": "anomaly",
+        "chunk": "explode",
+        "emitted_kind": "error",
+        "raised": true
+      },
+      {
+        "act_id": 5,
+        "tau": "after",
+        "chunk": "record",
+        "emitted_kind": "tail",
+        "raised": false
+      }
+    ],
+    "multi_chunk_node": {
+      "tau": "derive",
+      "chunks_run": [
+        "shapeshifter_chunk",
+        "graffiti_chunk"
+      ],
+      "both_emitted": true
+    },
+    "runtime_exposes_verdict": false
+  },
+  "sweep": {
+    "lengths": [
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      32
+    ],
+    "densities": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "reached_runtime": [
+      [
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32
+      ],
+      [
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32
+      ],
+      [
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32
+      ],
+      [
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32
+      ],
+      [
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32
+      ],
+      [
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32
+      ]
+    ],
+    "reached_halt_on_error": [
+      [
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32
+      ],
+      [
+        4,
+        8,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      [
+        4,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
+    "completion_fraction_runtime": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "completion_fraction_halt_on_error": [
+      1.0,
+      0.5,
+      0.2708333333333333,
+      0.16666666666666666,
+      0.1111111111111111,
+      0.1111111111111111
+    ]
+  }
+}

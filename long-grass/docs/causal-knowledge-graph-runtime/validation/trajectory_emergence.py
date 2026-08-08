@@ -13,16 +13,12 @@ both.
 
 from __future__ import annotations
 
+import json
 import os
-
-import matplotlib
-
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
 
 from ckg_runtime import Module, Node, Runtime, ValueDelta  # noqa: E402
 
-FIG_DIR = os.path.join(os.path.dirname(__file__), "..", "figures")
+RESULTS_DIR = os.path.join(os.path.dirname(__file__), "results")
 
 
 def build_nodes() -> list[Node]:
@@ -42,7 +38,7 @@ def build_nodes() -> list[Node]:
     return nodes
 
 
-def run(seed_node: str) -> set[tuple[str, str]]:
+def run(seed_node: str, seed_mag: int = 3) -> set[tuple[str, str]]:
     """Return the causal edge relation induced by one run.
 
     A "reader" module reads a node's `signal` and, if it crosses a threshold that
@@ -54,7 +50,7 @@ def run(seed_node: str) -> set[tuple[str, str]]:
     rt = Runtime()
 
     # seed exactly one node differently -> different run, same node set
-    by_tau[seed_node].values["seed"] = 3
+    by_tau[seed_node].values["seed"] = seed_mag
 
     order = ["a", "b", "c", "d", "e", "f"]
     edges: set[tuple[str, str]] = set()
@@ -88,6 +84,18 @@ def run(seed_node: str) -> set[tuple[str, str]]:
     return edges
 
 
+ORDER = ["a", "b", "c", "d", "e", "f"]
+
+
+def _adjacency(edges: set[tuple[str, str]]) -> list[list[int]]:
+    """Dense 0/1 adjacency over ORDER for one run's induced edge relation."""
+    idx = {t: i for i, t in enumerate(ORDER)}
+    m = [[0] * len(ORDER) for _ in ORDER]
+    for (u, v) in edges:
+        m[idx[u]][idx[v]] = 1
+    return m
+
+
 def main() -> None:
     run1 = run(seed_node="a")
     run2 = run(seed_node="d")
@@ -98,60 +106,67 @@ def main() -> None:
     sym_diff = run1 ^ run2
     assert differ, "two runs over the same nodes produced identical trajectories"
     assert sym_diff, "no distinguishing edges -- trajectory would be schedulable"
+
+    # --- sweep: for every (seeded node, seed magnitude) record the induced
+    # trajectory. This maps how a single run-time value reshapes the whole
+    # causal edge relation -- the quantitative face of Thm. 5 / Prop. 1.
+    seed_mags = list(range(1, 7))
+    edge_count = [[0] * len(seed_mags) for _ in ORDER]        # nodes x magnitudes
+    divergence = [[0] * len(seed_mags) for _ in ORDER]        # edges differing from baseline
+    baseline = run(seed_node="a", seed_mag=1)                  # the "quiet" run
+    per_run = []
+    for ni, node in enumerate(ORDER):
+        for mi, mag in enumerate(seed_mags):
+            e = run(seed_node=node, seed_mag=mag)
+            edge_count[ni][mi] = len(e)
+            divergence[ni][mi] = len(e ^ baseline)
+            per_run.append(
+                {"seed_node": node, "seed_mag": mag,
+                 "edges": sorted(list(x) for x in e), "n_edges": len(e),
+                 "divergence_from_baseline": len(e ^ baseline)}
+            )
+
+    # count distinct trajectories observed across the whole sweep
+    distinct = {frozenset(run(seed_node=n, seed_mag=m)) for n in ORDER for m in seed_mags}
+
+    result = {
+        "claim": "trajectory_emergence",
+        "theorem": "Thm. 5 (trajectory emergence), Prop. 1 (edges induced not stored)",
+        "passed": True,
+        "order": ORDER,
+        "two_runs": {
+            "run1_seed": "a", "run2_seed": "d",
+            "run1_edges": sorted(list(x) for x in run1),
+            "run2_edges": sorted(list(x) for x in run2),
+            "symmetric_difference": sorted(list(x) for x in sym_diff),
+            "run1_adjacency": _adjacency(run1),
+            "run2_adjacency": _adjacency(run2),
+        },
+        "sweep": {
+            "seed_nodes": ORDER,
+            "seed_mags": seed_mags,
+            "edge_count": edge_count,          # [node][mag]
+            "divergence": divergence,          # [node][mag]  (edges differing from quiet baseline)
+        },
+        "distinct_trajectories": len(distinct),
+        "total_runs_in_sweep": len(ORDER) * len(seed_mags),
+        "per_run": per_run,
+    }
+    _write(result)
+
     print(f"[trajectory_emergence] run1 edges: {sorted(run1)}")
     print(f"[trajectory_emergence] run2 edges: {sorted(run2)}")
     print(f"[trajectory_emergence] symmetric difference: {sorted(sym_diff)}")
+    print(f"[trajectory_emergence] distinct trajectories over "
+          f"{len(ORDER) * len(seed_mags)} runs: {len(distinct)}")
     print("[trajectory_emergence] PASS: trajectory is run-induced, not schedulable")
 
-    _plot(run1, run2)
 
-
-def _node_pos() -> dict[str, tuple[float, float]]:
-    order = ["a", "b", "c", "d", "e", "f"]
-    return {t: (i, 0.0) for i, t in enumerate(order)}
-
-
-def _draw(ax, edges, title, color):
-    pos = _node_pos()
-    for t, (x, y) in pos.items():
-        ax.scatter([x], [y], s=900, color="#e8e8e8", edgecolors="#333", zorder=3)
-        ax.text(x, y, t, ha="center", va="center", fontsize=12, zorder=4)
-    for (u, v) in edges:
-        x0, _ = pos[u]
-        x1, _ = pos[v]
-        ax.annotate(
-            "",
-            xy=(x1, 0.0),
-            xytext=(x0, 0.0),
-            arrowprops=dict(
-                arrowstyle="-|>",
-                color=color,
-                lw=2.0,
-                connectionstyle="arc3,rad=-0.35",
-                shrinkA=18,
-                shrinkB=18,
-            ),
-            zorder=2,
-        )
-    ax.set_title(title, fontsize=12)
-    ax.set_xlim(-0.7, 5.7)
-    ax.set_ylim(-1.4, 1.4)
-    ax.axis("off")
-
-
-def _plot(run1, run2) -> None:
-    fig, axes = plt.subplots(1, 3, figsize=(13.5, 3.4))
-    _draw(axes[0], set(), "Durable node set\n(no edges exist yet)", "#888")
-    _draw(axes[1], run1, "Run 1 trajectory\n(seed = a)", "#1f77b4")
-    _draw(axes[2], run2, "Run 2 trajectory\n(seed = d)", "#d62728")
-    fig.suptitle(
-        "Same nodes, different runs, different trajectories "
-        "(edges are induced, not stored)",
-        fontsize=13,
-    )
-    fig.tight_layout(rect=(0, 0, 1, 0.93))
-    out = os.path.normpath(os.path.join(FIG_DIR, "trajectory_emergence.png"))
-    fig.savefig(out, dpi=150)
+def _write(result: dict) -> None:
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    out = os.path.normpath(os.path.join(RESULTS_DIR, "trajectory_emergence.json"))
+    with open(out, "w", encoding="utf-8") as fh:
+        json.dump(result, fh, indent=2)
     print(f"[trajectory_emergence] wrote {out}")
 
 

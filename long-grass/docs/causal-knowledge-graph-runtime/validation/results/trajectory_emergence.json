@@ -1,0 +1,1121 @@
+{
+  "claim": "trajectory_emergence",
+  "theorem": "Thm. 5 (trajectory emergence), Prop. 1 (edges induced not stored)",
+  "passed": true,
+  "order": [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f"
+  ],
+  "two_runs": {
+    "run1_seed": "a",
+    "run2_seed": "d",
+    "run1_edges": [
+      [
+        "a",
+        "e"
+      ],
+      [
+        "b",
+        "c"
+      ],
+      [
+        "c",
+        "e"
+      ],
+      [
+        "d",
+        "e"
+      ]
+    ],
+    "run2_edges": [
+      [
+        "a",
+        "b"
+      ],
+      [
+        "b",
+        "d"
+      ],
+      [
+        "c",
+        "d"
+      ],
+      [
+        "e",
+        "f"
+      ]
+    ],
+    "symmetric_difference": [
+      [
+        "a",
+        "b"
+      ],
+      [
+        "a",
+        "e"
+      ],
+      [
+        "b",
+        "c"
+      ],
+      [
+        "b",
+        "d"
+      ],
+      [
+        "c",
+        "d"
+      ],
+      [
+        "c",
+        "e"
+      ],
+      [
+        "d",
+        "e"
+      ],
+      [
+        "e",
+        "f"
+      ]
+    ],
+    "run1_adjacency": [
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "run2_adjacency": [
+      [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  "sweep": {
+    "seed_nodes": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f"
+    ],
+    "seed_mags": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "edge_count": [
+      [
+        4,
+        3,
+        4,
+        4,
+        3,
+        3
+      ],
+      [
+        4,
+        4,
+        5,
+        4,
+        4,
+        4
+      ],
+      [
+        3,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ]
+    ],
+    "divergence": [
+      [
+        0,
+        5,
+        4,
+        4,
+        3,
+        3
+      ],
+      [
+        8,
+        8,
+        9,
+        8,
+        8,
+        8
+      ],
+      [
+        7,
+        6,
+        7,
+        7,
+        7,
+        7
+      ],
+      [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ]
+    ]
+  },
+  "distinct_trajectories": 13,
+  "total_runs_in_sweep": 36,
+  "per_run": [
+    {
+      "seed_node": "a",
+      "seed_mag": 1,
+      "edges": [
+        [
+          "a",
+          "c"
+        ],
+        [
+          "b",
+          "c"
+        ],
+        [
+          "c",
+          "f"
+        ],
+        [
+          "d",
+          "e"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 0
+    },
+    {
+      "seed_node": "a",
+      "seed_mag": 2,
+      "edges": [
+        [
+          "a",
+          "d"
+        ],
+        [
+          "b",
+          "c"
+        ],
+        [
+          "c",
+          "e"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 5
+    },
+    {
+      "seed_node": "a",
+      "seed_mag": 3,
+      "edges": [
+        [
+          "a",
+          "e"
+        ],
+        [
+          "b",
+          "c"
+        ],
+        [
+          "c",
+          "e"
+        ],
+        [
+          "d",
+          "e"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 4
+    },
+    {
+      "seed_node": "a",
+      "seed_mag": 4,
+      "edges": [
+        [
+          "a",
+          "f"
+        ],
+        [
+          "b",
+          "c"
+        ],
+        [
+          "c",
+          "e"
+        ],
+        [
+          "d",
+          "e"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 4
+    },
+    {
+      "seed_node": "a",
+      "seed_mag": 5,
+      "edges": [
+        [
+          "b",
+          "c"
+        ],
+        [
+          "c",
+          "e"
+        ],
+        [
+          "d",
+          "e"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 3
+    },
+    {
+      "seed_node": "a",
+      "seed_mag": 6,
+      "edges": [
+        [
+          "b",
+          "c"
+        ],
+        [
+          "c",
+          "e"
+        ],
+        [
+          "d",
+          "e"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 3
+    },
+    {
+      "seed_node": "b",
+      "seed_mag": 1,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "b",
+      "seed_mag": 2,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "e"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "d",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "b",
+      "seed_mag": 3,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "f"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "d",
+          "f"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 5,
+      "divergence_from_baseline": 9
+    },
+    {
+      "seed_node": "b",
+      "seed_mag": 4,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "d",
+          "f"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "b",
+      "seed_mag": 5,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "d",
+          "f"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "b",
+      "seed_mag": 6,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "d",
+          "f"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "c",
+      "seed_mag": 1,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "e"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 7
+    },
+    {
+      "seed_node": "c",
+      "seed_mag": 2,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "f"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 6
+    },
+    {
+      "seed_node": "c",
+      "seed_mag": 3,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 7
+    },
+    {
+      "seed_node": "c",
+      "seed_mag": 4,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 7
+    },
+    {
+      "seed_node": "c",
+      "seed_mag": 5,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 7
+    },
+    {
+      "seed_node": "c",
+      "seed_mag": 6,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 7
+    },
+    {
+      "seed_node": "d",
+      "seed_mag": 1,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "d",
+      "seed_mag": 2,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "d",
+      "seed_mag": 3,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "d",
+      "seed_mag": 4,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "d",
+      "seed_mag": 5,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "d",
+      "seed_mag": 6,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "e",
+      "seed_mag": 1,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 7
+    },
+    {
+      "seed_node": "e",
+      "seed_mag": 2,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 7
+    },
+    {
+      "seed_node": "e",
+      "seed_mag": 3,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 7
+    },
+    {
+      "seed_node": "e",
+      "seed_mag": 4,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 7
+    },
+    {
+      "seed_node": "e",
+      "seed_mag": 5,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 7
+    },
+    {
+      "seed_node": "e",
+      "seed_mag": 6,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ]
+      ],
+      "n_edges": 3,
+      "divergence_from_baseline": 7
+    },
+    {
+      "seed_node": "f",
+      "seed_mag": 1,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "f",
+      "seed_mag": 2,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "f",
+      "seed_mag": 3,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "f",
+      "seed_mag": 4,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "f",
+      "seed_mag": 5,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    },
+    {
+      "seed_node": "f",
+      "seed_mag": 6,
+      "edges": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "d"
+        ],
+        [
+          "e",
+          "f"
+        ]
+      ],
+      "n_edges": 4,
+      "divergence_from_baseline": 8
+    }
+  ]
+}

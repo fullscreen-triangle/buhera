@@ -202,6 +202,19 @@ export function routeInput(line) {
     return { type: "srn", instruction: { kind: "nl", text } };
   }
 
+  // Smith (agent generation). `smith run <dsl>` runs the tick loop; a bare
+  // agent-DSL cell (starting with `agent ` or `society `) is checked only.
+  if (lower.startsWith("smith run ") || lower.startsWith("smith:run ")) {
+    const src = trimmed.slice(trimmed.indexOf(" ", trimmed.indexOf("run")) + 1).trim();
+    return { type: "smith", instruction: { source: src, run: true } };
+  }
+  if (lower.startsWith("smith ")) {
+    return { type: "smith", instruction: { source: trimmed.slice(6).trim(), run: false } };
+  }
+  if (lower.startsWith("agent ") || lower.startsWith("society ")) {
+    return { type: "smith", instruction: { source: trimmed, run: false } };
+  }
+
   // Turbulance script (kwasa-kwasa). Multi-line scripts are supported via
   // the textarea; a single-line input also routes here if it starts with
   // a turbulance keyword.
@@ -1139,6 +1152,128 @@ function ArtifactGraffiti({ projects, diagnostics, ambient_floor }) {
   );
 }
 
+function ArtifactSmith({ ok, agents, diagnostics, steps, finalCounts }) {
+  const [showTrace, setShowTrace] = useState(false);
+  const list = agents || [];
+  const totalFloor = list
+    .map((a) => a.floor)
+    .filter((f) => typeof f === "number")
+    .reduce((s, f) => s + f, 0);
+
+  const fmtPartition = (blocks) =>
+    (blocks || []).map((b) => `{${b.join(",")}}`).join(" | ");
+
+  return (
+    <div className="text-gray-300">
+      <div className="mb-2 text-xs text-gray-500">
+        <span className={ok ? "text-green-400" : "text-red-400"}>
+          {ok ? "checked" : "rejected"}
+        </span>
+        {" · "}
+        <span className="text-gray-400">agents:</span> {list.length}
+        {" · "}
+        <span className="text-gray-400">Σfloor:</span> {totalFloor.toFixed(3)}
+      </div>
+
+      {list.length === 0 && <p className="text-gray-500">(no agents generated)</p>}
+
+      {list.map((a) => (
+        <div key={a.name} className="mb-3">
+          <p className="text-white text-sm">
+            {a.name}{" "}
+            <span className="text-xs text-gray-500">
+              [{a.regime}
+              {a.nonLocal ? " · non-local" : ""}]
+            </span>
+          </p>
+          <ul className="ml-4 text-xs">
+            <li>
+              <span className="text-gray-400">χ (character):</span>{" "}
+              <span className="text-white">
+                {typeof a.chi === "number" ? a.chi.toFixed(3) : "∞"}
+              </span>
+            </li>
+            <li>
+              <span className="text-gray-400">realised floor:</span>{" "}
+              <span className="text-white">
+                {typeof a.floor === "number" ? a.floor.toFixed(3) : "∞"}
+              </span>
+            </li>
+            <li>
+              <span className="text-gray-400">χ-partition:</span>{" "}
+              <span className="text-white">{fmtPartition(a.chiPartition)}</span>
+            </li>
+          </ul>
+        </div>
+      ))}
+
+      {diagnostics && diagnostics.length > 0 && (
+        <div className="mt-2 text-xs">
+          <span className="text-gray-400">diagnostics:</span>
+          <ul className="ml-4">
+            {diagnostics.map((d, i) => (
+              <li
+                key={i}
+                className={
+                  d.severity === "error" ? "text-red-400" : "text-yellow-400"
+                }
+              >
+                {d.severity}: {d.message}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {steps && steps.length > 0 && (
+        <div className="mt-3 text-xs">
+          <button
+            onClick={() => setShowTrace((s) => !s)}
+            className="text-gray-500 hover:text-gray-300"
+          >
+            {showTrace ? "▾ hide run trace" : `▸ run trace (${steps.length} steps)`}
+          </button>
+          {finalCounts && (
+            <span className="ml-2 text-gray-600">
+              commits:{" "}
+              {Object.entries(finalCounts)
+                .map(([n, c]) => `${n}=${c}`)
+                .join(" ")}
+            </span>
+          )}
+          {showTrace && (
+            <div className="mt-1 max-h-48 overflow-y-auto font-mono">
+              {steps.map((s, i) => (
+                <div key={i} className="text-gray-500">
+                  <span className="text-gray-600">t{s.tick}</span>{" "}
+                  <span className="text-gray-400">{s.agent}</span>{" "}
+                  <span
+                    className={
+                      s.outcome === "commit"
+                        ? "text-green-400"
+                        : s.outcome === "quiescent"
+                        ? "text-blue-400"
+                        : s.outcome === "decline"
+                        ? "text-red-400"
+                        : "text-gray-500"
+                    }
+                  >
+                    {s.outcome}
+                  </span>
+                  {s.scene ? <> · {s.scene}</> : null}
+                  {typeof s.residual === "number" ? (
+                    <> · r={s.residual.toFixed(3)}</>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ArtifactSrnResult({ glyph, provider, model, node, elapsed_ms, value, chart }) {
   const [expanded, setExpanded] = useState(false);
   const scalar =
@@ -1362,6 +1497,7 @@ export function Artifact({ result }) {
     case "srn_peers":       return <ArtifactSrnPeers peers={result.peers} node={result.node} elapsed_ms={result.elapsed_ms} />;
     case "srn_probe":       return <ArtifactSrnProbe target={result.target} ok={result.ok} elapsed_ms={result.elapsed_ms} />;
     case "srn_error":       return <ArtifactSrnError message={result.message} />;
+    case "agent_generated": return <ArtifactSmith ok={result.ok} agents={result.agents} diagnostics={result.diagnostics} steps={result.steps} finalCounts={result.finalCounts} />;
     case "text":            return <ArtifactText lines={result.lines} />;
     case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
     default:                return null;
