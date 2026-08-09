@@ -148,6 +148,67 @@ async function loadImagePayload(url) {
   return { data: gray, width, height };
 }
 
+// Parse a literal `dispatch("<module>", <instruction>)` call.
+//
+// The instruction argument is a JS/JSON value: a quoted string, or an object/
+// array literal. We locate the module id (first quoted arg) and the raw text of
+// the second argument, then evaluate that text as a value. Evaluation is done
+// with a tightly-scoped `Function` returning the literal — the tutorials are
+// author-controlled cells, and the alternative (a full JSON5 parser) is a
+// dependency the no-install webtool avoids. A parse failure returns null so the
+// caller falls through to the other routes.
+//
+// Returns { moduleId, instruction } or null.
+export function parseDispatchCall(src) {
+  const text = src.trim();
+  // Must start with `dispatch(` and end with `)`. Cheap gate before the work.
+  const head = text.match(/^dispatch\s*\(\s*(["'])((?:\\.|[^\\])*?)\1\s*(,|\))/s);
+  if (!head) return null;
+  const moduleId = head[2];
+
+  // No second argument: `dispatch("mod")` → empty-string instruction.
+  if (head[3] === ")") {
+    // ensure nothing trails the close paren
+    if (text.slice(head.index + head[0].length).trim() !== "") return null;
+    return { moduleId, instruction: "" };
+  }
+
+  // Extract the second argument: everything between the comma and the final
+  // matching close paren. Find the close paren that balances the opening one.
+  const openParen = text.indexOf("(");
+  let depth = 0;
+  let closeParen = -1;
+  let inStr = null;
+  for (let i = openParen; i < text.length; i++) {
+    const ch = text[i];
+    if (inStr) {
+      if (ch === "\\") { i++; continue; }
+      if (ch === inStr) inStr = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === "`") { inStr = ch; continue; }
+    if (ch === "(") depth++;
+    else if (ch === ")") { depth--; if (depth === 0) { closeParen = i; break; } }
+  }
+  if (closeParen === -1) return null;
+  if (text.slice(closeParen + 1).trim() !== "") return null;
+
+  // The comma separating the two args is at head[0]'s end minus the captured
+  // comma; re-find it as the first top-level comma after the module string.
+  const afterModule = head.index + head[0].length; // char after the comma
+  const argText = text.slice(afterModule, closeParen).trim();
+  if (!argText) return { moduleId, instruction: "" };
+
+  let instruction;
+  try {
+    // eslint-disable-next-line no-new-func
+    instruction = Function('"use strict"; return (' + argText + ");")();
+  } catch {
+    return null;
+  }
+  return { moduleId, instruction };
+}
+
 export function routeInput(line) {
   const trimmed = line.trim();
   if (!trimmed) return { type: "noop" };
@@ -213,6 +274,19 @@ export function routeInput(line) {
   }
   if (lower.startsWith("agent ") || lower.startsWith("society ")) {
     return { type: "smith", instruction: { source: trimmed, run: false } };
+  }
+
+  // A literal `dispatch("<module>", <instruction>)` call. This is the form the
+  // tutorials use to drive an arbitrary federation module: the instruction is a
+  // JSON/JS value (a bare string, or an object literal like { op: "represent",
+  // tau: "assay" }). Routed straight to the named module. Multi-line object
+  // literals are supported — the terminal textarea and tutorial cells both pass
+  // the whole cell in.
+  {
+    const call = parseDispatchCall(trimmed);
+    if (call) {
+      return { type: "dispatch", moduleId: call.moduleId, instruction: call.instruction };
+    }
   }
 
   // Turbulance script (kwasa-kwasa). Multi-line scripts are supported via
@@ -1462,6 +1536,149 @@ function ArtifactSBS({ summary, circuit, metrics, navigation, warnings }) {
   );
 }
 
+// The trajectory-as-knowledge-graph. Nodes = touched subtasks, edges = the
+// carrier reads that landed this run (the run-induced causal relation), facts =
+// the value-deltas the federation emitted onto each node. This is the SPARQL
+// replacement: you walk the graph the run produced, not one you authored.
+function ArtifactCkgGraph({ nodes, edges, node_count, edge_count, fact_count }) {
+  const factObject = (o) => {
+    if (o == null) return "∅";
+    if (typeof o !== "object") return String(o);
+    if (o.ok != null || o.module != null) {
+      const d = o.delta;
+      const dstr = d == null ? "∅" : typeof d === "object" ? JSON.stringify(d) : String(d);
+      return `${o.module || "?"} ${o.ok ? "✓" : "×"} ${dstr}`;
+    }
+    return JSON.stringify(o);
+  };
+  return (
+    <div className="text-gray-300">
+      <div className="mb-2 text-xs text-gray-500">
+        <span className="text-gray-400">nodes:</span> {node_count}
+        {" · "}
+        <span className="text-gray-400">edges:</span> {edge_count}
+        {" · "}
+        <span className="text-gray-400">facts:</span> {fact_count}
+        <span className="ml-2 text-gray-600">— this graph is the runtime trajectory</span>
+      </div>
+
+      <div className="mb-3 text-xs">
+        <span className="text-gray-400">trajectory (this run):</span>{" "}
+        {edges && edges.length ? (
+          <span className="text-white">
+            {edges
+              .map((e) => `${e.from}→${e.to}(${e.magnitude})`)
+              .join("  ")}
+          </span>
+        ) : (
+          <span className="text-gray-500">(no edges induced)</span>
+        )}
+      </div>
+
+      {(nodes || []).map((n) => (
+        <div key={n.tau} className="mb-2">
+          <p className="text-white text-sm">
+            {n.tau}
+            <span className="ml-2 text-xs text-gray-600">
+              {(n.address || []).join("/")}
+              {typeof n.signal === "number" ? ` · signal ${n.signal}` : ""}
+            </span>
+          </p>
+          {n.facts && n.facts.length ? (
+            <ul className="ml-4 text-xs">
+              {n.facts.map((f, i) => (
+                <li key={i}>
+                  <span
+                    className={
+                      f.predicate === "error" ? "text-red-400" : "text-gray-400"
+                    }
+                  >
+                    {f.predicate}:
+                  </span>{" "}
+                  <span className="text-white">{factObject(f.object)}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="ml-4 text-xs text-gray-500">(no facts emitted)</p>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// The report the original pipeline never produced. It reads the audit (what
+// ran) and the emitted facts (what the federation asserted), grouped by
+// contributing module. It judges nothing: an error is reported as a fact.
+function ArtifactCkgReport({
+  tau_count,
+  acts,
+  edges,
+  error_facts,
+  contributors,
+  contributions,
+  audit,
+}) {
+  const [showAudit, setShowAudit] = useState(false);
+  const deltaStr = (d) =>
+    d == null ? "∅" : typeof d === "object" ? JSON.stringify(d) : String(d);
+  return (
+    <div className="text-gray-300">
+      <div className="mb-2 text-xs text-gray-500">
+        <span className="text-gray-400">subtasks:</span> {tau_count}
+        {" · "}
+        <span className="text-gray-400">acts:</span> {acts}
+        {" · "}
+        <span className="text-gray-400">edges:</span> {edges}
+        {" · "}
+        <span className={error_facts ? "text-red-400" : "text-gray-400"}>
+          error-facts:
+        </span>{" "}
+        {error_facts}
+      </div>
+
+      <p className="mb-2 text-sm text-white">
+        contributors: {contributors && contributors.length ? contributors.join(", ") : "(none)"}
+      </p>
+
+      {(contributors || []).map((mod) => (
+        <div key={mod} className="mb-3">
+          <p className="text-white text-sm">{mod}</p>
+          <ul className="ml-4 text-xs">
+            {(contributions[mod] || []).map((c, i) => (
+              <li key={i}>
+                <span className="text-gray-400">{c.tau}</span>{" "}
+                <span className={c.ok ? "text-green-400" : "text-yellow-400"}>
+                  {c.ok ? "✓" : "·"}
+                </span>{" "}
+                <span className="text-white">{deltaStr(c.delta)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      <button
+        onClick={() => setShowAudit((s) => !s)}
+        className="mt-1 text-xs text-gray-500 hover:text-gray-300 underline"
+      >
+        {showAudit ? "hide" : "show"} audit ({(audit || []).length} acts — every act ran, none was gated)
+      </button>
+      {showAudit && (
+        <ul className="ml-4 mt-1 text-xs text-gray-500">
+          {(audit || []).map((a) => (
+            <li key={a.act_id}>
+              #{a.act_id} {a.tau}/{a.chunk} → {a.emitted_kind}
+              {a.raised ? " (raised)" : ""}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 export function Artifact({ result }) {
   if (!result) return null;
   switch (result.kind) {
@@ -1498,6 +1715,10 @@ export function Artifact({ result }) {
     case "srn_probe":       return <ArtifactSrnProbe target={result.target} ok={result.ok} elapsed_ms={result.elapsed_ms} />;
     case "srn_error":       return <ArtifactSrnError message={result.message} />;
     case "agent_generated": return <ArtifactSmith ok={result.ok} agents={result.agents} diagnostics={result.diagnostics} steps={result.steps} finalCounts={result.finalCounts} />;
+    case "ckg_graph":       return <ArtifactCkgGraph nodes={result.nodes} edges={result.edges} node_count={result.node_count} edge_count={result.edge_count} fact_count={result.fact_count} />;
+    case "ckg_report":      return <ArtifactCkgReport tau_count={result.tau_count} acts={result.acts} edges={result.edges} error_facts={result.error_facts} contributors={result.contributors} contributions={result.contributions} audit={result.audit} />;
+    case "ckg_fingerprint": return <ArtifactText lines={[`fingerprint: ${result.fingerprint}`, `nodes: ${result.nodes}${result.edits && result.edits.length ? `  edits: ${result.edits.join(", ")}` : ""}`, result.note]} />;
+    case "ckg_ack":         return <ArtifactText lines={[result.message, result.trajectory && result.trajectory.length ? `trajectory: ${result.trajectory.join("  ")}` : null, result.chunks ? `chunks: ${result.chunks.join(", ")}` : null, result.emitted ? `emitted: ${result.emitted.join(", ")}` : null].filter(Boolean)} />;
     case "text":            return <ArtifactText lines={result.lines} />;
     case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
     default:                return null;
@@ -1762,6 +1983,16 @@ export default function BuheraTerminal() {
       if (route.type === "srn") {
         const res = await dispatchModule("srn", route.instruction);
         patchLast({ result: res.output_delta });
+        return;
+      }
+
+      if (route.type === "dispatch") {
+        const res = await dispatchModule(route.moduleId, route.instruction);
+        if (!res || res.output_delta == null) {
+          patchLast({ result: { kind: "text", lines: [`(${route.moduleId}: no output)`] } });
+        } else {
+          patchLast({ result: res.output_delta });
+        }
         return;
       }
 

@@ -145,6 +145,16 @@ export async function runInput(text, ctx) {
       return { kind: "artifact", result: res.output_delta };
     }
 
+    // A literal `dispatch("<module>", <instruction>)` cell — the general form
+    // the tutorials use to drive any federation module.
+    if (route.type === "dispatch") {
+      const res = await dispatchModule(route.moduleId, route.instruction);
+      if (!res || res.output_delta == null) {
+        return { kind: "text", lines: [`(${route.moduleId}: no output)`] };
+      }
+      return { kind: "artifact", result: res.output_delta };
+    }
+
     // NL input.
     if (ctx.proteinsMode) {
       const vh = translate(route.text);

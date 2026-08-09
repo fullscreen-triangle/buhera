@@ -27,6 +27,7 @@ import { deskModule, observeAct as deskObserveAct } from "@/lib/modules/desk-mod
 import { dslWriterModule } from "@/lib/modules/dsl-writer-module";
 import { srnModule } from "@/lib/modules/srn-module";
 import { smithModule } from "@/lib/modules/smith-module";
+import { ckgModule } from "@/lib/modules/ckg-module";
 import { extractTermsFromInstruction } from "@/lib/purpose-terms";
 import { estimateCostFromInstruction } from "@/lib/purpose-cost";
 
@@ -58,6 +59,7 @@ export function bootstrapFederation() {
   register(dslWriterModule);
   register(srnModule);
   register(smithModule);
+  register(ckgModule);
 
   const session = getPurposeSession();
   const unhook = onDispatch((entry) => {

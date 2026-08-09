@@ -32,6 +32,7 @@ const ORDER = [
   "zangalewa-routines",
   "shapeshifter-routines",
   "scope-routines",
+  "complete-ckg-experiment",
 ];
 
 function orderedSlugs() {
