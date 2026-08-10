@@ -52,4 +52,43 @@ test("the tutorial's five-node build folds a fact from every attached module", a
     ["echo", "sbs", "shapeshifter"],
     "report accounts for every contributing module"
   );
+
+  // The report is a DOSSIER, not a tally: each contribution must carry the
+  // module's WHOLE output_delta (the thing <Artifact> re-renders as the real
+  // chart) plus an extracted findings headline. This is the property whose
+  // absence made the old report "practically a joke".
+  const sbsContribs = report.contributions.sbs || [];
+  assert.ok(sbsContribs.length >= 1, "sbs contributed at least once");
+  const sbsC = sbsContribs[0];
+  // full delta survives — same kind the sbs module returns on a direct dispatch
+  assert.equal(sbsC.delta.kind, "sbs_result", "sbs's full output_delta is carried, not summarised away");
+  assert.ok(sbsC.delta.circuit, "the circuit (drawn by MetricsDashboard) is present on the fact");
+  assert.ok(sbsC.delta.metrics, "the S-entropy metrics (R, V) are present on the fact");
+  // extracted findings give the report its readable headline + named props
+  assert.ok(sbsC.findings, "an extracted findings digest accompanies the delta");
+  assert.equal(typeof sbsC.findings.headline, "string");
+  const labels = sbsC.findings.props.map((p) => p.label);
+  assert.ok(
+    labels.includes("coherence R") && labels.includes("flux visibility V"),
+    "sbs findings surface the named properties R and V, not just a count"
+  );
+
+  const shapeContribs = report.contributions.shapeshifter || [];
+  assert.ok(shapeContribs.length >= 1, "shapeshifter contributed");
+  assert.equal(
+    shapeContribs[0].delta.kind,
+    "shapeshifter_run",
+    "shapeshifter's full output_delta (workspace + term) is carried"
+  );
+  assert.ok(
+    Array.isArray(shapeContribs[0].delta.workspace),
+    "the produced spectra workspace survives on the fact for the renderer to draw"
+  );
+
+  // The same rich delta is visible when walking the graph, so a fact on a node
+  // can expand into the module's own chart there too.
+  const graph2 = (await ckgModule.execute({ op: "graph" })).output_delta;
+  const processNode = graph2.nodes.find((n) => n.tau === "process");
+  const sbsFact = processNode.facts.find((f) => f.predicate === "fact:sbs");
+  assert.equal(sbsFact.object.delta.kind, "sbs_result", "the graph view carries the full delta on the node fact");
 });

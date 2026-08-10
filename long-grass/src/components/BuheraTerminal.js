@@ -1540,17 +1540,49 @@ function ArtifactSBS({ summary, circuit, metrics, navigation, warnings }) {
 // carrier reads that landed this run (the run-induced causal relation), facts =
 // the value-deltas the federation emitted onto each node. This is the SPARQL
 // replacement: you walk the graph the run produced, not one you authored.
+// One fact on a node in the graph view. A module fact ({module, ok, delta,
+// findings}) shows its headline and expands to the module's real artifact; a
+// bare value (e.g. an error string) just prints.
+function CkgFact({ predicate, object }) {
+  const [open, setOpen] = useState(false);
+  const isError = predicate === "error";
+  const moduleFact = object && typeof object === "object" && (object.module != null || object.ok != null);
+  const delta = moduleFact ? object.delta : null;
+  const renderable = ckgRenderable(delta);
+  const headline = moduleFact
+    ? (object.findings && object.findings.headline) || (delta && delta.kind) || "∅"
+    : object == null
+    ? "∅"
+    : typeof object === "object"
+    ? JSON.stringify(object)
+    : String(object);
+  return (
+    <li>
+      <button
+        onClick={() => renderable && setOpen((s) => !s)}
+        className={`text-left ${renderable ? "hover:text-white" : "cursor-default"}`}
+      >
+        <span className={isError ? "text-red-400" : "text-gray-400"}>{predicate}:</span>{" "}
+        {moduleFact && (
+          <span className={object.ok ? "text-green-400" : "text-yellow-400"}>
+            {object.ok ? "✓" : "×"}{" "}
+          </span>
+        )}
+        <span className="text-white">{headline}</span>
+        {renderable && (
+          <span className="ml-2 text-[10px] text-gray-600">{open ? "▾" : "▸"}</span>
+        )}
+      </button>
+      {open && renderable && (
+        <div className="mt-1 mb-1 rounded border border-gray-800 bg-black/40 p-2">
+          <Artifact result={delta} />
+        </div>
+      )}
+    </li>
+  );
+}
+
 function ArtifactCkgGraph({ nodes, edges, node_count, edge_count, fact_count }) {
-  const factObject = (o) => {
-    if (o == null) return "∅";
-    if (typeof o !== "object") return String(o);
-    if (o.ok != null || o.module != null) {
-      const d = o.delta;
-      const dstr = d == null ? "∅" : typeof d === "object" ? JSON.stringify(d) : String(d);
-      return `${o.module || "?"} ${o.ok ? "✓" : "×"} ${dstr}`;
-    }
-    return JSON.stringify(o);
-  };
   return (
     <div className="text-gray-300">
       <div className="mb-2 text-xs text-gray-500">
@@ -1587,16 +1619,7 @@ function ArtifactCkgGraph({ nodes, edges, node_count, edge_count, fact_count }) 
           {n.facts && n.facts.length ? (
             <ul className="ml-4 text-xs">
               {n.facts.map((f, i) => (
-                <li key={i}>
-                  <span
-                    className={
-                      f.predicate === "error" ? "text-red-400" : "text-gray-400"
-                    }
-                  >
-                    {f.predicate}:
-                  </span>{" "}
-                  <span className="text-white">{factObject(f.object)}</span>
-                </li>
+                <CkgFact key={i} predicate={f.predicate} object={f.object} />
               ))}
             </ul>
           ) : (
@@ -1611,6 +1634,68 @@ function ArtifactCkgGraph({ nodes, edges, node_count, edge_count, fact_count }) 
 // The report the original pipeline never produced. It reads the audit (what
 // ran) and the emitted facts (what the federation asserted), grouped by
 // contributing module. It judges nothing: an error is reported as a fact.
+// Module output kinds that <Artifact> draws a real view for. A fact whose delta
+// is one of these gets an inline "show chart" expander; anything else (e.g. the
+// echo smoke-test's bare {kind:"echo",value}) just shows its headline, so we
+// never offer to expand into an empty box.
+const CKG_RENDERABLE_KINDS = new Set([
+  "sbs_result",
+  "shapeshifter_run",
+  "scope_run",
+  "lavoisier_run",
+  "graffiti_result",
+  "purpose_carry",
+  "turbulance_result",
+  "text",
+]);
+
+function ckgRenderable(delta) {
+  return !!(delta && typeof delta === "object" && CKG_RENDERABLE_KINDS.has(delta.kind));
+}
+
+// One contribution in the report: the module's findings headline, then the
+// module's OWN artifact — the identical chart/panel you'd get dispatching that
+// module directly — rendered by handing its full delta back to <Artifact>.
+// Collapsed by default so the report reads as a dossier you expand section by
+// section, not a wall of every chart at once.
+function CkgContribution({ tau, ok, findings, delta }) {
+  const [open, setOpen] = useState(false);
+  const headline = findings && findings.headline;
+  const props = (findings && findings.props) || [];
+  const renderable = ckgRenderable(delta);
+  return (
+    <div className="mb-2 border-l border-gray-800 pl-3">
+      <button
+        onClick={() => renderable && setOpen((s) => !s)}
+        className={`text-left w-full ${renderable ? "hover:text-white" : "cursor-default"}`}
+      >
+        <span className="text-gray-400 text-xs">{tau}</span>{" "}
+        <span className={ok ? "text-green-400" : "text-yellow-400"}>{ok ? "✓" : "·"}</span>{" "}
+        <span className="text-white text-sm">{headline || (delta && delta.kind) || "∅"}</span>
+        {renderable && (
+          <span className="ml-2 text-[10px] text-gray-600">{open ? "▾ hide chart" : "▸ show chart"}</span>
+        )}
+      </button>
+      {props.length > 0 && (
+        <div className="ml-1 mt-0.5 text-[11px] text-gray-500 flex flex-wrap gap-x-3">
+          {props.map((p, i) => (
+            <span key={i}>
+              <span className="text-gray-600">{p.label}:</span>{" "}
+              <span className="text-gray-300">{String(p.value)}</span>
+            </span>
+          ))}
+        </div>
+      )}
+      {open && renderable && (
+        <div className="mt-2 rounded border border-gray-800 bg-black/40 p-2">
+          {/* the module's real view — same component as a direct dispatch */}
+          <Artifact result={delta} />
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ArtifactCkgReport({
   tau_count,
   acts,
@@ -1621,41 +1706,44 @@ function ArtifactCkgReport({
   audit,
 }) {
   const [showAudit, setShowAudit] = useState(false);
-  const deltaStr = (d) =>
-    d == null ? "∅" : typeof d === "object" ? JSON.stringify(d) : String(d);
   return (
     <div className="text-gray-300">
-      <div className="mb-2 text-xs text-gray-500">
+      <div className="mb-1 text-sm text-white">CKG report — assembled findings</div>
+      <div className="mb-3 text-xs text-gray-500">
         <span className="text-gray-400">subtasks:</span> {tau_count}
         {" · "}
         <span className="text-gray-400">acts:</span> {acts}
         {" · "}
         <span className="text-gray-400">edges:</span> {edges}
         {" · "}
-        <span className={error_facts ? "text-red-400" : "text-gray-400"}>
-          error-facts:
-        </span>{" "}
+        <span className={error_facts ? "text-red-400" : "text-gray-400"}>error-facts:</span>{" "}
         {error_facts}
+        {" · "}
+        <span className="text-gray-400">contributors:</span>{" "}
+        {contributors && contributors.length ? contributors.join(", ") : "(none)"}
       </div>
 
-      <p className="mb-2 text-sm text-white">
-        contributors: {contributors && contributors.length ? contributors.join(", ") : "(none)"}
-      </p>
+      {(contributors || []).length === 0 && (
+        <p className="text-xs text-gray-500">
+          no module asserted a fact yet — attach a module and dispatch (or carry).
+        </p>
+      )}
 
       {(contributors || []).map((mod) => (
-        <div key={mod} className="mb-3">
-          <p className="text-white text-sm">{mod}</p>
-          <ul className="ml-4 text-xs">
-            {(contributions[mod] || []).map((c, i) => (
-              <li key={i}>
-                <span className="text-gray-400">{c.tau}</span>{" "}
-                <span className={c.ok ? "text-green-400" : "text-yellow-400"}>
-                  {c.ok ? "✓" : "·"}
-                </span>{" "}
-                <span className="text-white">{deltaStr(c.delta)}</span>
-              </li>
-            ))}
-          </ul>
+        <div key={mod} className="mb-4">
+          <p className="text-white text-sm mb-1 uppercase tracking-wider text-[11px] text-gray-400">
+            {mod} — {(contributions[mod] || []).length} contribution
+            {(contributions[mod] || []).length === 1 ? "" : "s"}
+          </p>
+          {(contributions[mod] || []).map((c, i) => (
+            <CkgContribution
+              key={i}
+              tau={c.tau}
+              ok={c.ok}
+              findings={c.findings}
+              delta={c.delta}
+            />
+          ))}
         </div>
       ))}
 

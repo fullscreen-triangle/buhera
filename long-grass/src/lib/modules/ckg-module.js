@@ -88,14 +88,21 @@ function getOrMakeNode(tau, address, seed) {
 function moduleChunk(moduleId, instruction) {
   return async function chunk(_values) {
     const res = await dispatchModule(moduleId, instruction);
+    const delta = res && res.output_delta;
     return {
       kind: `fact:${moduleId}`,
       payload: {
         module: moduleId,
         ok: res && res.ok,
-        // keep the delta small and legible; the tutorial reads a summary, not
-        // the whole module payload.
-        delta: summariseDelta(res && res.output_delta),
+        // Carry the module's WHOLE output_delta. It is exactly what the module
+        // returns when you dispatch it directly — the same charts, workspaces,
+        // metrics — so the renderer can hand it back to <Artifact> and draw the
+        // module's own view. The fingerprint hashes tau + chunk names only, so
+        // stashing a rich value here never leaks into the protocol hash.
+        delta,
+        // A small, readable digest of the named properties the module asserted,
+        // so the report has a headline without re-parsing the whole delta.
+        findings: deriveFindings(delta),
       },
       source_chunk: `${moduleId}_chunk`,
     };
@@ -118,23 +125,82 @@ function publishChunk() {
   };
 }
 
-function summariseDelta(delta) {
+/**
+ * Extract a compact digest of the NAMED properties a module asserted, WITHOUT
+ * discarding anything — the full delta always travels alongside this (see
+ * moduleChunk). This is the report's headline: "what did shapeshifter actually
+ * find here", as a few { label, value } pairs, per known module output kind. The
+ * full charts render from the delta itself; this is just the caption.
+ *
+ * Returns { kind, headline, props: [{label, value}] } or null for an empty delta.
+ */
+function deriveFindings(delta) {
   if (delta == null) return null;
-  if (typeof delta !== "object") return delta;
-  // Pull a few well-known summary fields the federation modules expose, so the
-  // report is readable without dumping entire payloads.
-  const pick = {};
-  if (delta.kind) pick.kind = delta.kind;
-  if (delta.summary && typeof delta.summary === "object") {
-    if (delta.summary.count != null) pick.count = delta.summary.count;
-    if (delta.summary.avgEntropy != null) pick.avgEntropy = delta.summary.avgEntropy;
+  if (typeof delta !== "object") return { kind: "scalar", headline: String(delta), props: [] };
+
+  const props = [];
+  const push = (label, value) => {
+    if (value != null && value !== "") props.push({ label, value });
+  };
+  const kind = delta.kind || "opaque";
+
+  switch (kind) {
+    case "sbs_result": {
+      // Systems-Biology-Shaders: a cellular circuit + its S-entropy observation.
+      const c = delta.circuit || {};
+      const m = delta.metrics || {};
+      push("nodes", c.numNodes);
+      push("edges", c.numEdges);
+      if (typeof m.R === "number") push("coherence R", m.R.toFixed(3));
+      if (typeof m.V === "number") push("flux visibility V", m.V.toFixed(3));
+      push("backend", m.backend);
+      if (delta.navigation && delta.navigation.from) push("navigated from", delta.navigation.from);
+      return { kind, headline: delta.summary || "SBS circuit", props };
+    }
+    case "shapeshifter_run": {
+      // Shape Shifter: virtual mass-spec — the produced workspace is the finding.
+      const ws = Array.isArray(delta.workspace) ? delta.workspace : [];
+      push("workspace values", ws.length);
+      for (const w of ws) push(w.name || "value", w.kind || "");
+      const errs = (delta.diagnostics || []).filter((d) => d.severity === "error").length;
+      if (errs) push("diagnostics (error)", errs);
+      return {
+        kind,
+        headline: ws.length
+          ? `spectra → ${ws.map((w) => w.name).filter(Boolean).join(", ")}`
+          : "compiled (no workspace produced)",
+        props,
+      };
+    }
+    case "scope_run": {
+      // SCOPE: microscopy — surface whatever the run summary carries.
+      const r = delta.result || {};
+      push("observations", Array.isArray(r.observations) ? r.observations.length : r.count);
+      push("summary", typeof r.summary === "string" ? r.summary : undefined);
+      return { kind, headline: "microscopy observation", props };
+    }
+    case "lavoisier_run": {
+      const s = delta.summary || {};
+      push("records", s.count);
+      if (s.avgEntropy != null) push("avg S-entropy", Number(s.avgEntropy).toFixed(3));
+      return { kind, headline: "instrument run", props };
+    }
+    case "graffiti_result": {
+      push("projects", Array.isArray(delta.projects) ? delta.projects.length : undefined);
+      if (delta.ambient_floor != null) push("ambient floor β", Number(delta.ambient_floor).toFixed(3));
+      return { kind, headline: "graffiti scan", props };
+    }
+    case "text": {
+      const lines = Array.isArray(delta.lines) ? delta.lines : [];
+      return { kind, headline: lines[0] || "(text)", props };
+    }
+    default: {
+      // Unknown module output — still give a headline, still keep the delta.
+      if (typeof delta.summary === "string") return { kind, headline: delta.summary, props };
+      if (delta.ok === false && delta.error) return { kind, headline: `error: ${delta.error}`, props };
+      return { kind, headline: kind, props };
+    }
   }
-  if (delta.ambient_floor != null) pick.ambient_floor = delta.ambient_floor;
-  if (delta.value != null && typeof delta.value !== "object") pick.value = delta.value;
-  if (Array.isArray(delta.keep)) pick.keep = delta.keep.length;
-  if (Array.isArray(delta.workspace)) pick.workspace = delta.workspace.length;
-  if (delta.summary && typeof delta.summary === "string") pick.summary = delta.summary;
-  return Object.keys(pick).length ? pick : { kind: delta.kind || "opaque" };
 }
 
 // --- the emergent carry (Thm. 5 / Prop. 1, ported from the validator) -------
@@ -210,17 +276,26 @@ function projectGraph() {
  * judges nothing: an "error" fact is reported as a fact, not a failure.
  */
 function assembleReport() {
-  const contributions = {}; // moduleId → [{ tau, ok, delta }]
+  // A dossier, not a tally: per contributing module, the list of subtasks it
+  // spoke on, each carrying that module's FULL output_delta (so the renderer can
+  // draw the module's own chart) plus the extracted findings headline. This is
+  // the account the original pipeline never produced — the assembled findings,
+  // with the real artifacts, not a table of counts.
+  const contributions = {}; // moduleId → [{ tau, ok, findings, delta }]
   let errorCount = 0;
   for (const tau of _order) {
     const n = _nodes.get(tau);
     for (const k of Object.keys(n.values)) {
       if (k.startsWith("fact:")) {
         const mod = k.slice("fact:".length);
+        const v = n.values[k] || {};
         (contributions[mod] = contributions[mod] || []).push({
           tau,
-          ok: n.values[k] && n.values[k].ok,
-          delta: n.values[k] && n.values[k].delta,
+          ok: v.ok,
+          findings: v.findings || null,
+          // the whole module payload — same object <Artifact> renders when you
+          // dispatch the module directly.
+          delta: v.delta,
         });
       } else if (k === "error") {
         errorCount += 1;

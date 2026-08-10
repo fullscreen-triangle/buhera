@@ -254,6 +254,15 @@ modules emitted). This is your SPARQL replacement: you **walk** the graph the
 run produced. You did not query a graph you authored — you couldn't have
 authored this one.
 
+Each fact isn't a stringified summary — it's the module's **whole output**. A
+`fact:sbs` on `process` carries the glycolysis circuit `sbs` actually built, its
+coherence `R` and flux visibility `V`, the S-entropy observation it rendered on
+the GPU. A `fact:shapeshifter` on `measure` carries the produced spectra
+workspace. Click a fact open (`▸`) and the module's own chart draws inline —
+the identical panel you'd see if you dispatched that module directly. The graph
+node is a *meeting point* holding each contributor's real artifact, not a note
+that one ran.
+
 ---
 
 ## 6. Seeding a different node reshapes the graph
@@ -287,22 +296,34 @@ trajectory is a function of the *run*.
 
 ## 7. The report — the thing the original never gave you
 
-The original pipeline handed back results with no account of how it got them.
-Now assemble the report:
+The original pipeline handed back results with no account of how it got them —
+and, worse, when the modules themselves produce charts and rich readouts, a
+"report" that only counts them has thrown the actual findings away. So this
+report is a **dossier**: it collects, per contributing module, the real output
+each one asserted — the same charts and metrics the module renders on a direct
+dispatch — and lays them out as the account of the run.
 
 **Cell 7.1**
 ```
 dispatch("ckg", { op: "report" })
 ```
 
-You get a per-contributor account: which modules asserted facts, on which
-nodes, how many acts ran, how many were errors — and the full audit, the
-run-to-completion witness showing every act appeared and none was gated on a
-verdict. Toggle the audit open in the rendered report to see the raw acts.
+Read it top to bottom. Under each contributor (`sbs`, `shapeshifter`, `scope`,
+`echo`) you get one entry per subtask it spoke on. Each entry leads with a
+**findings headline** — for `sbs`, the node/edge counts, coherence `R`, flux
+visibility `V`, the backend it solved on; for `shapeshifter`, the spectra
+workspace it produced — and then expands (`▸ show chart`) into the module's
+**own artifact**: the glycolysis MetricsDashboard, the mass-spec panels, the
+microscopy view. This is not a summary *of* the modules' work. It *is* the
+modules' work, assembled. The report renders exactly what the modules render —
+which is why it is finally a report and not a tally.
+
+Below the dossier, toggle the **audit** open: the run-to-completion witness
+showing every act appeared and none was gated on a verdict.
 
 An error fact, if any of your contributors' packages weren't linked, is listed
-as a fact — reported, not hidden, not treated as a failure. That's the
-non-judging runtime being honest with you.
+as a contribution with its error headline — reported, not hidden, not treated as
+a failure. That's the non-judging runtime being honest with you.
 
 ---
 
