@@ -64,11 +64,29 @@ export default function TutorialsIndex({ items }) {
           </nav>
 
           <h1 className="text-4xl font-bold text-white mb-2">Tutorials</h1>
-          <p className="text-gray-400 mb-8 leading-relaxed">
+          <p className="text-gray-400 mb-6 leading-relaxed">
             REPL-style walkthroughs. Every cell is a real command you can type
             into the terminal and get a real result. Follow them in order the
             first time — later routines assume you have done the earlier ones.
           </p>
+
+          <Link
+            href="/protein-modelling"
+            className="block mb-8 border border-emerald-900/60 rounded p-5 bg-emerald-950/20 hover:border-emerald-700 transition"
+          >
+            <div className="flex items-baseline gap-3">
+              <span aria-hidden className="text-lg">🧬</span>
+              <span className="text-xl font-semibold text-emerald-300 hover:text-emerald-200">
+                Report — Modelling cytochrome P450 as a knowledge-graph runtime
+              </span>
+            </div>
+            <p className="mt-2 text-gray-400 text-sm leading-relaxed pl-8">
+              A full scientific report — introduction, methods, results,
+              discussion — ending in a live VSCode-style IDE where you run the
+              SBS, shapeshifter, cytochrome, and CKG scripts against the real
+              federation.
+            </p>
+          </Link>
 
           <ol className="space-y-6">
             {items.map((item, i) => (

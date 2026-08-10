@@ -79,18 +79,25 @@ function getOrMakeNode(tau, address, seed) {
 
 /**
  * A chunk that calls a real registered module and folds its output_delta onto
- * the node as a value-delta. The value `kind` is namespaced by the module id so
- * two contributors never clobber each other's channel. Errors from the module
- * dispatch are NOT swallowed here — they propagate, and CkgRuntime.dispatch
- * turns them into a recorded "error" value (Thm. 2). That is deliberate: a
+ * the node as a value-delta. The value `kind` is namespaced by the module id
+ * AND the chunk name (`fact:<module>#<chunk>`), so a single node can carry
+ * SEVERAL facts from the same module without the later chunk clobbering the
+ * earlier one's channel — a P450 `measure` node can hold the module's Compound-I
+ * chemistry fact and its Fe=O spectroscopy fact at once, because they arrived as
+ * two distinct chunks. (The runtime folds by `delta.kind` into `node.values`;
+ * two chunks sharing a kind would collide, so the chunk name disambiguates.)
+ * The module id is still recoverable — `report`/`graph` split on `#`. Errors
+ * from the dispatch are NOT swallowed here — they propagate, and
+ * CkgRuntime.dispatch turns them into a recorded "error" value (Thm. 2): a
  * contributor failing is itself a fact the run records, not a halt.
  */
-function moduleChunk(moduleId, instruction) {
+function moduleChunk(moduleId, instruction, chunkName) {
+  const channel = chunkName ? `fact:${moduleId}#${chunkName}` : `fact:${moduleId}`;
   return async function chunk(_values) {
     const res = await dispatchModule(moduleId, instruction);
     const delta = res && res.output_delta;
     return {
-      kind: `fact:${moduleId}`,
+      kind: channel,
       payload: {
         module: moduleId,
         ok: res && res.ok,
@@ -104,9 +111,14 @@ function moduleChunk(moduleId, instruction) {
         // so the report has a headline without re-parsing the whole delta.
         findings: deriveFindings(delta),
       },
-      source_chunk: `${moduleId}_chunk`,
+      source_chunk: chunkName || `${moduleId}_chunk`,
     };
   };
+}
+
+/** Recover the contributing module id from a `fact:<module>[#<chunk>]` key. */
+function moduleIdOf(factKey) {
+  return factKey.slice("fact:".length).split("#")[0];
 }
 
 /**
@@ -193,6 +205,77 @@ function deriveFindings(delta) {
     case "text": {
       const lines = Array.isArray(delta.lines) ? delta.lines : [];
       return { kind, headline: lines[0] || "(text)", props };
+    }
+    // --- cytochrome P450 monograph contributors -----------------------------
+    case "cyp_electron_transfer": {
+      push("d_C", delta.d_C);
+      push("Marcus λ (eV)", delta.marcus_lambda_eV);
+      push("rate-limiting", delta.rate_limiting);
+      push("total ΔM", delta.total_dM);
+      return { kind, headline: delta.summary || "electron-transfer chain", props };
+    }
+    case "cyp_compound_i": {
+      push("aperture d_C", delta.aperture_dC);
+      push("ΔM", delta.dM);
+      push("mechanism", delta.mechanism);
+      push("KIE", delta.kie);
+      return { kind, headline: delta.summary || "Compound I formation", props };
+    }
+    case "cyp_pathway": {
+      if (delta.ok === false) return { kind, headline: `error: ${delta.error}`, props };
+      push("family", delta.family);
+      push("ΔM", delta.dM);
+      push("KIE", delta.kie);
+      push("RDS", delta.rate_determining_step);
+      return { kind, headline: delta.summary || "reaction pathway", props };
+    }
+    case "cyp_states": {
+      push("states", Array.isArray(delta.states) ? delta.states.length : undefined);
+      push("closed", delta.closed);
+      push("orbit ΣΔM", delta.orbit_sum_dM);
+      return { kind, headline: delta.summary || "catalytic closed orbit", props };
+    }
+    case "cyp_spectroscopy": {
+      if (delta.soret) push("Soret shift (nm)", `${delta.soret.resting_nm}→${delta.soret.compound_i_nm}`);
+      if (delta.raman) push("Fe=O Raman (cm⁻¹)", delta.raman.fe_o_cm);
+      return { kind, headline: delta.summary || "spectroscopy", props };
+    }
+    case "cyp_soret": {
+      push("resting (nm)", delta.resting_nm);
+      push("Compound I (nm)", delta.compound_i_nm);
+      push("shift (nm)", delta.shift_nm);
+      return { kind, headline: delta.summary || "Soret band", props };
+    }
+    case "cyp_epr": {
+      push("g_low", delta.g_low);
+      push("g_mid", delta.g_mid);
+      push("g_high", delta.g_high);
+      return { kind, headline: delta.summary || "EPR g-tensor", props };
+    }
+    case "cyp_raman": {
+      push("Fe=O (cm⁻¹)", delta.fe_o_cm);
+      push("¹⁸O (cm⁻¹)", delta.fe_o_18O_cm);
+      push("shift (cm⁻¹)", delta.shift_cm);
+      return { kind, headline: delta.summary || "resonance Raman Fe=O", props };
+    }
+    case "cyp_isoform": {
+      push("CYP", delta.cyp);
+      push("family", delta.family);
+      if (delta.phenotype) push("phenotype", delta.phenotype);
+      if (delta.dM != null) push("ΔM", delta.dM);
+      return { kind, headline: delta.summary || "isoform", props };
+    }
+    case "cyp_participants": {
+      push("participants", Array.isArray(delta.participants) ? delta.participants.length : undefined);
+      push("carriers", Array.isArray(delta.carriers) ? delta.carriers.length : undefined);
+      push("cuts M", delta.M);
+      if (delta.floor != null) push("floor β", Number(delta.floor).toExponential(2));
+      return { kind, headline: delta.invariant || "participant/carrier cut", props };
+    }
+    case "cyp_floor": {
+      if (delta.beta != null) push("β", Number(delta.beta).toExponential(3));
+      push("dominant term", delta.dominant_term);
+      return { kind, headline: delta.summary || "conditioned floor", props };
     }
     default: {
       // Unknown module output — still give a headline, still keep the delta.
@@ -287,10 +370,11 @@ function assembleReport() {
     const n = _nodes.get(tau);
     for (const k of Object.keys(n.values)) {
       if (k.startsWith("fact:")) {
-        const mod = k.slice("fact:".length);
+        const mod = moduleIdOf(k);
         const v = n.values[k] || {};
         (contributions[mod] = contributions[mod] || []).push({
           tau,
+          channel: k,
           ok: v.ok,
           findings: v.findings || null,
           // the whole module payload — same object <Artifact> renders when you
@@ -371,11 +455,10 @@ export const ckgModule = {
       if (op === "attach") {
         const node = _nodes.get(instr.tau);
         if (!node) return fail(`attach: no node "${instr.tau}" — represent it first`);
-        addChunk(
-          node,
-          instr.name || `${instr.module}_chunk`,
-          moduleChunk(instr.module, instr.instruction ?? "demo")
-        );
+        {
+          const chunkName = instr.name || `${instr.module}_chunk`;
+          addChunk(node, chunkName, moduleChunk(instr.module, instr.instruction ?? "demo", chunkName));
+        }
         return ok({
           kind: "ckg_ack",
           op,

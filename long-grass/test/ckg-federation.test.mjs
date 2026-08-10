@@ -38,11 +38,15 @@ test("the tutorial's five-node build folds a fact from every attached module", a
   const factPreds = new Set(
     graph.nodes.flatMap((n) => n.facts.map((f) => f.predicate))
   );
-  // every attached module left a fact — none was dropped or halted the run
+  // every attached module left a fact — none was dropped or halted the run.
+  // Facts are keyed `fact:<module>#<chunk>` now (so one node can hold several
+  // facts from one module), so match on the module prefix, not the whole key.
+  const moduleOf = (pred) => pred.slice("fact:".length).split("#")[0];
+  const factMods = new Set([...factPreds].filter((p) => p.startsWith("fact:")).map(moduleOf));
   for (const mod of ["echo", "shapeshifter", "sbs"]) {
     assert.ok(
-      factPreds.has(`fact:${mod}`),
-      `${mod} should have folded a fact:${mod} onto the graph`
+      factMods.has(mod),
+      `${mod} should have folded a fact onto the graph`
     );
   }
 
@@ -89,6 +93,6 @@ test("the tutorial's five-node build folds a fact from every attached module", a
   // can expand into the module's own chart there too.
   const graph2 = (await ckgModule.execute({ op: "graph" })).output_delta;
   const processNode = graph2.nodes.find((n) => n.tau === "process");
-  const sbsFact = processNode.facts.find((f) => f.predicate === "fact:sbs");
+  const sbsFact = processNode.facts.find((f) => f.predicate.startsWith("fact:sbs"));
   assert.equal(sbsFact.object.delta.kind, "sbs_result", "the graph view carries the full delta on the node fact");
 });

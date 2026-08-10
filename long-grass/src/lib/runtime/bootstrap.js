@@ -28,6 +28,7 @@ import { dslWriterModule } from "@/lib/modules/dsl-writer-module";
 import { srnModule } from "@/lib/modules/srn-module";
 import { smithModule } from "@/lib/modules/smith-module";
 import { ckgModule } from "@/lib/modules/ckg-module";
+import { cytochromeModule } from "@/lib/modules/cytochrome-module";
 import { extractTermsFromInstruction } from "@/lib/purpose-terms";
 import { estimateCostFromInstruction } from "@/lib/purpose-cost";
 
@@ -60,6 +61,7 @@ export function bootstrapFederation() {
   register(srnModule);
   register(smithModule);
   register(ckgModule);
+  register(cytochromeModule);
 
   const session = getPurposeSession();
   const unhook = onDispatch((entry) => {

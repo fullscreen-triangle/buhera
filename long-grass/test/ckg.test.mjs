@@ -101,7 +101,9 @@ test("represent → attach(real module) → dispatch folds the module's delta as
   const graph = await ckgModule.execute({ op: "graph" });
   assert.equal(graph.output_delta.kind, "ckg_graph");
   const assay = graph.output_delta.nodes.find((n) => n.tau === "assay");
-  const echoFact = assay.facts.find((f) => f.predicate === "fact:echo");
+  // Facts are keyed `fact:<module>#<chunk>` now (so one node can hold several
+  // facts from one module), so match on the module prefix, not the whole key.
+  const echoFact = assay.facts.find((f) => f.predicate.startsWith("fact:echo"));
   assert.ok(echoFact, "echo module's output_delta became a fact on the node");
   assert.equal(echoFact.object.ok, true);
 });
