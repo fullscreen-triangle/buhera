@@ -1,10 +1,18 @@
 # Shapeshifter Routines
 
 **What you'll learn:** how to use the Shape Shifter DSL — lavoisier's
-notebook language for mass-spectrometry workflows. You'll compile and
-run `.ss` scripts inside the Buhera terminal, one cell at a time, and
-see forward-simulated spectra, S-entropy panels, partition addresses,
-and fragment coherence.
+notebook language for mass-spectrometry workflows — and then how the same
+`.ss` runs become **facts on a CKG node**. You'll compile and run `.ss`
+scripts inside the Buhera terminal, one cell at a time, seeing
+forward-simulated spectra, S-entropy panels, partition addresses, and
+fragment coherence — and in the last section fold a shapeshifter run onto
+the `measure` node of a causal knowledge graph, where it emits a
+`shapeshifter_run` fact the run can read.
+
+This tutorial is one leg of [The complete CKG experiment](./complete-ckg-experiment):
+it is the module that supplies the `measure` node's `spectra` chunk. Every
+`dispatch("shapeshifter", …)` you learn here is a chunk instruction you can
+`attach` to a node.
 
 **Time:** ~15 minutes.
 
@@ -237,6 +245,33 @@ dispatch("purpose-carry", {
 **Next up:** [Scope routines](./scope-routines) — the helicopter
 microscopy DSL, structured differently: cell-by-cell accumulation into a
 script, with `visualise()` cells that produce charts.
+
+---
+
+## → In the CKG experiment
+
+The `"demo"` above teaches the sentinel. In the flagship
+[CKG experiment](./complete-ckg-experiment), the same shapeshifter interpreter
+runs a **real P450 acquisition** — a virtual orbitrap scan of a CYP substrate and
+its oxidised metabolite — and its workspace is folded onto the graph's `spectra`
+node as a `shapeshifter_run` fact instead of drawn on its own:
+
+```
+dispatch("ckg", { op: "represent", tau: "spectra", seed: 1 })
+dispatch("ckg", { op: "attach", tau: "spectra", name: "ms", module: "shapeshifter", instruction: `objective p450_metabolite_scan:
+  target: "CYP substrate + oxidised metabolite, positive mode"
+
+instrument orbi:
+  kappa: 1e12
+
+phase acquire:
+  records = lavoisier.instrument.run_experiment(classes: ["PC"], polarity: "+", analyser: "orbitrap", mz_window: [150, 500])` })
+dispatch("ckg", { op: "carry" })
+```
+
+Same interpreter, same `.ss` grammar — the only difference is that the output lands
+as a fact on a node the run walks, not a chart on its own. That is how a routine feeds
+the experiment.
 
 ---
 

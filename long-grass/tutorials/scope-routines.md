@@ -235,6 +235,26 @@ dispatch("purpose-carry", {
 
 ---
 
+## → In the CKG experiment
+
+In the flagship [CKG experiment](./complete-ckg-experiment), modules don't draw on
+their own — they fold a fact onto a node the run walks. SCOPE is no exception: a
+microscopy observation becomes a `scope_run` fact on a node, sitting beside the
+cytochrome, sbs, and shapeshifter facts as one more contributor's real artifact:
+
+```
+dispatch("ckg", { op: "represent", tau: "imaging", seed: 1 })
+dispatch("ckg", { op: "attach", tau: "imaging", name: "count", module: "scope", instruction: { kind: "cell", source: "counts = observe(GFP) |> segment(threshold: 0.3) |> count" } })
+dispatch("ckg", { op: "carry" })
+```
+
+The morphism is the same `observe(...) |> segment |> count` you ran directly above;
+attaching it to a node just means the observation count lands as a value-delta the
+graph accretes, not a panel you read in isolation. (SCOPE still needs a linked image;
+if none is linked the fact records that honestly rather than halting the run.)
+
+---
+
 ## Troubleshooting
 
 - **"runtime is not installed"** — `node_modules/scope-lang` is pointing

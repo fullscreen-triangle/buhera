@@ -10,9 +10,11 @@ import Head from "next/head";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-// The IDE pulls in the terminal render tree; keep it client-only so the report
-// itself stays statically rendered.
-const P450Ide = dynamic(() => import("@/components/P450Ide"), { ssr: false });
+// The notebook pulls in the terminal render tree; keep it client-only so the
+// report itself stays statically rendered.
+const P450Notebook = dynamic(() => import("@/components/P450Notebook"), {
+  ssr: false,
+});
 
 function Section({ id, n, title, children }) {
   return (
@@ -36,6 +38,74 @@ function Fig({ caption, children }) {
     </figure>
   );
 }
+
+// An inline citation marker linking to the References section. `n` is a single
+// number or a comma range like "3, 4".
+function Cite({ n }) {
+  return (
+    <a
+      href="#references"
+      className="text-blue-400 hover:text-blue-300 no-underline text-[0.85em] align-super"
+    >
+      [{n}]
+    </a>
+  );
+}
+
+// The reference list. On-disk grounding papers first (the reproducible sources),
+// then the external literature named in the corpus. The user's own monograph
+// source is deliberately not listed.
+const REFERENCES = [
+  {
+    key: "empty-dict",
+    text:
+      "The Empty Dictionary for Cytochrome P450: Constant Resident State, Query Without Entries, and a Correction to the Storage Claim of Paper 2. On-disk grounding paper (Monograph Paper 16), with validation scripts and results/*.json reproducing every reported number.",
+  },
+  {
+    key: "db-recovery",
+    text:
+      "P450 Database Recovery via Ternary Address Encoding: Information Capacity, Partial Address Reconstruction, and Cross-Species Interpolation. On-disk grounding paper (Monograph Paper 13), with eight validation scripts and rendered result panels.",
+  },
+  {
+    key: "gotoh",
+    text:
+      "Gotoh, O. (1992). Substrate recognition sites in cytochrome P450 family 2 proteins inferred from comparative analyses of amino acid and coding nucleotide sequences. J. Biol. Chem. 267, 83–90.",
+  },
+  {
+    key: "kyte",
+    text:
+      "Kyte, J. & Doolittle, R. F. (1982). A simple method for displaying the hydropathic character of a protein. J. Mol. Biol. 157, 105–132.",
+  },
+  {
+    key: "zamyatnin",
+    text:
+      "Zamyatnin, A. A. (1972). Protein volume in solution. Prog. Biophys. Mol. Biol. 24, 107–123.",
+  },
+  {
+    key: "spearman",
+    text:
+      "Spearman, C. (1904). The proof and measurement of association between two things. Am. J. Psychol. 15, 72–101.",
+  },
+  {
+    key: "berman",
+    text:
+      "Berman, H. M. et al. (2000). The Protein Data Bank. Nucleic Acids Res. 28, 235–242.",
+  },
+  {
+    key: "varadi",
+    text:
+      "Varadi, M. et al. (2022). AlphaFold Protein Structure Database: massively expanding the structural coverage of protein-sequence space. Nucleic Acids Res. 50, D439–D444.",
+  },
+  {
+    key: "gaedigk",
+    text:
+      "Gaedigk, A. et al. (2018). The Pharmacogene Variation (PharmVar) Consortium: incorporation of the human CYP nomenclature database. Clin. Pharmacol. Ther. 103, 399–401.",
+  },
+];
+
+// Map a reference key to its 1-based number in REFERENCES, so inline markers
+// stay in sync with the list order.
+const R = Object.fromEntries(REFERENCES.map((r, i) => [r.key, i + 1]));
 
 export default function ProteinModelling() {
   return (
@@ -114,7 +184,11 @@ export default function ProteinModelling() {
               <strong className="text-white">Compound I</strong>, an
               Fe(IV)=O porphyrin π-cation radical that abstracts a hydrogen atom
               from the substrate and rebounds to yield the hydroxylated product,
-              returning the enzyme to rest.
+              returning the enzyme to rest. Sequence-level substrate-recognition
+              and structural context for this cycle are well established
+              <Cite n={R.gotoh} />
+              <Cite n={R.berman} />
+              <Cite n={R.varadi} />.
             </p>
             <p>
               Conventional models represent such a cycle as data: a diagram, a
@@ -148,8 +222,12 @@ export default function ProteinModelling() {
           <Section id="corpus" n="2" title="The corpus">
             <p>
               The model is grounded in a monograph of measured and computed P450
-              quantities. We enumerate the fact families rather than sample them;
-              each becomes an independently addressable fact in the runtime.
+              quantities, in turn drawing on standard physicochemical descriptors
+              <Cite n={R.kyte} />
+              <Cite n={R.zamyatnin} /> and the human-isoform nomenclature
+              <Cite n={R.gaedigk} />. We enumerate the fact families rather than
+              sample them; each becomes an independently addressable fact in the
+              runtime.
             </p>
             <div className="overflow-x-auto my-4">
               <table className="w-full text-sm text-left border border-gray-800">
@@ -325,6 +403,24 @@ export default function ProteinModelling() {
               the native chemistry. The graph is the meeting ground.
             </p>
             <p>
+              The runtime stores no fact dictionary — a derived fact is recovered
+              by running its chunk, never looked up. This is not a slogan: two
+              on-disk grounding papers make it measurable. An empty-dictionary
+              scheme answers 6 of 6 P450 queries against 0 of 6 for an index
+              control while its resident state stays a constant 561 bytes across
+              nine orders of corpus size, and its graded response correlates with
+              catalytic depth (ρ ≈ 0.382 over 190 pairs, against a shuffle-null
+              mean near zero) <Cite n={R["empty-dict"]} />; the companion
+              database-recovery paper reconstructs P450 records from partial
+              ternary addresses by constraint propagation, with nothing stored
+              <Cite n={R["db-recovery"]} />. This is the same discipline the
+              graph runs on: every vertex in the notebook below holds its
+              contributors as chunks, not as cached values, and each fact appears
+              only when its cell runs the chunk that emits it. The depth
+              correlation is a rank statistic <Cite n={R.spearman} />, reported
+              honestly with its null and its non-discriminating identity control.
+            </p>
+            <p>
               <strong className="text-white">Limitations.</strong> The SBS solver
               falls back to a CPU integrator when its accelerated backend is
               absent; the metrics are real but backend-dependent. The scope module
@@ -337,31 +433,55 @@ export default function ProteinModelling() {
           {/* ---- 6. The apparatus ---- */}
           <Section id="apparatus" n="6" title="The apparatus">
             <p>
-              Everything above is reproducible here. The workspace below is a live
-              editor over the federation: each file is a real script, and running
-              it dispatches against the same runtime the terminal uses, rendering
-              the DSL&rsquo;s own output. Start with{" "}
-              <code className="text-emerald-300">ckg/build-cycle.ckg</code> to
-              construct the seven-state graph, then open{" "}
-              <code className="text-emerald-300">ckg/graph.ckg</code> and{" "}
-              <code className="text-emerald-300">ckg/report.ckg</code> to read the
-              trajectory back. The <code className="text-emerald-300">sbs/</code>{" "}
-              and <code className="text-emerald-300">shapeshifter/</code> files run
-              the two auxiliary DSLs on their own; the{" "}
-              <code className="text-emerald-300">cytochrome/</code> files address
-              each corpus fact family directly.
+              Everything above is reproducible in the notebook below. It runs like
+              a Jupyter notebook: a setup cell brings the federation up and clears
+              the runtime, then each cell holds one real script and renders that
+              script&rsquo;s own output at its foot. Run the cells top to bottom —
+              they share a single kernel, so state flows downstream exactly as in a
+              notebook. Cells{" "}
+              <span className="text-emerald-300 font-mono">In[1]</span>–
+              <span className="text-emerald-300 font-mono">In[3]</span> run the
+              three DSLs on their own (the SBS redox circuit, the shapeshifter
+              mass-spec acquisition, and each cytochrome corpus fact family). Cell{" "}
+              <span className="text-emerald-300 font-mono">In[4]</span> folds all
+              three onto one seven-state graph; cell{" "}
+              <span className="text-emerald-300 font-mono">In[5]</span> reads the
+              trajectory back — the same graph In[4] built, not a fresh one. Every
+              number in Section&nbsp;4 is one a cell here reproduces.
             </p>
           </Section>
 
           <div className="mt-6">
-            <P450Ide />
+            <P450Notebook />
           </div>
 
           <p className="mt-4 text-xs text-gray-600">
-            The IDE runs entirely in your browser against the in-page federation.
-            Files that read the graph (graph.ckg, report.ckg) assume you have run
-            build-cycle.ckg first in this session.
+            The notebook runs entirely in your browser against the in-page
+            federation. Because the cells share one kernel, the read-back cells
+            (In[5]) assume you have run the build cell (In[4]) above them first in
+            this session — just as a notebook cell depends on the cells above it.
           </p>
+
+          {/* ---- References ---- */}
+          <Section id="references" n="7" title="References">
+            <ol className="list-decimal list-outside ml-5 space-y-2 text-sm text-gray-400 marker:text-gray-600">
+              {REFERENCES.map((r) => (
+                <li key={r.key} className="pl-1 leading-relaxed">
+                  {r.text}
+                </li>
+              ))}
+            </ol>
+            <p className="mt-4 text-xs text-gray-600 leading-relaxed">
+              References [1] and [2] are the on-disk grounding papers: every
+              quantity attributed to them is reproduced by their validation
+              scripts, which the notebook&rsquo;s cytochrome and CKG cells re-run
+              against the live federation. Two honesty flags carried from paper [1]
+              rather than smoothed over: its body labels it &ldquo;Paper 16&rdquo;
+              while its conclusion calls itself the seventeenth paper, and its
+              graded-response p-value is reported as p&nbsp;&lt;&nbsp;0.005 where the
+              underlying results file records p&nbsp;=&nbsp;0.0.
+            </p>
+          </Section>
 
           <hr className="my-10 border-gray-800" />
           <nav className="flex items-center justify-between text-sm">

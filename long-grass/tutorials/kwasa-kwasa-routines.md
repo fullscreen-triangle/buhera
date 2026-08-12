@@ -110,9 +110,11 @@ item found  = dispatch("vahera", "memory find nearest \"hi\" k=1")
 Same effect as typing the vaHera statements directly, but now they
 compose in a script.
 
-**Cell 3.3** — Chain two modules.
+**Cell 3.3** — Chain two modules. Instead of the canned `"demo"`, run a real
+`virtual_run` — a positive-mode orbitrap acquisition of the PC lipid class, the
+kind of scan the CKG experiment folds onto its `spectra` node:
 ```
-item ms = dispatch("lavoisier", "demo")
+item ms = dispatch("lavoisier", { kind: "virtual_run", experimentType: "lipidomics", classSpecs: [{ classKey: "PC", Xmin: 30, Xmax: 38, Ymin: 0, Ymax: 4 }], polarity: "+", analyser: "orbitrap" })
 print("lavoisier returned {} records", ms.output_delta.summary.count)
 
 item p = dispatch("purpose-carry", { kind: "stats" })

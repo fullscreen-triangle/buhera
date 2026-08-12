@@ -266,6 +266,27 @@ module for a user's utterance.
 
 ---
 
+## → In the CKG experiment
+
+Purpose is the empty-dictionary module *par excellence* — it stores nothing and
+recovers a ranked context slice by running. In the flagship
+[CKG experiment](./complete-ckg-experiment) that is exactly the `recovery` node's
+discipline: the graph holds a 561-byte skeleton and recomputes every fact. You can
+fold purpose's own carry onto a node to make the accounting explicit — which prior
+steps are load-bearing for the P450 goal:
+
+```
+dispatch("ckg", { op: "represent", tau: "provenance", seed: 1 })
+dispatch("ckg", { op: "attach", tau: "provenance", name: "slice", module: "purpose-carry", instruction: { kind: "carry", goal: ["p450", "electron", "transfer"], budget: 500 } })
+dispatch("ckg", { op: "carry" })
+```
+
+The ranked slice lands as a value-delta on the node — the same context-pruning ledger
+you ran directly, now a fact the graph carries. Purpose grounds *why* a fact is kept;
+the CKG run is *what* it keeps.
+
+---
+
 ## Troubleshooting
 
 - **`ambient floor β = 0`** — nothing in the session shares any terms.

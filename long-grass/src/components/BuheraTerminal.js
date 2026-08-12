@@ -57,61 +57,6 @@ function loadProteins(kernel) {
 //    type === "nl"     — caller should fall back to the NL translator
 // ────────────────────────────────────────────────────────────
 
-const VAHERA_PREFIXES = [
-  "describe ",
-  "resolve ",
-  "spawn ",
-  "navigate ",
-  "complete ",
-  "memory ",
-  "demon ",
-  "controller ",
-  "kernel ",
-  "process ",
-];
-
-// A line starting with one of these is a SCOPE REPL cell (declaration block).
-const SCOPE_PREFIXES = [
-  "coordinate_space",
-  "channels ",
-  "channels{",
-  "goal ",
-  "goal{",
-  "rule ",
-  "dispatch ",
-  "dispatch{",
-];
-// A morphism cell: `<ident> = observe(...` — the assignment form.
-const SCOPE_MORPHISM_RE = /^[a-zA-Z_]\w*\s*=\s*observe\s*\(/;
-
-// SRN expression prefixes — routes to the srn module.
-// "srn ..."      → NL statement forwarded to SRN module
-// "◈..."         → pre-formed SRN glyph (direct eval)
-// "srn:peers"    → list forest peers
-// "srn:probe ... → probe a specific node
-// "srn:gossip"   → trigger gossip
-const SRN_GLYPH_RE = /^◈\s*\(/;
-
-// A line starting with one of these is a turbulance (kwasa-kwasa) script.
-const TURBULANCE_PREFIXES = [
-  "funxn ",
-  "item ",
-  "proposition ",
-  "hypothesis ",
-  "point ",
-  "given ",
-  "considering ",
-  "within ",
-  "research ",
-  "for each ",
-];
-
-function stripQuotes(s) {
-  const t = s.trim();
-  if (t.length >= 2 && t.startsWith('"') && t.endsWith('"')) return t.slice(1, -1);
-  return t;
-}
-
 /**
  * Decode a PNG/JPEG image URL to a grayscale ImagePayload for the SCOPE runtime.
  * Reuses the browser-native decode chain (fetch → blob → createImageBitmap →
@@ -148,206 +93,10 @@ async function loadImagePayload(url) {
   return { data: gray, width, height };
 }
 
-// Parse a literal `dispatch("<module>", <instruction>)` call.
-//
-// The instruction argument is a JS/JSON value: a quoted string, or an object/
-// array literal. We locate the module id (first quoted arg) and the raw text of
-// the second argument, then evaluate that text as a value. Evaluation is done
-// with a tightly-scoped `Function` returning the literal — the tutorials are
-// author-controlled cells, and the alternative (a full JSON5 parser) is a
-// dependency the no-install webtool avoids. A parse failure returns null so the
-// caller falls through to the other routes.
-//
-// Returns { moduleId, instruction } or null.
-export function parseDispatchCall(src) {
-  const text = src.trim();
-  // Must start with `dispatch(` and end with `)`. Cheap gate before the work.
-  const head = text.match(/^dispatch\s*\(\s*(["'])((?:\\.|[^\\])*?)\1\s*(,|\))/s);
-  if (!head) return null;
-  const moduleId = head[2];
-
-  // No second argument: `dispatch("mod")` → empty-string instruction.
-  if (head[3] === ")") {
-    // ensure nothing trails the close paren
-    if (text.slice(head.index + head[0].length).trim() !== "") return null;
-    return { moduleId, instruction: "" };
-  }
-
-  // Extract the second argument: everything between the comma and the final
-  // matching close paren. Find the close paren that balances the opening one.
-  const openParen = text.indexOf("(");
-  let depth = 0;
-  let closeParen = -1;
-  let inStr = null;
-  for (let i = openParen; i < text.length; i++) {
-    const ch = text[i];
-    if (inStr) {
-      if (ch === "\\") { i++; continue; }
-      if (ch === inStr) inStr = null;
-      continue;
-    }
-    if (ch === '"' || ch === "'" || ch === "`") { inStr = ch; continue; }
-    if (ch === "(") depth++;
-    else if (ch === ")") { depth--; if (depth === 0) { closeParen = i; break; } }
-  }
-  if (closeParen === -1) return null;
-  if (text.slice(closeParen + 1).trim() !== "") return null;
-
-  // The comma separating the two args is at head[0]'s end minus the captured
-  // comma; re-find it as the first top-level comma after the module string.
-  const afterModule = head.index + head[0].length; // char after the comma
-  const argText = text.slice(afterModule, closeParen).trim();
-  if (!argText) return { moduleId, instruction: "" };
-
-  let instruction;
-  try {
-    // eslint-disable-next-line no-new-func
-    instruction = Function('"use strict"; return (' + argText + ");")();
-  } catch {
-    return null;
-  }
-  return { moduleId, instruction };
-}
-
-export function routeInput(line) {
-  const trimmed = line.trim();
-  if (!trimmed) return { type: "noop" };
-
-  const lower = trimmed.toLowerCase();
-
-  // Meta commands.
-  if (trimmed === ":quit" || trimmed === ":exit") return { type: "meta", meta: "quit" };
-  if (trimmed === ":help") return { type: "meta", meta: "help" };
-  if (trimmed === ":clear") return { type: "meta", meta: "clear" };
-  if (trimmed === ":tour") return { type: "meta", meta: "tour" };
-  if (trimmed === ":proteins") return { type: "meta", meta: "proteins" };
-  if (trimmed === ":modules") return { type: "meta", meta: "modules" };
-  if (trimmed === ":audit") return { type: "meta", meta: "audit" };
-  if (trimmed === ":tutorials") return { type: "meta", meta: "tutorials" };
-
-  // SCOPE meta-commands: `:scope load <url>`, `:scope reset`, `:scope` (state).
-  if (lower === ":scope") return { type: "scope_ctl", ctl: "state" };
-  if (lower === ":scope reset") return { type: "scope_ctl", ctl: "reset" };
-  if (lower.startsWith(":scope load ")) {
-    return { type: "scope_ctl", ctl: "load", url: trimmed.slice(":scope load ".length).trim() };
-  }
-
-  // SCOPE REPL cell. A cell is one or more of SCOPE's declarations, typed
-  // without the `scope name { ... }` wrapper: a coordinate_space/channels/goal/
-  // rule/dispatch block, or a morphism `name = observe(...) |> ...`. Detected
-  // by a leading SCOPE keyword or a `<ident> = observe` assignment. Routes
-  // straight to the scope module — never through the orchestrator.
-  if (SCOPE_PREFIXES.some((p) => lower.startsWith(p)) || SCOPE_MORPHISM_RE.test(trimmed)) {
-    return { type: "scope", source: trimmed };
-  }
-
-  // SRN: pre-formed glyph (starts with ◈)
-  if (SRN_GLYPH_RE.test(trimmed)) {
-    return { type: "srn", instruction: { kind: "eval", glyph: trimmed } };
-  }
-
-  // SRN: control commands
-  if (lower === "srn:peers") {
-    return { type: "srn", instruction: { kind: "peers" } };
-  }
-  if (lower === "srn:gossip") {
-    return { type: "srn", instruction: { kind: "gossip" } };
-  }
-  if (lower.startsWith("srn:probe ")) {
-    return { type: "srn", instruction: { kind: "probe", node: trimmed.slice("srn:probe ".length).trim() } };
-  }
-
-  // SRN: NL statement ("srn <anything>" or "link <anything>")
-  if (lower.startsWith("srn ") || lower.startsWith("link ")) {
-    const text = trimmed.slice(trimmed.indexOf(" ") + 1).trim();
-    return { type: "srn", instruction: { kind: "nl", text } };
-  }
-
-  // Smith (agent generation). `smith run <dsl>` runs the tick loop; a bare
-  // agent-DSL cell (starting with `agent ` or `society `) is checked only.
-  if (lower.startsWith("smith run ") || lower.startsWith("smith:run ")) {
-    const src = trimmed.slice(trimmed.indexOf(" ", trimmed.indexOf("run")) + 1).trim();
-    return { type: "smith", instruction: { source: src, run: true } };
-  }
-  if (lower.startsWith("smith ")) {
-    return { type: "smith", instruction: { source: trimmed.slice(6).trim(), run: false } };
-  }
-  if (lower.startsWith("agent ") || lower.startsWith("society ")) {
-    return { type: "smith", instruction: { source: trimmed, run: false } };
-  }
-
-  // A literal `dispatch("<module>", <instruction>)` call. This is the form the
-  // tutorials use to drive an arbitrary federation module: the instruction is a
-  // JSON/JS value (a bare string, or an object literal like { op: "represent",
-  // tau: "assay" }). Routed straight to the named module. Multi-line object
-  // literals are supported — the terminal textarea and tutorial cells both pass
-  // the whole cell in.
-  {
-    const call = parseDispatchCall(trimmed);
-    if (call) {
-      return { type: "dispatch", moduleId: call.moduleId, instruction: call.instruction };
-    }
-  }
-
-  // Turbulance script (kwasa-kwasa). Multi-line scripts are supported via
-  // the textarea; a single-line input also routes here if it starts with
-  // a turbulance keyword.
-  if (TURBULANCE_PREFIXES.some((p) => lower.startsWith(p))) {
-    return { type: "turbulance", source: trimmed };
-  }
-
-  // Already vaHera.
-  if (VAHERA_PREFIXES.some((p) => lower.startsWith(p))) {
-    return { type: "vahera", vahera: trimmed };
-  }
-
-  // store <name> = "<text>"
-  if (lower.startsWith("store ")) {
-    const rest = trimmed.slice(6);
-    const eq = rest.indexOf("=");
-    if (eq >= 0) {
-      const name = rest.slice(0, eq).trim();
-      const value = stripQuotes(rest.slice(eq + 1));
-      if (name && value) {
-        return { type: "vahera", vahera: `memory store "${name}" = "${value}"` };
-      }
-    }
-  }
-
-  // find "<text>" [k=N]
-  if (lower.startsWith("find ")) {
-    const rest = trimmed.slice(5);
-    const m = rest.match(/\sk=(\d+)\s*$/);
-    let k = 3;
-    let text = rest;
-    if (m) {
-      k = parseInt(m[1], 10);
-      text = rest.slice(0, m.index);
-    }
-    const t = stripQuotes(text.trim());
-    return { type: "vahera", vahera: `memory find nearest "${t}" k=${k}` };
-  }
-
-  // dump <name>
-  if (lower.startsWith("dump ")) {
-    return { type: "vahera", vahera: `memory dump ${trimmed.slice(5).trim()}` };
-  }
-
-  const single = {
-    list: "memory list",
-    sort: "demon sort",
-    stats: "kernel stats",
-    trace: "kernel trace",
-    procs: "process list",
-    ps: "process list",
-    verify: "controller verify",
-  }[lower];
-  if (single) return { type: "vahera", vahera: single };
-
-  // Otherwise leave it for the NL translator (when proteins mode is
-  // on) or treat as a search query.
-  return { type: "nl", text: trimmed };
-}
+// The line router and dispatch-call parser live in a pure module so the
+// Node-side runner and tests can share them. Re-exported here so existing
+// importers of routeInput/parseDispatchCall from this file keep working.
+export { routeInput, parseDispatchCall } from "@/lib/runtime/route-input";
 
 const TOUR_VAHERA = `
 memory store "weekend"   = "I need to do laundry and clean the kitchen this weekend"
@@ -387,6 +136,7 @@ other commands
   :modules                list the federation
   :audit                  show recent acts
   :tutorials              open the tutorial index
+  :experiment             open the CKG experiment report + notebook
   :tour                   load five sample notes and search them
   :proteins               load a hardcoded biology database for the
                           natural-language demo
@@ -1861,17 +1611,12 @@ function deskSurfaceLines(result) {
 function WelcomePanel() {
   return (
     <div>
-      <div className="mb-6 flex items-baseline justify-between gap-4 flex-wrap">
-        <div>
-          <div className="text-white text-lg font-mono">buhera OS</div>
-          <div className="text-gray-500 text-xs mt-0.5">a research operating system</div>
-        </div>
-        <Link
-          href="/tutorials"
-          className="text-sm text-green-300 hover:text-green-200 font-mono border border-green-800 hover:border-green-600 rounded px-3 py-1 no-underline"
-        >
-          ▶ tutorials
-        </Link>
+      {/* The persistent top-right "▶ tutorials" link (rendered by the terminal
+          shell) is the single entry point — the welcome panel does not repeat
+          it. */}
+      <div className="mb-6">
+        <div className="text-white text-lg font-mono">buhera OS</div>
+        <div className="text-gray-500 text-xs mt-0.5">a research operating system</div>
       </div>
       <pre className="text-gray-400 text-xs leading-relaxed whitespace-pre-wrap font-mono">
 {WELCOME}
@@ -2161,13 +1906,23 @@ export default function BuheraTerminal() {
 
   return (
     <div className="fixed inset-0 bg-black text-gray-300 flex flex-col px-16 py-10 md:px-8 md:py-6 font-mono text-sm leading-relaxed">
-      <Link
-        href="/tutorials"
-        className="fixed top-3 right-4 text-xs text-green-400 hover:text-green-300 z-10 no-underline font-mono"
+      <div
+        className="fixed top-3 right-4 z-10 flex items-center gap-4"
         style={{ fontFamily: "inherit" }}
       >
-        ▶ tutorials
-      </Link>
+        <Link
+          href="/protein-modelling"
+          className="text-xs text-emerald-400 hover:text-emerald-300 no-underline font-mono"
+        >
+          ▶ CKG experiment
+        </Link>
+        <Link
+          href="/tutorials"
+          className="text-xs text-green-400 hover:text-green-300 no-underline font-mono"
+        >
+          ▶ tutorials
+        </Link>
+      </div>
       <div
         ref={historyRef}
         className="flex-1 overflow-y-auto pb-4"

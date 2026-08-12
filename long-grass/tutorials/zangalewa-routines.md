@@ -243,6 +243,26 @@ lavoisier DSL for mass-spec workflows.
 
 ---
 
+## → In the CKG experiment
+
+Zangalewa hands back a research card — title, S-coordinate `(S_k, S_t, S_e)`,
+sections, references — for a coordinate-only hand-off. In the flagship
+[CKG experiment](./complete-ckg-experiment) that card becomes a fact on a node,
+so the graph of P450 turnover can carry a literature view of the same enzyme beside
+its computed facts:
+
+```
+dispatch("ckg", { op: "represent", tau: "literature", seed: 1 })
+dispatch("ckg", { op: "attach", tau: "literature", name: "card", module: "zangalewa", instruction: "how does cytochrome P450 abstract a hydrogen atom in C-H hydroxylation" })
+dispatch("ckg", { op: "carry" })
+```
+
+The card lands as a value-delta on the `literature` node — the run walks it like any
+other fact. If no LLM provider is configured the fact records that honestly (the
+runtime judges nothing) rather than halting the carry.
+
+---
+
 ## Troubleshooting
 
 - **`no provider configured`** — no LLM key is set. Add one to

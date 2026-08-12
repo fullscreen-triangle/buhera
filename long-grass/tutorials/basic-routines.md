@@ -215,6 +215,26 @@ orchestrator that composes many dispatches into a script.
 
 ---
 
+## → In the CKG experiment
+
+Every primitive you just learned — `dispatch`, a module id, an instruction — is
+one cell of the flagship [CKG experiment](./complete-ckg-experiment). There the
+`dispatch` you ran directly is instead *attached* to a node, so its output folds
+onto a graph the run walks. The smallest possible taste:
+
+```
+dispatch("ckg", { op: "represent", tau: "enzyme", seed: 1 })
+dispatch("ckg", { op: "attach", tau: "enzyme", name: "states", module: "cytochrome", instruction: { op: "states" } })
+dispatch("ckg", { op: "dispatch", tau: "enzyme" })
+```
+
+The first cell makes a node; the second attaches the same kind of dispatch you've
+been running; the third runs it and folds a `cyp_states` fact onto the node. That
+is the whole experiment in miniature — represent, attach, run — and the routines
+tutorials each show one module taking its place in it.
+
+---
+
 ## Troubleshooting
 
 - **`:modules` shows fewer than 12 entries** — the deployment is on an
