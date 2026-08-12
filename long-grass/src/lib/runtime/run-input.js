@@ -138,6 +138,9 @@ async function runRouted(route, ctx) {
       if (route.meta === "tutorials") {
         return { kind: "external", meta: "tutorials", message: "(already reading the tutorials)" };
       }
+      if (route.meta === "experiment") {
+        return { kind: "external", meta: "experiment", message: "(open /protein-modelling for the CKG experiment report + notebook)" };
+      }
       if (route.meta === "proteins") {
         return {
           kind: "text",

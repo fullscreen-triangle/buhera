@@ -1751,6 +1751,24 @@ export default function BuheraTerminal() {
               ],
             },
           });
+        } else if (route.meta === "experiment") {
+          // Open the CKG experiment report + notebook in a new tab so the
+          // terminal session is preserved. Fall back to same-tab navigation.
+          if (typeof window !== "undefined") {
+            const w = window.open("/protein-modelling", "_blank", "noopener");
+            if (!w) {
+              window.location.href = "/protein-modelling";
+            }
+          }
+          patchLast({
+            result: {
+              kind: "text",
+              lines: [
+                "opening the CKG experiment …",
+                "if a new tab did not open, go to /protein-modelling directly.",
+              ],
+            },
+          });
         } else if (route.meta === "quit") {
           patchLast({ result: { kind: "text", lines: ["(can't quit a browser tab from here)"] } });
         }

@@ -187,6 +187,7 @@ export function routeInput(line) {
   if (trimmed === ":modules") return { type: "meta", meta: "modules" };
   if (trimmed === ":audit") return { type: "meta", meta: "audit" };
   if (trimmed === ":tutorials") return { type: "meta", meta: "tutorials" };
+  if (trimmed === ":experiment") return { type: "meta", meta: "experiment" };
 
   // SCOPE meta-commands: `:scope load <url>`, `:scope reset`, `:scope` (state).
   if (lower === ":scope") return { type: "scope_ctl", ctl: "state" };
