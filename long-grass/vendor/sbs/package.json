@@ -1,0 +1,21 @@
+{
+  "name": "@sachikonye/sbs",
+  "version": "0.1.1",
+  "description": "Systems Biology Shaders (SBS) DSL runtime, vendored for the long-grass CKG page. compile .sbs -> cellular circuit, solve on WebGL2 (CPU fallback), extract coherence/visibility. Public surface: runSBS(source), compileSBS(source), SCRIPTS.",
+  "type": "module",
+  "main": "./index.js",
+  "module": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./react": "./react/index.js",
+    "./scripts": "./dsl/scripts/index.js"
+  },
+  "sideEffects": false,
+  "dependencies": {},
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "author": "Kundai Farai Sachikonye <kundai.sachikonye@wzw.tum.de>",
+  "license": "UNLICENSED",
+  "private": true
+}

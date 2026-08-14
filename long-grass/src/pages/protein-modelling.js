@@ -1,7 +1,7 @@
 /* /protein-modelling — a rigorous report on modelling cytochrome P450 as a
  * categorical knowledge graph that IS its own runtime, ending in a live IDE.
  *
- * The prose is the report; the embedded <P450Ide> at the end is the apparatus.
+ * The prose is the report; the embedded <CkgSandboxes> at the end is the apparatus.
  * Every number in the Results section is one a file in the IDE reproduces when
  * you run it — the report and the runtime are the same object seen two ways.
  */
@@ -10,9 +10,9 @@ import Head from "next/head";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-// The notebook pulls in the terminal render tree; keep it client-only so the
-// report itself stays statically rendered.
-const P450Notebook = dynamic(() => import("@/components/P450Notebook"), {
+// The apparatus mounts four real sandbox renderers (WebGL / D3 / r3f on mount);
+// keep it client-only so the report itself stays statically rendered.
+const CkgSandboxes = dynamic(() => import("@/components/CkgSandboxes"), {
   ssr: false,
 });
 
@@ -433,33 +433,37 @@ export default function ProteinModelling() {
           {/* ---- 6. The apparatus ---- */}
           <Section id="apparatus" n="6" title="The apparatus">
             <p>
-              Everything above is reproducible in the notebook below. It runs like
-              a Jupyter notebook: a setup cell brings the federation up and clears
-              the runtime, then each cell holds one real script and renders that
-              script&rsquo;s own output at its foot. Run the cells top to bottom —
-              they share a single kernel, so state flows downstream exactly as in a
-              notebook. Cells{" "}
-              <span className="text-emerald-300 font-mono">In[1]</span>–
-              <span className="text-emerald-300 font-mono">In[3]</span> run the
-              three DSLs on their own (the SBS redox circuit, the shapeshifter
-              mass-spec acquisition, and each cytochrome corpus fact family). Cell{" "}
-              <span className="text-emerald-300 font-mono">In[4]</span> folds all
-              three onto one seven-state graph; cell{" "}
-              <span className="text-emerald-300 font-mono">In[5]</span> reads the
-              trajectory back — the same graph In[4] built, not a fresh one. Every
-              number in Section&nbsp;4 is one a cell here reproduces.
+              Everything above is reproducible below. The four tabs are the four
+              source sandboxes themselves, run in-page: each holds one real example
+              script in an editor, drives that project&rsquo;s real interpreter in
+              your browser, and renders the interpreter&rsquo;s output with that
+              project&rsquo;s own renderer components — not a text echo of it. The{" "}
+              <span className="text-emerald-300 font-mono">SBS</span> tab compiles
+              the KEGG&nbsp;hsa00190 electron-transport circuit (with the rotenone
+              Complex-I perturbation, <span className="font-mono">NADH→CoQ&nbsp;×0.3</span>)
+              to a 3D pathway graph, its charts, and the compiled glsl / ast /
+              circuit / js. The <span className="text-emerald-300 font-mono">honjo</span>{" "}
+              tab evaluates <span className="font-mono">track.hj</span> to the causal
+              table and per-entity detail cards. The{" "}
+              <span className="text-emerald-300 font-mono">shapeshifter</span> tab runs{" "}
+              <span className="font-mono">proteomics_experiment.ss</span> over a live
+              PredictedRecord[]. The{" "}
+              <span className="text-emerald-300 font-mono">shakespeare</span> tab
+              performs <span className="font-mono">07_electron-chain.shk</span> to the
+              femtosecond electron-transfer trace and its ET-chain structure. Every
+              number in Section&nbsp;4 is one a sandbox here reproduces live.
             </p>
           </Section>
 
           <div className="mt-6">
-            <P450Notebook />
+            <CkgSandboxes />
           </div>
 
           <p className="mt-4 text-xs text-gray-600">
-            The notebook runs entirely in your browser against the in-page
-            federation. Because the cells share one kernel, the read-back cells
-            (In[5]) assume you have run the build cell (In[4]) above them first in
-            this session — just as a notebook cell depends on the cells above it.
+            Each panel runs entirely in your browser: the real compiler/interpreter
+            of the source project executes the seeded example script on mount (and
+            again whenever you edit it and press Run), and the rendered output is the
+            same object the live source site produces — computed here, not replayed.
           </p>
 
           {/* ---- References ---- */}
