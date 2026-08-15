@@ -24,6 +24,7 @@ import {
   compileSBS, solveCircuit, extractMetrics, SCRIPTS,
 } from "@sachikonye/sbs";
 import ChartsPanel from "./Charts";
+import SandboxFrame from "../SandboxFrame";
 
 const theme = {
   editor: "#0f0f1a", editorFg: "#d4d4d4",
@@ -488,21 +489,28 @@ export default function SbsSandboxPanel() {
   useEffect(() => { run(OXPHOS_SOURCE); /* eslint-disable-next-line */ }, []);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded border" style={{ height: 560, background: theme.editor, borderColor: theme.border }}>
-      <div className="flex h-8 shrink-0 items-center gap-3 px-3" style={{ background: "#16213e", borderBottom: `1px solid ${theme.border}` }}>
-        <span className="font-mono text-[12px] font-bold" style={{ color: "#4ec9b0" }}>SBS</span>
-        <span className="text-[11px]" style={{ color: "#888" }}>Systems Biology Shaders — oxidative phosphorylation (KEGG hsa00190)</span>
-      </div>
-      <div className="flex min-h-0 flex-1">
-        <div className="flex min-w-0 flex-col" style={{ width: "44%" }}>
-          <Editor value={source} onChange={setSource} />
-        </div>
-        <OutputColumn
-          circuit={circuit} metrics={metrics} compiled={compiled}
-          logs={logs} errors={errors} imports={imports} glbModel={glbModel}
-          onRun={() => run(source)} onClear={() => setLogs([])}
-        />
-      </div>
-    </div>
+    <SandboxFrame
+      title="SBS"
+      subtitle="Systems Biology Shaders — oxidative phosphorylation (KEGG hsa00190)"
+      accent="#4ec9b0"
+      headerBg="#16213e"
+      border={theme.border}
+      background={theme.editor}
+    >
+      {({ editorCollapsed }) => (
+        <>
+          {!editorCollapsed && (
+            <div className="flex min-w-0 flex-col" style={{ width: "44%" }}>
+              <Editor value={source} onChange={setSource} />
+            </div>
+          )}
+          <OutputColumn
+            circuit={circuit} metrics={metrics} compiled={compiled}
+            logs={logs} errors={errors} imports={imports} glbModel={glbModel}
+            onRun={() => run(source)} onClear={() => setLogs([])}
+          />
+        </>
+      )}
+    </SandboxFrame>
   );
 }

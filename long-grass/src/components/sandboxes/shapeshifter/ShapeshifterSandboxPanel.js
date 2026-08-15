@@ -23,6 +23,7 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { compileStage, executeStage } from "@lavoisier/shapeshifter/compiler";
 import SandboxCharts from "./SandboxCharts";
+import SandboxFrame from "../SandboxFrame";
 
 const T = {
   editor: "#1e1e1e", editorFg: "#d4d4d4",
@@ -262,66 +263,83 @@ export default function ShapeshifterSandboxPanel() {
   ];
   const levelColor = { log: "#d4d4d4", info: "#9cdcfe", warn: "#dcdcaa", error: "#f48771" };
 
-  return (
-    <div className="flex flex-col overflow-hidden rounded border" style={{ height: 560, background: T.editor, borderColor: T.border }}>
-      <div className="flex h-8 shrink-0 items-center gap-3 px-3" style={{ background: "#2d2d2d", borderBottom: `1px solid ${T.border}` }}>
-        <span className="font-mono text-[12px] font-bold" style={{ color: "#c586c0" }}>shapeshifter</span>
-        <span className="text-[11px]" style={{ color: "#999" }}>proteomics_experiment.ss — run_proteomics (HSA / HBB / ENO1)</span>
-        {records.length > 0 && <span className="ml-auto font-mono text-[11px]" style={{ color: "#888" }}>{records.length} records</span>}
-      </div>
-      <div className="flex min-h-0 flex-1">
-        <div className="flex min-w-0 flex-col" style={{ width: "44%" }}>
-          <div className="flex items-center justify-between px-3 py-1.5" style={{ background: T.tabInactive }}>
-            <span className="text-[10px] uppercase tracking-widest" style={{ color: T.tabFg }}>source · .ss</span>
-            <button onClick={() => run(source)} disabled={running}
-              className="rounded px-3 py-0.5 text-[12px] font-medium text-white disabled:opacity-40" style={{ background: running ? "#555" : T.accent }}>
-              {running ? "Running…" : "▶ Run"}
-            </button>
-          </div>
-          <Editor value={source} onChange={setSource} />
-        </div>
+  const headerExtra = records.length > 0
+    ? <span className="font-mono text-[11px]" style={{ color: "#888" }}>{records.length} records</span>
+    : null;
 
-        <div className="flex min-w-0 flex-1 flex-col" style={{ borderLeft: `1px solid ${T.border}` }}>
-          <div className="flex h-9 shrink-0 items-center" style={{ background: T.tabInactive }}>
-            {tabs.map(({ id, label }) => {
-              const active = tab === id;
-              const badge = id === "console" ? logs.length : 0;
-              return (
-                <button key={id} onClick={() => setTab(id)}
-                  className="relative flex items-center gap-1.5 px-3 text-[12px]"
-                  style={{ color: active ? T.tabFgActive : T.tabFg, background: active ? T.tabActive : "transparent" }}>
-                  {label}
-                  {badge > 0 && <span className="rounded-full px-1.5 text-[10px]" style={{ background: T.accent, color: "#fff" }}>{badge}</span>}
-                  {active && <span className="absolute left-0 top-0 h-0.5 w-full" style={{ background: T.accentBright }} />}
+  return (
+    <SandboxFrame
+      title="shapeshifter"
+      subtitle="proteomics_experiment.ss — run_proteomics (HSA / HBB / ENO1)"
+      accent="#c586c0"
+      headerBg="#2d2d2d"
+      border={T.border}
+      background={T.editor}
+      headerExtra={headerExtra}
+    >
+      {({ editorCollapsed }) => (
+        <>
+          {!editorCollapsed && (
+            <div className="flex min-w-0 flex-col" style={{ width: "44%" }}>
+              <div className="flex items-center justify-between px-3 py-1.5" style={{ background: T.tabInactive }}>
+                <span className="text-[10px] uppercase tracking-widest" style={{ color: T.tabFg }}>source · .ss</span>
+                <button onClick={() => run(source)} disabled={running}
+                  className="rounded px-3 py-0.5 text-[12px] font-medium text-white disabled:opacity-40" style={{ background: running ? "#555" : T.accent }}>
+                  {running ? "Running…" : "▶ Run"}
                 </button>
-              );
-            })}
-          </div>
-          <div className="min-h-0 flex-1">
-            {tab === "charts" && <SandboxCharts records={records} />}
-            {tab === "records" && <RecordsPanel records={records} />}
-            {tab === "console" && (
-              <div className="flex h-full flex-col">
-                <div className="max-h-1/2 overflow-y-auto p-2 font-mono text-[12px]" style={{ borderBottom: `1px solid ${T.border}` }}>
-                  {logs.length === 0
-                    ? <div className="px-1 pt-1" style={{ color: "#5a5a5a" }}>Execution log appears here.</div>
-                    : logs.map((l, i) => (
-                        <div key={i} className="border-b px-1 py-0.5" style={{ color: levelColor[l.level] || "#d4d4d4", borderColor: "#2a2a2a" }}>
-                          <span className="mr-2 opacity-50">{l.level}</span>{l.message}
-                        </div>
-                      ))}
-                </div>
-                <div className="min-h-0 flex-1"><TerminalView term={term} /></div>
               </div>
-            )}
-            {tab === "ir" && (
-              <pre className="h-full overflow-auto p-3 font-mono text-[11px] leading-[1.5]" style={{ color: T.editorFg }}>
-                {ir || "No IR — Run a .ss file first"}
-              </pre>
-            )}
+              <Editor value={source} onChange={setSource} />
+            </div>
+          )}
+
+          <div className="flex min-w-0 flex-1 flex-col" style={{ borderLeft: editorCollapsed ? "none" : `1px solid ${T.border}` }}>
+            <div className="flex h-9 shrink-0 items-center pr-2" style={{ background: T.tabInactive }}>
+              {tabs.map(({ id, label }) => {
+                const active = tab === id;
+                const badge = id === "console" ? logs.length : 0;
+                return (
+                  <button key={id} onClick={() => setTab(id)}
+                    className="relative flex items-center gap-1.5 px-3 text-[12px]"
+                    style={{ color: active ? T.tabFgActive : T.tabFg, background: active ? T.tabActive : "transparent" }}>
+                    {label}
+                    {badge > 0 && <span className="rounded-full px-1.5 text-[10px]" style={{ background: T.accent, color: "#fff" }}>{badge}</span>}
+                    {active && <span className="absolute left-0 top-0 h-0.5 w-full" style={{ background: T.accentBright }} />}
+                  </button>
+                );
+              })}
+              {editorCollapsed && (
+                <button onClick={() => run(source)} disabled={running}
+                  className="ml-auto rounded px-3 py-0.5 text-[12px] font-medium text-white disabled:opacity-40" style={{ background: running ? "#555" : T.accent }}>
+                  {running ? "Running…" : "▶ Run"}
+                </button>
+              )}
+            </div>
+            <div className="min-h-0 flex-1">
+              {tab === "charts" && <SandboxCharts records={records} />}
+              {tab === "records" && <RecordsPanel records={records} />}
+              {tab === "console" && (
+                <div className="flex h-full flex-col">
+                  <div className="max-h-1/2 overflow-y-auto p-2 font-mono text-[12px]" style={{ borderBottom: `1px solid ${T.border}` }}>
+                    {logs.length === 0
+                      ? <div className="px-1 pt-1" style={{ color: "#5a5a5a" }}>Execution log appears here.</div>
+                      : logs.map((l, i) => (
+                          <div key={i} className="border-b px-1 py-0.5" style={{ color: levelColor[l.level] || "#d4d4d4", borderColor: "#2a2a2a" }}>
+                            <span className="mr-2 opacity-50">{l.level}</span>{l.message}
+                          </div>
+                        ))}
+                  </div>
+                  <div className="min-h-0 flex-1"><TerminalView term={term} /></div>
+                </div>
+              )}
+              {tab === "ir" && (
+                <pre className="h-full overflow-auto p-3 font-mono text-[11px] leading-[1.5]" style={{ color: T.editorFg }}>
+                  {ir || "No IR — Run a .ss file first"}
+                </pre>
+              )}
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </>
+      )}
+    </SandboxFrame>
   );
 }
