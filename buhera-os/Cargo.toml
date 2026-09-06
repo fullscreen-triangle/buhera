@@ -14,6 +14,7 @@ members = [
     "crates/buhera-vahera",
     "crates/buhera-embed",
     "crates/buhera-os",
+    "crates/buhera-gateway",
 ]
 
 [workspace.package]
@@ -36,6 +37,7 @@ buhera-substrate = { path = "crates/buhera-substrate" }
 buhera-kernel    = { path = "crates/buhera-kernel" }
 buhera-vahera    = { path = "crates/buhera-vahera" }
 buhera-embed     = { path = "crates/buhera-embed" }
+buhera-gateway   = { path = "crates/buhera-gateway" }
 
 [profile.release]
 opt-level = 3

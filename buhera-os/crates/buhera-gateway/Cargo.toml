@@ -1,0 +1,36 @@
+[package]
+name = "buhera-gateway"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Buhera gateway: accounts, sessions, verified tokens, and compute routing across catalysts."
+
+[[bin]]
+name = "buhera-gateway"
+path = "src/main.rs"
+
+[dependencies]
+buhera-substrate = { workspace = true }
+buhera-kernel    = { workspace = true }
+buhera-vahera    = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+clap = { workspace = true }
+
+axum = { version = "0.7", features = ["ws"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "signal", "sync", "time"] }
+tower-http = { version = "0.5", features = ["trace", "cors"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+time = { version = "0.3", features = ["serde", "formatting", "parsing"] }
+argon2 = "0.5"
+rand = "0.8"
+hmac = "0.12"
+sha2 = "0.10"
+base64 = "0.22"
+subtle = "2.6"
+rusqlite = { version = "0.32", features = ["bundled"] }
