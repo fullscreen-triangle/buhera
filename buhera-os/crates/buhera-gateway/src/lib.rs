@@ -15,15 +15,19 @@
 //!
 //! Modules:
 //!
-//! * [`token`]  — signed, expiring bearer tokens for both browser sessions
-//!                and machine registrations.
-//! * [`store`]  — durable accounts and catalyst roster (SQLite).
-//! * [`router`] — the placement decision, including the degraded path.
+//! * [`token`]   — signed, expiring bearer tokens for both browser sessions
+//!                 and machine registrations.
+//! * [`store`]   — durable accounts and catalyst roster (SQLite).
+//! * [`router`]  — the placement decision, including the degraded path.
+//! * [`session`] — per-account kernels backing that degraded path.
+//! * [`http`]    — the HTTP surface.
 
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]
 
+pub mod http;
 pub mod router;
+pub mod session;
 pub mod store;
 pub mod token;
 
