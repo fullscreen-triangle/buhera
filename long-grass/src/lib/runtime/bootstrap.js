@@ -29,6 +29,7 @@ import { srnModule } from "@/lib/modules/srn-module";
 import { smithModule } from "@/lib/modules/smith-module";
 import { ckgModule } from "@/lib/modules/ckg-module";
 import { cytochromeModule } from "@/lib/modules/cytochrome-module";
+import { gatewayModule } from "@/lib/modules/gateway-module";
 import { extractTermsFromInstruction } from "@/lib/purpose-terms";
 import { estimateCostFromInstruction } from "@/lib/purpose-cost";
 
@@ -62,6 +63,7 @@ export function bootstrapFederation() {
   register(smithModule);
   register(ckgModule);
   register(cytochromeModule);
+  register(gatewayModule);
 
   const session = getPurposeSession();
   const unhook = onDispatch((entry) => {

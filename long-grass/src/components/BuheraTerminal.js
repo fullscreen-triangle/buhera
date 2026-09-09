@@ -777,6 +777,75 @@ function ArtifactCatalystPing({ name, url, result, lines }) {
   );
 }
 
+function ArtifactGatewayMachines({ entries }) {
+  if (!Array.isArray(entries) || entries.length === 0) {
+    return <p className="text-gray-500 text-sm">(no machines paired)</p>;
+  }
+  return (
+    <div className="text-gray-300 text-sm">
+      <p className="text-xs text-gray-500 mb-2">{entries.length} machine{entries.length === 1 ? "" : "s"}</p>
+      <ul>
+        {entries.map((c) => (
+          <li key={c.name} className="mb-1">
+            <span className={c.live ? "text-green-400" : "text-gray-600"}>{c.live ? "●" : "○"}</span>{" "}
+            <span className="text-white font-mono">{c.name}</span>
+            <span className="text-gray-500"> — {c.live ? "live" : "asleep"}</span>
+            {Array.isArray(c.capabilities) && c.capabilities.length > 0 && (
+              <span className="text-gray-500 text-xs"> · {c.capabilities.join(", ")}</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ArtifactGatewayPairToken({ name, token, expires_at }) {
+  return (
+    <div className="text-gray-300 text-sm">
+      <p>
+        <span className="text-green-400">paired</span>{" "}
+        <span className="text-white font-mono">{name}</span>
+      </p>
+      <p className="text-xs text-gray-500 mt-1">
+        this token is shown once — paste it into that machine so it can dial in:
+      </p>
+      <pre className="mt-2 p-2 bg-black/40 border border-gray-700 rounded text-xs font-mono text-yellow-300 whitespace-pre-wrap break-all">
+        {token}
+      </pre>
+      {expires_at && (
+        <p className="text-xs text-gray-500 mt-1">
+          expires {new Date(expires_at * 1000).toISOString()}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function ArtifactGatewayRun({ executed_on, note, results, trace }) {
+  return (
+    <div className="text-gray-300 text-sm">
+      <p>
+        <span className="text-gray-400">ran on:</span>{" "}
+        <span className="text-white font-mono">{executed_on}</span>
+      </p>
+      {note && (
+        <p className="text-yellow-400 text-xs mt-1">note: {note}</p>
+      )}
+      {Array.isArray(results) && results.length > 0 && (
+        <pre className="mt-2 font-mono text-xs whitespace-pre-wrap">
+          {JSON.stringify(results, null, 2)}
+        </pre>
+      )}
+      {Array.isArray(trace) && trace.length > 0 && (
+        <div className="mt-2 text-xs text-gray-500">
+          <span className="text-gray-400">trace: </span>{trace.join("  ")}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ArtifactRemoteDispatch({ target, moduleId, url, elapsed_ms, status, remote, error_stage, error_message }) {
   const remoteOk = !!remote?.ok;
   return (
@@ -1559,6 +1628,10 @@ export function Artifact({ result }) {
     case "ckg_ack":         return <ArtifactText lines={[result.message, result.trajectory && result.trajectory.length ? `trajectory: ${result.trajectory.join("  ")}` : null, result.chunks ? `chunks: ${result.chunks.join(", ")}` : null, result.emitted ? `emitted: ${result.emitted.join(", ")}` : null].filter(Boolean)} />;
     case "text":            return <ArtifactText lines={result.lines} />;
     case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
+    case "gateway_session": return <ArtifactText lines={result.lines} />;
+    case "gateway_machines": return <ArtifactGatewayMachines entries={result.entries} />;
+    case "gateway_pair_token": return <ArtifactGatewayPairToken name={result.name} token={result.token} expires_at={result.expires_at} />;
+    case "gateway_run":     return <ArtifactGatewayRun executed_on={result.executed_on} note={result.note} results={result.results} trace={result.trace} />;
     default:                return null;
   }
 }

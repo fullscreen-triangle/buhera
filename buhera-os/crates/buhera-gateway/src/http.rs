@@ -23,6 +23,7 @@ use axum::routing::{get, post};
 use axum::{Json, Router};
 use serde::{Deserialize, Serialize};
 use tokio::sync::Mutex;
+use tower_http::cors::{Any, CorsLayer};
 
 use crate::router::{route, FallbackReason, Route};
 use crate::store::{Store, StoreError};
@@ -423,6 +424,14 @@ async fn health() -> Json<serde_json::Value> {
 }
 
 /// Build the router.
+///
+/// CORS is wide open (`Any` origin/method/header): every route here either
+/// takes no credentials (`/api/auth/*`) or is authenticated by a bearer token
+/// the caller must attach itself, never by a cookie the browser would send
+/// automatically — so there is no ambient credential for a foreign origin to
+/// ride in on, and restricting `Origin` would only block legitimate browser
+/// clients (long-grass and anything else built against this API) without
+/// stopping anything a curious server-side caller couldn't already do.
 pub fn app(state: Arc<AppState>) -> Router {
     Router::new()
         .route("/health", get(health))
@@ -431,5 +440,6 @@ pub fn app(state: Arc<AppState>) -> Router {
         .route("/api/catalysts", get(list_catalysts).post(pair_catalyst))
         .route("/api/catalysts/:name", axum::routing::delete(unpair_catalyst))
         .route("/api/run", post(run))
+        .layer(CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any))
         .with_state(state)
 }
