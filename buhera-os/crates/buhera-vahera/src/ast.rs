@@ -43,4 +43,27 @@ pub enum StmtKind {
     KernelTrace,
     /// `process list`
     ProcessList,
+
+    // ── scientific-statement forms (sugar; each executes like an
+    // existing kind above) ──
+    /// `observed <name> as "<text>"` — executes like [`StmtKind::Describe`]
+    Observed { name: String, text: String },
+    /// `hypothesize <name>: "<text>"` — executes like [`StmtKind::Describe`]
+    /// followed by [`StmtKind::Resolve`]
+    Hypothesize { name: String, text: String },
+    /// `run <program> on <name>` — executes like [`StmtKind::Spawn`]
+    RunOn { program: String, target: String },
+    /// `to completion` — executes like [`StmtKind::NavigatePenultimate`]
+    /// followed by [`StmtKind::CompleteTrajectory`]
+    ToCompletion,
+    /// `compare <name> to "<text>" [k=<n>]` — executes like
+    /// [`StmtKind::MemoryFind`]; `name` is carried for readability but not
+    /// required by current kernel semantics
+    CompareTo { name: String, query: String, k: usize },
+    /// `record "<name>" = "<text>"` — executes like [`StmtKind::MemoryStore`]
+    Record { name: String, text: String },
+    /// `check consistency` — executes like [`StmtKind::ControllerVerify`]
+    CheckConsistency,
+    /// `rank by category` — executes like [`StmtKind::DemonSort`]
+    RankByCategory,
 }

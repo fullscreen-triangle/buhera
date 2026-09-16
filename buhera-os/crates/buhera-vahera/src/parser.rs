@@ -34,6 +34,15 @@ pub fn parse_vahera(source: &str) -> Result<Vec<Stmt>, ParseError> {
         .expect("static regex");
     let mem_dump = Regex::new(r#"^memory\s+dump\s+(\S+)$"#).expect("static regex");
 
+    // scientific-statement forms
+    let observed = Regex::new(r#"^observed\s+(\S+)\s+as\s+"([^"]*)"$"#).expect("static regex");
+    let hypothesize =
+        Regex::new(r#"^hypothesize\s+(\S+):\s*"([^"]*)"$"#).expect("static regex");
+    let run_on = Regex::new(r#"^run\s+(\S+)\s+on\s+(\S+)$"#).expect("static regex");
+    let compare_to =
+        Regex::new(r#"^compare\s+(\S+)\s+to\s+"([^"]*)"(?:\s+k=(\d+))?$"#).expect("static regex");
+    let record = Regex::new(r#"^record\s+"([^"]*)"\s*=\s*"([^"]*)"$"#).expect("static regex");
+
     let mut out = Vec::new();
 
     for (idx, raw) in source.lines().enumerate() {
@@ -133,6 +142,62 @@ pub fn parse_vahera(source: &str) -> Result<Vec<Stmt>, ParseError> {
             StmtKind::KernelTrace
         } else if line == "process list" {
             StmtKind::ProcessList
+        } else if line.starts_with("observed ") {
+            let caps = observed.captures(line).ok_or_else(|| ParseError::Syntax {
+                line: line_no,
+                message: format!("malformed observed: {}", line),
+            })?;
+            StmtKind::Observed {
+                name: caps[1].to_string(),
+                text: caps[2].to_string(),
+            }
+        } else if line.starts_with("hypothesize ") {
+            let caps = hypothesize.captures(line).ok_or_else(|| ParseError::Syntax {
+                line: line_no,
+                message: format!("malformed hypothesize: {}", line),
+            })?;
+            StmtKind::Hypothesize {
+                name: caps[1].to_string(),
+                text: caps[2].to_string(),
+            }
+        } else if line.starts_with("run ") {
+            let caps = run_on.captures(line).ok_or_else(|| ParseError::Syntax {
+                line: line_no,
+                message: format!("malformed run: {}", line),
+            })?;
+            StmtKind::RunOn {
+                program: caps[1].to_string(),
+                target: caps[2].to_string(),
+            }
+        } else if line == "to completion" {
+            StmtKind::ToCompletion
+        } else if line.starts_with("compare ") {
+            let caps = compare_to.captures(line).ok_or_else(|| ParseError::Syntax {
+                line: line_no,
+                message: format!("malformed compare: {}", line),
+            })?;
+            let k = caps
+                .get(3)
+                .map(|m| m.as_str().parse::<usize>().unwrap_or(3))
+                .unwrap_or(3);
+            StmtKind::CompareTo {
+                name: caps[1].to_string(),
+                query: caps[2].to_string(),
+                k,
+            }
+        } else if line.starts_with("record ") {
+            let caps = record.captures(line).ok_or_else(|| ParseError::Syntax {
+                line: line_no,
+                message: format!("malformed record: {}", line),
+            })?;
+            StmtKind::Record {
+                name: caps[1].to_string(),
+                text: caps[2].to_string(),
+            }
+        } else if line == "check consistency" {
+            StmtKind::CheckConsistency
+        } else if line == "rank by category" {
+            StmtKind::RankByCategory
         } else {
             return Err(ParseError::Syntax {
                 line: line_no,
@@ -196,6 +261,46 @@ process list
 "#;
         let stmts = parse_vahera(src).unwrap();
         assert_eq!(stmts.len(), 15);
+    }
+
+    #[test]
+    fn parse_scientific_statement_forms() {
+        let src = r#"
+observed a as "x"
+hypothesize b: "y"
+run p on a
+to completion
+compare a to "q" k=5
+record "n" = "t"
+check consistency
+rank by category
+"#;
+        let stmts = parse_vahera(src).unwrap();
+        assert_eq!(stmts.len(), 8);
+        assert!(matches!(stmts[0].kind, StmtKind::Observed { .. }));
+        assert!(matches!(stmts[1].kind, StmtKind::Hypothesize { .. }));
+        assert!(matches!(stmts[2].kind, StmtKind::RunOn { .. }));
+        assert!(matches!(stmts[3].kind, StmtKind::ToCompletion));
+        match &stmts[4].kind {
+            StmtKind::CompareTo { name, query, k } => {
+                assert_eq!(name, "a");
+                assert_eq!(query, "q");
+                assert_eq!(*k, 5);
+            }
+            _ => panic!("wrong kind"),
+        }
+        assert!(matches!(stmts[5].kind, StmtKind::Record { .. }));
+        assert!(matches!(stmts[6].kind, StmtKind::CheckConsistency));
+        assert!(matches!(stmts[7].kind, StmtKind::RankByCategory));
+    }
+
+    #[test]
+    fn compare_defaults_k_to_three() {
+        let stmts = parse_vahera(r#"compare a to "q""#).unwrap();
+        match &stmts[0].kind {
+            StmtKind::CompareTo { k, .. } => assert_eq!(*k, 3),
+            _ => panic!("wrong kind"),
+        }
     }
 
     #[test]

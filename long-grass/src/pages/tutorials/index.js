@@ -72,7 +72,7 @@ export default function TutorialsIndex({ items }) {
 
           <Link
             href="/protein-modelling"
-            className="block mb-8 border border-emerald-900/60 rounded p-5 bg-emerald-950/20 hover:border-emerald-700 transition"
+            className="block mb-4 border border-emerald-900/60 rounded p-5 bg-emerald-950/20 hover:border-emerald-700 transition"
           >
             <div className="flex items-baseline gap-3">
               <span aria-hidden className="text-lg">🧬</span>
@@ -85,6 +85,24 @@ export default function TutorialsIndex({ items }) {
               discussion — ending in a live VSCode-style IDE where you run the
               SBS, shapeshifter, cytochrome, and CKG scripts against the real
               federation.
+            </p>
+          </Link>
+
+          <Link
+            href="/data-modeling"
+            className="block mb-8 border border-blue-900/60 rounded p-5 bg-blue-950/20 hover:border-blue-700 transition"
+          >
+            <div className="flex items-baseline gap-3">
+              <span aria-hidden className="text-lg">🗂️</span>
+              <span className="text-xl font-semibold text-blue-300 hover:text-blue-200">
+                Report — Shape is not admissibility: Buhera&apos;s data-modeling primitive
+              </span>
+            </div>
+            <p className="mt-2 text-gray-400 text-sm leading-relaxed pl-8">
+              An interactive report on how LinkML and the shape-language family
+              relate to Buhera&apos;s floor/residue layer — with live, draggable
+              d3 diagrams of the capability primitive, the contact-graph floor,
+              the separation theorem, and the verdict algebra.
             </p>
           </Link>
 

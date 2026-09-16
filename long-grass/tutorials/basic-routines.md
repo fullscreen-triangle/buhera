@@ -198,7 +198,92 @@ dump note
 
 ---
 
-## 6. What you now know
+## 6. Scientific statements
+
+The shorthands above are one small step from the exact vaHera keyword. A
+second, more sentence-shaped set of shorthands goes further: they read the
+way a scientist would write a claim, an observation, or a comparison in a
+methods section, rather than the way a programmer writes a command. Each
+routes to precisely the same vaHera the primitive forms above already
+execute — nothing about the kernel changes, only how you address it.
+
+**Cell 6.1** — Record an observation.
+```
+observed ethanol_bp as "boiling point of ethanol, C2H5OH, small alcohol"
+```
+
+**Expected** — identical to `describe ethanol_bp with "..."`: a confirmation
+that `ethanol_bp` now has a computed S-coordinate.
+
+**Cell 6.2** — State a hypothesis and resolve it in one statement.
+```
+hypothesize ethanol_bp: "boiling point of ethanol, C2H5OH, small alcohol"
+```
+
+**Expected** — the same as Cell 6.1 followed immediately by `resolve
+ethanol_bp`; the trace shows both steps.
+
+**Cell 6.3** — Run a procedure on a target.
+```
+run query on ethanol_bp
+```
+
+**Expected** — identical to `spawn query from ethanol_bp`.
+
+**Cell 6.4** — Carry a run to its endpoint.
+```
+to completion
+```
+
+**Expected** — identical to `navigate to penultimate` followed by `complete
+trajectory`, run against the most recently spawned process.
+
+**Cell 6.5** — Sanity-check the run.
+```
+check consistency
+```
+
+**Expected** — identical to `controller verify`: triple-equivalence sample
+counts and any divergence alerts.
+
+**Cell 6.6** — A comparison.
+```
+compare ethanol_like to "ethanol" k=3
+```
+
+**Expected** — identical to `memory find nearest "ethanol" k=3`.
+
+**Cell 6.7** — Record a note as a statement.
+```
+record "meeting" = "team retro on Thursday at 2pm about the Q3 launch"
+```
+
+**Expected** — identical to `memory store "meeting" = "..."`.
+
+**Cell 6.8** — Triage stored records.
+```
+rank by category
+```
+
+**Expected** — identical to `demon sort`.
+
+**Cell 6.9** — A whole short protocol, written as a scientist would state
+it, in one cell:
+```
+hypothesize ethanol_bp: "boiling point of ethanol, C2H5OH, small alcohol"
+run query on ethanol_bp
+to completion
+check consistency
+```
+
+**Expected** — the same sequence of kernel calls as if you had typed
+`describe` / `resolve` / `spawn` / `navigate to penultimate` / `complete
+trajectory` / `controller verify` by hand — the sentence form is a second
+notation for the identical program, not a different one.
+
+---
+
+## 7. What you now know
 
 - Every command either targets a module (dispatch) or the terminal itself
   (meta commands starting with `:`).
@@ -209,6 +294,11 @@ dump note
   content. The kernel keeps a running trace you can inspect.
 - Shorthands (`store`, `find`, `dump`, `list`, `stats`) are convenience
   aliases for `memory ...` statements.
+- Scientific-statement forms (`observed`, `hypothesize`, `run ... on`, `to
+  completion`, `compare ... to`, `record`, `check consistency`, `rank by
+  category`) are a second, sentence-shaped notation for the same
+  statements — pick whichever reads more naturally for what you're doing,
+  and mix them freely in one script.
 
 **Next up:** [Kwasa-kwasa routines](./kwasa-kwasa-routines) — the
 orchestrator that composes many dispatches into a script.

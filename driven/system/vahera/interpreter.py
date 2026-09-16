@@ -16,6 +16,17 @@ Supported statements (one per line):
   memory find nearest "<text>" k=<n>            # categorical retrieval by description
   demon sort                                    # zero-cost sort
   controller verify                             # check triple equivalence
+
+Scientific-statement forms (sugar — each lowers to the ops above; a
+program may freely mix these with the primitive forms):
+  observed <name> as "<text>"                   # -> describe
+  hypothesize <name>: "<text>"                  # -> describe + resolve
+  run <program> on <name>                       # -> spawn
+  to completion                                 # -> navigate + complete
+  compare <name> to "<text>" [k=<n>]            # -> memory find nearest
+  record "<name>" = "<text>"                    # -> memory store
+  check consistency                             # -> controller verify
+  rank by category                              # -> demon sort
 """
 from __future__ import annotations
 
@@ -109,6 +120,55 @@ def parse_vahera(source: str) -> list[Stmt]:
 
         elif line == "controller verify":
             stmts.append(Stmt("controller_verify", {}))
+
+        # ── scientific-statement forms (sugar over the ops above) ──
+
+        elif line.startswith("observed "):
+            m = re.match(r'observed\s+(\S+)\s+as\s+"([^"]*)"', line)
+            if not m:
+                raise SyntaxError(f"malformed: {line}")
+            stmts.append(Stmt("describe",
+                              {"target": m.group(1), "text": m.group(2)}))
+
+        elif line.startswith("hypothesize "):
+            m = re.match(r'hypothesize\s+(\S+):\s*"([^"]*)"', line)
+            if not m:
+                raise SyntaxError(f"malformed: {line}")
+            stmts.append(Stmt("describe",
+                              {"target": m.group(1), "text": m.group(2)}))
+            stmts.append(Stmt("resolve", {"target": m.group(1)}))
+
+        elif line.startswith("run "):
+            m = re.match(r'run\s+(\S+)\s+on\s+(\S+)', line)
+            if not m:
+                raise SyntaxError(f"malformed: {line}")
+            stmts.append(Stmt("spawn",
+                              {"program": m.group(1), "target": m.group(2)}))
+
+        elif line == "to completion":
+            stmts.append(Stmt("navigate", {"mode": "penultimate"}))
+            stmts.append(Stmt("complete", {}))
+
+        elif line.startswith("compare "):
+            m = re.match(r'compare\s+\S+\s+to\s+"([^"]*)"(?:\s+k=(\d+))?', line)
+            if not m:
+                raise SyntaxError(f"malformed: {line}")
+            k = int(m.group(2)) if m.group(2) else 5
+            stmts.append(Stmt("memory_find",
+                              {"query": m.group(1), "k": k}))
+
+        elif line.startswith("record "):
+            m = re.match(r'record\s+"([^"]*)"\s*=\s*"([^"]*)"', line)
+            if not m:
+                raise SyntaxError(f"malformed: {line}")
+            stmts.append(Stmt("memory_store",
+                              {"name": m.group(1), "text": m.group(2)}))
+
+        elif line == "check consistency":
+            stmts.append(Stmt("controller_verify", {}))
+
+        elif line == "rank by category":
+            stmts.append(Stmt("demon_sort", {}))
 
         else:
             raise SyntaxError(f"unknown vaHera: {line}")

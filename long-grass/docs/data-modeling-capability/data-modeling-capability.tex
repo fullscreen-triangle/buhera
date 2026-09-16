@@ -1,0 +1,551 @@
+\documentclass[11pt,a4paper,twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=1.9cm,columnsep=0.6cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{construction}[theorem]{Construction}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Feat}{\mathsf{Feat}}
+\newcommand{\Capset}{\mathrm{Capset}}
+\newcommand{\Src}{\mathcal{S}}
+\newcommand{\Shape}{\mathrm{Shape}}
+\newcommand{\Adm}{\mathrm{Adm}}
+\newcommand{\Med}{\mathsf{m}}
+\newcommand{\Gph}{\Gamma}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\wt}{w}
+\newcommand{\sepc}{\sigma}
+\newcommand{\flo}{\beta}
+\newcommand{\Req}{\mathrm{Req}}
+\newcommand{\Conf}{\mathrm{Conf}}
+\newcommand{\LM}{\mathrm{LM}}
+
+\title{Shape Is Not Admissibility:\\
+A Capability-Theoretic Foundation for Data Modeling in Buhera OS}
+
+\author{Kundai Farai Sachikonye\\
+\small Technical University of Munich\\
+\small AIMe Registry for Artificial Intelligence\\
+\small \texttt{kundai.sachikonye@tum.de}}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Data modeling languages---LinkML, JSON Schema, SHACL, OWL---answer the question
+``what does a record of this kind look like.'' They do this well, and nothing in
+this paper disputes it. We ask a different question: given a schema that answers
+the first question completely and honestly, does an agent holding it know which
+\emph{questions} are answerable against the data it describes? We show the answer
+is no, in general, and that the gap is not a defect of any particular language but
+a theorem about the relationship between two properties a data-modeling framework
+can certify. We generalize the capability-declaration mechanism already proven
+sound for chemical file-format conversion---a declared feature set $\Capset(\Src)
+\subseteq \Feat$ with statically decidable containment---to data schemas in
+general, and show that any shape language, LinkML included, instantiates this
+mechanism faithfully: a schema \emph{is} a capability declaration, and nothing is
+lost by treating it as one. We then prove the separation result that motivates
+this paper: shape-certification and admissibility-certification are independent
+properties, witnessed by two data sources with identical declared capability sets
+and identical schema-conformant records, one of which admits a given question and
+one of which does not, for reasons invisible to any capability set built from
+per-field or per-class features alone. Admissibility is a property of a floor---a
+global minimum separation cost over the data's contact structure---and no shape
+language of the kind surveyed has a construct that names it. The consequence is
+constructive, not critical: Buhera OS's data layer is the composition of (i) any
+sufficient shape language, adopted or extended as the surface demands, satisfying
+$\Feat$ and $\Capset$, and (ii) a floor/residue layer beneath it that certifies
+admissibility directly. We give the composition law relating the two, validate it
+against the existing ladder and representation-converter results, and close with
+the precise sense in which adopting LinkML costs Buhera nothing and settles
+nothing.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}
+\label{sec:intro}
+
+A data-modeling language lets a community agree, once, on what a record of some
+kind contains: a reaction has participants and a rate; an enzyme has a sequence
+and an EC number; a dataset has a license and a provenance statement. LinkML
+formalizes this agreement as a schema of classes, slots, types, and enumerations,
+expressed in YAML, compiled by generators into JSON Schema, SHACL, OWL, SQL DDL,
+and typed code~\cite{linkml}. NFDI4Cat's Chem-DCAT-AP is exactly such a schema,
+extending DCAT-AP with PROV-O provenance obligations for catalysis datasets. None
+of this is in question here, and none of it is what this paper is about.
+
+What a schema gives a consuming agent is a certificate of \emph{shape}: this
+record, if it validates, has the fields the schema declares, typed as the schema
+declares them. What a schema does not give, and cannot be extended to give by
+adding more classes, slots, or constraints, is a certificate of
+\emph{admissibility}: whether a particular question posed against the data the
+schema describes has an answer that the data can actually produce, as opposed to
+one that is silently absent, structurally inexpressible in the schema's own
+terms, or blocked by a resource that ran out before an answer was reached. A
+companion result already proves this distinction for one concrete
+case---SPARQL and SHACL over RDF triples cannot express admissibility, because
+admissibility depends on a global minimum over the data's contact structure that
+no locally-matchable pattern can see~\cite{ladder}. This paper generalizes that
+result from one query language to the entire family of shape languages, and gives
+Buhera OS the data-modeling primitive it has so far lacked: not a competing
+schema language, but the missing complement to any schema language, stated as a
+theorem about what shape can and cannot certify.
+
+The paper's contributions:
+
+\begin{itemize}[leftmargin=1.4em]
+  \item A generalization of the capability-declaration mechanism proven for
+  chemical format conversion~\cite{masamune}---a declared feature set
+  $\Capset(\Src)\subseteq\Feat$ with statically decidable containment---from file
+  formats to data schemas of any kind (Section~\ref{sec:capability}).
+  \item A proof that LinkML schemas, and by the same construction JSON Schema,
+  SHACL, and OWL class expressions, instantiate this mechanism faithfully: a
+  schema's declared classes and slots \emph{are} a feature set and a capability
+  declaration, not merely analogous to one (Section~\ref{sec:linkml}).
+  \item The separation theorem: shape-certification and admissibility-
+  certification are independent, witnessed by two capability-identical,
+  schema-conformant data sources that disagree on the admissibility of the same
+  question (Section~\ref{sec:separation}).
+  \item A composition law giving Buhera's data layer as shape-plus-floor, with
+  the precise conditions under which adopting an existing schema costs nothing
+  and the precise conditions under which it is insufficient
+  (Section~\ref{sec:composition}).
+  \item Validation against the existing ladder and representation-converter
+  implementations, which already exhibit this composition without having
+  named it (Section~\ref{sec:validation}).
+\end{itemize}
+
+We say at the outset what this paper does not claim. It does not claim LinkML is
+inadequate for what it is built to do, does not propose replacing it, and does
+not propose a new syntax for classes and slots. Where a shape language is
+sufficient for a surface Buhera must expose---and Chem-DCAT-AP interoperability
+is exactly such a surface---the correct engineering decision is to adopt it
+unmodified. The paper's entire content is the theorem that adoption of a shape
+language, however complete, leaves a specific and namable question
+unanswered, and the construction that answers it.
+
+\section{The capability primitive, generalized}
+\label{sec:capability}
+
+\subsection{From file formats to data schemas}
+
+The representation-converter work defines a \emph{source} as a grammar together
+with a declared capability set drawn from a feature alphabet: $\Feat$ enumerates
+structural features a format may state (element, connectivity, stereochemistry,
+provenance, and so on for chemical structures), and $\Capset(\Src)\subseteq\Feat$
+is what a given format's reader actually extracts~\cite{masamune}. Nothing in
+that definition is specific to chemical file formats; it is specific to the
+question ``what can this thing tell me,'' asked of any producer of structured
+data.
+
+\begin{definition}[Feature alphabet]
+\label{def:feat}
+A \emph{feature alphabet} $\Feat$ for a domain of discourse is a finite set of
+named, independently checkable properties a record in that domain may or may not
+state. Independence means membership of one feature in a capability set is
+decided without reference to any other.
+\end{definition}
+
+\begin{definition}[Data source, capability set]
+\label{def:source}
+A \emph{data source} $\Src$ over $\Feat$ is a pair $(\Gamma_\Src, \Capset(\Src))$
+where $\Gamma_\Src$ is a grammar or schema governing records the source can
+produce, and $\Capset(\Src)\subseteq\Feat$ is the subset of features the source's
+extraction procedure actually populates, as opposed to declares syntactically
+available and leaves absent or defaulted.
+\end{definition}
+
+\begin{definition}[Request, containment]
+\label{def:request}
+A \emph{request} $\Req\subseteq\Feat$ is the feature set a consumer needs
+populated to carry out some downstream operation. The request is
+\emph{satisfiable} by $\Src$ iff $\Req\subseteq\Capset(\Src)$.
+\end{definition}
+
+\begin{theorem}[Static decidability of containment]
+\label{thm:decidable}
+Given $\Req$ and a declared $\Capset(\Src)$, satisfiability is decidable in
+$O(|\Feat|)$ time, without reading any record the source produces.
+\end{theorem}
+
+\begin{proof}
+Immediate set-containment check over two subsets of a finite, fixed alphabet;
+this is Theorem~4.7 of~\cite{masamune}, restated for a general $\Feat$ rather
+than the chemical-structure alphabet given there.
+\end{proof}
+
+\begin{remark}[What this buys, and what it costs]
+Theorem~\ref{thm:decidable} is the entire engineering payoff of treating a
+schema as a capability declaration: a consumer can refuse a request before
+touching data, with a reason (the missing features), rather than after
+discovering an empty or malformed result. The cost, stated precisely in
+Section~\ref{sec:separation}, is that containment of a declared feature set says
+nothing about a property that is not a feature of any single record---which is
+exactly what admissibility turns out to be.
+\end{remark}
+
+\subsection{Honesty is assumed, not verified}
+
+\begin{definition}[Honest declaration]
+\label{def:honest}
+A source's declaration $\Capset(\Src)$ is \emph{honest} if, for every feature
+$f\in\Capset(\Src)$, the extraction procedure populates $f$ on every record for
+which the underlying data determines a value, and \emph{never} populates $f$ with
+a supplied or fabricated value tagged as though it were source-stated.
+\end{definition}
+
+\begin{proposition}[Honesty is not mechanically checkable]
+\label{prop:honesty-unverifiable}
+No procedure operating on $\Src$'s declared capability set alone decides whether
+$\Src$ is honest. Honesty is checkable only by differential comparison against an
+independently trusted extractor for the same underlying data.
+\end{proposition}
+
+\begin{proof}
+This is Section~14 of~\cite{masamune}, restated: over-declaration is
+indistinguishable from correct declaration at the interface level, since both
+produce a populated field. We carry the assumption forward here as a standing
+condition on every capability set discussed in this paper, exactly as
+in~\cite{masamune}.
+\end{proof}
+
+\section{Shape languages instantiate the capability primitive}
+\label{sec:linkml}
+
+\subsection{LinkML as a capability declaration}
+
+A LinkML schema declares a set of classes, each with a set of slots, each slot
+typed and optionally constrained (cardinality, value range, enumeration
+membership). We show this is, without approximation, an instance of
+Definition~\ref{def:source}.
+
+\begin{proposition}[LinkML schemas are capability declarations]
+\label{prop:linkml-capset}
+Let a LinkML schema $\LM$ declare classes $C_1,\dots,C_k$, each with slots
+$\{s_{i1},\dots,s_{im_i}\}$. Define $\Feat_\LM = \{(C_i,s_{ij})\}$, the set of
+qualified slot names. Then $\LM$, together with its generated validator, is a
+data source $(\Gamma_\LM,\Capset(\LM))$ in the sense of
+Definition~\ref{def:source}, with $\Capset(\LM)=\Feat_\LM$ exactly when every
+declared slot is \texttt{required}, and $\Capset(\LM)\subsetneq\Feat_\LM$
+whenever some slot is optional and, for a given instance record, absent.
+\end{proposition}
+
+\begin{proof}
+Direct correspondence: $\Gamma_\LM$ is the schema's YAML grammar together with
+its class/slot inheritance rules, which is exactly a grammar governing
+producible records (Definition~\ref{def:source}). Required slots are populated
+on every valid instance by LinkML's own validation semantics, hence lie in every
+instance's realized capability set; optional slots may or may not be populated
+per instance, giving the instance-dependent capability set claimed. Containment
+checking (does a request for slots $\Req$ succeed against a given instance) is
+exactly LinkML's JSON-Schema-generated validation, which is the
+$O(|\Feat_\LM|)$ check of Theorem~\ref{thm:decidable} for this alphabet.
+\end{proof}
+
+\begin{corollary}[The generalization is uniform across the shape-language family]
+\label{cor:family}
+The same correspondence holds, mutatis mutandis, for a JSON Schema's declared
+properties, a SHACL shape's declared property constraints, and an OWL class
+expression's declared restrictions: in every case, $\Feat$ is the language's
+finest declarable unit (property, slot, or restriction), and $\Capset$ is the
+subset an instance actually satisfies.
+\end{corollary}
+
+\begin{proof}
+Each of the three languages already compiles to or from LinkML by declared
+generator correspondence~\cite{linkml}; composing Proposition~\ref{prop:linkml-capset}
+with a generator's own round-trip guarantee transports the capability-set
+correspondence unchanged.
+\end{proof}
+
+\begin{remark}[This is the whole of the ``LinkML question,'' honestly answered]
+Proposition~\ref{prop:linkml-capset} and Corollary~\ref{cor:family} are the
+complete, formal version of the informal claim that opened this line of work:
+Buhera OS need not choose between adopting LinkML and building something of its
+own, because LinkML already \emph{is} a (very good, tooled, community-adopted)
+way of populating $\Feat$ and declaring $\Capset$ for a given surface. Adopting
+Chem-DCAT-AP for a dataset-catalog surface is, under this correspondence,
+adopting a specific, already-engineered $\Feat_\LM$---not a competing
+foundational commitment. Nothing is given up by using it where it is sufficient.
+\end{remark}
+
+\section{Shape is not admissibility}
+\label{sec:separation}
+
+\subsection{What admissibility means}
+
+We adopt admissibility from the ladder construction~\cite{ladder}, restated here
+independently of catalysis.
+
+\begin{definition}[Contact structure of a data source]
+\label{def:contact-of-source}
+A data source's records induce a contact graph $\Gph=(\V,\E,\wt,\Med)$: items
+$\V$ are the source's addressable entities (rows, individuals, nodes---the
+granularity is the source's own), edges $\E$ record a positive-weighted relation
+of co-occurrence or reference between items, and $\Med$ is a distinguished medium
+vertex representing the ambient population from which any item is drawn.
+\end{definition}
+
+\begin{definition}[Admissibility (restated)]
+\label{def:admissibility}
+A question ``is there a path of accountable relations from item $v_0$ to a
+target class of item $x^\star$'' is \emph{admissible} at $v_0$ iff the separation
+cost $\sepc(v_0,x^\star)=\min_{S\ni v_0,\,x^\star\notin S}\wt(\mathrm{cut}(S))$
+does not exceed the source's floor $\flo$ by more than a stated accountability
+margin $\varepsilon$, exactly as in Definition~6.2--6.3
+of~\cite{ladder}.
+\end{definition}
+
+Admissibility is a property of a \emph{minimum over subsets} of the whole graph,
+not a property attached to any single item, edge, or field.
+
+\subsection{The separation theorem}
+
+\begin{theorem}[Shape does not determine admissibility]
+\label{thm:separation}
+There exist two data sources $\Src_1,\Src_2$ over the same feature alphabet
+$\Feat$, satisfying $\Capset(\Src_1)=\Capset(\Src_2)$, whose records validate
+against the same shape schema (LinkML or otherwise) with no discernible
+difference at the level of any single record, such that a question admissible
+at some $v_0$ in $\Src_1$ is not admissible at the corresponding $v_0$ in
+$\Src_2$.
+\end{theorem}
+
+\begin{proof}
+This is exactly Theorem~6.4 of~\cite{ladder} (``Retrieval cannot express
+admissibility''), applied here at one remove. The construction given there
+exhibits two contact graphs with identical recorded triples---hence identical
+per-record shape, since shape is read off individual records or their local
+neighborhoods---in which a peripheral vertex's edge weight changes the
+\emph{floor} $\beta$ without altering any pattern a shape schema, a SPARQL query,
+or a SHACL shape can match. Since $\Feat$ and $\Capset$ (Definitions~\ref{def:feat}
+and~\ref{def:source}) are themselves built from per-record, per-field
+properties---this is what makes them independently checkable
+(Definition~\ref{def:feat})---no assignment of $\Capset(\Src_1)=\Capset(\Src_2)$
+can encode a global minimum. The two sources of~\cite{ladder} therefore also
+satisfy $\Capset(\Src_1)=\Capset(\Src_2)$ under any feature alphabet built from
+locally observable record properties, which includes every alphabet a class/slot
+shape language of the kind in Section~\ref{sec:linkml} can express, by
+Proposition~\ref{prop:linkml-capset}.
+\end{proof}
+
+\begin{corollary}[No enrichment of $\Feat$ repairs this]
+\label{cor:no-enrichment}
+Adding attributes, numeric constraints, or additional slots to $\Feat$---any
+enrichment expressible as a per-record or per-local-neighborhood property---does
+not close the gap of Theorem~\ref{thm:separation}.
+\end{corollary}
+
+\begin{proof}
+This is Corollary~6.5 of~\cite{ladder} carried across the same correspondence
+used in the proof of Theorem~\ref{thm:separation}: attributed triples and
+arithmetic comparisons over them remain local, and $\min$ over an exponential
+family of subsets has no representation as a conjunction of local
+predicates~\cite{ladder}.
+\end{proof}
+
+\begin{remark}[Why this is not a complaint about LinkML]
+Corollary~\ref{cor:no-enrichment} forecloses the natural rejoinder that a
+sufficiently detailed schema would eventually capture admissibility. It cannot,
+for a structural reason independent of how much care goes into the schema: the
+floor is a global property and $\Feat$, by Definition~\ref{def:feat}, is built
+from independently checkable---hence local---properties. This is a theorem about
+what any shape language of this general kind can express, not an assessment of
+how completely LinkML's authors have modeled catalysis metadata.
+\end{remark}
+
+\section{Composition: Buhera's data layer}
+\label{sec:composition}
+
+\subsection{The composition law}
+
+\begin{definition}[Composed data layer]
+\label{def:composed}
+A \emph{composed data layer} for a surface is a pair $(\Src, \Gph_\Src)$: a
+shape-language source $\Src=(\Gamma_\Src,\Capset(\Src))$ satisfying
+Definition~\ref{def:source} (Section~\ref{sec:linkml} shows this may be an
+adopted LinkML schema, extended or not), together with the contact graph
+$\Gph_\Src$ of Definition~\ref{def:contact-of-source} induced by $\Src$'s
+records.
+\end{definition}
+
+\begin{proposition}[The two certificates are independent and both necessary]
+\label{prop:both-necessary}
+A composed data layer $(\Src,\Gph_\Src)$ answers a request $\Req$ for shape by
+Theorem~\ref{thm:decidable} applied to $\Capset(\Src)$, and answers a question
+for admissibility by Definition~\ref{def:admissibility} applied to $\Gph_\Src$'s
+floor. Neither computation is derivable from the other: Theorem~\ref{thm:separation}
+forecloses deriving admissibility from $\Capset(\Src)$, and $\Capset(\Src)$ is
+not recoverable from $\Gph_\Src$ alone, since the contact graph does not
+retain the per-field typing distinctions the shape language draws (only the
+existence and weight of a relation between items).
+\end{proposition}
+
+\begin{proof}
+The first half is Theorem~\ref{thm:separation}. The second half follows because
+Definition~\ref{def:contact-of-source} constructs $\Gph_\Src$ from items and
+weighted relations only; two sources with different $\Feat$ and different
+$\Capset(\Src)$ (different slot sets, different types) can induce
+isomorphic contact graphs whenever the relations they record coincide, so
+$\Gph_\Src$ alone underdetermines $\Capset(\Src)$.
+\end{proof}
+
+\begin{corollary}[Buhera's data-modeling primitive]
+\label{cor:buhera-primitive}
+Buhera OS's data-modeling layer is the composed data layer of
+Definition~\ref{def:composed}, for whatever shape source a surface requires. Where
+an existing shape language's $\Capset$ is sufficient for the surface's requests
+(Chem-DCAT-AP for dataset-catalog interoperability, per~\cite{linkml}), it is
+adopted unmodified; the floor/residue layer $\Gph_\Src$ is constructed
+independently, on the same underlying items, and answers exactly the class of
+question Section~\ref{sec:separation} shows the shape layer cannot.
+\end{corollary}
+
+\subsection{When adoption is sufficient, and when it is not}
+
+\begin{proposition}[Sufficiency condition]
+\label{prop:sufficiency}
+Adopting an existing shape language $\LM$ unmodified is sufficient for a surface
+iff every request the surface must serve is a shape request in the sense of
+Definition~\ref{def:request}, and no consumer of the surface poses an
+admissibility question in the sense of Definition~\ref{def:admissibility}.
+\end{proposition}
+
+\begin{proof}
+Immediate from Proposition~\ref{prop:both-necessary}: shape requests are served
+by $\Capset(\LM)$ alone; admissibility questions are not served by
+$\Capset(\LM)$ at any degree of schema enrichment, by
+Corollary~\ref{cor:no-enrichment}, and require $\Gph_\LM$.
+\end{proof}
+
+\begin{remark}[The practical reading, stated once and plainly]
+A dataset-catalog listing, a metadata harvester, a FAIR-compliance check---these
+are shape requests, and Chem-DCAT-AP already serves them well; extending or
+modifying it for these purposes would add engineering cost for no theorem-backed
+gain. ``Which enzymes have I not yet tried against this substrate, and would
+trying them tell me anything the floor doesn't already foreclose''---the
+catalytic-ladder questions already validated
+in~\cite{ladder}---are admissibility questions, and no LinkML schema, however
+extended, answers them. Buhera's contribution is not a rival to the first kind of
+question; it is the only present construction that answers the second.
+\end{remark}
+
+\section{Validation}
+\label{sec:validation}
+
+We do not introduce a new validation suite here; instead we show the composition
+of Section~\ref{sec:composition} is already realized, unnamed, by two existing
+implementations, which this paper's constructions now let us describe precisely.
+
+\begin{proposition}[The representation converter is a $\Capset$-only layer]
+\label{val:masamune}
+Masamune's verdict algebra (translated, incomplete, unsupported, malformed,
+underdetermined, empty)~\cite{masamune} operates entirely at the level of
+Definition~\ref{def:source} and Theorem~\ref{thm:decidable}: every verdict is
+computed from $\Req$ and $\Capset(\Src)$ containment, before or independently of
+any floor computation. It is, in the vocabulary of this paper, the shape half of
+Definition~\ref{def:composed} alone, and its own stated limitation---honest
+declaration is assumed, never verified (Proposition~\ref{prop:honesty-unverifiable})---
+is exactly the limitation this paper inherits unchanged for the general case.
+\end{proposition}
+
+\begin{proposition}[The ladder architecture is a composed data layer]
+\label{val:ladder}
+The four-stage architecture of~\cite{ladder}---fetch via a plan language,
+translate to a contact graph, apply the ladder, emit one of six verdicts
+(answer, empty, unexpressed, unsupported, starved, exhausted)---is precisely
+Definition~\ref{def:composed} realized for RDF/SPARQL sources: the plan
+language's declared source capabilities are $\Capset(\Src)$
+(Theorem~8.3 of~\cite{ladder}, restated here as
+Theorem~\ref{thm:decidable}), and the ladder's rungs, floor, and role/direction
+computations operate on $\Gph_\Src$. The \emph{unexpressed} verdict is the
+architecture's own name for a request refused at the $\Capset$ stage; the
+\emph{starved} verdict is a failure discovered only at the $\Gph_\Src$ stage.
+Their coexistence as distinct, non-conflatable outcomes (Theorem~8.5 of
+\cite{ladder}, non-degeneracy) is an existing, validated instance of
+Proposition~\ref{prop:both-necessary}: shape and admissibility fail
+independently and must be reported independently.
+\end{proposition}
+
+\begin{remark}[The live demonstration]
+The federated-query front end already implementing this
+distinction---rendering \emph{unexpressed}/\emph{unsupported} refusals with
+zero requests issued as visually and semantically distinct from
+\emph{starved} or \emph{empty} outcomes, against real biocatalysis questions---is
+the demonstrable form of Corollary~\ref{cor:buhera-primitive}: a running system
+in which shape-layer refusal and floor-layer refusal are already
+kept apart, prior to this paper giving the distinction its general theorem.
+\end{remark}
+
+\section{Related work}
+\label{sec:related}
+
+LinkML~\cite{linkml} and the standards it compiles to and from---JSON Schema,
+SHACL, OWL, DCAT-AP and its NFDI4Cat Chem-DCAT-AP
+extension---are the shape languages this paper generalizes over
+(Section~\ref{sec:linkml}); we take no position on their internal design and use
+only the external interface (declare a shape, validate an instance against it)
+that all of them share. The capability-set and verdict-algebra machinery is
+Masamune's~\cite{masamune}, generalized here from chemical file formats to data
+schemas at large. The admissibility construction, the floor, and the
+separation result of Section~\ref{sec:separation} are the ladder
+architecture's~\cite{ladder}, applied here one level of generality higher, from
+SPARQL/SHACL specifically to the shape-language family as a whole. The
+underlying contact-graph, floor, and residue mechanics are shared with the
+trace calculus~\cite{trace} and ultimately derive from the occupation axiom
+of~\cite{occupation}: a schema's declared shape is, in that vocabulary, a
+catalogue of what can be individuated about a record; the floor is what remains
+true of the record's population regardless of how finely any single record is
+described.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+A data-modeling framework answers ``what does a record look like,'' and Buhera OS
+has not needed to build one of its own for that question, because good answers
+already exist and are freely adoptable: LinkML's classes, slots, and generators
+are, by Proposition~\ref{prop:linkml-capset}, already an instance of the
+capability-declaration primitive this paper generalizes from chemical format
+conversion. What Buhera OS lacked was not a competing answer to that question but
+the theorem, given here as Theorem~\ref{thm:separation}, that a second question---
+which of the questions I might pose against this data are actually
+admissible---is answered by none of these languages at any degree of schema
+enrichment, because the property in question is a global floor over the data's
+contact structure and no shape language's declarable features are anything but
+local. The corresponding construction, Corollary~\ref{cor:buhera-primitive}, is
+Buhera's actual contribution to data modeling: not a fifth shape language beside
+LinkML, JSON Schema, SHACL, and OWL, but the floor/residue layer that every one
+of them is missing, composed underneath whichever of them is sufficient for a
+given surface. Adopting LinkML for Chem-DCAT-AP interoperability, under this
+account, costs nothing and settles nothing: it is the correct engineering choice
+for the question it answers, and silent on the question this paper answers
+instead.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

@@ -285,6 +285,73 @@ export function routeInput(line) {
     return { type: "vahera", vahera: `memory dump ${trimmed.slice(5).trim()}` };
   }
 
+  // ── scientific-statement shorthands ──
+  // Sentence-shaped forms a scientist would write in a methods section.
+  // Each routes to the same canonical vaHera the primitive forms above
+  // already produce — no new interpreter semantics, just friendlier sugar.
+
+  // observed <name> as "<text>"
+  if (lower.startsWith("observed ")) {
+    const m = trimmed.match(/^observed\s+(\S+)\s+as\s+"([^"]*)"$/i);
+    if (m) {
+      return { type: "vahera", vahera: `describe ${m[1]} with "${m[2]}"` };
+    }
+  }
+
+  // hypothesize <name>: "<text>"
+  if (lower.startsWith("hypothesize ")) {
+    const m = trimmed.match(/^hypothesize\s+(\S+):\s*"([^"]*)"$/i);
+    if (m) {
+      return {
+        type: "vahera",
+        vahera: `describe ${m[1]} with "${m[2]}"\nresolve ${m[1]}`,
+      };
+    }
+  }
+
+  // run <program> on <name>
+  if (lower.startsWith("run ")) {
+    const m = trimmed.match(/^run\s+(\S+)\s+on\s+(\S+)$/i);
+    if (m) {
+      return { type: "vahera", vahera: `spawn ${m[1]} from ${m[2]}` };
+    }
+  }
+
+  // to completion
+  if (lower === "to completion") {
+    return {
+      type: "vahera",
+      vahera: "navigate to penultimate\ncomplete trajectory",
+    };
+  }
+
+  // compare <name> to "<text>" [k=N]
+  if (lower.startsWith("compare ")) {
+    const m = trimmed.match(/^compare\s+\S+\s+to\s+"([^"]*)"(?:\s+k=(\d+))?$/i);
+    if (m) {
+      const k = m[2] ? parseInt(m[2], 10) : 3;
+      return { type: "vahera", vahera: `memory find nearest "${m[1]}" k=${k}` };
+    }
+  }
+
+  // record "<name>" = "<text>"
+  if (lower.startsWith("record ")) {
+    const m = trimmed.match(/^record\s+"([^"]*)"\s*=\s*"([^"]*)"$/i);
+    if (m) {
+      return { type: "vahera", vahera: `memory store "${m[1]}" = "${m[2]}"` };
+    }
+  }
+
+  // check consistency
+  if (lower === "check consistency") {
+    return { type: "vahera", vahera: "controller verify" };
+  }
+
+  // rank by category
+  if (lower === "rank by category") {
+    return { type: "vahera", vahera: "demon sort" };
+  }
+
   const single = {
     list: "memory list",
     sort: "demon sort",

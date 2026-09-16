@@ -25,7 +25,7 @@ if sys.platform == "win32":
 
 from .kernel import Kernel
 from .substrate import embed_text, embed_molecule, s_distance, SCoord
-from .vahera import execute_vahera
+from .vahera import execute_vahera, run_and_narrate
 from .translator import IntentTranslator
 
 
@@ -68,10 +68,15 @@ def answer_query(kernel: Kernel, nist: dict, query: str,
     # embed_molecule is used instead of embed_text.
     t0 = time.perf_counter()
     try:
-        ctx = execute_vahera(vahera_source, kernel=kernel, molecule_data=nist)
+        ctx, pairing_report = run_and_narrate(vahera_source, kernel=kernel,
+                                              molecule_data=nist)
     except Exception as e:
         return {"error": str(e), "query": query}
     t_execute = time.perf_counter() - t0
+
+    if verbose:
+        print(pairing_report.render())
+        print(f"{'-'*72}")
 
     # Synthesize answer: pick the nearest compound in CMM to the query's
     # target coord, return its properties. This is the "empty dictionary"
@@ -98,6 +103,10 @@ def answer_query(kernel: Kernel, nist: dict, query: str,
         "vahera": vahera_source,
         "query_coord": query_coord,
         "synthesized": synthesized,
+        "pairing": {
+            "narration": pairing_report.narration,
+            "consistency": pairing_report.closure_summary(),
+        },
         "timing": {
             "translate_ms": t_translate * 1000,
             "execute_ms": t_execute * 1000,
@@ -137,6 +146,7 @@ def main():
         "boiling point of benzene",
         "what is caffeine",
         "find compounds similar to aspirin",
+        "compare aspirin_like to aspirin",  # exercises the sentence-form grammar directly
     ]
 
     results = []

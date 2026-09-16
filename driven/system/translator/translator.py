@@ -18,32 +18,38 @@ SYSTEM_PROMPT = """\
 You translate natural-language scientific queries into vaHera — the internal
 declarative language of the Buhera research operating system.
 
-vaHera grammar (one statement per line):
-  describe <name> with "<text>"
-  resolve <name>
-  spawn <program-name> from <name>
-  navigate to penultimate
-  complete trajectory
-  memory store "<name>" = "<text>"
-  memory find nearest "<text>" k=<n>
-  demon sort
-  controller verify
+vaHera grammar (one statement per line). Two equivalent notations are
+available and may be mixed freely — prefer the scientific-statement forms,
+since they read as the sentences a scientist would write in a methods
+section:
+
+  Primitive form                          Scientific-statement form
+  ---------------------------------------  ---------------------------------------
+  describe <name> with "<text>"           observed <name> as "<text>"
+  describe <name> with "<text>" + resolve <name>  hypothesize <name>: "<text>"
+  spawn <program> from <name>             run <program> on <name>
+  navigate to penultimate + complete trajectory   to completion
+  memory find nearest "<text>" k=<n>      compare <name> to "<text>" [k=<n>]
+  memory store "<name>" = "<text>"        record "<name>" = "<text>"
+  controller verify                       check consistency
+  demon sort                              rank by category
 
 Rules:
   - Emit ONLY vaHera statements, one per line. No prose, no explanation.
-  - Use describe before resolve/spawn for novel entities.
-  - For lookup queries, emit: describe/resolve/spawn/navigate/complete.
-  - For retrieval queries, emit: memory find nearest "<query>" k=<n>.
+  - Prefer the scientific-statement form when the query reads like a
+    scientific claim, observation, procedure, or comparison.
+  - Use observed/describe before hypothesize/resolve/run/spawn for novel
+    entities.
+  - For lookup queries, emit: observed .../hypothesize .../run .../to completion.
+  - For retrieval queries, emit: compare <name> to "<query>" k=<n>.
   - Keep programs short (3-6 lines typical).
 
 Example:
   User: "What is the boiling point of ethanol?"
   vaHera:
-    describe ethanol_bp with "boiling point of ethanol, C2H5OH, small alcohol"
-    resolve ethanol_bp
-    spawn query from ethanol_bp
-    navigate to penultimate
-    complete trajectory
+    hypothesize ethanol_bp: "boiling point of ethanol, C2H5OH, small alcohol"
+    run query on ethanol_bp
+    to completion
 """
 
 
@@ -114,22 +120,20 @@ class StubTranslator:
 
     PATTERNS = [
         (re.compile(r"boiling point of (\w+)", re.I),
-         lambda m: f'describe {m.group(1)}_bp with "boiling point of {m.group(1)}"\n'
-                   f'resolve {m.group(1)}_bp\n'
-                   f'spawn query from {m.group(1)}_bp\n'
-                   f'navigate to penultimate\n'
-                   f'complete trajectory\n'
-                   f'controller verify'),
+         lambda m: f'hypothesize {m.group(1)}_bp: "boiling point of {m.group(1)}"\n'
+                   f'run query on {m.group(1)}_bp\n'
+                   f'to completion\n'
+                   f'check consistency'),
         (re.compile(r"what is (\w+)", re.I),
-         lambda m: f'describe {m.group(1)} with "{m.group(1)}"\n'
-                   f'resolve {m.group(1)}\n'
-                   f'spawn query from {m.group(1)}\n'
-                   f'navigate to penultimate\n'
-                   f'complete trajectory'),
+         lambda m: f'hypothesize {m.group(1)}: "{m.group(1)}"\n'
+                   f'run query on {m.group(1)}\n'
+                   f'to completion'),
+        (re.compile(r"compare (.+?) to (.+)", re.I),
+         lambda m: f'compare {m.group(1).strip()} to "{m.group(2).strip()}" k=5'),
         (re.compile(r"find (.+)", re.I),
-         lambda m: f'memory find nearest "{m.group(1)}" k=5'),
+         lambda m: f'compare query to "{m.group(1)}" k=5'),
         (re.compile(r"store (.+)", re.I),
-         lambda m: f'memory store "note_{abs(hash(m.group(1)))%10000}" = "{m.group(1)}"'),
+         lambda m: f'record "note_{abs(hash(m.group(1)))%10000}" = "{m.group(1)}"'),
     ]
 
     def translate(self, intent: str) -> str:
@@ -139,11 +143,9 @@ class StubTranslator:
                 return tmpl(m)
         # default: treat as a general query
         safe = intent.replace('"', "'")
-        return (f'describe query with "{safe}"\n'
-                f'resolve query\n'
-                f'spawn q from query\n'
-                f'navigate to penultimate\n'
-                f'complete trajectory')
+        return (f'hypothesize query: "{safe}"\n'
+                f'run q on query\n'
+                f'to completion')
 
 
 # ─── front end ──────────────────────────────────────────────────────

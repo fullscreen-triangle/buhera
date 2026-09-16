@@ -294,6 +294,102 @@ fn run_one(
             ctx.trace.push(format!("process_list {} processes", procs.len()));
             ctx.results.push(NamedResult::Processes(procs));
         }
+
+        // ── scientific-statement forms: same bodies as their canonical
+        // counterparts above, just reached from sentence-shaped syntax ──
+        StmtKind::Observed { name, text } => {
+            let coord = resolve_coord(name, text, molecules, embedder);
+            ctx.trace.push(format!(
+                "observed {} -> S({:.3},{:.3},{:.3})",
+                name, coord.k, coord.t, coord.e
+            ));
+            ctx.targets.insert(name.clone(), coord);
+        }
+
+        StmtKind::Hypothesize { name, text } => {
+            let coord = resolve_coord(name, text, molecules, embedder);
+            ctx.trace.push(format!(
+                "hypothesize {} -> S({:.3},{:.3},{:.3})",
+                name, coord.k, coord.t, coord.e
+            ));
+            ctx.targets.insert(name.clone(), coord);
+            let coord = ctx.targets[name];
+            ctx.trace.push(format!("resolve {} -> {}", name, coord));
+        }
+
+        StmtKind::RunOn { program, target } => {
+            let s_final = *ctx.targets.get(target).ok_or_else(|| {
+                ExecError::Runtime(format!("run: unresolved target {}", target))
+            })?;
+            let s_initial = SCoord::root();
+            let p = kernel.spawn(program, s_initial, s_final)?;
+            ctx.processes.insert(program.clone(), p.pid);
+            ctx.trace.push(format!(
+                "run {} on {} -> pid={} d_traj={:.3}",
+                program,
+                target,
+                p.pid,
+                buhera_substrate::s_distance(s_initial, s_final)
+            ));
+        }
+
+        StmtKind::ToCompletion => {
+            let pid = first_pid(ctx).ok_or_else(|| {
+                ExecError::Runtime("to completion: no active process".to_string())
+            })?;
+            let traj = kernel.navigate(pid)?;
+            ctx.trace
+                .push(format!("navigate pid={} steps={}", pid, traj.steps));
+            let coord = kernel.complete(pid)?;
+            ctx.trace
+                .push(format!("complete pid={} final={}", pid, coord));
+        }
+
+        StmtKind::CompareTo { name: _, query, k } => {
+            let q_coord = embedder.embed(query);
+            let hits = kernel.find_nearest(q_coord, *k);
+            ctx.trace.push(format!(
+                "compare query={:?} -> {} hits",
+                query,
+                hits.len()
+            ));
+            ctx.last_query = Some(query.clone());
+            ctx.results.push(NamedResult::FindHits {
+                query: query.clone(),
+                hits,
+            });
+        }
+
+        StmtKind::Record { name, text } => {
+            let coord = embedder.embed(text);
+            let mut meta = BTreeMap::new();
+            meta.insert("name".to_string(), serde_json::json!(name));
+            meta.insert("source".to_string(), serde_json::json!(text));
+            let obj = kernel.store(coord, serde_json::json!(text), meta)?;
+            ctx.trace
+                .push(format!("record name={} addr={}", name, obj.address));
+        }
+
+        StmtKind::CheckConsistency => {
+            let stats = kernel.tem.stats();
+            ctx.trace.push(format!(
+                "check_consistency samples={} alerts={} max_delta={:.5}",
+                stats.samples, stats.alerts, stats.max_delta
+            ));
+        }
+
+        StmtKind::RankByCategory => {
+            let items: Vec<(SCoord, MemoryObject)> = kernel
+                .cmm
+                .all_objects()
+                .into_iter()
+                .map(|o| (o.coord, o))
+                .collect();
+            let sorted = kernel.dic.categorical_sort(&items);
+            let objs: Vec<MemoryObject> = sorted.into_iter().map(|(_, o)| o).collect();
+            ctx.trace.push(format!("rank_by_category {} items", objs.len()));
+            ctx.results.push(NamedResult::SortedObjects(objs));
+        }
     }
 
     Ok(())
@@ -355,6 +451,39 @@ complete trajectory
         let ctx = execute_vahera(src, &mut k, &molecules).unwrap();
         assert!(ctx.targets.contains_key("ethanol"));
         assert!(ctx.processes.contains_key("lookup_eth"));
+    }
+
+    #[test]
+    fn scientific_statement_round_trip() {
+        let src = r#"
+hypothesize ethanol_bp: "ethanol C2H5OH bp 78"
+run lookup_eth on ethanol_bp
+to completion
+check consistency
+"#;
+        let mut k = Kernel::with_default_depth();
+        let molecules = MoleculeDatabase::new();
+        let ctx = execute_vahera(src, &mut k, &molecules).unwrap();
+        assert!(ctx.targets.contains_key("ethanol_bp"));
+        assert!(ctx.processes.contains_key("lookup_eth"));
+    }
+
+    #[test]
+    fn record_and_compare() {
+        let src = r#"
+record "greeting" = "hello world"
+record "question" = "what is the boiling point of ethanol?"
+compare query to "boiling point" k=1
+"#;
+        let mut k = Kernel::with_default_depth();
+        let molecules = MoleculeDatabase::new();
+        let ctx = execute_vahera(src, &mut k, &molecules).unwrap();
+        assert_eq!(k.cmm.len(), 2);
+        let hits = ctx.results.iter().find_map(|r| match r {
+            NamedResult::FindHits { hits, .. } => Some(hits.clone()),
+            _ => None,
+        });
+        assert!(hits.unwrap().len() >= 1);
     }
 
     #[test]

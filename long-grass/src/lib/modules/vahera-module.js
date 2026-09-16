@@ -42,7 +42,9 @@ export const vaheraModule = {
       id: "vahera",
       description:
         "vaHera memory/recall: store, find nearest, list, dump, sort, " +
-        "kernel stats, kernel trace, controller verify, demon sort.",
+        "kernel stats, kernel trace, controller verify, demon sort. Also " +
+        "accepts scientific-statement sentence forms (observed/hypothesize/" +
+        "run/compare/record/check/rank) that route to the same operations.",
       instructions: [
         'memory store "<name>" = "<text>"',
         'memory find nearest "<query>" k=<n>',
@@ -52,6 +54,15 @@ export const vaheraModule = {
         "kernel stats",
         "kernel trace",
         "controller verify",
+        // scientific-statement forms (sugar over the above, via route-input.js)
+        'observed <name> as "<text>"',
+        'hypothesize <name>: "<text>"',
+        "run <program> on <name>",
+        "to completion",
+        'compare <name> to "<text>" k=<n>',
+        'record "<name>" = "<text>"',
+        "check consistency",
+        "rank by category",
       ],
     };
   },
