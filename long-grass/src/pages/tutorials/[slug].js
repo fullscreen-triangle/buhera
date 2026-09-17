@@ -33,6 +33,7 @@ const ORDER = [
   "shapeshifter-routines",
   "scope-routines",
   "complete-ckg-experiment",
+  "data-modeling-capability",
 ];
 
 function orderedSlugs() {
