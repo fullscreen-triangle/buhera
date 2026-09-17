@@ -5,8 +5,9 @@ Buhera's own `represent` — can certify what a record *looks like* and still
 say nothing about which *questions* the data underneath can actually answer.
 We build both halves for real: a schema (a CKG node's `τ`) and a floor (a real
 module's conditioned admissibility bound), then attach a second data source
-with the same shape and a different floor, and watch a question flip from
-admissible to inadmissible without a single field changing.
+with identical declared shape and watch its floor move for a reason no schema
+field names — first numerically (β's dominant term), then structurally (an
+SBS circuit's solved coherence).
 
 **Time:** ~15 minutes.
 
@@ -103,10 +104,13 @@ dispatch("ckg", { op: "attach", tau: "source_a", name: "floor", module: "cytochr
 dispatch("ckg", { op: "dispatch", tau: "source_a" })
 ```
 
-**Cell 2.3** — source B, same op, perturbed conditions (this is the whole
-experiment: same shape, different population):
+**Cell 2.3** — source B, same op, a shorter integration window (this is the
+whole experiment: same shape, different population). `conditions` merges
+onto the module's reference state — `temperature_K`, `pH`, `viscosity_cP`,
+`integration_time_s` are the only keys it reads; anything else is silently
+ignored, which is itself worth seeing once:
 ```
-dispatch("ckg", { op: "attach", tau: "source_b", name: "floor", module: "cytochrome", instruction: { op: "floor", conditions: { T: 250, depth: 3 } } })
+dispatch("ckg", { op: "attach", tau: "source_b", name: "floor", module: "cytochrome", instruction: { op: "floor", conditions: { integration_time_s: 1e-12 } } })
 ```
 
 **Cell 2.4**
@@ -115,13 +119,24 @@ dispatch("ckg", { op: "dispatch", tau: "source_b" })
 ```
 
 Look at the two `β` values and their `dominant_term`. At the reference
-conditions the convergence term usually dominates and β is effectively
-condition-independent; move `depth` down and `T` away from reference and the
-Q-term can take over — the note field says so explicitly, per record. Nothing
-about `source_a`'s or `source_b`'s *shape* changed: same τ, same chunk name,
-same op. Only the floor moved, and it moved for a reason no class/slot
-declaration states, because no class/slot declaration is about a bound over
-conditions in the first place.
+integration time the convergence term dominates and β is effectively
+condition-independent (`dominant_term: "conv"`); shorten `integration_time_s`
+by nine orders of magnitude and the Q-term overtakes it (`dominant_term:
+"Q"`) — the note field says so explicitly, per record. Nothing about
+`source_a`'s or `source_b`'s *shape* changed: same τ, same chunk name, same
+op, same argument keys. Only the floor moved, and it moved for a reason no
+class/slot declaration states, because no class/slot declaration is about a
+bound over conditions in the first place.
+
+If you pass a key the module doesn't read — `{ T: 250, depth: 3 }`, say,
+guessing at names instead of using `integration_time_s` — `conditions` still
+merges cleanly (spreading unknown keys onto the reference object is not an
+error) and `β` comes back **identical to the reference call**. That silent
+no-op is worth sitting with: a schema would have validated that argument
+object as well-formed JSON with no complaint, exactly as it validated the
+real one. Shape can't tell a governing parameter from an inert one either —
+that's the same separation as §1–2, one level up, in the interface to the
+floor rather than in the floor's value.
 
 ---
 
@@ -157,14 +172,17 @@ navigate from v0` })
 dispatch("ckg", { op: "dispatch", tau: "source_b" })
 ```
 
-Read the rendered circuit's coherence `R` and the `p→xstar` edge's
-conductance against the other two. That edge is the graph's bottleneck —
-exactly the role the paper's separation theorem gives the floor: a global
-minimum, sitting on one edge, invisible to any per-node or per-record
-description of `p` or `xstar` alone. Give `source_a` the same circuit with
-that one edge strengthened, and the two sources still validate against
-*identical shape* while their admissibility answer for "is `xstar` reachable
-from `v0`" is no longer the same question with the same answer:
+Read the rendered circuit's coherence `R` and navigation trace. The
+`p→xstar` edge's `conductance: 0.4` is an order of magnitude below the other
+two (`4.0`, `3.0`) — that's the graph's bottleneck by construction, the same
+role the separation argument in §1–2 gives the floor: a fact that lives on
+one edge, invisible to any per-node description of `p` or `xstar` alone (a
+node-shape schema for `p` has no slot that could name "the edge leaving me is
+weak"). Give `source_a` the same circuit with that one edge strengthened to
+`conductance: 3.5` — in range with the rest — and compare what the solver's
+`R` and the navigation trace report for the two runs. Both sources still
+declare *identical shape* (same node/edge schema, same field names); only
+this one number differs, and it's exactly the number no shape check reads:
 
 **Cell 3.3**
 ```
@@ -191,8 +209,13 @@ dispatch("ckg", { op: "dispatch", tau: "source_a" })
 Same node names, same edge names, same declared "shape" of the circuit
 description. Only the weight on one edge differs between `source_a` and
 `source_b`, and that alone is the entire content of the separation theorem:
-**shape does not determine admissibility**, witnessed here by two sources
-that validate identically and disagree on reachability.
+**shape does not determine admissibility**. Both sources validate
+identically against any schema you'd write for this circuit format — same
+fields, same types — and yet you have just moved the graph's weakest edge by
+almost an order of magnitude, exactly the kind of change a shape schema is
+built to be blind to. Compare the `R` and the navigation trace the solver
+actually returned for `source_a` against `source_b`'s from Cell 3.2 to see
+where, and how much, it shows up.
 
 ---
 
@@ -239,8 +262,9 @@ underneath whichever shape language a surface already uses.
   trying them tell me anything the floor doesn't already foreclose" is an
   admissibility question. No schema answers it at any degree of enrichment,
   for the same reason `source_a` and `source_b` above validate identically
-  and disagree anyway: the floor is global, and every schema's declarable
-  features are local by construction.
+  while their floors and their circuits' solved coherence do not have to
+  agree: the floor is global, and every schema's declarable features are
+  local by construction.
 - `represent` + `attach` + `dispatch` + `graph`/`report` is already this
   composition, running: §1 was shape, §2–3 were the floor, §4 was walking
   the trajectory instead of querying an authored schema.

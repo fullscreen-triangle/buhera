@@ -6,7 +6,7 @@
 // a NL question maps to one answer) or an array of artifacts (for
 // scripts with multiple find / list / stats statements).
 
-import { embedText, embedProtein, embedMolecule, sDistance, tokenOverlap } from "./substrate";
+import { SCoord, embedText, embedProtein, embedMolecule, sDistance, tokenOverlap } from "./substrate";
 import { resolveProtein, PROTEINS } from "./proteins";
 
 // ─────────────────────────────────────────────────────────────────────
@@ -46,7 +46,7 @@ export function parseVahera(src) {
       if (!m) throw new Error(`line ${lineNo}: expected S(k,t,e): ${line}`);
       out.push({
         op: "memory_create",
-        coord: { k: parseFloat(m[1]), t: parseFloat(m[2]), e: parseFloat(m[3]) },
+        coord: new SCoord(parseFloat(m[1]), parseFloat(m[2]), parseFloat(m[3])),
       });
     } else if ((m = line.match(/^memory\s+store\s+"([^"]*)"\s*=\s*"([^"]*)"$/))) {
       out.push({ op: "memory_store", name: m[1], text: m[2] });

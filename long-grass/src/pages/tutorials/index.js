@@ -15,6 +15,7 @@ import { parseTutorial, extractMeta } from "@/lib/tutorial-markdown";
 // after the ordered ones.
 const ORDER = [
   "basic-routines",
+  "vahera-dsl",
   "kwasa-kwasa-routines",
   "purpose-routines",
   "zangalewa-routines",

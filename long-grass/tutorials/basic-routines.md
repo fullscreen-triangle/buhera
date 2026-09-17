@@ -300,8 +300,12 @@ notation for the identical program, not a different one.
   statements — pick whichever reads more naturally for what you're doing,
   and mix them freely in one script.
 
-**Next up:** [Kwasa-kwasa routines](./kwasa-kwasa-routines) — the
-orchestrator that composes many dispatches into a script.
+**Next up:** [The vaHera DSL](./vahera-dsl) — the other half of vaHera you
+haven't used yet: `describe` / `resolve` / `spawn` / `navigate to
+penultimate` / `complete trajectory`, the categorical trajectory statements
+the language is named for. Or skip ahead to [Kwasa-kwasa
+routines](./kwasa-kwasa-routines) — the orchestrator that composes many
+dispatches into a script — if you want the orchestration layer first.
 
 ---
 

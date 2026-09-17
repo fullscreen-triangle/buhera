@@ -27,6 +27,7 @@ const TutorialRenderer = dynamic(
 
 const ORDER = [
   "basic-routines",
+  "vahera-dsl",
   "kwasa-kwasa-routines",
   "purpose-routines",
   "zangalewa-routines",
