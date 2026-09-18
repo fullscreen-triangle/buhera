@@ -28,6 +28,7 @@ import { extractTermsFromInstruction } from "@/lib/purpose-terms";
 import { estimateCostFromInstruction } from "@/lib/purpose-cost";
 import { bootstrapFederation } from "@/lib/runtime/bootstrap";
 import SpraypaintAllocationChart from "@/components/sandboxes/spraypaint/SpraypaintAllocationChart";
+import { CodeBlock as InterceptorCodeBlock, ConsoleOutput as InterceptorConsoleOutput, WindTunnelReadout } from "@/components/sandboxes/interceptor/InterceptorConsole";
 
 // ────────────────────────────────────────────────────────────
 //  Kernel boot.
@@ -966,6 +967,83 @@ function ArtifactSearchCombined({ query, local, local_ok, web, web_ok }) {
   );
 }
 
+// ────────────────────────────────────────────────────────────
+//  Interceptor: AI code generation + sandboxed execution + vaHera
+//  monitoring + wind-tunnel stability testing. Renderers delegate the
+//  actual panels to sandboxes/interceptor/InterceptorConsole.js; this
+//  file only assembles them per output_delta.kind, same convention as
+//  the spraypaint renderers above.
+// ────────────────────────────────────────────────────────────
+
+function ArtifactInterceptorGenerated({ language, code, provider, model, run_error }) {
+  return (
+    <div className="text-gray-300 text-sm">
+      <div className="text-xs text-gray-500 mb-2">
+        <span className="text-gray-400">interceptor generate</span>{" "}
+        {provider && <span className="text-white">{provider}{model ? `/${model}` : ""}</span>}
+      </div>
+      <InterceptorCodeBlock language={language} code={code} />
+      {run_error && <p className="text-red-400 text-xs">run failed: {run_error}</p>}
+    </div>
+  );
+}
+
+function ArtifactInterceptorRun({ language, code, ok, stdout, stderr, exit_code, elapsed_ms, timed_out, truncated, vahera_memory }) {
+  return (
+    <div className="text-gray-300 text-sm">
+      <div className="text-xs text-gray-500 mb-2">
+        <span className="text-gray-400">interceptor run</span>{" "}
+        <span className="text-white font-mono">{language}</span>
+      </div>
+      <InterceptorCodeBlock language={language} code={code} />
+      <InterceptorConsoleOutput ok={ok} stdout={stdout} stderr={stderr} exit_code={exit_code} elapsed_ms={elapsed_ms} timed_out={timed_out} truncated={truncated} />
+      {vahera_memory && (
+        <p className="text-xs text-gray-500 px-1">
+          stored in vaHera as <span className="text-teal-300 font-mono">&quot;{vahera_memory}&quot;</span> —
+          recall it with <span className="font-mono">memory find nearest</span>
+        </p>
+      )}
+    </div>
+  );
+}
+
+function ArtifactWindTunnelReport({ language, code, elapsed_ms, ...stability }) {
+  return (
+    <div className="text-gray-300 text-sm">
+      <div className="text-xs text-gray-500 mb-2">
+        <span className="text-gray-400">wind-tunnel test</span>{" "}
+        <span className="text-white font-mono">{language}</span>
+        {typeof elapsed_ms === "number" && <span className="text-gray-500"> · {elapsed_ms} ms</span>}
+      </div>
+      <InterceptorCodeBlock language={language} code={code} />
+      <WindTunnelReadout {...stability} />
+    </div>
+  );
+}
+
+function ArtifactInterceptorAssist({ language, task, code, provider, model, run, vahera_memory, windtunnel }) {
+  return (
+    <div className="text-gray-300 text-sm">
+      <div className="text-xs text-gray-500 mb-2">
+        <span className="text-gray-400">interceptor assist</span>{" "}
+        <span className="text-white">&quot;{task}&quot;</span>{" "}
+        {provider && <span className="text-gray-500">via {provider}{model ? `/${model}` : ""}</span>}
+      </div>
+      <InterceptorCodeBlock language={language} code={code} />
+      {run && (
+        <InterceptorConsoleOutput ok={run.ok} stdout={run.stdout} stderr={run.stderr} exit_code={run.exit_code} elapsed_ms={run.elapsed_ms} timed_out={run.timed_out} truncated={run.truncated} />
+      )}
+      {vahera_memory && (
+        <p className="text-xs text-gray-500 px-1 mb-2">
+          stored in vaHera as <span className="text-teal-300 font-mono">&quot;{vahera_memory}&quot;</span> —
+          recall it with <span className="font-mono">memory find nearest</span>
+        </p>
+      )}
+      {windtunnel && <WindTunnelReadout {...windtunnel} />}
+    </div>
+  );
+}
+
 function ArtifactRemoteDispatch({ target, moduleId, url, elapsed_ms, status, remote, error_stage, error_message }) {
   const remoteOk = !!remote?.ok;
   return (
@@ -1756,6 +1834,10 @@ export function Artifact({ result }) {
     case "spraypaint_index_result": return <ArtifactSpraypaintIndexResult root={result.root} documents={result.documents} passages={result.passages} scenes={result.scenes} would_index={result.would_index} identity_fingerprint={result.identity_fingerprint} elapsed_ms={result.elapsed_ms} />;
     case "web_search_result": return <ArtifactWebSearchResult query={result.query} content={result.content} webSearchQueries={result.webSearchQueries} sources={result.sources} grounded={result.grounded} />;
     case "search_combined": return <ArtifactSearchCombined query={result.query} local={result.local} local_ok={result.local_ok} web={result.web} web_ok={result.web_ok} />;
+    case "interceptor_generated": return <ArtifactInterceptorGenerated language={result.language} code={result.code} provider={result.provider} model={result.model} run_error={result.run_error} />;
+    case "interceptor_run_result": return <ArtifactInterceptorRun language={result.language} code={result.code} ok={result.ok} stdout={result.stdout} stderr={result.stderr} exit_code={result.exit_code} elapsed_ms={result.elapsed_ms} timed_out={result.timed_out} truncated={result.truncated} vahera_memory={result.vahera_memory} />;
+    case "windtunnel_report": return <ArtifactWindTunnelReport language={result.language} code={result.code} elapsed_ms={result.elapsed_ms} runs={result.runs} order_parameter={result.order_parameter} regime={result.regime} reference_index={result.reference_index} per_run={result.per_run} crash_count={result.crash_count} />;
+    case "interceptor_assist_result": return <ArtifactInterceptorAssist language={result.language} task={result.task} code={result.code} provider={result.provider} model={result.model} run={result.run} vahera_memory={result.vahera_memory} windtunnel={result.windtunnel} />;
     default:                return null;
   }
 }

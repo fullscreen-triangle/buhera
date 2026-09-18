@@ -31,6 +31,9 @@ import { ckgModule } from "@/lib/modules/ckg-module";
 import { cytochromeModule } from "@/lib/modules/cytochrome-module";
 import { gatewayModule } from "@/lib/modules/gateway-module";
 import { spraypaintModule } from "@/lib/modules/spraypaint-module";
+import { hfqModule } from "@/lib/modules/hfq-module";
+import { ladderModule } from "@/lib/modules/ladder-module";
+import { interceptorModule } from "@/lib/modules/interceptor-module";
 import { extractTermsFromInstruction } from "@/lib/purpose-terms";
 import { estimateCostFromInstruction } from "@/lib/purpose-cost";
 
@@ -66,6 +69,9 @@ export function bootstrapFederation() {
   register(cytochromeModule);
   register(gatewayModule);
   register(spraypaintModule);
+  register(hfqModule);
+  register(ladderModule);
+  register(interceptorModule);
 
   const session = getPurposeSession();
   const unhook = onDispatch((entry) => {

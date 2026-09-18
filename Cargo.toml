@@ -78,11 +78,21 @@ debug = true
 opt-level = 1
 debug = true
 
-# Commented out workspace configuration for now
-# [workspace]
-# members = [
+# Workspace: the root package above stays the primary crate; `interceptor-run`
+# is the sandboxed-execution CLI used by long-grass's interceptor module
+# (generate → run → vaHera-monitor → wind-tunnel-test). Kept minimal — the
+# large commented-out member list below was aspirational and never built;
+# only crates that actually exist are listed.
+[workspace]
+members = [
+    ".",
+    "crates/interceptor-run",
+]
+
+# Historical / aspirational members, never implemented — left as a reference
+# for future work, not part of the active workspace:
 #     "crates/vpos-kernel",
-#     "crates/molecular-substrate", 
+#     "crates/molecular-substrate",
 #     "crates/fuzzy-state",
 #     "crates/quantum-coherence",
 #     "crates/neural-integration",
@@ -94,16 +104,3 @@ debug = true
 #     "examples/bmd-processor",
 #     "examples/fuzzy-computation",
 #     "examples/quantum-coherence"
-# ]
-
-# [workspace.dependencies]
-# # Shared dependencies across workspace
-# buhera-core = { path = "crates/vpos-kernel" }
-# buhera-molecular = { path = "crates/molecular-substrate" }
-# buhera-fuzzy = { path = "crates/fuzzy-state" }
-# buhera-quantum = { path = "crates/quantum-coherence" }
-# buhera-neural = { path = "crates/neural-integration" }
-# buhera-telepathic = { path = "crates/telepathic-comm" }
-# buhera-bmd = { path = "crates/bmd-catalyst" }
-# buhera-semantic = { path = "crates/semantic-processing" }
-# buhera-foundry = { path = "crates/molecular-foundry" }

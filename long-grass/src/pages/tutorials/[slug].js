@@ -29,6 +29,7 @@ const ORDER = [
   "basic-routines",
   "vahera-dsl",
   "spraypaint-search",
+  "interceptor-assistant",
   "vahera-search-catalysts",
   "kwasa-kwasa-routines",
   "purpose-routines",
