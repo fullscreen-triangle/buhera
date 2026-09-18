@@ -1,0 +1,16 @@
+{
+  "name": "@levinthal/ladder",
+  "version": "1.0.0",
+  "description": "The catalytic-ladder contact-graph engine, vendored for Buhera OS from levinthal/enzymes/web. Computes an intensive derived power (beta = local floor / local separation cost) over a weighted contact graph, proves it invariant under graph extension, composes a sequence of such powers multiplicatively into a ladder that can legitimately refuse (subfloor) when declared rungs cannot reach a declared target, and provides a costed commitment machine (free probe/derive/observe, one commitment per climbed rung). Dependency-free pure JS, ported from shk_core.py. Public surface: ContactGraph, chainGraph, powerIntensive/powerGlobalFloor/powerExtensive, composeMultiplicative and siblings, Machine, deriveSequential, makeVerdict.",
+  "type": "module",
+  "main": "./src/engine.js",
+  "module": "./src/engine.js",
+  "exports": {
+    ".": "./src/engine.js"
+  },
+  "sideEffects": false,
+  "dependencies": {},
+  "author": "Kundai Farai Sachikonye <kundai.sachikonye@wzw.tum.de>",
+  "license": "UNLICENSED",
+  "private": true
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@hegel/hfq",
+  "version": "1.0.0",
+  "description": "The hegel federated query interpreter (HFQ), vendored for Buhera OS. A plan language with a capability calculus and a six-verdict execution model (answer/empty/surface/timeout/refused/starved), running the full parse -> resolve -> check -> allocate -> execute -> emit pipeline locally, with no network I/O. Includes the biocatalysis fixture with Mark Doerr's five real questions (mark_q1-mark_q5) and the eight generic Chem-DCAT-AP queries (dcat_g1-dcat_g8). Public surface: runPlan(source), selectWorld(plan), WORLDS, plus the full model/parser/adapters/check/allocate/execute exports.",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./model": "./src/model.js",
+    "./parser": "./src/parser.js",
+    "./adapters": "./src/adapters.js",
+    "./biocat": "./src/biocat.js",
+    "./check": "./src/check.js",
+    "./allocate": "./src/allocate.js",
+    "./execute": "./src/execute.js",
+    "./fixtures/build": "./src/fixtures/build.js",
+    "./fixtures/biocat": "./src/fixtures/biocat.js",
+    "./plans": "./src/plans.js",
+    "./sweeps": "./src/sweeps.js"
+  },
+  "sideEffects": false,
+  "dependencies": {},
+  "author": "Kundai Farai Sachikonye <kundai.sachikonye@wzw.tum.de>",
+  "license": "UNLICENSED",
+  "private": true
+}
