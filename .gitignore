@@ -148,6 +148,10 @@ huggingface_cache/
 **/target/
 Cargo.lock.bak
 
+# spraypaint index cache (rebuild with `spraypaint index`)
+.spraypaint/
+**/.spraypaint/
+
 # Misc heavy binaries
 *.iso
 *.dmg

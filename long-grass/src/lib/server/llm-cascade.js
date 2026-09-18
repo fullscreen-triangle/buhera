@@ -164,6 +164,103 @@ async function chatGemini({ system, user, jsonSchema, maxTokens, temperature }) 
   }
 }
 
+// ─── Gemini, grounded with Google Search ───────────────────────────────────
+//
+// A different request/response shape than chatGemini() above, not a variant
+// of it: grounding is requested via `tools: [{ google_search: {} }]` (no
+// system/user split — a single-turn contents array), and the response
+// carries `groundingMetadata` alongside the answer text: which queries the
+// model actually issued, which web pages backed the answer, and which
+// character ranges of the answer each page supports. This is the real shape
+// per Google's docs (ai.google.dev/gemini-api/docs/generate-content/google-search)
+// — NOT re-verified against a live call in this codebase, because neither
+// GEMINI_API_KEY nor OPENAI_API_KEY in .env.local currently authenticates
+// (both return HTTP 401 against their real endpoints as of this writing).
+// Whoever next has a working key should run this once and fix anything the
+// docs got subtly wrong before trusting it silently.
+//
+// The Gemini API also forbids combining a search tool with any non-search
+// tool in the same call, so this deliberately takes no jsonSchema option —
+// it is single-purpose, not a general "grounded chat" surface.
+export async function chatGeminiGrounded({ query, maxTokens, temperature }) {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) {
+    return {
+      ok: false,
+      provider: "gemini",
+      error: "GEMINI_API_KEY not set",
+    };
+  }
+  const model = process.env.GEMINI_MODEL || "gemini-2.0-flash";
+  const url =
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+  try {
+    const upstream = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: query }] }],
+        tools: [{ google_search: {} }],
+        generationConfig: {
+          maxOutputTokens: maxTokens ?? 1024,
+          temperature: temperature ?? 0.2,
+        },
+      }),
+    });
+    if (!upstream.ok) {
+      const details = await upstream.text().catch(() => "");
+      return {
+        ok: false,
+        provider: "gemini",
+        model,
+        error: `gemini HTTP ${upstream.status}`,
+        details: details.slice(0, 512),
+      };
+    }
+    const body = await upstream.json();
+    const candidate = body?.candidates?.[0];
+    const content = candidate?.content?.parts?.[0]?.text;
+    if (typeof content !== "string") {
+      return {
+        ok: false,
+        provider: "gemini",
+        model,
+        error: "gemini response missing candidates[0].content.parts[0].text",
+      };
+    }
+    const gm = candidate?.groundingMetadata || null;
+    const chunks = gm?.groundingChunks || [];
+    const sources = chunks.map((c, i) => ({
+      index: i,
+      uri: c?.web?.uri || null,
+      title: c?.web?.title || null,
+    }));
+    const supports = (gm?.groundingSupports || []).map((s) => ({
+      text: s?.segment?.text ?? null,
+      startIndex: s?.segment?.startIndex ?? null,
+      endIndex: s?.segment?.endIndex ?? null,
+      sourceIndices: s?.groundingChunkIndices || [],
+    }));
+    return {
+      ok: true,
+      provider: "gemini",
+      model,
+      content: content.trim(),
+      webSearchQueries: gm?.webSearchQueries || [],
+      sources,
+      supports,
+      grounded: !!gm,
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      provider: "gemini",
+      model,
+      error: err.message || String(err),
+    };
+  }
+}
+
 /**
  * Gemini's `responseSchema` is JSON-Schema-shaped but strips a few OpenAI
  * quirks (no `additionalProperties`, no `strict`, no top-level `name`).

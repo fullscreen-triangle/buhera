@@ -340,12 +340,14 @@ parse time, one layer earlier than the kernel's own PVE check.
   tutorial is the walkthrough; that file is the spec to check when you're
   writing a script and need to know if a form is valid.
 
-**Next up:** [The Complete CKG Experiment](./complete-ckg-experiment) — the
-same `describe`/`resolve`/`spawn` shape reappears there as `represent` /
-`attach` / `dispatch`, one categorical node holding many modules' facts
-instead of one process holding one trajectory — and unlike a vaHera
-process, a CKG node *does* persist across cells by design, referenced by
-its `tau` name.
+**Next up:** [Spraypaint: Local and Internet Search](./spraypaint-search) —
+a real search backend, kept deliberately separate from vaHera's own memory
+so the two are never confused. Or skip ahead to [The Complete CKG
+Experiment](./complete-ckg-experiment) — the same `describe`/`resolve`/
+`spawn` shape reappears there as `represent`/`attach`/`dispatch`, one
+categorical node holding many modules' facts instead of one process holding
+one trajectory — and unlike a vaHera process, a CKG node *does* persist
+across cells by design, referenced by its `tau` name.
 
 ---
 

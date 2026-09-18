@@ -27,6 +27,7 @@ import WorkspaceValue from "@/components/shapeshifter/WorkspaceValue";
 import { extractTermsFromInstruction } from "@/lib/purpose-terms";
 import { estimateCostFromInstruction } from "@/lib/purpose-cost";
 import { bootstrapFederation } from "@/lib/runtime/bootstrap";
+import SpraypaintAllocationChart from "@/components/sandboxes/spraypaint/SpraypaintAllocationChart";
 
 // ────────────────────────────────────────────────────────────
 //  Kernel boot.
@@ -846,6 +847,125 @@ function ArtifactGatewayRun({ executed_on, note, results, trace }) {
   );
 }
 
+function ArtifactSpraypaintResult({ query, results, allocation, price, budget, committed_count, elapsed_ms }) {
+  const [expanded, setExpanded] = useState(null);
+  const items = Array.isArray(results) ? results : [];
+  return (
+    <div className="text-gray-300 text-sm">
+      <div className="text-xs text-gray-500 mb-2">
+        <span className="text-gray-400">spraypaint ask</span>{" "}
+        <span className="text-white font-mono">&quot;{query}&quot;</span>
+        {typeof price === "number" && <> · price {price.toFixed(2)}</>}
+        {typeof budget === "number" && <> · budget {budget}</>}
+        {typeof committed_count === "number" && <> · committed #{committed_count}</>}
+        {typeof elapsed_ms === "number" && <> · {elapsed_ms} ms</>}
+      </div>
+      {items.length === 0 ? (
+        <p className="text-gray-500">(no passages matched)</p>
+      ) : (
+        <ul className="space-y-1 mb-3">
+          {items.map((r, i) => (
+            <li key={i} className="border border-gray-800 rounded p-2 hover:border-gray-600 transition">
+              <button
+                type="button"
+                className="w-full text-left"
+                onClick={() => setExpanded(expanded === i ? null : i)}
+              >
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-mono text-teal-300 text-xs truncate">
+                    {r.path}:{r.start_line}-{r.end_line}
+                  </span>
+                  <span className="text-gray-500 text-xs shrink-0">
+                    {r.scene} · score {typeof r.score === "number" ? r.score.toFixed(2) : r.score}
+                  </span>
+                </div>
+                {expanded === i && (
+                  <pre className="mt-2 p-2 bg-black/40 border border-gray-800 rounded text-xs font-mono whitespace-pre-wrap break-all text-gray-300">
+                    {r.snippet}
+                  </pre>
+                )}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {Array.isArray(allocation) && allocation.length > 0 && (
+        <SpraypaintAllocationChart allocation={allocation} />
+      )}
+    </div>
+  );
+}
+
+function ArtifactSpraypaintIndexResult({ root, documents, passages, scenes, would_index, identity_fingerprint, elapsed_ms }) {
+  const isDryRun = typeof would_index === "number";
+  return (
+    <div className="text-gray-300 text-sm">
+      <p>
+        <span className="text-green-400">{isDryRun ? "would index" : "indexed"}</span>{" "}
+        {isDryRun ? (
+          <span className="text-white">{would_index} file(s)</span>
+        ) : (
+          <span className="text-white">{documents} document(s), {passages} passage(s), {scenes} scene(s)</span>
+        )}
+      </p>
+      <p className="text-xs text-gray-500 mt-1 font-mono truncate">{root}</p>
+      {identity_fingerprint && (
+        <p className="text-xs text-gray-600 mt-1 font-mono truncate">fp: {identity_fingerprint}</p>
+      )}
+      {typeof elapsed_ms === "number" && <p className="text-xs text-gray-600 mt-1">{elapsed_ms} ms</p>}
+    </div>
+  );
+}
+
+function ArtifactWebSearchResult({ query, content, webSearchQueries, sources, grounded }) {
+  return (
+    <div className="text-gray-300 text-sm">
+      <div className="text-xs text-gray-500 mb-2">
+        <span className="text-gray-400">web search</span>{" "}
+        <span className="text-white font-mono">&quot;{query}&quot;</span>
+        {!grounded && <span className="text-yellow-400"> · ungrounded (no citations returned)</span>}
+      </div>
+      <p className="whitespace-pre-wrap leading-relaxed">{content}</p>
+      {Array.isArray(sources) && sources.length > 0 && (
+        <ol className="mt-3 text-xs text-gray-400 space-y-1 border-t border-gray-800 pt-2">
+          {sources.map((s) => (
+            <li key={s.index}>
+              [{s.index + 1}]{" "}
+              {s.uri ? (
+                <a href={s.uri} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline">
+                  {s.title || s.uri}
+                </a>
+              ) : (
+                <span>{s.title || "(untitled source)"}</span>
+              )}
+            </li>
+          ))}
+        </ol>
+      )}
+      {Array.isArray(webSearchQueries) && webSearchQueries.length > 0 && (
+        <p className="mt-2 text-xs text-gray-600">
+          queries issued: {webSearchQueries.join(" · ")}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function ArtifactSearchCombined({ query, local, local_ok, web, web_ok }) {
+  return (
+    <div className="text-gray-300 text-sm space-y-4">
+      <div>
+        <p className="text-xs uppercase tracking-wider text-gray-500 mb-2">local (spraypaint)</p>
+        {local_ok ? <Artifact result={local} /> : <ArtifactText lines={local?.lines || ["(local search failed)"]} />}
+      </div>
+      <div className="border-t border-gray-800 pt-3">
+        <p className="text-xs uppercase tracking-wider text-gray-500 mb-2">internet (web search)</p>
+        {web_ok ? <Artifact result={web} /> : <ArtifactText lines={web?.lines || ["(web search failed)"]} />}
+      </div>
+    </div>
+  );
+}
+
 function ArtifactRemoteDispatch({ target, moduleId, url, elapsed_ms, status, remote, error_stage, error_message }) {
   const remoteOk = !!remote?.ok;
   return (
@@ -1632,6 +1752,10 @@ export function Artifact({ result }) {
     case "gateway_machines": return <ArtifactGatewayMachines entries={result.entries} />;
     case "gateway_pair_token": return <ArtifactGatewayPairToken name={result.name} token={result.token} expires_at={result.expires_at} />;
     case "gateway_run":     return <ArtifactGatewayRun executed_on={result.executed_on} note={result.note} results={result.results} trace={result.trace} />;
+    case "spraypaint_result": return <ArtifactSpraypaintResult query={result.query} results={result.results} allocation={result.allocation} price={result.price} budget={result.budget} committed_count={result.committed_count} elapsed_ms={result.elapsed_ms} />;
+    case "spraypaint_index_result": return <ArtifactSpraypaintIndexResult root={result.root} documents={result.documents} passages={result.passages} scenes={result.scenes} would_index={result.would_index} identity_fingerprint={result.identity_fingerprint} elapsed_ms={result.elapsed_ms} />;
+    case "web_search_result": return <ArtifactWebSearchResult query={result.query} content={result.content} webSearchQueries={result.webSearchQueries} sources={result.sources} grounded={result.grounded} />;
+    case "search_combined": return <ArtifactSearchCombined query={result.query} local={result.local} local_ok={result.local_ok} web={result.web} web_ok={result.web_ok} />;
     default:                return null;
   }
 }

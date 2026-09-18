@@ -29,6 +29,8 @@ import { getKernel } from "./vahera-module";
 import {
   createKernelSearchCatalyst,
   createHfInferenceCatalyst,
+  createSpraypaintCatalyst,
+  createWebSearchCatalyst,
 } from "./graffiti-catalysts";
 
 // --------------------------------------------------------------------------
@@ -55,6 +57,15 @@ function buildDefaultRegistry() {
   // Real catalyst: kernel_search reads vahera's live kernel. Whatever the
   // user has stored via `memory store` becomes searchable through graffiti.
   registry.register(createKernelSearchCatalyst("kernel_search", getKernel()));
+
+  // Real catalyst: spraypaint_local searches this repo on disk — no
+  // relation to vahera's kernel, a completely different corpus.
+  registry.register(createSpraypaintCatalyst("spraypaint_local"));
+
+  // Real catalyst: web_search reaches the internet via an LLM's own
+  // browsing tool. Falls back to zero power if no LLM key is configured
+  // or the search fails.
+  registry.register(createWebSearchCatalyst("web_search"));
 
   // Real catalyst: hf_inference calls the HF chat API through the server
   // route. Falls back to zero power if HUGGINGFACE_API_KEY is missing.
@@ -142,7 +153,8 @@ export const graffitiModule = {
       instructions: [
         'dispatch("graffiti", "demo")',
         'dispatch("graffiti", "floor 0.02\\n\\ncatalyst local_search { ... }\\n\\nproject P { seek ... yield x }")',
-        "available catalysts: local_search (fixture), kernel_search (vahera), hf_inference (HF), restate (mock)",
+        "available catalysts: local_search (fixture), kernel_search (vahera), " +
+          "spraypaint_local (repo search), web_search (internet), hf_inference (HF), restate (mock)",
       ],
     };
   },

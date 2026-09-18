@@ -28,6 +28,8 @@ const TutorialRenderer = dynamic(
 const ORDER = [
   "basic-routines",
   "vahera-dsl",
+  "spraypaint-search",
+  "vahera-search-catalysts",
   "kwasa-kwasa-routines",
   "purpose-routines",
   "zangalewa-routines",
