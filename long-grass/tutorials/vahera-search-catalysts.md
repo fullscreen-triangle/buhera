@@ -139,7 +139,7 @@ project compare_floor {
   seek claim
     not{ "off topic" }
     toward{ conditioned_admissibility_floor }
-    via{ spraypaint_local(query: "admissibility floor global minimum") }
+    via{ spraypaint_local(query: "capability calculus six verdict starved refused") }
     until converge
     yield claim
 }
@@ -147,13 +147,17 @@ project compare_floor {
 ```
 
 **Expected** — `claim` this time is a real passage snippet from the
-repository — per [Spraypaint: Local and Internet
-Search](./spraypaint-search) §1, that exact query's top hit is the
-data-modeling tutorial's own abstract, so the claim graffiti resolves to
-should be recognizably that passage (path:line prefix included, per
-`createSpraypaintCatalyst`'s claim format), not vaHera's stored note. Two
-completely different corpora, same script shape, same seek statement — only
-the catalyst named in `via{}` changed which one got searched.
+repository — the `spraypaint_local` catalyst calls the same API as
+`dispatch("spraypaint", ...)` with a fixed budget of 3 and no scene
+restriction, and for this exact query that call's top hit is [Federated
+Querying](./federated-querying)'s own opening lines (per [Spraypaint: Local
+and Internet Search](./spraypaint-search) §1, which runs a scoped version
+of the same query and shows the `hfq` module's source ranked right beside
+it). The claim graffiti resolves to should be recognizably that passage
+(path:line prefix included, per `createSpraypaintCatalyst`'s claim format),
+not vaHera's stored note. Two completely different corpora, same script
+shape, same seek statement — only the catalyst named in `via{}` changed
+which one got searched.
 
 **Cell 2.3** — `web_search` instead:
 ```
@@ -221,7 +225,7 @@ project compare_floor {
     not{ "off topic" }
     toward{ conditioned_admissibility_floor }
     via{ kernel_search(query: "admissibility floor") }
-    via{ spraypaint_local(query: "admissibility floor global minimum") }
+    via{ spraypaint_local(query: "capability calculus six verdict starved refused") }
     via{ web_search(query: "conditioned admissibility floor") }
     until converge
     yield claim
@@ -235,6 +239,78 @@ favors given all three powers together — read the `diagnostics` field
 `dispatch("graffiti", ...)` returns alongside `projects` to see which
 catalyst actually won and why, rather than guessing from the claim text
 alone.
+
+---
+
+## 3½. What a catalyst's `power` is not, read against `ladder`'s `climb`
+
+Every catalyst above resolves to a `claim` and a `power` in `[0,1]` — and
+it is tempting, having just done [Federated
+Querying](./federated-querying), to read that `power` as the same kind of
+quantity as `ladder`'s composed rung power in that tutorial's §4 (`climb`,
+`composite_power`, the `subfloor` refusal). It isn't, and the difference is
+worth making concrete rather than asserted, because conflating them is an
+easy mistake once both numbers live in `[0,1]` and both get called "power."
+
+**Cell 3½.1** — run the identical rung numbers `ladder` composed in
+[Federated Querying](./federated-querying) §4, here, for reference:
+```
+dispatch("ladder", { op: "climb", powers: [0.45, 0.30, 0.55], target: 0.70 })
+```
+
+**Expected** — `verdict: "reached"`, a `composite_power` around `0.827`
+(`1 - (0.55)(0.70)(0.45)`, per that tutorial's own derivation). This number
+is **intensive-then-composed**: each rung's power was itself derived from a
+real graph's local neighborhood (§3 of that tutorial), and the composition
+law combining them is a specific, proven multiplicative formula — raise the
+`target` past what they can jointly reach and the whole thing refuses
+(`subfloor`, `M: 0`) *before* any further computation, by construction.
+
+**Cell 3½.2** — now look at what a graffiti catalyst's `power` actually is,
+by re-running Cell 2.1 above and reading the number `kernel_search` reports
+for a middling match:
+```
+dispatch("graffiti", `
+floor 0.02
+
+catalyst kernel_search {
+  namespace: local
+  input: Region output: Claim
+}
+
+project probe_power {
+  seek claim
+    not{ "off topic" }
+    toward{ some_unrelated_target }
+    via{ kernel_search(query: "floor_note") }
+    until converge
+    yield claim
+}
+`)
+```
+
+**Expected** — a `power` computed by `createKernelSearchCatalyst`'s own
+formula: `0.5 + 0.4 * (1 - normalisedDistance)`, clamped to `[0.5, 0.9]` —
+a heuristic scaling of one catalyst's one lookup, invented per-catalyst (
+`createSpraypaintCatalyst` uses a different formula again, scaling BM25
+score instead of S-distance; `createWebSearchCatalyst` doesn't scale
+anything at all, it's a fixed `0.6`). **There is no floor, no composition
+law, and no refusal rule tying these numbers together** — graffiti's
+namespace-neutrality theorem (§0 above) says the *calculus* treats every
+catalyst's power identically regardless of namespace, but it says nothing
+about what any individual catalyst's power *means* physically, and nothing
+requires two catalysts' power scales to be comparable in the way two
+`ladder` rungs derived from the same graph metric are. Reading "web_search
+returned power 0.6" and "spraypaint_local returned power 0.73" as "the
+internet search was less confident" is not a claim either number actually
+supports — they're not measuring the same thing, only sharing a numeric
+range by convention. If you need the composed, floor-backed guarantee
+`ladder` gives you, `ladder` is the tool for that question, run alongside
+graffiti rather than through it — nothing in this session wraps `ladder`
+as a graffiti catalyst, and nothing about the catalyst contract in
+`src/graffiti/orchestration/catalyst.ts` would make that wrapping
+meaningful without also carrying the composition law across the boundary,
+which is a real design question, not a one-line registration.
 
 ---
 
@@ -257,11 +333,21 @@ alone.
 - `:modules`' description of `graffiti` always lists the currently
   registered catalysts — check it if a `via{}` reference to a catalyst name
   ever fails to resolve.
+- A catalyst's `power` is a per-catalyst heuristic scaling, not a composed,
+  floor-backed guarantee — don't read it as the same kind of quantity as
+  `ladder`'s `climb`/`subfloor` from [Federated
+  Querying](./federated-querying) §4 just because both live in `[0,1]`.
+  Nothing in graffiti's calculus ties catalyst powers to a global
+  admissibility bound the way `ladder`'s composition law does; if a
+  question needs that guarantee, reach for `ladder` directly.
 
 **Previous:** [Spraypaint: Local and Internet Search](./spraypaint-search)
 for the two new catalysts' own behavior in isolation, without graffiti in
 the picture. [The vaHera DSL](./vahera-dsl) for `kernel_search`'s side —
-vaHera's memory and trajectory grammar on its own terms.
+vaHera's memory and trajectory grammar on its own terms. [Federated
+Querying](./federated-querying) for `ladder`'s composed, floor-backed power
+and `hfq`'s six-verdict model — the two engines §3½ above contrasts against
+a graffiti catalyst's much simpler, uncomposed `power`.
 
 ---
 
