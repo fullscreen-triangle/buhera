@@ -188,10 +188,30 @@ equivalent of "how close was the match"). **Under the current, honestly
 broken key** (see [Spraypaint: Local and Internet
 Search](./spraypaint-search) §5), expect this cell's `via{}` chain to
 resolve at power 0 with a claim like `web_search:unreachable:...` — the
-catalyst's own failure marker, not a crash. A `seek` whose only catalyst
-returns power 0 will not converge in the usual sense; read whatever the
-project's diagnostics report for this case as the real, current behavior of
-a catalyst with no working backend, not a bug in the script.
+catalyst's own failure marker, not a crash.
+
+**This is worth being precise about, because it's a real and easy place to
+guess wrong**: `power` and *convergence* are unrelated in graffiti's
+calculus. `resolveOutcome` (`src/graffiti/core/closure.ts`) decides
+`convergent` vs. `declined` purely by counting *distinct claim-equivalence
+classes* — a `seek` converges whenever every catalyst it consulted agrees
+on (or, with one catalyst, trivially produces) a single claim value,
+**regardless of what power that claim carries**. A lone `web_search` at
+power 0 still yields exactly one class — its own failure-marker string —
+so this cell converges cleanly and `claim` really is
+`web_search:unreachable:...`, not a thrown error or a stuck seek. Power
+only becomes visible in the *composed* case: §3 below runs three catalysts
+toward the same target, and if two or more of them resolve to genuinely
+different claim strings, *that's* what risks contested closure — a real
+`GraffitiRuntimeError` (`"reached contested closure (N distinct
+claim-regions) but has no 'otherwise decline' clause"`) unless the script
+adds `until converge otherwise decline` to accept a `Decline` value
+instead of throwing. None of the scripts in this tutorial add that clause,
+which is itself informative to notice: it means every `seek` you've run so
+far, in every cell, genuinely resolved to one claim-region, converged or
+declined-and-thrown never actually distinguished silently — a thrown error
+would have been visible immediately, in the terminal, as a hard failure,
+not a quiet wrong answer.
 
 ---
 
@@ -233,12 +253,65 @@ project compare_floor {
 `)
 ```
 
-**Expected** — one `compare_floor` project, one yielded `claim`, but now
-resolved from whichever catalyst the calculus's own convergence rule
-favors given all three powers together — read the `diagnostics` field
-`dispatch("graffiti", ...)` returns alongside `projects` to see which
-catalyst actually won and why, rather than guessing from the claim text
-alone.
+**Expected — and this is the real, honest expectation, not the clean
+success a first guess would reach for**: three catalysts searching three
+completely different corpora (§2 above) for genuinely different claim
+text — vaHera's stored note, a spraypaint file snippet, a web-search answer
+or failure marker — are very unlikely to land on the *same* claim string.
+Per §2.3's tracing of `resolveOutcome`, that means more than one
+claim-equivalence class, which means `state: "declined"`, which means this
+script's `until converge` (with no `otherwise decline` clause) throws a
+`GraffitiRuntimeError`: `seek "compare_floor" reached contested closure (N
+distinct claim-regions) but has no "otherwise decline" clause to handle
+it`. If Cell 3.1 as written above returns a clean single `claim` for you,
+that's the interesting case to look at closely (§2's separate cells will
+tell you whether two of the three catalysts happened to agree) — but the
+more likely, and unremarkable, outcome is the thrown error, and that is
+correct behavior for this script, not a bug in it.
+
+**Cell 3.2** — the corrected version, accepting a `Decline` rather than
+demanding a forced single answer:
+```
+dispatch("graffiti", `
+floor 0.02
+
+catalyst kernel_search {
+  namespace: local
+  input: Region output: Claim
+}
+catalyst spraypaint_local {
+  namespace: local
+  input: Region output: Claim
+}
+catalyst web_search {
+  namespace: remote
+  input: Region output: Claim
+}
+
+project compare_floor {
+  seek claim
+    not{ "off topic" }
+    toward{ conditioned_admissibility_floor }
+    via{ kernel_search(query: "admissibility floor") }
+    via{ spraypaint_local(query: "capability calculus six verdict starved refused") }
+    via{ web_search(query: "conditioned admissibility floor") }
+    until converge otherwise decline
+    yield claim
+}
+`)
+```
+
+**Expected** — `claim` now binds a `Decline` value rather than a single
+resolved claim: `seekName`, the `classes` array (every distinct
+claim-equivalence-class the three catalysts actually produced — read this
+to see exactly which catalysts agreed with which, if any did), and the
+graph's `floor`. This is graffiti's honest answer to "three independent
+searches over three independent corpora, asked to agree on one claim":
+usually, correctly, they don't — and `otherwise decline` is how a script
+says it's prepared to receive that answer instead of demanding one that
+may not exist. Read the `diagnostics` field `dispatch("graffiti", ...)`
+returns alongside `projects` for the run-level detail behind whichever
+outcome you got, in either cell.
 
 ---
 

@@ -967,6 +967,79 @@ function ArtifactSearchCombined({ query, local, local_ok, web, web_ok }) {
   );
 }
 
+function ArtifactSpraypaintIdentity({ fingerprint, chi, floor, vertices, edges }) {
+  return (
+    <div className="text-gray-300 text-sm space-y-1">
+      <p>
+        <span className="text-gray-400">chi (char invariant):</span>{" "}
+        <span className="text-white font-mono">{chi}</span>{" "}
+        <span className="text-gray-500">
+          {typeof chi === "number" && typeof floor === "number" && chi >= floor ? "≥" : "<"} floor {floor}
+        </span>
+      </p>
+      <p className="text-xs text-gray-500 font-mono break-all">fp: {fingerprint}</p>
+      <p className="text-xs text-gray-500">{vertices} vertices · {edges} edges</p>
+    </div>
+  );
+}
+
+function ArtifactSpraypaintCount({ committed_count }) {
+  return (
+    <p className="text-gray-300 text-sm">
+      committed acts: <span className="text-white font-mono">{committed_count}</span>{" "}
+      <span className="text-gray-500 text-xs">(monotone — only ever goes up)</span>
+    </p>
+  );
+}
+
+function ArtifactSpraypaintScenes({ scenes }) {
+  const rows = Array.isArray(scenes) ? scenes : [];
+  const maxDocs = Math.max(1, ...rows.map((r) => r.documents));
+  return (
+    <div className="text-gray-300 text-sm">
+      <ul className="space-y-1">
+        {rows.map((r) => (
+          <li key={r.scene} className="flex items-center gap-2">
+            <span className="font-mono text-xs w-40 truncate text-teal-300">{r.scene}</span>
+            <span className="flex-1 bg-gray-800 rounded h-2 overflow-hidden">
+              <span
+                className="block h-full bg-teal-600"
+                style={{ width: `${(r.documents / maxDocs) * 100}%` }}
+              />
+            </span>
+            <span className="text-xs text-gray-500 w-32 text-right">
+              {r.documents} doc · {r.passages} psg
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ArtifactSpraypaintVerify({ overall, invariants }) {
+  const rows = Array.isArray(invariants) ? invariants : [];
+  return (
+    <div className="text-gray-300 text-sm">
+      <p className="mb-2">
+        overall:{" "}
+        <span className={overall === "PASS" ? "text-green-400" : "text-red-400"}>{overall}</span>
+      </p>
+      <ul className="space-y-1">
+        {rows.map((inv, i) => (
+          <li key={i} className="text-xs">
+            <span className={inv.status === "PASS" ? "text-green-400" : "text-red-400"}>
+              [{inv.status}]
+            </span>{" "}
+            <span className="text-white">{inv.name}</span>
+            <div className="text-gray-500 pl-8">{inv.detail}</div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 // ────────────────────────────────────────────────────────────
 //  Interceptor: AI code generation + sandboxed execution + vaHera
 //  monitoring + wind-tunnel stability testing. Renderers delegate the
@@ -1834,6 +1907,10 @@ export function Artifact({ result }) {
     case "spraypaint_index_result": return <ArtifactSpraypaintIndexResult root={result.root} documents={result.documents} passages={result.passages} scenes={result.scenes} would_index={result.would_index} identity_fingerprint={result.identity_fingerprint} elapsed_ms={result.elapsed_ms} />;
     case "web_search_result": return <ArtifactWebSearchResult query={result.query} content={result.content} webSearchQueries={result.webSearchQueries} sources={result.sources} grounded={result.grounded} />;
     case "search_combined": return <ArtifactSearchCombined query={result.query} local={result.local} local_ok={result.local_ok} web={result.web} web_ok={result.web_ok} />;
+    case "spraypaint_identity_result": return <ArtifactSpraypaintIdentity fingerprint={result.fingerprint} chi={result.chi} floor={result.floor} vertices={result.vertices} edges={result.edges} />;
+    case "spraypaint_count_result": return <ArtifactSpraypaintCount committed_count={result.committed_count} />;
+    case "spraypaint_scenes_result": return <ArtifactSpraypaintScenes scenes={result.scenes} />;
+    case "spraypaint_verify_result": return <ArtifactSpraypaintVerify overall={result.overall} invariants={result.invariants} />;
     case "interceptor_generated": return <ArtifactInterceptorGenerated language={result.language} code={result.code} provider={result.provider} model={result.model} run_error={result.run_error} />;
     case "interceptor_run_result": return <ArtifactInterceptorRun language={result.language} code={result.code} ok={result.ok} stdout={result.stdout} stderr={result.stderr} exit_code={result.exit_code} elapsed_ms={result.elapsed_ms} timed_out={result.timed_out} truncated={result.truncated} vahera_memory={result.vahera_memory} />;
     case "windtunnel_report": return <ArtifactWindTunnelReport language={result.language} code={result.code} elapsed_ms={result.elapsed_ms} runs={result.runs} order_parameter={result.order_parameter} regime={result.regime} reference_index={result.reference_index} per_run={result.per_run} crash_count={result.crash_count} />;

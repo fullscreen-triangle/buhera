@@ -12,6 +12,10 @@
  *   { kind: "index", root? }                          → (re)build the local index
  *   { kind: "web", query }                             → internet search
  *   { kind: "both", query, root?, budget?, scenes? }   → both, in parallel
+ *   { kind: "identity", root? }                        → conserved-identity fingerprint + chi/floor
+ *   { kind: "count", root? }                            → the monotone committed-act counter
+ *   { kind: "scenes", root? }                           → per-scene document/passage counts
+ *   { kind: "verify", root? }                           → check all four invariants
  *   a plain string                                     → sugar for { kind: "ask", query: <string> }
  * ========================================================================== */
 
@@ -116,6 +120,25 @@ async function runWeb(inst) {
   };
 }
 
+async function runInvariantAction(kind, inst) {
+  const res = await postJSON("/api/spraypaint", { action: kind, root: inst.root });
+  if (!res.ok) {
+    return {
+      ok: false,
+      output_delta: { kind: "text", lines: [`spraypaint ${kind}: ${res.error}`] },
+      residue: 0,
+      completed: true,
+      error: res.error,
+    };
+  }
+  return {
+    ok: true,
+    output_delta: res.output_delta,
+    residue: res.residue ?? 0,
+    completed: true,
+  };
+}
+
 async function runBoth(inst) {
   const [local, web] = await Promise.all([runAsk(inst), runWeb(inst)]);
   return {
@@ -151,6 +174,10 @@ export const spraypaintModule = {
         'dispatch("spraypaint", { kind: "index" })',
         'dispatch("spraypaint", { kind: "web", query: "..." })',
         'dispatch("spraypaint", { kind: "both", query: "..." })',
+        'dispatch("spraypaint", { kind: "identity" })',
+        'dispatch("spraypaint", { kind: "count" })',
+        'dispatch("spraypaint", { kind: "scenes" })',
+        'dispatch("spraypaint", { kind: "verify" })',
       ],
     };
   },
@@ -163,6 +190,9 @@ export const spraypaintModule = {
     if (kind === "index") return runIndex(inst);
     if (kind === "web") return runWeb(inst);
     if (kind === "both") return runBoth(inst);
+    if (kind === "identity" || kind === "count" || kind === "scenes" || kind === "verify") {
+      return runInvariantAction(kind, inst);
+    }
 
     return {
       ok: false,

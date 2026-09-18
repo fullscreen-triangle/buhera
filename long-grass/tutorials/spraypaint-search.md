@@ -8,7 +8,7 @@ render as more than plain text: a ranked, expandable result list plus an
 interactive chart of how the search budget actually split across the
 codebase.
 
-**Time:** ~15 minutes.
+**Time:** ~30 minutes.
 
 **Prerequisites:** [Basic routines](./basic-routines) for `dispatch(...)`
 itself. Independent of vaHera and of graffiti — this tutorial covers
@@ -343,7 +343,113 @@ claim.
 
 ---
 
-## 7. What you now know
+## 7. The four invariants spraypaint actually checks about itself
+
+Every cell so far asked spraypaint about your query. This section asks it
+about *itself* — spraypaint ships a formal, four-invariant specification of
+its own correctness, checkable on demand, and none of the tutorials or
+prose in this repo describe it anywhere else. It is real, run-checkable
+material, not a design note: `spraypaint verify` re-derives all four and
+reports PASS/FAIL per invariant, and this module exposes that same check as
+a dispatch.
+
+**Cell 7.1** — the monotone commit counter, the cheapest of the four to
+check:
+```
+dispatch("spraypaint", { kind: "count" })
+```
+
+**Expected** — a single number, `committed_count`, that only ever
+increases: every real `ask` this index has ever answered (dry runs
+excepted — recall §4's note that `--dry-run` explicitly does not increment
+it) adds exactly one. Run any of §1–4's cells again and re-check this
+count; it will have grown by however many non-dry-run `ask`/ `index` calls
+you made in between. This is spraypaint's Invariant 2 ("never-resetting
+count") made directly inspectable — a claim about the tool's own audit
+trail, not about your search results.
+
+**Cell 7.2** — the per-scene breakdown that Cell §3's restriction
+decisions were, until now, made without seeing directly:
+```
+dispatch("spraypaint", { kind: "scenes" })
+```
+
+**Expected** — every scene in the index with its real document and passage
+counts, rendered as a bar chart scaled to the largest scene. This is the
+table that would have told you in advance, before §3's Cell 3.1, that
+`docs` was a real, populated scene (worth searching for *something*) but
+not the right one for that particular query — the difference between
+"empty scene" and "wrong scene" is visible here and nowhere in a plain
+`ask` result. If you're about to restrict a query with `scenes: [...]` and
+aren't sure a name is spelled right or has any content at all, this is the
+cell to run first.
+
+**Cell 7.3** — the conserved-identity fingerprint (spraypaint's Invariant
+1):
+```
+dispatch("spraypaint", { kind: "identity" })
+```
+
+**Expected** — a fingerprint hash, a `chi` (character invariant — a
+derived statistic over the indexed corpus, not something this tutorial
+reverse-engineers further than spraypaint's own report of it), a `floor`
+spraypaint compares `chi` against, and raw vertex/edge counts (the index's
+own internal structure — 2546 vertices, over 3.2 million edges on this
+repository's checkout, at time of writing). The invariant this backs:
+`chi >= floor` must hold for the index to be considered coherent with the
+fingerprint it was built under; if the underlying files changed in a way
+that breaks that relationship, `identity` — and `verify`, below — is how
+you'd find out. **This call took ~16 seconds** on this deployment's index
+when tested — expect it to scale with index size, the same real,
+unoptimized cost noted for `ask` in §1, and for the same reason: nothing
+here is cached between calls.
+
+**Cell 7.4** — all four invariants, checked together:
+```
+dispatch("spraypaint", { kind: "verify" })
+```
+
+**Expected**, eventually: `overall: PASS` and four lines, one per
+invariant —
+```
+[PASS] Inv 1 conserved identity     fingerprint verified; chi=... >= floor=...
+[PASS] Inv 2 never-resetting count  committed count = N, no decrement path
+[PASS] Inv 3 search-not-fetch       index stores no answer fields; snippets re-read at query time
+[PASS] Inv 4 exclusive phases       construction/commitment lock operational
+```
+**"Eventually" is doing real work in that sentence and is worth stating
+precisely rather than glossed over**: `spraypaint verify` took **2 minutes
+42 seconds** end to end when timed directly against the CLI on this
+deployment's index — measured with `time spraypaint verify`, not
+estimated. That is well past a typical HTTP client's default timeout (the
+API route itself sets none, but whatever called it — a browser `fetch`, a
+reverse proxy, a load balancer — may not wait that long). If a
+`dispatch("spraypaint", { kind: "verify" })` call in your own session times
+out rather than returning PASS/FAIL, that is very likely this cost, not a
+failure — run `spraypaint verify` directly on the machine hosting the
+deployment if you need a verdict without going through the browser.
+
+Two of the four invariants are worth reading closely rather than skimming
+past as boilerplate, because they're the two that explain design decisions
+made earlier in this tutorial without saying so at the time:
+
+- **Invariant 2 ("never-resetting count")** is why `--dry-run` exists at
+  all, and why §4 told you to reach for it before a real `ask` — a dry run
+  is spraypaint's only sanctioned way to inspect a query's outcome without
+  moving this counter, because the counter is a permanent, one-directional
+  audit record by design, not a cache statistic that resets on your say-so.
+- **Invariant 3 ("search-not-fetch")** is the formal version of something
+  §0 already told you informally: spraypaint's index stores no answer
+  fields, only where to re-read from — every result's `snippet` is read
+  live off disk at query time (per the invariant's own PASS message),
+  which is also why a file you edit between building the index and running
+  `ask` can produce a snippet that no longer matches what `index` originally
+  saw structurally, even though the ranking itself is unaffected until you
+  reindex.
+
+---
+
+## 8. What you now know
 
 - `spraypaint` searches files on disk; it shares no state with vaHera's
   `memory store`/`memory find nearest`, which searches only what you've
@@ -361,6 +467,18 @@ claim.
 - The web half depends on a working LLM API key and fails loudly, with a
   clear error, when one isn't configured or doesn't authenticate — it does
   not fabricate a plausible-looking answer in that case.
+- Spraypaint's `price`/clearing-price is a real, computed-over-the-whole-
+  field number, but it is not an admissibility bound — it never refuses a
+  query, only ranks whatever cleared it (§3, §4½). Reach for `ladder`
+  ([Federated Querying](./federated-querying)) when you need a refusal
+  rule, not a ranking.
+- `{ kind: "count" }`, `{ kind: "scenes" }`, `{ kind: "identity" }`, and
+  `{ kind: "verify" }` expose spraypaint's own four-invariant
+  self-correctness check (§7) — `scenes` in particular is the right first
+  move before guessing at a `scenes: [...]` restriction, and `identity`/
+  `verify` are genuinely slow (~16s and ~2m42s respectively, measured
+  directly against this deployment's index) — expect that, don't assume a
+  timeout means failure.
 
 **Next up:** [vaHera search catalysts](./vahera-search-catalysts) — the
 same two backends, reached from a graffiti `.grf` script's `seek ... via{}`
@@ -385,3 +503,13 @@ vaHera's own `kernel_search`.
   remember BM25 needs actual term overlap. Try the words more literally
   (closer to how the target text is actually phrased) before concluding
   nothing matches.
+- **`{ kind: "identity" }` or `{ kind: "verify" }` times out** — both are
+  genuinely slow on a large index (§7): ~16s for `identity`, up to several
+  minutes for `verify` on this deployment. A timeout here is very likely
+  latency, not failure — run the CLI's own `spraypaint identity`/`spraypaint
+  verify` directly on the host if you need a definitive answer without
+  waiting on a browser request.
+- **A scene name in `scenes: [...]` silently returns nothing (empty
+  `results`, no error)** — an unknown scene name isn't rejected, it's just
+  never matched. Run `{ kind: "scenes" }` first to get the exact, real
+  scene names this index actually has.

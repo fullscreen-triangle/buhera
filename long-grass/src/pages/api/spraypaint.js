@@ -141,6 +141,107 @@ export default async function handler(req, res) {
     });
   }
 
+  if (action === "identity" || action === "count" || action === "scenes" || action === "verify") {
+    const args = [action, "--root", resolvedRoot];
+    const t0 = Date.now();
+    const { code, stdout, stderr, truncated } = await runSpraypaint(binary, args);
+    const elapsed_ms = Date.now() - t0;
+
+    // None of these four subcommands support --json (checked against the
+    // real CLI: identity/count/scenes/verify all print plain text only) —
+    // parse the specific line shapes each one actually produces instead of
+    // pretending a --json flag exists.
+    if (code !== 0 && action !== "verify") {
+      // verify's own exit code is meaningful (nonzero on invariant breach)
+      // and still carries a real stdout report worth returning, so only
+      // the other three treat a nonzero exit as a hard failure.
+      return res.status(502).json({
+        ok: false,
+        error: `spraypaint ${action} exited with code ${code}`,
+        stderr: stderr.trim(),
+        elapsed_ms,
+      });
+    }
+    if (truncated) {
+      return res.status(502).json({ ok: false, error: "spraypaint output exceeded size limit", elapsed_ms });
+    }
+
+    if (action === "identity") {
+      const text = stdout.trim();
+      const fp = /fingerprint:\s*(\S+)/.exec(text)?.[1] ?? null;
+      const chi = /chi\):\s*([\d.eE+-]+)/.exec(text)?.[1] ?? null;
+      const floorM = /floor:\s*([\d.eE+-]+)/.exec(text)?.[1] ?? null;
+      const vertices = /vertices:\s*(\d+)/.exec(text)?.[1] ?? null;
+      const edges = /edges:\s*(\d+)/.exec(text)?.[1] ?? null;
+      return res.status(200).json({
+        output_delta: {
+          kind: "spraypaint_identity_result",
+          root: resolvedRoot,
+          fingerprint: fp,
+          chi: chi != null ? Number(chi) : null,
+          floor: floorM != null ? Number(floorM) : null,
+          vertices: vertices != null ? Number(vertices) : null,
+          edges: edges != null ? Number(edges) : null,
+          raw: text,
+          elapsed_ms,
+        },
+        residue: 1,
+      });
+    }
+
+    if (action === "count") {
+      const n = /committed acts:\s*(\d+)/.exec(stdout)?.[1] ?? null;
+      return res.status(200).json({
+        output_delta: {
+          kind: "spraypaint_count_result",
+          root: resolvedRoot,
+          committed_count: n != null ? Number(n) : null,
+          raw: stdout.trim(),
+          elapsed_ms,
+        },
+        residue: 1,
+      });
+    }
+
+    if (action === "scenes") {
+      const rows = [];
+      for (const line of stdout.split("\n")) {
+        const m = /^(\S.*?)\s+(\d+) doc\(s\), (\d+) passage\(s\)/.exec(line);
+        if (m) rows.push({ scene: m[1].trim(), documents: Number(m[2]), passages: Number(m[3]) });
+      }
+      return res.status(200).json({
+        output_delta: {
+          kind: "spraypaint_scenes_result",
+          root: resolvedRoot,
+          scenes: rows,
+          elapsed_ms,
+        },
+        residue: rows.length,
+      });
+    }
+
+    // action === "verify"
+    const lines = stdout.trim().split("\n").filter(Boolean);
+    const invariants = [];
+    for (const line of lines) {
+      const m = /^(Inv \d+ \S.*?)\s+\[(PASS|FAIL)\]\s*(.*)$/.exec(line);
+      if (m) invariants.push({ name: m[1].trim(), status: m[2], detail: m[3].trim() });
+    }
+    const overall = /overall:\s*(PASS|FAIL)/.exec(stdout)?.[1] ?? (code === 0 ? "PASS" : "FAIL");
+    return res.status(200).json({
+      output_delta: {
+        kind: "spraypaint_verify_result",
+        root: resolvedRoot,
+        overall,
+        invariants,
+        exit_code: code,
+        raw: stdout.trim(),
+        elapsed_ms,
+      },
+      residue: invariants.length,
+    });
+  }
+
   // action === "ask"
   if (typeof query !== "string" || !query.trim()) {
     return res.status(400).json({ ok: false, error: "query is required" });
