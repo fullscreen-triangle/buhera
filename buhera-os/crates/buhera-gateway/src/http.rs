@@ -2,8 +2,12 @@
 //!
 //! Routes divide into three groups:
 //!
-//! * `/api/auth/*`      — signup and login. The only unauthenticated routes.
-//! * `/api/catalysts/*` — the account's machine roster, session-authenticated.
+//! * `/api/auth/login`  — the only unauthenticated route. There is no public
+//!   signup: accounts are seeded on the host with `buhera-gateway --seed`
+//!   (see `main.rs`). A fixed roster, not an open registration surface.
+//! * `/api/catalysts/*` — the account's machine roster, session-authenticated,
+//!   except `/api/catalysts/whoami` which is catalyst-token-authenticated —
+//!   the one route a *machine* calls about itself, used by `buhera-pair`.
 //! * `/api/run`         — submit work; the router decides where it executes.
 //!
 //! Every authenticated route resolves its account from a *verified* token
@@ -143,9 +147,26 @@ fn authenticate(state: &AppState, headers: &HeaderMap) -> Result<String, ApiErro
     Ok(claims.subject)
 }
 
+/// Resolve the calling account from a verified catalyst token.
+///
+/// The machine-side counterpart of [`authenticate`] — same shape, different
+/// audience. Used by routes a paired machine calls about itself, not by the
+/// browser.
+fn authenticate_catalyst(state: &AppState, headers: &HeaderMap) -> Result<String, ApiError> {
+    let token = bearer(headers).ok_or(ApiError::Unauthorized)?;
+    let claims = state
+        .signer
+        .verify(token, Audience::Catalyst, now_unix())
+        .map_err(|e| {
+            tracing::debug!(reason = %e, "catalyst token rejected");
+            ApiError::Unauthorized
+        })?;
+    Ok(claims.subject)
+}
+
 // ─────────────────────────── auth ───────────────────────────
 
-/// Signup / login request body.
+/// Login request body.
 #[derive(Debug, Deserialize)]
 pub struct Credentials {
     /// Login address.
@@ -170,38 +191,10 @@ pub struct SessionResponse {
 /// The shortest password accepted.
 ///
 /// Low bars invite reuse of a throwaway; a very high bar invites writing it
-/// down. Twelve with no composition rules is the current consensus.
-const MIN_PASSWORD_LEN: usize = 12;
-
-async fn signup(
-    State(state): State<Arc<AppState>>,
-    Json(body): Json<Credentials>,
-) -> Result<Json<SessionResponse>, ApiError> {
-    if !body.email.contains('@') {
-        return Err(ApiError::BadRequest("email address required".into()));
-    }
-    if body.password.len() < MIN_PASSWORD_LEN {
-        return Err(ApiError::BadRequest(format!(
-            "password must be at least {MIN_PASSWORD_LEN} characters"
-        )));
-    }
-
-    let now = now_unix();
-    let account = {
-        let store = state.store.lock().await;
-        store.create_account(&body.email, &body.password, now)?
-    };
-
-    let token = state
-        .signer
-        .mint(Audience::Session, &account.id, now, SESSION_TTL_SECS);
-    Ok(Json(SessionResponse {
-        ok: true,
-        token,
-        account_id: account.id,
-        expires_at: now + SESSION_TTL_SECS,
-    }))
-}
+/// down. Twelve with no composition rules is the current consensus. Also
+/// enforced by the `--seed` path in `main.rs`, since that is now the only
+/// way an account is created.
+pub const MIN_PASSWORD_LEN: usize = 12;
 
 async fn login(
     State(state): State<Arc<AppState>>,
@@ -317,6 +310,28 @@ async fn pair_catalyst(
         token,
         expires_at: now + CATALYST_TTL_SECS,
     }))
+}
+
+/// What a machine learns about itself by presenting its catalyst token.
+///
+/// Deliberately minimal — the account id and nothing else. A paired
+/// machine does not need to see its sibling machines or the account's
+/// email; it only needs to confirm the token it was given still works, for
+/// `buhera-pair status`.
+#[derive(Debug, Serialize)]
+pub struct CatalystWhoami {
+    /// Always true on this path.
+    pub ok: bool,
+    /// The account this catalyst token belongs to.
+    pub account_id: String,
+}
+
+async fn catalyst_whoami(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+) -> Result<Json<CatalystWhoami>, ApiError> {
+    let account_id = authenticate_catalyst(&state, &headers)?;
+    Ok(Json(CatalystWhoami { ok: true, account_id }))
 }
 
 async fn unpair_catalyst(
@@ -435,9 +450,9 @@ async fn health() -> Json<serde_json::Value> {
 pub fn app(state: Arc<AppState>) -> Router {
     Router::new()
         .route("/health", get(health))
-        .route("/api/auth/signup", post(signup))
         .route("/api/auth/login", post(login))
         .route("/api/catalysts", get(list_catalysts).post(pair_catalyst))
+        .route("/api/catalysts/whoami", get(catalyst_whoami))
         .route("/api/catalysts/:name", axum::routing::delete(unpair_catalyst))
         .route("/api/run", post(run))
         .layer(CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any))

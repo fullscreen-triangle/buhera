@@ -15,6 +15,7 @@ members = [
     "crates/buhera-embed",
     "crates/buhera-os",
     "crates/buhera-gateway",
+    "crates/buhera-pair",
 ]
 
 [workspace.package]

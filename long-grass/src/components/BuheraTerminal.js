@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useGatewaySession } from "@/lib/auth/useGatewaySession";
 import { Kernel } from "@/lib/kernel";
 import { embedProtein } from "@/lib/substrate";
 import { translate } from "@/lib/translator";
@@ -1570,6 +1572,40 @@ function ArtifactPurpose({ synthesis, model, provider, federation, floor }) {
   );
 }
 
+function ArtifactTriangleSources({ entries }) {
+  if (!Array.isArray(entries) || entries.length === 0) {
+    return <p className="text-gray-500 text-sm">(no sources configured)</p>;
+  }
+  return (
+    <div className="text-gray-300 text-sm">
+      <p className="text-xs text-gray-500 mb-2">{entries.length} source{entries.length === 1 ? "" : "s"}</p>
+      <ul>
+        {entries.map((s) => (
+          <li key={s.id} className="mb-1">
+            <span className="text-white font-mono">{s.id}</span>
+            <span className="text-gray-500"> — {s.kind}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ArtifactPurposeCli({ utterance, mode, payload, elapsed_ms }) {
+  return (
+    <div className="text-gray-300">
+      <div className="mb-2 text-xs text-gray-500">
+        <span className="text-gray-400">query:</span> {utterance}
+        {" · "}
+        <span className="text-gray-400">mode:</span> {mode}
+        {" · "}
+        <span className="text-gray-400">{elapsed_ms}ms</span>
+      </div>
+      <pre className="whitespace-pre-wrap text-sm font-mono">{JSON.stringify(payload, null, 2)}</pre>
+    </div>
+  );
+}
+
 function ArtifactShapeshifter({ term, workspace }) {
   const streamColor = (s) =>
     s === "stderr" ? "text-rose-400" : s === "stage" ? "text-sky-400" : "text-gray-300";
@@ -1877,6 +1913,8 @@ export function Artifact({ result }) {
     case "shapeshifter_run": return <ArtifactShapeshifter term={result.term} workspace={result.workspace} />;
     case "sbs_result":      return <ArtifactSBS summary={result.summary} circuit={result.circuit} metrics={result.metrics} navigation={result.navigation} warnings={result.warnings} />;
     case "purpose_synthesis": return <ArtifactPurpose synthesis={result.synthesis} model={result.model} provider={result.provider} federation={result.federation} floor={result.floor} />;
+    case "purpose_cli_result": return <ArtifactPurposeCli utterance={result.utterance} mode={result.mode} payload={result.payload} elapsed_ms={result.elapsed_ms} />;
+    case "triangle_sources": return <ArtifactTriangleSources entries={result.entries} />;
     case "graffiti_result": return <ArtifactGraffiti projects={result.projects} diagnostics={result.diagnostics} ambient_floor={result.ambient_floor} />;
     case "purpose_carry":   return <ArtifactPurposeCarry keep={result.keep} regenerable={result.regenerable} dropped={result.dropped} ambientFloor={result.ambientFloor} residue_entries={result.residue_entries} diagnostics={result.diagnostics} goal_terms={result.goal_terms} budget={result.budget} session_step_count={result.session_step_count} />;
     case "catalyst_list":   return <ArtifactCatalystList entries={result.entries} />;
@@ -1986,6 +2024,8 @@ function WelcomePanel() {
 // ────────────────────────────────────────────────────────────
 
 export default function BuheraTerminal() {
+  const router = useRouter();
+  const { email, logout } = useGatewaySession();
   const kernelRef = useRef(null);
   const inputRef = useRef(null);
   const historyRef = useRef(null);
@@ -2296,6 +2336,23 @@ export default function BuheraTerminal() {
         >
           ▶ tutorials
         </Link>
+        <Link
+          href="/pair"
+          className="text-xs text-green-400 hover:text-green-300 no-underline font-mono"
+        >
+          ▶ pair a machine
+        </Link>
+        {email && (
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <span>{email}</span>
+            <button
+              onClick={async () => { await logout(); router.replace("/login"); }}
+              className="text-gray-500 hover:text-gray-300 underline"
+            >
+              log out
+            </button>
+          </div>
+        )}
       </div>
       <div
         ref={historyRef}

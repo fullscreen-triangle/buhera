@@ -1,0 +1,20 @@
+[package]
+name = "buhera-pair"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Minimal client CLI: pairs this machine to a buhera-gateway account using a catalyst token minted on the web, and holds the paired credential locally."
+
+[[bin]]
+name = "buhera-pair"
+path = "src/main.rs"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+clap = { workspace = true }
+
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "blocking", "json"] }
+dirs = "5"

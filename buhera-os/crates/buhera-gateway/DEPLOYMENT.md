@@ -71,12 +71,33 @@ ssh olduvai 'tar xzf /tmp/buhera-os.tgz -C /srv/buhera --strip-components=1 \
 The database is untouched by an update; the schema is created if absent and
 left alone otherwise.
 
+## Accounts
+
+There is no public signup — `/api/auth/signup` was removed. The roster is a
+fixed set of profiles, seeded directly against the database:
+
+```bash
+# on the box, service can be running — SQLite serialises the write
+cat > /tmp/seed.json <<'JSON'
+[{"email": "someone@buhera.local", "password": "at least twelve characters"}]
+JSON
+/srv/buhera/target/release/buhera-gateway --db /var/lib/buhera/gateway.db --seed /tmp/seed.json
+shred -u /tmp/seed.json   # or rm -f if shred is unavailable
+```
+
+Re-running `--seed` with the same file is safe: an email that already exists
+is left untouched (`StoreError::Duplicate`), so the same file can double as
+a record of the intended roster without re-hashing existing passwords.
+
+There is currently no way to *change* a seeded password short of dropping the
+row from `accounts` and re-seeding — no password-reset flow exists yet.
+
 ## Verified on deploy
 
 Checked against the running service, over the public internet:
 
 - Certificate verifies (`ssl_verify_result=0`).
-- Signup, login, and `/api/run` work end to end.
+- Login and `/api/run` work end to end; `/api/auth/signup` correctly 404s.
 - Content stored in one request is retrievable in the next.
 - An account created before a service restart still logs in afterwards.
 - Weak passwords and duplicate addresses are refused.

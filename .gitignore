@@ -79,6 +79,10 @@ log/
 .env.*.local
 .envrc
 
+# Secrets: seed files hold plaintext passwords until the moment they're hashed
+.seed-accounts.json
+*.seed-accounts.json
+
 # Komprimierte Dateien
 *.zip
 *.tar.gz
