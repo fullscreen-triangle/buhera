@@ -1,0 +1,23 @@
+{
+  "id": "wt",
+  "name": "Wind Tunnel (.wt) Reference",
+  "short_label": "Wind Tunnel (.wt)",
+  "summary": "Grammar and worked examples for Wind Tunnel (.wt), projected from specifications/specs/windtunnel.md. Used to ground natural-language-to-wt generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/wind-tunnel",
+  "trigger_keywords": [
+    "wind tunnel",
+    "wind-tunnel",
+    ".wt",
+    "r_est",
+    "holonomy",
+    "regime"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "Wind Tunnel (.wt) grammar and validated examples"
+    }
+  ]
+}

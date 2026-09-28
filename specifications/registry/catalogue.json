@@ -1,0 +1,170 @@
+{
+  "schema": "buhera.catalogue/1",
+  "layers": {
+    "language": "Interpreters of general-purpose Buhera languages",
+    "science": "Domain calculi: biology, timing",
+    "coordination": "Federated querying, allocation, scheduling",
+    "observation": "Measurement of software systems and repositories",
+    "generation": "Model-backed generation of DSL source"
+  },
+  "modules": [
+    {
+      "id": "vahera",
+      "name": "vaHera",
+      "layer": "language",
+      "summary": "The Buhera OS language: categorical memory, backward navigation to the penultimate state, triple-equivalence verification — executed on a module-owned kernel.",
+      "dsl": "vahera",
+      "upstream": [],
+      "bindings": { "rust": "native", "ts": "none" },
+      "output_kinds": ["vahera_result", "text"],
+      "residue": "Rendered results produced by the act (a count; vaHera has no distance-to-solution).",
+      "side_effects": [],
+      "spec": "specs/vahera.md"
+    },
+    {
+      "id": "ndombolo",
+      "name": "ndombolo (Turbulance runtime)",
+      "layer": "language",
+      "summary": "kwasa-kwasa's deterministic Turbulance runtime: cell-wise evaluation with store deltas, a rule trace, proposition scores and the static contact graph.",
+      "dsl": "turbulance",
+      "upstream": [
+        { "repo": "fullscreen-triangle/kwasa-kwasa", "path": "ndombolo/crates/ndombolo-core/src", "language": "rust", "commit": "674b965c1bbda1147082fc619b405d209b81fc7c", "vendored_at": "buhera-os/vendor/ndombolo-core/src" }
+      ],
+      "bindings": { "rust": "native", "ts": "native" },
+      "output_kinds": ["ndombolo_result", "ndombolo_graph", "dsl_validation"],
+      "residue": "Trace events deposited by the act (a count; ndombolo's theory forbids a verdict).",
+      "side_effects": [],
+      "spec": "specs/ndombolo.md"
+    },
+    {
+      "id": "sbs",
+      "name": "Systems Biology Shaders",
+      "layer": "science",
+      "summary": "Compile and run .sbs circuits: S-entropy observation on WebGL2 (CPU fallback), coherence R, flux visibility V, backward navigation, l1 therapy.",
+      "dsl": "sbs",
+      "upstream": [
+        { "repo": "fullscreen-triangle/hegel", "path": "consequences/src/lib/sbs", "language": "js", "commit": "63d09c447df766bf843bb04a55a5cd571acada0b", "vendored_at": "long-grass/vendor/sbs" }
+      ],
+      "bindings": { "rust": "none", "ts": "native" },
+      "output_kinds": ["sbs_result", "sbs_compiled", "sbs_scripts", "dsl_validation"],
+      "residue": "1 − V: distance of the observed flux pattern from the healthy baseline (0 when unperturbed or nothing observed).",
+      "side_effects": ["WebGL2 context per run (browser; CPU fallback)"],
+      "spec": "specs/sbs.md"
+    },
+    {
+      "id": "sbs-core",
+      "name": "SBS observation calculus (Rust)",
+      "layer": "science",
+      "summary": "The hegel Rust port of the SBS calculus, without the DSL: S-entropy, R and V for an explicit circuit, an SBML model or the glycolysis demo, under explicit edge perturbations.",
+      "dsl": null,
+      "upstream": [
+        { "repo": "fullscreen-triangle/hegel", "path": "sbs/src", "language": "rust", "commit": "63d09c447df766bf843bb04a55a5cd571acada0b", "vendored_at": "buhera-os/vendor/hegel-sbs/src" }
+      ],
+      "bindings": { "rust": "native", "ts": "remote" },
+      "output_kinds": ["sbs_core_result"],
+      "residue": "1 − V.",
+      "side_effects": ["reads the monotonic clock (compute_time_us, host-local)"],
+      "spec": "specs/sbs-core.md"
+    },
+    {
+      "id": "tempus",
+      "name": "Tempus timing language",
+      "layer": "science",
+      "summary": "stella-lorraine's timing language — cells over the timing residual ΔP, sync channels, composition, when→action rules — statically checked, with a seeded synthetic-event simulator.",
+      "dsl": "tempus",
+      "upstream": [
+        { "repo": "fullscreen-triangle/stella-lorraine", "path": "web/src/lib/tempus", "language": "ts", "commit": "4491e880c5b31c60e1a12341b913b8f9025e828a", "vendored_at": "long-grass/vendor/tempus/src" }
+      ],
+      "bindings": { "rust": "none", "ts": "native" },
+      "output_kinds": ["tempus_compile", "tempus_simulation", "tempus_construct", "tempus_compose"],
+      "residue": "compile/construct/compose: error diagnostics; simulate: fraction of requested synthetic events not yet generated.",
+      "side_effects": [],
+      "spec": "specs/tempus.md"
+    },
+    {
+      "id": "hfq",
+      "name": "HFQ federated query",
+      "layer": "coordination",
+      "summary": "The hegel federated query interpreter: capability-checked plans over fixture worlds with water-filling budget allocation and a six-verdict result.",
+      "dsl": "hfq",
+      "upstream": [
+        { "repo": "fullscreen-triangle/hegel", "path": "consequences/src/lib/hfq", "language": "js", "commit": "63d09c447df766bf843bb04a55a5cd571acada0b", "vendored_at": "long-grass/vendor/hfq/src" }
+      ],
+      "bindings": { "rust": "none", "ts": "native" },
+      "output_kinds": ["hfq_result", "hfq_presets", "dsl_validation"],
+      "residue": "Steps whose verdict is neither answer nor empty (blocked steps).",
+      "side_effects": [],
+      "spec": "specs/hfq.md"
+    },
+    {
+      "id": "pylon",
+      "name": "pylon (SRN, yield market, process agents)",
+      "layer": "coordination",
+      "summary": "Sango Rine Shumba glyphs, a separation-cost yield market and persistent goal-directed process agents on a module-owned cluster.",
+      "dsl": "srn",
+      "upstream": [
+        { "repo": "fullscreen-triangle/pylon", "path": "ts/src", "language": "ts", "commit": "5fdb8cda5de85e1dde336b3d9527602cc37fb7d8", "vendored_at": "long-grass/vendor/pylon/dist" }
+      ],
+      "bindings": { "rust": "none", "ts": "native" },
+      "output_kinds": ["pylon_yield", "pylon_agent", "pylon_agents", "pylon_snapshot", "pylon_market", "text"],
+      "residue": "The agent's goal distance (geometric, in goal space; not progress on the glyph body, which pylon never executes).",
+      "side_effects": [],
+      "spec": "specs/pylon.md"
+    },
+    {
+      "id": "windtunnel",
+      "name": "Wind Tunnel (.wt)",
+      "layer": "observation",
+      "summary": "Parse .wt analysis scripts and adjudicate their assertions against a measured metric view; measure a project with the local wt binary when configured.",
+      "dsl": "wt",
+      "upstream": [
+        { "repo": "fullscreen-triangle/wind-tunnel", "path": "crates/wt-dsl/src", "language": "rust", "commit": "50c2b59d9bb61ede0fcd6d0fdbcde74e1f45ffe2", "vendored_at": "buhera-os/vendor/wt-dsl/src" }
+      ],
+      "bindings": { "rust": "native", "ts": "native" },
+      "output_kinds": ["windtunnel_check", "windtunnel_script", "text"],
+      "residue": "(failed + skipped) / assertions; 1 on a parse error.",
+      "side_effects": ["measure only: spawns $BUHERA_WT_BIN (Rust host), writes a temp .wt file and <project>/.wt/"],
+      "spec": "specs/windtunnel.md"
+    },
+    {
+      "id": "tracker",
+      "name": "Repo character χ",
+      "layer": "observation",
+      "summary": "bloodhound's repo-federation tracker, read-only half: χ, the Stoer–Wagner minimum cut of a repo's purpose self-graph, with load-bearing blocks and fragment count.",
+      "dsl": null,
+      "upstream": [
+        { "repo": "fullscreen-triangle/bloodhound", "path": "thrust/tracker/src/chi.rs", "language": "rust", "commit": "d6144274759ee4f210973a8ea3acb214b2262ef2", "vendored_at": "buhera-os/vendor/tracker-chi/src/chi.rs" }
+      ],
+      "bindings": { "rust": "native", "ts": "native" },
+      "output_kinds": ["repo_character", "repo_federation"],
+      "residue": "0 (χ is a conserved invariant, not a distance).",
+      "side_effects": ["character_at / list (Rust host only): read <repo>/.purpose/index.json and <root>/.tracker/federation.json"],
+      "spec": "specs/tracker.md"
+    },
+    {
+      "id": "zangalewa-dsl",
+      "name": "Zangalewa",
+      "layer": "generation",
+      "summary": "The OS's only AI module: natural-language instructions → DSL chunks the owning compiler accepts (generate → validate → repair); every accepted draft returned.",
+      "dsl": null,
+      "upstream": [
+        { "repo": "fullscreen-triangle/zangalewa", "path": "crates/zangalewa-dsl/src", "language": "rust", "commit": "a2f452dbe7f8c6c5bfeb00b7c2e1d250fca903f9", "vendored_at": "buhera-os/vendor/zangalewa-dsl/src" },
+        { "repo": "fullscreen-triangle/zangalewa", "path": "interceptor/client/interceptor-client.ts", "language": "ts", "commit": "a2f452dbe7f8c6c5bfeb00b7c2e1d250fca903f9", "vendored_at": "long-grass/vendor/zangalewa-interceptor/client/interceptor-client.ts" }
+      ],
+      "bindings": { "rust": "native", "ts": "remote" },
+      "output_kinds": ["zangalewa_generated", "zangalewa_providers", "zangalewa_status", "dsl_validation"],
+      "residue": "Fraction of drafts the owning compiler rejected (syntactic only; no semantic claim).",
+      "side_effects": ["network: model providers (Ollama/OpenAI/Anthropic/Gemini) per environment", "reads knowledge packs ($ZANGALEWA_PACKS)", "TS: HTTP to the interceptor broker (default 127.0.0.1:4319)"],
+      "spec": "specs/zangalewa-dsl.md"
+    }
+  ],
+  "dsls": [
+    { "id": "vahera", "label": "vaHera", "extension": ".vhr", "module_id": "vahera", "pack_id": "vahera", "validators": ["rust"] },
+    { "id": "turbulance", "label": "Turbulance (ndombolo)", "extension": ".tb", "module_id": "ndombolo", "pack_id": "turbulance", "validators": ["rust", "ts"] },
+    { "id": "sbs", "label": "SBS", "extension": ".sbs", "module_id": "sbs", "pack_id": "sbs", "validators": ["ts"] },
+    { "id": "tempus", "label": "Tempus", "extension": ".tempus", "module_id": "tempus", "pack_id": "tempus", "validators": ["ts"] },
+    { "id": "hfq", "label": "HFQ plan", "extension": ".hfq", "module_id": "hfq", "pack_id": "hfq", "validators": ["ts"] },
+    { "id": "srn", "label": "SRN glyph", "extension": ".srn", "module_id": "pylon", "pack_id": "srn", "validators": ["ts"] },
+    { "id": "wt", "label": "Wind Tunnel (.wt)", "extension": ".wt", "module_id": "windtunnel", "pack_id": "wt", "validators": ["rust", "ts"] }
+  ]
+}

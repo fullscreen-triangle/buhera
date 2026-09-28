@@ -46,8 +46,9 @@ Fixed phrase, no arguments. Complete the active trajectory.
 memory create at S(K, T, E)
 ```
 Create a memory anchor at the S-entropy coordinate `S(k, t, e)` where k, t, e are
-numbers (integers, decimals, or scientific notation). The `S(...)` form is required.
-Example: `memory create at S(0.2, 1.0, -0.5)`
+numbers (integers, decimals, or scientific notation) each in `[0, 1]` — a value
+outside that range is a parse error naming the axis. The `S(...)` form is required.
+Example: `memory create at S(0.2, 1.0, 0.5)`
 
 ### 7. memory store
 ```
@@ -137,7 +138,7 @@ complete trajectory
 
 ### Anchor a coordinate then inspect the kernel
 ```
-memory create at S(0.2, 1.0, -0.5)
+memory create at S(0.2, 1.0, 0.5)
 demon sort
 kernel stats
 kernel trace

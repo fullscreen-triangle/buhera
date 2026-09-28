@@ -15,6 +15,8 @@ path = "src/main.rs"
 buhera-substrate = { workspace = true }
 buhera-kernel    = { workspace = true }
 buhera-vahera    = { workspace = true }
+buhera-registry  = { workspace = true }
+buhera-modules   = { workspace = true, features = ["vahera", "ndombolo", "windtunnel", "tracker", "sbs-core"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
 thiserror = { workspace = true }
@@ -34,3 +36,6 @@ sha2 = "0.10"
 base64 = "0.22"
 subtle = "2.6"
 rusqlite = { version = "0.32", features = ["bundled"] }
+
+[dev-dependencies]
+tower = { version = "0.4", features = ["util"] }

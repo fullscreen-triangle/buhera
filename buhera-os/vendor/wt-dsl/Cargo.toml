@@ -1,0 +1,15 @@
+# VENDORED — fullscreen-triangle/wind-tunnel crates/wt-dsl (see VENDOR.json).
+# src/ is a byte-exact copy of upstream at the recorded commit; only this
+# manifest is local (upstream inherits deps from its workspace). Do not edit
+# src/ — run `node scripts/vendor-sync.mjs --sync wt-dsl`.
+[package]
+name = "wt-dsl"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "Vendored: the wind-tunnel .wt assertion language (parse + evaluate)."
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }

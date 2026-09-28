@@ -1,0 +1,14 @@
+# VENDORED — fullscreen-triangle/bloodhound thrust/tracker/src/chi.rs (see
+# VENDOR.json). chi.rs is a byte-exact copy; lib.rs and purpose.rs are the
+# local shim that turns the tracker binary's private module into a library
+# (purpose.rs carries only the index schema chi.rs reads; no process
+# spawning). Do not edit chi.rs — run `node scripts/vendor-sync.mjs --sync tracker-chi`.
+[package]
+name = "tracker-chi"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "Vendored: the repo character invariant chi (Stoer-Wagner min cut of a purpose index self-graph)."
+
+[dependencies]
+serde = { workspace = true }

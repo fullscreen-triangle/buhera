@@ -30,6 +30,7 @@
 mod ast;
 mod parser;
 mod interpreter;
+mod render;
 
 pub use ast::{Stmt, StmtKind};
 pub use parser::{parse_vahera, ParseError};
@@ -37,3 +38,4 @@ pub use interpreter::{
     execute_vahera, execute_vahera_with, DefaultEmbedder, Embedder, ExecContext, ExecError,
     MoleculeDatabase, NamedResult, ResolvedTarget,
 };
+pub use render::render_result;

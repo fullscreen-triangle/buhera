@@ -1,0 +1,21 @@
+{
+  "id": "srn",
+  "name": "SRN glyph Reference",
+  "short_label": "SRN glyph",
+  "summary": "Grammar and worked examples for SRN glyph, projected from specifications/specs/pylon.md. Used to ground natural-language-to-srn generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/pylon",
+  "trigger_keywords": [
+    "srn",
+    "glyph",
+    "sango rine shumba",
+    "pylon"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "SRN glyph grammar and validated examples"
+    }
+  ]
+}

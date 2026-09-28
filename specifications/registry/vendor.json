@@ -1,0 +1,132 @@
+{
+  "schema": "buhera.vendor/1",
+  "clones": {
+    "fullscreen-triangle/hegel": "../../systems/hegel",
+    "fullscreen-triangle/zangalewa": "../zangalewa",
+    "fullscreen-triangle/pylon": "../../distributed/pylon",
+    "fullscreen-triangle/stella-lorraine": "../../physics/stella-lorraine",
+    "fullscreen-triangle/wind-tunnel": "../../portfolio/wind-tunnel",
+    "fullscreen-triangle/bloodhound": "../../distributed/bloodhound",
+    "fullscreen-triangle/kwasa-kwasa": "../../semantics/kwasa-kwasa"
+  },
+  "entries": [
+    {
+      "id": "hegel-sbs",
+      "module": "sbs-core",
+      "repo": "fullscreen-triangle/hegel",
+      "from": "sbs/src",
+      "to": "buhera-os/vendor/hegel-sbs/src",
+      "mode": "tree",
+      "commit": "63d09c447df766bf843bb04a55a5cd571acada0b",
+      "note": "Rust observation calculus. Local Cargo.toml declares only the two deps the library uses (serde, quick-xml) and does not build the CLI."
+    },
+    {
+      "id": "sbs-js",
+      "module": "sbs",
+      "repo": "fullscreen-triangle/hegel",
+      "from": "consequences/src/lib/sbs",
+      "to": "long-grass/vendor/sbs",
+      "mode": "tree",
+      "commit": "63d09c447df766bf843bb04a55a5cd571acada0b",
+      "exclude": ["circuitBuilder.js", "compartmentMapper.js", "sbmlParser.js", "dsl/examples.js", "dsl/compiler/"],
+      "local": ["index.js", "package.json"],
+      "note": "Subset: the browser-only SBML/three.js helpers and the unused TypeScript compiler tree are not vendored. index.js appends re-exports (compileSBS, validateSBS, SCRIPTS, DEFAULT_SCRIPT, solveCircuit, computeFluxPattern, extractMetrics) after the upstream body; package.json adds the ./scripts export and relies on the host for d3."
+    },
+    {
+      "id": "hfq",
+      "module": "hfq",
+      "repo": "fullscreen-triangle/hegel",
+      "from": "consequences/src/lib/hfq",
+      "to": "long-grass/vendor/hfq/src",
+      "mode": "tree",
+      "commit": "63d09c447df766bf843bb04a55a5cd571acada0b",
+      "note": "Byte-identical up to line endings. The package.json one level up (vendor/hfq/package.json) is local: upstream ships none."
+    },
+    {
+      "id": "pylon",
+      "module": "pylon",
+      "repo": "fullscreen-triangle/pylon",
+      "from": "ts/src",
+      "to": "long-grass/vendor/pylon/dist",
+      "mode": "build",
+      "commit": "5fdb8cda5de85e1dde336b3d9527602cc37fb7d8",
+      "note": "Build product: `npm run build` in pylon/ts, then copy ts/dist and package.json (scripts/devDependencies stripped). Verified byte-identical to a fresh build of ts/src at this commit (2026-09-28)."
+    },
+    {
+      "id": "tempus",
+      "module": "tempus",
+      "repo": "fullscreen-triangle/stella-lorraine",
+      "from": "web/src/lib/tempus",
+      "to": "long-grass/vendor/tempus/src",
+      "mode": "tree",
+      "commit": "4491e880c5b31c60e1a12341b913b8f9025e828a"
+    },
+    {
+      "id": "scheduler",
+      "module": null,
+      "repo": "fullscreen-triangle/stella-lorraine",
+      "from": "web/src/lib/scheduler",
+      "to": "long-grass/src/lib/scheduler",
+      "mode": "tree",
+      "commit": "4491e880c5b31c60e1a12341b913b8f9025e828a",
+      "note": "Host infrastructure, not a module: the residue-driven scheduler, driven through registry-ts's scheduler port (spec 08). Copied 2026-07-01 without provenance; recorded here."
+    },
+    {
+      "id": "zangalewa-dsl",
+      "module": "zangalewa-dsl",
+      "repo": "fullscreen-triangle/zangalewa",
+      "from": "crates/zangalewa-dsl/src",
+      "to": "buhera-os/vendor/zangalewa-dsl/src",
+      "mode": "tree",
+      "commit": "a2f452dbe7f8c6c5bfeb00b7c2e1d250fca903f9",
+      "note": "Local Cargo.toml sets autobins = false (the `zangalewa` CLI is not built here)."
+    },
+    {
+      "id": "interceptor-client",
+      "module": "zangalewa-dsl",
+      "repo": "fullscreen-triangle/zangalewa",
+      "from": "interceptor/client/interceptor-client.ts",
+      "to": "long-grass/vendor/zangalewa-interceptor/client/interceptor-client.ts",
+      "mode": "file",
+      "commit": "a2f452dbe7f8c6c5bfeb00b7c2e1d250fca903f9"
+    },
+    {
+      "id": "wt-dsl",
+      "module": "windtunnel",
+      "repo": "fullscreen-triangle/wind-tunnel",
+      "from": "crates/wt-dsl/src",
+      "to": "buhera-os/vendor/wt-dsl/src",
+      "mode": "tree",
+      "commit": "50c2b59d9bb61ede0fcd6d0fdbcde74e1f45ffe2"
+    },
+    {
+      "id": "tracker-chi",
+      "module": "tracker",
+      "repo": "fullscreen-triangle/bloodhound",
+      "from": "thrust/tracker/src/chi.rs",
+      "to": "buhera-os/vendor/tracker-chi/src/chi.rs",
+      "mode": "file",
+      "commit": "d6144274759ee4f210973a8ea3acb214b2262ef2",
+      "note": "Only chi.rs is vendored; lib.rs and purpose.rs in the vendored crate are a local shim (index schema only, no process spawning)."
+    },
+    {
+      "id": "ndombolo-core",
+      "module": "ndombolo",
+      "repo": "fullscreen-triangle/kwasa-kwasa",
+      "from": "ndombolo/crates/ndombolo-core/src",
+      "to": "buhera-os/vendor/ndombolo-core/src",
+      "mode": "tree",
+      "commit": "674b965c1bbda1147082fc619b405d209b81fc7c"
+    },
+    {
+      "id": "ndombolo-core-tests",
+      "module": "ndombolo",
+      "repo": "fullscreen-triangle/kwasa-kwasa",
+      "from": "ndombolo/crates/ndombolo-core/tests",
+      "to": "buhera-os/vendor/ndombolo-core/tests",
+      "mode": "tree",
+      "commit": "674b965c1bbda1147082fc619b405d209b81fc7c",
+      "note": "The differential oracle corpora (tokens/ast/eval/graph .json) and their harnesses; run in-workspace as the engine's own conformance suite."
+    }
+  ]
+}

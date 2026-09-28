@@ -1,0 +1,22 @@
+# VENDORED — fullscreen-triangle/hegel sbs/ (see
+# specifications/registry/vendor.json). src/ is a byte-exact copy of upstream
+# at the recorded commit; only this manifest is local. Upstream declares ~17
+# dependencies (wgpu, rayon, nalgebra, …) of which the library uses two
+# (serde, quick-xml); this manifest declares exactly those, and does not build
+# the CLI (src/main.rs; autobins = false). Do not edit src/ — run
+# `node scripts/vendor-sync.mjs --sync hegel-sbs`.
+[package]
+name = "sbs"
+version = "0.1.0"
+edition = "2021"
+publish = false
+autobins = false
+description = "Vendored: Systems Biology Shaders observation calculus (circuit, S-entropy, coherence R, flux visibility V)."
+
+[lib]
+name = "sbs"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { workspace = true }
+quick-xml = { version = "0.37", features = ["serialize"] }

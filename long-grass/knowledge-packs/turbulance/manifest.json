@@ -1,0 +1,23 @@
+{
+  "id": "turbulance",
+  "name": "Turbulance (ndombolo) Reference",
+  "short_label": "Turbulance (ndombolo)",
+  "summary": "Grammar and worked examples for Turbulance (ndombolo), projected from specifications/specs/ndombolo.md. Used to ground natural-language-to-turbulance generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/kwasa-kwasa",
+  "trigger_keywords": [
+    "turbulance",
+    "ndombolo",
+    "proposition",
+    "motion",
+    "funxn",
+    "considering"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "Turbulance (ndombolo) grammar and validated examples"
+    }
+  ]
+}

@@ -32,7 +32,7 @@ test("all 15 statement forms parse (grammar conformance)", () => {
     "spawn analysis from SOD1",
     "navigate to penultimate",
     "complete trajectory",
-    "memory create at S(0.2, 1.0, -0.5)",
+    "memory create at S(0.2, 1.0, 0.5)",
     'memory store "greeting" = "hello world"',
     'memory find nearest "greeting" k=5',
     "memory list",

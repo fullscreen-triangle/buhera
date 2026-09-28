@@ -20,7 +20,8 @@ use std::fs;
 use std::io::Read;
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
-use std::time::{Duration, Instant};
+use std::thread::JoinHandle;
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 const DEFAULT_TIMEOUT_MS: u64 = 10_000;
 const MAX_OUTPUT_BYTES: usize = 2 * 1024 * 1024; // 2 MiB cap per stream
@@ -53,6 +54,34 @@ fn cap(s: String) -> (String, bool) {
         end -= 1;
     }
     (s[..end].to_string(), true)
+}
+
+/// Drain a child pipe on its own thread, keeping the first
+/// `MAX_OUTPUT_BYTES` and discarding (but still reading) the rest.
+///
+/// The pipes must be drained *while* the child runs: a child that writes more
+/// than the OS pipe buffer (~64 KiB) blocks until someone reads, so reading
+/// only after exit deadlocked every chatty program until the timeout killed
+/// it — reported as `timed_out` with a silently clipped transcript.
+fn drain(mut pipe: impl Read + Send + 'static) -> JoinHandle<(Vec<u8>, bool)> {
+    std::thread::spawn(move || {
+        let mut kept = Vec::new();
+        let mut truncated = false;
+        let mut chunk = [0u8; 16 * 1024];
+        loop {
+            match pipe.read(&mut chunk) {
+                Ok(0) | Err(_) => break,
+                Ok(n) => {
+                    let room = MAX_OUTPUT_BYTES.saturating_sub(kept.len());
+                    if n > room {
+                        truncated = true;
+                    }
+                    kept.extend_from_slice(&chunk[..n.min(room)]);
+                }
+            }
+        }
+        (kept, truncated)
+    })
 }
 
 fn main() {
@@ -111,7 +140,7 @@ fn main() {
     let work_dir = env::temp_dir().join(format!(
         "interceptor-run-{}-{}",
         std::process::id(),
-        Instant::now().elapsed().as_nanos()
+        SystemTime::now().duration_since(UNIX_EPOCH).map(|d| d.as_nanos()).unwrap_or(0)
     ));
     if let Err(err) = fs::create_dir_all(&work_dir) {
         emit(RunResult {
@@ -212,6 +241,9 @@ fn main() {
         }
     };
 
+    let stdout_reader = child.stdout.take().map(drain);
+    let stderr_reader = child.stderr.take().map(drain);
+
     let deadline = Instant::now() + Duration::from_millis(timeout_ms);
     let mut timed_out = false;
     loop {
@@ -230,18 +262,18 @@ fn main() {
         }
     }
 
-    let mut stdout_buf = String::new();
-    let mut stderr_buf = String::new();
-    if let Some(mut out) = child.stdout.take() {
-        let _ = out.read_to_string(&mut stdout_buf);
-    }
-    if let Some(mut err) = child.stderr.take() {
-        let _ = err.read_to_string(&mut stderr_buf);
-    }
+    let collect = |h: Option<JoinHandle<(Vec<u8>, bool)>>| -> (String, bool) {
+        match h.and_then(|h| h.join().ok()) {
+            Some((bytes, t)) => {
+                let (s, t2) = cap(String::from_utf8_lossy(&bytes).to_string());
+                (s, t || t2)
+            }
+            None => (String::new(), false),
+        }
+    };
+    let (stdout, t1) = collect(stdout_reader);
+    let (stderr, t2) = collect(stderr_reader);
     let exit_code = child.try_wait().ok().flatten().and_then(|s| s.code());
-
-    let (stdout, t1) = cap(stdout_buf);
-    let (stderr, t2) = cap(stderr_buf);
 
     let _ = fs::remove_dir_all(&work_dir);
 

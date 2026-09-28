@@ -24,9 +24,16 @@
  * This is intentionally a simplification — no dependency graph, no ablation
  * over real call-sites. It answers the one question interceptor needs: "does
  * this generated program behave the same way every time it runs?"
+ *
+ * The real wind-tunnel is integrated separately as the `windtunnel` module
+ * (specifications/specs/windtunnel.md): the upstream `.wt` language, parsed
+ * and adjudicated by the vendored wt-dsl crate. Nothing here is that.
  * ========================================================================== */
 
-// Regime thresholds, following wind-tunnel's 5-regime naming.
+// Regime thresholds for run-to-run output agreement. These are THIS module's
+// own bands, not wind-tunnel's: wt classifies R_est with Turbulent < 0.30 <
+// Aperture-dominated < 0.50 < Hierarchical cascade < 0.80 < Coherent < 0.95 <
+// Phase-locked. Only "Turbulent" and "Phase-locked" coincide by name.
 const REGIMES = [
   { min: 0.95, name: "Phase-locked", note: "all runs produced identical output" },
   { min: 0.75, name: "Synchronized", note: "runs mostly agree; minor deviation" },
@@ -86,8 +93,23 @@ export function computeStability(runs) {
   }
 
   const referenceIndex = runs.findIndex((r) => r.ok);
-  const reference = referenceIndex >= 0 ? runs[referenceIndex] : runs[0];
   const crashCount = runs.filter((r) => !r.ok).length;
+
+  // No run succeeded: there is no declared behaviour to agree with. (Scoring
+  // identical crashes as agreement reported R = 1, "Phase-locked", for a
+  // program that never ran.)
+  if (referenceIndex < 0) {
+    return {
+      runs: runs.length,
+      order_parameter: 0,
+      regime: { name: "Turbulent", note: "no run succeeded — nothing to compare against" },
+      reference_index: null,
+      per_run: runs.map((r, i) => ({ index: i, matches_reference: false, holonomy: 1, ok: r.ok, diff: null })),
+      crash_count: crashCount,
+      all_failed: true,
+    };
+  }
+  const reference = runs[referenceIndex];
 
   const perRun = runs.map((r, i) => {
     if (i === referenceIndex) {
@@ -95,7 +117,8 @@ export function computeStability(runs) {
     }
     const combinedRef = `${reference.stdout || ""}${reference.stderr || ""}`;
     const combinedRun = `${r.stdout || ""}${r.stderr || ""}`;
-    const matches = combinedRef === combinedRun;
+    // A failed run never counts as agreement, whatever it printed.
+    const matches = r.ok && combinedRef === combinedRun;
     const diff = matches ? null : diffOutputs(combinedRef, combinedRun);
     // Holonomy: fraction of lines that deviate from the reference (0 = no
     // deviation, matching wind-tunnel's "deviation from declared spec").

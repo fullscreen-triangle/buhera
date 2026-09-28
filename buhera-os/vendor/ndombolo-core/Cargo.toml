@@ -1,0 +1,17 @@
+# VENDORED — fullscreen-triangle/kwasa-kwasa ndombolo/crates/ndombolo-core
+# (see VENDOR.json). src/ and tests/ are byte-exact copies of upstream at the
+# recorded commit; only this manifest is local. Do not edit — run
+# `node scripts/vendor-sync.mjs --sync ndombolo-core`.
+[package]
+name = "ndombolo-core"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "Vendored: the deterministic Turbulance runtime (lexer, parser, evaluator, contact graph)."
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+# Upstream requires insertion-ordered maps (rendered values are Python dicts).
+# Cargo unifies this feature into every build that includes this crate — see
+# specifications/specs/ndombolo.md §Hazards.
+serde_json = { version = "1", features = ["preserve_order"] }

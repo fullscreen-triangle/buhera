@@ -6,7 +6,18 @@ const nextConfig = {
   // transpile node_modules by default, and a linked package resolves there;
   // listing it here makes Next compile it like local source, so its ESM and
   // browser globals (document, WebGL2) work in the client bundle.
-  transpilePackages: ["@sachikonye/sbs", "scope-lang", "@lavoisier/shapeshifter"],
+  //
+  // @buhera/registry (the TS registry library), @stella-lorraine/tempus and
+  // @zangalewa/interceptor-client ship TypeScript source, vendored like every
+  // other engine (specifications/06-sourcing.md); Next compiles them here.
+  transpilePackages: [
+    "@sachikonye/sbs",
+    "scope-lang",
+    "@lavoisier/shapeshifter",
+    "@buhera/registry",
+    "@stella-lorraine/tempus",
+    "@zangalewa/interceptor-client",
+  ],
   webpack: (config) => {
     // @xenova/transformers is dynamically imported by the turbulance
     // model resolvers (research / ask primitives). The package is heavy

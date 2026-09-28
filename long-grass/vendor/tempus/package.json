@@ -1,0 +1,18 @@
+{
+  "name": "@stella-lorraine/tempus",
+  "version": "0.1.0",
+  "description": "VENDORED from fullscreen-triangle/stella-lorraine web/src/lib/tempus (src/ is byte-exact at the commit recorded in specifications/registry/vendor.json; this package.json is local). The Tempus timing language (cells over ΔP, sync/compose/when), its seeded synthetic-event simulator, and the construct/compose surfaces. Pure TypeScript, no I/O.",
+  "type": "module",
+  "main": "./src/compile.ts",
+  "exports": {
+    ".": "./src/compile.ts",
+    "./runtime": "./src/runtime.ts",
+    "./construct": "./src/construct.ts",
+    "./composition": "./src/composition.ts",
+    "./lessons": "./src/lessons.ts",
+    "./constructions": "./src/constructions.ts"
+  },
+  "sideEffects": false,
+  "private": true,
+  "license": "UNLICENSED"
+}

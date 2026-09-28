@@ -5,3 +5,11 @@
 
 [build]
 target-dir = "target"
+
+# Knowledge packs for the vendored zangalewa-dsl (the `zangalewa-dsl` module):
+# upstream discovers them by walking up to a sibling zoom-climb/ checkout,
+# which this repository does not have. long-grass/knowledge-packs is the
+# Buhera pack store (its vaHera pack is the one upstream ships). Applies to
+# `cargo run`/`cargo test`; a deployed binary sets ZANGALEWA_PACKS itself.
+[env]
+ZANGALEWA_PACKS = { value = "../long-grass/knowledge-packs", relative = true }

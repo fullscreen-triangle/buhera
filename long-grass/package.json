@@ -12,6 +12,7 @@
     "dependencies": {
         "@buhera/purpose": "file:./vendor/purpose",
         "@buhera/pylon": "file:./vendor/pylon",
+        "@buhera/registry": "file:./vendor/registry",
         "@codemirror/language": "^6.0.0",
         "@hegel/hfq": "file:./vendor/hfq",
         "@lavoisier/shapeshifter": "file:./vendor/shapeshifter",
@@ -19,6 +20,8 @@
         "@react-three/drei": "^9.88.17",
         "@react-three/fiber": "^8.15.19",
         "@sachikonye/sbs": "file:./vendor/sbs",
+        "@stella-lorraine/tempus": "file:./vendor/tempus",
+        "@zangalewa/interceptor-client": "file:./vendor/zangalewa-interceptor",
         "d3": "^7.9.0",
         "eslint": "^8.35.0",
         "eslint-config-next": "^13.2.1",

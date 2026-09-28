@@ -36,6 +36,13 @@ import { spraypaintModule } from "@/lib/modules/spraypaint-module";
 import { hfqModule } from "@/lib/modules/hfq-module";
 import { ladderModule } from "@/lib/modules/ladder-module";
 import { interceptorModule } from "@/lib/modules/interceptor-module";
+// Library federation (specifications/registry/catalogue.json): adapters from
+// @buhera/registry bound to vendored engines, plus the Rust modules via wasm.
+import { pylonModule } from "@/lib/modules/pylon-module";
+import { tempusModule } from "@/lib/modules/tempus-module";
+import { zangalewaDslModule } from "@/lib/modules/zangalewa-dsl-module";
+import { rustWasmModules } from "@/lib/modules/rust-wasm-modules";
+import { gatewayRemoteModules } from "@/lib/modules/gateway-remote-modules";
 import { extractTermsFromInstruction } from "@/lib/purpose-terms";
 import { estimateCostFromInstruction } from "@/lib/purpose-cost";
 
@@ -76,6 +83,11 @@ export function bootstrapFederation() {
   register(hfqModule);
   register(ladderModule);
   register(interceptorModule);
+  register(pylonModule);
+  register(tempusModule);
+  register(zangalewaDslModule);
+  for (const m of rustWasmModules) register(m);
+  for (const m of gatewayRemoteModules) register(m);
 
   const session = getPurposeSession();
   const unhook = onDispatch((entry) => {

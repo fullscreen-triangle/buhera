@@ -351,3 +351,13 @@ export const gatewayModule = {
     return { kind: "gateway_cell" };
   },
 };
+
+// --------------------------------------------------------------------------
+// Transport for modules the browser reaches on the gateway (specification
+// 07 §2: POST /api/dispatch) — the same URL and session this module manages.
+// --------------------------------------------------------------------------
+
+export const gatewayTransport = {
+  baseUrl: () => baseUrl(),
+  token: () => readSession()?.token ?? null,
+};

@@ -1,0 +1,23 @@
+{
+  "id": "hfq",
+  "name": "HFQ plan Reference",
+  "short_label": "HFQ plan",
+  "summary": "Grammar and worked examples for HFQ plan, projected from specifications/specs/hfq.md. Used to ground natural-language-to-hfq generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/hegel",
+  "trigger_keywords": [
+    "hfq",
+    "federated query",
+    "plan",
+    "budget",
+    "chebi",
+    "rhea"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "HFQ plan grammar and validated examples"
+    }
+  ]
+}

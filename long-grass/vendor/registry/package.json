@@ -1,0 +1,31 @@
+{
+  "name": "@buhera/registry",
+  "version": "0.1.0",
+  "description": "Buhera federation registry for TypeScript hosts: the Module contract, the module registry (dispatch + audit log + post-dispatch hooks), the DSL registry, the catalogue conformance check, and the module adapters. Twin of the Rust crates buhera-registry + buhera-modules.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./modules": "./src/modules/index.ts"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "test": "node --import ./test/register.mjs --test test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "license": "MIT",
+  "author": "Kundai Farai Sachikonye <kundai.sachikonye@wzw.tum.de>",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "typescript": "^5.9.3"
+  }
+}

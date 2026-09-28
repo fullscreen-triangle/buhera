@@ -1,140 +1,71 @@
 /* ============================================================================
- * Module Registry
+ * Module Registry — long-grass facade over @buhera/registry.
  *
- * The Buhera federation lives here. Each module conforms to the Module
- * trait (operations-architecture.md §5.1) and is dispatched by ID.
+ * The Buhera federation lives here. The semantics (dispatch, audit log,
+ * post-dispatch hooks, containment of throwing modules) are specified in
+ * specifications/architecture/03-registry.md and implemented once, in the
+ * TypeScript registry library (buhera-os/registry-ts, vendored at
+ * vendor/registry) — the twin of the Rust buhera-registry crate.
  *
- * A module exposes:
- *   id          : string identifier (e.g. "vahera", "purpose")
- *   execute     : (instruction, actBudget) => Promise<ActResult>
+ * This file keeps the historical free-function API so every module and page
+ * keeps working unchanged; each function delegates to one process-lifetime
+ * Registry instance. A module exposes:
+ *   id          : string identifier (e.g. "vahera", "sbs")
+ *   execute     : (instruction, actBudget) => ActResult | Promise<ActResult>
  *   outputCell  : (instruction) => OutputCell (for sufficiency checks)
- *   describe    : () => { id, description, instructions }
- *
- * Every act dispatched through this registry appends to the audit log.
+ *   describe    : () => { id, description, instructions, dsl?, binding? }
  * ========================================================================== */
 
-let _nextActId = 1;
+import { Registry } from "@buhera/registry";
 
-// --------------------------------------------------------------------------
-// Audit log (in-memory for v1; persistence is a later concern).
-// --------------------------------------------------------------------------
+const _registry = new Registry();
 
-const _auditLog = [];
+/** The underlying Registry (for hosts that need the typed API). */
+export function getRegistry() {
+  return _registry;
+}
 
 export function getAuditLog() {
-  return _auditLog.slice();
+  return _registry.auditLog();
 }
 
 export function clearAuditLog() {
-  _auditLog.length = 0;
+  _registry.clearAuditLog();
 }
 
-// --------------------------------------------------------------------------
-// Module registry.
-// --------------------------------------------------------------------------
-
-const _modules = new Map();
-
+/** Bind a module under its id, replacing any previous binding (R5). */
 export function register(mod) {
-  if (!mod || !mod.id || typeof mod.execute !== "function") {
-    throw new Error("register: module must have id and execute()");
-  }
-  _modules.set(mod.id, mod);
+  return _registry.register(mod);
 }
 
 export function unregister(moduleId) {
-  _modules.delete(moduleId);
+  _registry.unregister(moduleId);
 }
 
 export function listModules() {
-  return Array.from(_modules.values()).map((m) =>
-    typeof m.describe === "function" ? m.describe() : { id: m.id }
-  );
+  return _registry.list();
 }
 
 export function getModule(moduleId) {
-  return _modules.get(moduleId) || null;
+  return _registry.get(moduleId);
 }
 
-// --------------------------------------------------------------------------
-// Post-dispatch hooks.
-//
-// Any consumer that needs to observe every dispatched act (audit log, purpose
-// session step-feeder, tracing, etc.) registers a hook here. Hooks run after
-// the module's execute() returns and after the audit-log entry is appended.
-// They are best-effort: an exception in one hook does not block others or
-// the caller.
-// --------------------------------------------------------------------------
-
-const _postDispatchHooks = [];
-
 /**
- * Register a hook that runs after every dispatched act. The hook receives
- * the audit-log entry as its only argument. Returns an unregister function.
- *
- * @param {(entry: object) => void} hook
- * @returns {() => void} unregister
+ * Register a hook that runs after every dispatched act (R4). The hook
+ * receives the audit-log entry. Returns an unregister function.
  */
 export function onDispatch(hook) {
-  if (typeof hook !== "function") {
-    throw new Error("onDispatch: hook must be a function");
-  }
-  _postDispatchHooks.push(hook);
-  return () => {
-    const i = _postDispatchHooks.indexOf(hook);
-    if (i >= 0) _postDispatchHooks.splice(i, 1);
-  };
+  return _registry.onDispatch(hook);
 }
 
 export function clearDispatchHooks() {
-  _postDispatchHooks.length = 0;
+  _registry.clearHooks();
 }
 
-// --------------------------------------------------------------------------
-// Dispatch: the one entry point. Per architecture doc §5.4 (in JS form).
-// --------------------------------------------------------------------------
-
+/**
+ * Dispatch one act (R1–R3). Throws for an unknown module id; a module that
+ * throws is contained and audited as { ok:false, output_delta:null, … }.
+ */
 export async function dispatch(moduleId, instruction, actBudget = 1) {
-  const mod = _modules.get(moduleId);
-  if (!mod) {
-    throw new Error(`dispatch: unknown module "${moduleId}"`);
-  }
-
-  const t0 = Date.now();
-  let result;
-  try {
-    result = await mod.execute(instruction, actBudget);
-  } catch (err) {
-    result = {
-      ok: false,
-      output_delta: null,
-      residue: 0,
-      completed: true,
-      error: err.message || String(err),
-    };
-  }
-
-  const entry = {
-    act_id: _nextActId++,
-    module_id: moduleId,
-    instruction,
-    act_budget: actBudget,
-    result,
-    wall_clock_ms: Date.now() - t0,
-    timestamp: new Date().toISOString(),
-  };
-  _auditLog.push(entry);
-
-  // Post-dispatch hooks: best-effort, isolated from each other and from the
-  // caller. A failing hook logs and continues; it never breaks the dispatch.
-  for (const hook of _postDispatchHooks) {
-    try {
-      hook(entry);
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn("registry: post-dispatch hook failed", err);
-    }
-  }
-
-  return result;
+  return _registry.dispatch(moduleId, instruction, actBudget);
 }

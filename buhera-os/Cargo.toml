@@ -16,6 +16,15 @@ members = [
     "crates/buhera-os",
     "crates/buhera-gateway",
     "crates/buhera-pair",
+    "crates/buhera-registry",
+    "crates/buhera-modules",
+    "crates/buhera-wasm",
+    # Vendored engines (byte-exact upstream sources; see specifications/06-sourcing.md).
+    "vendor/wt-dsl",
+    "vendor/ndombolo-core",
+    "vendor/tracker-chi",
+    "vendor/zangalewa-dsl",
+    "vendor/hegel-sbs",
 ]
 
 [workspace.package]
@@ -39,6 +48,13 @@ buhera-kernel    = { path = "crates/buhera-kernel" }
 buhera-vahera    = { path = "crates/buhera-vahera" }
 buhera-embed     = { path = "crates/buhera-embed" }
 buhera-gateway   = { path = "crates/buhera-gateway" }
+buhera-registry  = { path = "crates/buhera-registry" }
+wt-dsl           = { path = "vendor/wt-dsl" }
+ndombolo-core    = { path = "vendor/ndombolo-core" }
+tracker-chi      = { path = "vendor/tracker-chi" }
+zangalewa-dsl    = { path = "vendor/zangalewa-dsl" }
+sbs              = { path = "vendor/hegel-sbs" }
+buhera-modules   = { path = "crates/buhera-modules", default-features = false }
 
 [profile.release]
 opt-level = 3

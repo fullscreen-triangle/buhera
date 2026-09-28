@@ -1,0 +1,22 @@
+{
+  "id": "tempus",
+  "name": "Tempus Reference",
+  "short_label": "Tempus",
+  "summary": "Grammar and worked examples for Tempus, projected from specifications/specs/tempus.md. Used to ground natural-language-to-tempus generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/stella-lorraine",
+  "trigger_keywords": [
+    "tempus",
+    "timing",
+    "delta p",
+    "cell",
+    "sync"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "Tempus grammar and validated examples"
+    }
+  ]
+}

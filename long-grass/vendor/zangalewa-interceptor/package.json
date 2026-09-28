@@ -1,0 +1,11 @@
+{
+  "name": "@zangalewa/interceptor-client",
+  "version": "0.1.0",
+  "description": "VENDORED from fullscreen-triangle/zangalewa interceptor/client/interceptor-client.ts (byte-exact at the commit recorded in specifications/registry/vendor.json; this package.json is local). Browser client for the Zangalewa interceptor broker: pair with a local `zangalewa connect` agent by one-time code and run opaque jobs through it.",
+  "type": "module",
+  "main": "./client/interceptor-client.ts",
+  "exports": { ".": "./client/interceptor-client.ts" },
+  "sideEffects": false,
+  "private": true,
+  "license": "MIT"
+}

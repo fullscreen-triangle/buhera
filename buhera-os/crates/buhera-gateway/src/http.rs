@@ -56,6 +56,17 @@ pub struct AppState {
     pub signer: Signer,
     /// Per-account kernels for the degraded path.
     pub sessions: session::Sessions,
+    /// Per-account module federations for `/api/dispatch` (spec 07 §2):
+    /// module state (a vaHera kernel, a pylon-free Rust module set) is scoped
+    /// to the account, exactly as `sessions` scopes the `/api/run` kernel.
+    pub federations: std::sync::Mutex<std::collections::HashMap<String, buhera_registry::Registry>>,
+}
+
+/// The gateway's federation for one account. Filesystem-reading operations are
+/// off: the gateway has no business reading its own disk on a caller's behalf
+/// (spec 07, rule B5).
+fn account_federation() -> buhera_registry::Registry {
+    buhera_modules::federation(buhera_modules::Options { filesystem: false }).0
 }
 
 impl AppState {
@@ -65,6 +76,7 @@ impl AppState {
             store: Mutex::new(store),
             signer,
             sessions: session::Sessions::new(),
+            federations: std::sync::Mutex::new(std::collections::HashMap::new()),
         }
     }
 }
@@ -432,6 +444,66 @@ async fn run(
     }
 }
 
+// ─────────────────────────── module dispatch ───────────────────────────
+
+/// Body of `POST /api/dispatch` (specification 07 §2.1).
+#[derive(Debug, Deserialize)]
+pub struct DispatchRequest {
+    /// Registry module id.
+    pub module: String,
+    /// The instruction, verbatim.
+    #[serde(default)]
+    pub instruction: serde_json::Value,
+    /// Act budget (≥ 1).
+    #[serde(default = "one")]
+    pub act_budget: u32,
+}
+
+fn one() -> u32 {
+    1
+}
+
+/// Reply of `POST /api/dispatch` (specification 07 §2.2).
+#[derive(Debug, Serialize)]
+pub struct DispatchResponse {
+    /// Always `"gateway"` until the catalyst relay exists.
+    pub executed_on: String,
+    /// The module's ActResult, verbatim — `ok:false` is the module's verdict,
+    /// not a transport failure.
+    pub result: buhera_registry::ActResult,
+    /// The act id in this account's audit log on the gateway.
+    pub act_id: u64,
+}
+
+async fn dispatch(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+    Json(body): Json<DispatchRequest>,
+) -> Result<Json<DispatchResponse>, ApiError> {
+    let account_id = authenticate(&state, &headers)?;
+    // Module acts are synchronous CPU work (contract M5); run them off the
+    // async executor.
+    tokio::task::block_in_place(|| {
+        let mut feds = state.federations.lock().map_err(|_| ApiError::Internal("federation lock poisoned".into()))?;
+        let reg = feds.entry(account_id).or_insert_with(account_federation);
+        let result = reg
+            .dispatch(&body.module, body.instruction, body.act_budget.max(1))
+            .map_err(|e| ApiError::NotFound(e.to_string()))?;
+        let act_id = reg.audit_log().last().map(|e| e.act_id).unwrap_or(0);
+        Ok(Json(DispatchResponse { executed_on: "gateway".into(), result, act_id }))
+    })
+}
+
+/// `GET /api/modules` — what `/api/dispatch` can reach.
+async fn list_modules(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+) -> Result<Json<serde_json::Value>, ApiError> {
+    authenticate(&state, &headers)?;
+    let (modules, dsls) = buhera_modules::federation(buhera_modules::Options { filesystem: false });
+    Ok(Json(serde_json::json!({ "modules": modules.list(), "dsls": dsls.list() })))
+}
+
 // ─────────────────────────── wiring ───────────────────────────
 
 async fn health() -> Json<serde_json::Value> {
@@ -455,6 +527,75 @@ pub fn app(state: Arc<AppState>) -> Router {
         .route("/api/catalysts/whoami", get(catalyst_whoami))
         .route("/api/catalysts/:name", axum::routing::delete(unpair_catalyst))
         .route("/api/run", post(run))
+        .route("/api/dispatch", post(dispatch))
+        .route("/api/modules", get(list_modules))
         .layer(CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any))
         .with_state(state)
+}
+
+#[cfg(test)]
+mod dispatch_tests {
+    //! `/api/dispatch` (specification 07 §2): authentication, R1 over HTTP,
+    //! a real act, and per-account state.
+    use super::*;
+    use axum::body::{to_bytes, Body};
+    use axum::http::Request;
+    use tower::ServiceExt;
+
+    fn state() -> (Arc<AppState>, String, String) {
+        let signer = Signer::new(vec![7u8; 32]).unwrap();
+        let alice = signer.mint(Audience::Session, "alice", now_unix(), 3600);
+        let bob = signer.mint(Audience::Session, "bob", now_unix(), 3600);
+        (Arc::new(AppState::new(Store::open_memory().unwrap(), signer)), alice, bob)
+    }
+
+    async fn post(state: &Arc<AppState>, token: Option<&str>, body: serde_json::Value) -> (StatusCode, serde_json::Value) {
+        let mut req = Request::post("/api/dispatch").header("content-type", "application/json");
+        if let Some(t) = token {
+            req = req.header("authorization", format!("Bearer {t}"));
+        }
+        let res = app(state.clone()).oneshot(req.body(Body::from(body.to_string())).unwrap()).await.unwrap();
+        let status = res.status();
+        let bytes = to_bytes(res.into_body(), 1 << 22).await.unwrap();
+        (status, serde_json::from_slice(&bytes).unwrap_or(serde_json::Value::Null))
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn unauthenticated_dispatch_is_refused() {
+        let (s, _, _) = state();
+        let (status, _) = post(&s, None, serde_json::json!({ "module": "ndombolo", "instruction": "demo" })).await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn unknown_module_is_404() {
+        let (s, alice, _) = state();
+        let (status, _) = post(&s, Some(&alice), serde_json::json!({ "module": "nope" })).await;
+        assert_eq!(status, StatusCode::NOT_FOUND);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn a_real_act_runs_and_is_audited_per_account() {
+        let (s, alice, bob) = state();
+        let (status, body) = post(&s, Some(&alice), serde_json::json!({ "module": "ndombolo", "instruction": "demo" })).await;
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(body["executed_on"], "gateway");
+        assert_eq!(body["result"]["ok"], true);
+        assert_eq!(body["result"]["output_delta"]["kind"], "ndombolo_result");
+        assert_eq!(body["act_id"], 1);
+
+        // vaHera kernel state is per account (B4).
+        post(&s, Some(&alice), serde_json::json!({ "module": "vahera", "instruction": "memory store \"k\" = \"alice only\"" })).await;
+        let (_, a) = post(&s, Some(&alice), serde_json::json!({ "module": "vahera", "instruction": "memory list" })).await;
+        let (_, b) = post(&s, Some(&bob), serde_json::json!({ "module": "vahera", "instruction": "memory list" })).await;
+        assert!(a.to_string().contains("\"k\""));
+        assert!(!b.to_string().contains("\"k\""));
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn filesystem_operations_are_off_on_the_gateway() {
+        let (s, alice, _) = state();
+        let (_, body) = post(&s, Some(&alice), serde_json::json!({ "module": "tracker", "instruction": { "kind": "list", "root": "/" } })).await;
+        assert_eq!(body["result"]["error"], "unavailable on this host");
+    }
 }

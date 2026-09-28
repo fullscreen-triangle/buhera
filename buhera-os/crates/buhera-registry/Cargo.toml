@@ -1,0 +1,13 @@
+[package]
+name = "buhera-registry"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Buhera federation registry: the Module contract, the module registry (dispatch + audit log + post-dispatch hooks), and the DSL registry (validate + route to an executing module). Engine-free; adapters live in buhera-modules."
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }

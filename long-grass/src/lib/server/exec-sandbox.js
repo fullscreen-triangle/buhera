@@ -32,6 +32,28 @@ function clampTimeout(timeoutMs) {
 }
 
 /**
+ * The environment a child gets: an allowlist, never the server's own.
+ *
+ * The code run here is model-generated. Inheriting process.env would hand it
+ * every secret the server holds (OPENAI_API_KEY, GEMINI_API_KEY, gateway
+ * tokens, …). Only what a toolchain needs to start is passed through: the
+ * search path, OS roots, temp/home dirs, locale, and the Rust toolchain homes
+ * so `rustc` resolves. Anything else must be passed explicitly.
+ */
+const ENV_ALLOWLIST = [
+  "PATH", "Path", "PATHEXT", "SystemRoot", "SYSTEMROOT", "windir", "WINDIR", "ComSpec", "COMSPEC",
+  "TEMP", "TMP", "TMPDIR", "HOME", "USERPROFILE", "HOMEDRIVE", "HOMEPATH", "LOCALAPPDATA", "APPDATA",
+  "LANG", "LC_ALL", "TZ",
+  "RUSTUP_HOME", "CARGO_HOME", "RUSTUP_TOOLCHAIN",
+];
+
+export function childEnv(extra = {}) {
+  const env = {};
+  for (const k of ENV_ALLOWLIST) if (process.env[k] !== undefined) env[k] = process.env[k];
+  return { ...env, ...extra };
+}
+
+/**
  * Spawn a binary/argv combo, capturing stdout/stderr with a byte cap and a
  * hard kill on timeout. Never rejects — always resolves an envelope.
  */
@@ -40,7 +62,7 @@ function spawnCapped(command, args, { timeoutMs, env }) {
     const t0 = Date.now();
     let child;
     try {
-      child = spawn(command, args, { windowsHide: true, env: env || process.env });
+      child = spawn(command, args, { windowsHide: true, env: env || childEnv() });
     } catch (err) {
       resolve({
         ok: false,
@@ -147,7 +169,7 @@ export async function runTypeScript(code, { timeoutMs } = {}) {
       // (numbers, etc.) by default even when stdout is piped, which pollutes
       // captured output with ANSI escapes that have nothing to do with the
       // program's actual behavior. Disable it at the source.
-      { timeoutMs, env: { ...process.env, NO_COLOR: "1", FORCE_COLOR: "0" } }
+      { timeoutMs, env: childEnv({ NO_COLOR: "1", FORCE_COLOR: "0" }) }
     )
   );
 }
