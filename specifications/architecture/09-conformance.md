@@ -43,10 +43,10 @@ node scripts/vendor-sync.mjs --check
 | `buhera-wasm` (native) | 3 passed |
 | `buhera-gateway` (36 existing + 4 `/api/dispatch`) | 40 passed |
 | `cargo test --workspace --no-fail-fast` (default features; every crate above plus kernel, substrate, vahera, embed, os) | 506 passed, 0 failed |
-| `registry-ts` (R1–R6, D1, catalogue C1–C5, 27 module cases incl. wasm, lazy wasm, remote, smith, the full synopsis corpus, the cfc and honjo example corpora, st-Hurbert, heihachi/olduvai/levinthal through wasm) | 35 passed; `tsc` strict clean |
+| `registry-ts` (R1–R6, D1, catalogue C1–C5, 30 module cases incl. wasm, lazy wasm, remote, smith, the full synopsis corpus, the cfc and honjo example corpora, st-Hurbert, heihachi/olduvai/levinthal through wasm, shapeshifter, ladder, spectral) | 38 passed; `tsc` strict clean |
 | long-grass `npm test` | 103 passed |
 | long-grass `next build` | success |
-| `vendor-sync --check` | 24 verified, 1 built, 0 failed |
+| `vendor-sync --check` | 30 verified, 1 built, 0 failed |
 
 ## 3. Claim → proof
 

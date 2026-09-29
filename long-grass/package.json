@@ -22,6 +22,7 @@
         "@syndrome/cfc": "file:./vendor/cfc",
         "@bloodhound/sthurbert": "file:./vendor/sthurbert",
         "@borgia/honjo": "file:./vendor/honjo",
+        "@gospel/spectral": "file:./vendor/spectral",
         "@react-three/drei": "^9.88.17",
         "@react-three/fiber": "^8.15.19",
         "@sachikonye/sbs": "file:./vendor/sbs",

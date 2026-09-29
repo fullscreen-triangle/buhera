@@ -530,6 +530,106 @@
       "residue": "0: every operation is a closed-form derivation that completes in one act.",
       "side_effects": [],
       "spec": "specs/levinthal.md"
+    },
+    {
+      "id": "shapeshifter",
+      "name": "Shapeshifter",
+      "layer": "science",
+      "summary": "lavoisier's language for virtual mass-spectrometry experiments: objective / instrument / target_list / phase / validate blocks over the instrument, partition, MS/MS, S-entropy and purpose operations. Runs in declaration order; global failures refuse, local ones warn.",
+      "dsl": null,
+      "upstream": [
+        {
+          "repo": "fullscreen-triangle/lavoisier",
+          "path": "web/src/lib/shapeshifter",
+          "language": "js",
+          "commit": "dacc197b129f543f32ed964e6388d39e768c51d3",
+          "vendored_at": "long-grass/vendor/shapeshifter/shapeshifter"
+        },
+        {
+          "repo": "fullscreen-triangle/lavoisier",
+          "path": "web/src/lib/experiment",
+          "language": "js",
+          "commit": "dacc197b129f543f32ed964e6388d39e768c51d3",
+          "vendored_at": "long-grass/vendor/shapeshifter/experiment"
+        },
+        {
+          "repo": "fullscreen-triangle/lavoisier",
+          "path": "web/src/lib/partition",
+          "language": "js",
+          "commit": "dacc197b129f543f32ed964e6388d39e768c51d3",
+          "vendored_at": "long-grass/vendor/shapeshifter/partition"
+        }
+      ],
+      "bindings": {
+        "rust": "none",
+        "ts": "native"
+      },
+      "output_kinds": [
+        "shapeshifter_run",
+        "text"
+      ],
+      "residue": "Warnings (unknown operations, skipped entities) plus unresolved pending db.* lookups; 1 on a global failure.",
+      "side_effects": [],
+      "spec": "specs/shapeshifter.md"
+    },
+    {
+      "id": "ladder",
+      "name": "catalytic ladder",
+      "layer": "science",
+      "summary": "levinthal's contact-graph ladder engine: intensive derived power at a vertex, multiplicative rung composition, and a costed machine that commits once per rung and refuses (subfloor) before any commitment when the target is unreachable.",
+      "dsl": null,
+      "upstream": [
+        {
+          "repo": "fullscreen-triangle/levinthal",
+          "path": "enzymes/web/src/lib/engine.js",
+          "language": "js",
+          "commit": "eca659697ec11e7fe56f0d2f22b12ec03d59715e",
+          "vendored_at": "long-grass/vendor/ladder/src/engine.js"
+        }
+      ],
+      "bindings": {
+        "rust": "none",
+        "ts": "native"
+      },
+      "output_kinds": [
+        "ladder_chain",
+        "ladder_derived",
+        "ladder_compose",
+        "ladder_climb",
+        "text"
+      ],
+      "residue": "climb: the distance still to the target (0 reached; the gap when short; the shortfall when subfloor); 0 otherwise.",
+      "side_effects": [],
+      "spec": "specs/ladder.md"
+    },
+    {
+      "id": "spectral",
+      "name": "spectral homology",
+      "layer": "science",
+      "summary": "gospel vivid-symbolism's numerical core: low-frequency spectral embeddings of sequences, cosine ranking by the shader kernel, and FFT matched-filter motif scanning with background z-scores. The operations synopsis names; not a synopsis evaluator.",
+      "dsl": null,
+      "upstream": [
+        {
+          "repo": "fullscreen-triangle/gospel",
+          "path": "vivid-symbolism/src/lib",
+          "language": "js",
+          "commit": "f4b695b105a5c80d94e858f91cbc63a56f988b77",
+          "vendored_at": "long-grass/vendor/spectral/src"
+        }
+      ],
+      "bindings": {
+        "rust": "none",
+        "ts": "native"
+      },
+      "output_kinds": [
+        "spectral_embedding",
+        "spectral_ranked",
+        "spectral_motif",
+        "text"
+      ],
+      "residue": "0: every operation completes in one act.",
+      "side_effects": [],
+      "spec": "specs/spectral.md"
     }
   ],
   "dsls": [

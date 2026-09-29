@@ -12,6 +12,9 @@ export async function realEngines(): Promise<Required<Engines>> {
   const [cfcRun, cfcParse, cfcExamples] = await Promise.all([import(`${LG}/cfc/src/interpreter.js`), import(`${LG}/cfc/src/parser.js`), import(`${LG}/cfc/examples.js`)]);
   const [sth, sthChi] = await Promise.all([import(`${LG}/sthurbert/src/sthurbert/index.ts`), import(`${LG}/sthurbert/src/chi.ts`)]);
   const honjo = await import(`${LG}/honjo/honjo.js`);
+  const shapeshifter = await import(`${LG}/shapeshifter/shapeshifter/compiler.js`);
+  const ladder = await import(`${LG}/ladder/src/engine.js`);
+  const [emb, mf] = await Promise.all([import(`${LG}/spectral/src/embedding.js`), import(`${LG}/spectral/src/matched_filter.js`)]);
   const [sbs, hfq, plans, pylon, tcompile, truntime, tconstruct, tcompose, icept] = await Promise.all([
     import(`${LG}/sbs/index.js`),
     import(`${LG}/hfq/src/index.js`),
@@ -36,6 +39,9 @@ export async function realEngines(): Promise<Required<Engines>> {
     cfc: { ...cfcRun, ...cfcParse, ...cfcExamples },
     sthurbert: { ...sth, computeCharacter: sthChi.computeCharacter },
     honjo,
+    shapeshifter,
+    ladder,
+    spectral: { ...emb, ...mf },
     gateway: { baseUrl: () => "http://127.0.0.1:9", token: () => null },
   } as Required<Engines>;
 }

@@ -1,0 +1,13 @@
+{
+  "name": "@gospel/spectral",
+  "version": "0.1.0",
+  "description": "VENDORED from fullscreen-triangle/gospel vivid-symbolism/src/lib (src/ byte-exact at the commit recorded in specifications/registry/vendor.json, minus locus.js, webgl.js and the synopsis IDE copy; this package.json is local). Spectral sequence embedding, shader-kernel cosine top-K, FFT matched filtering. Pure JS, no I/O.",
+  "type": "module",
+  "exports": {
+    "./embedding": "./src/embedding.js",
+    "./matched_filter": "./src/matched_filter.js"
+  },
+  "sideEffects": false,
+  "private": true,
+  "license": "UNLICENSED"
+}

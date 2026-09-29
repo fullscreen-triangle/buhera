@@ -14,7 +14,8 @@
     "fullscreen-triangle/borgia": "../../bioinformatics/borgia",
     "fullscreen-triangle/heihachi": "../../audio/heihachi",
     "fullscreen-triangle/olduvai-exchange": "../../portfolio/olduvai-exchange",
-    "fullscreen-triangle/levinthal": "../../bioinformatics/levinthal"
+    "fullscreen-triangle/levinthal": "../../bioinformatics/levinthal",
+    "fullscreen-triangle/lavoisier": "../../bioinformatics/lavoisier"
   },
   "entries": [
     {
@@ -278,6 +279,72 @@
       "mode": "tree",
       "commit": "eca659697ec11e7fe56f0d2f22b12ec03d59715e",
       "note": "Partition states (n,l,m,s), backward trajectory completion, per-residue S-entropy coordinates. Recorded at origin/main (the local clone's 3 unpushed commits do not touch crates/). Local Cargo.toml declares only serde and thiserror: upstream also declares nalgebra, num-traits, num-complex and rand, which the library never uses and which (rand → getrandom) block wasm32 (U-lev-1). levinthal-msms and levinthal-folding are deliberately not vendored (U-lev-2, U-lev-3)."
+    },
+    {
+      "id": "shapeshifter-shapeshifter",
+      "module": "shapeshifter",
+      "repo": "fullscreen-triangle/lavoisier",
+      "from": "web/src/lib/shapeshifter",
+      "to": "long-grass/vendor/shapeshifter/shapeshifter",
+      "mode": "tree",
+      "commit": "dacc197b129f543f32ed964e6388d39e768c51d3",
+      "note": "The web Shapeshifter interpreter (compileStage/executeStage) and purpose domains; the only implementation of the paper's generative standard library (section 9). Upgraded from 162ae1b: adds experiment.js and nine acquisition/analysis operations (additive). package.json at vendor/shapeshifter is local."
+    },
+    {
+      "id": "shapeshifter-experiment",
+      "module": "shapeshifter",
+      "repo": "fullscreen-triangle/lavoisier",
+      "from": "web/src/lib/experiment",
+      "to": "long-grass/vendor/shapeshifter/experiment",
+      "mode": "tree",
+      "commit": "dacc197b129f543f32ed964e6388d39e768c51d3",
+      "note": "Virtual instrument, lipidomics/proteomics libraries, fragmentation (residue monoisotopic masses), adducts."
+    },
+    {
+      "id": "shapeshifter-partition",
+      "module": "shapeshifter",
+      "repo": "fullscreen-triangle/lavoisier",
+      "from": "web/src/lib/partition",
+      "to": "long-grass/vendor/shapeshifter/partition",
+      "mode": "tree",
+      "commit": "dacc197b129f543f32ed964e6388d39e768c51d3",
+      "note": "Partition addressing, S-entropy, ternary, generative DB, virtual tensor."
+    },
+    {
+      "id": "shapeshifter-spectral-dbSearch",
+      "module": "shapeshifter",
+      "repo": "fullscreen-triangle/lavoisier",
+      "from": "web/src/lib/spectral/dbSearch.js",
+      "to": "long-grass/vendor/shapeshifter/spectral/dbSearch.js",
+      "mode": "file",
+      "commit": "dacc197b129f543f32ed964e6388d39e768c51d3",
+      "note": "The db.search* network client. Imported by the compiler but never called: db.* operations return unresolved pending sentinels (specs/shapeshifter.md)."
+    },
+    {
+      "id": "vivid-symbolism",
+      "module": "spectral",
+      "repo": "fullscreen-triangle/gospel",
+      "from": "vivid-symbolism/src/lib",
+      "to": "long-grass/vendor/spectral/src",
+      "mode": "tree",
+      "commit": "f4b695b105a5c80d94e858f91cbc63a56f988b77",
+      "exclude": [
+        "locus.js",
+        "webgl.js",
+        "synopsis/",
+        "synopsis-shape.js"
+      ],
+      "note": "The pure numerical core of vivid-symbolism: channelisation, low-frequency spectral embedding, shader-kernel cosine top-K, FFT matched filtering with background statistics and peak picking. Excluded: locus.js (fetches genome regions), webgl.js (DOM), and the synopsis IDE copy (the synopsis module vendors the front end itself). These are the operations synopsis programs name; they are NOT a synopsis evaluator (specs/spectral.md). package.json one level up is local."
+    },
+    {
+      "id": "ladder",
+      "module": "ladder",
+      "repo": "fullscreen-triangle/levinthal",
+      "from": "enzymes/web/src/lib/engine.js",
+      "to": "long-grass/vendor/ladder/src/engine.js",
+      "mode": "file",
+      "commit": "eca659697ec11e7fe56f0d2f22b12ec03d59715e",
+      "note": "The Shakespeare ladder kernel (a port of shk_core.py): contact graphs, intensive power, multiplicative composition, the costed Machine. Vendored 2026-07 without provenance (long-grass c648362); recorded here at origin/main, where it is identical up to line endings. package.json at vendor/ladder is local (its UNLICENSED field predates this entry; upstream levinthal is MIT)."
     }
   ]
 }

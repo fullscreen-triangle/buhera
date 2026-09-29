@@ -11,6 +11,6 @@
   "sideEffects": false,
   "dependencies": {},
   "author": "Kundai Farai Sachikonye <kundai.sachikonye@wzw.tum.de>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true
 }

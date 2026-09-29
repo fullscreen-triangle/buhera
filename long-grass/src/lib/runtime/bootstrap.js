@@ -32,6 +32,7 @@ import { synopsisModule } from "@/lib/modules/synopsis-module";
 import { cfcModule } from "@/lib/modules/cfc-module";
 import { sthurbertModule } from "@/lib/modules/sthurbert-module";
 import { honjoModule } from "@/lib/modules/honjo-module";
+import { spectralModule } from "@/lib/modules/spectral-module";
 import { ckgModule } from "@/lib/modules/ckg-module";
 import { cytochromeModule } from "@/lib/modules/cytochrome-module";
 import { gatewayModule } from "@/lib/modules/gateway-module";
@@ -85,6 +86,7 @@ export function bootstrapFederation() {
   register(cfcModule);
   register(sthurbertModule);
   register(honjoModule);
+  register(spectralModule);
   register(ckgModule);
   register(cytochromeModule);
   register(gatewayModule);

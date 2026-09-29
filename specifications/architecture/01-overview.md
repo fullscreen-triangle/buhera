@@ -74,6 +74,9 @@ flowchart TB
 | `cfc` | science | cause-for-concern | — | native | syndrome (JS) |
 | `honjo` | science | Honjo Masamune | — (Rust twin lags, U-hjo-2) | native | borgia (JS bundle) |
 | `levinthal` | science | — | native | native (wasm) | levinthal |
+| `ladder` | science | — | — | native | levinthal (enzymes/web) |
+| `shapeshifter` | science | (.ss, unregistered: U-ss-1) | — | native | lavoisier (web) |
+| `spectral` | science | — | — | native | gospel (vivid-symbolism) |
 | `synopsis` | science | synopsis | — (Rust twin parses only, U-syn-1) | native | gospel (TS) |
 | `hfq` | coordination | HFQ | — | native | hegel (JS) |
 | `pylon` | coordination | SRN | — | native | pylon (TS) |

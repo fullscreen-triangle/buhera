@@ -17,6 +17,9 @@ Reading ten upstream targets closely surfaced defects in them and in Buhera. Thi
 | F9 | `long-grass/src/lib/smith` | long-grass ran a port of musande's `smith-ide` **stub** compiler (regex-based, no typechecker, `Math.random` in its output); its own test programs are rejected by the real Agent Smith parser | Removed; the `smith` module wraps the canonical `web/src/lib/agent-smith` (parser + typechecker + town), vendored byte-exact |
 | F10 | `long-grass` `smith` adapter | Residue was the sum of realised floors (a size); runs enabled models by default | Residue is the shared residual still above the reachable floor; every run passes `useModel: false` |
 | F11 | `long-grass/src/lib/sandboxes/honjo/honjo.js` | A stale copy of the honjo bundle (pre-`shell.ts`: Z ≤ 18, `3P0` term notation) backed the honjo sandbox | Removed; the sandbox imports the vendored `@borgia/honjo` |
+| F12 | `long-grass` `shapeshifter` adapter | A global runtime failure (the interpreter swallows it into an empty result) was reported `ok: true`; residue was `workspace.length` (output, not remaining work) | `ok: false` on the interpreter's `error: runtime` line; residue = warnings + unresolved pending lookups; timing lines moved out of the terminal stream |
+| F13 | `long-grass` `ladder` adapter | `climb` re-implemented the subfloor check with a different result shape, built an unrelated chain graph to satisfy the `Machine`, and reported residue 0 after commitments | every verdict from `Machine.runVerdict`; optional real graph, otherwise null residues; residue = distance still to the target; `derive` capped at 20 items |
+| F14 | `long-grass/vendor/shapeshifter`, `vendor/ladder` | No recorded provenance; shapeshifter was a stale snapshot (`162ae1b`) | `vendor.json` entries; shapeshifter upgraded to `dacc197` (additive: `experiment.js`, nine operations); ladder recorded at origin/main |
 
 ## 2. Upstream change requests
 

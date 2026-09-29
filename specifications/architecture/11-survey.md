@@ -11,6 +11,9 @@ Evidence was gathered read-only: upstream repositories were inspected at their c
 | Module | Language | Source | Rust | TS | Evidence |
 |---|---|---|---|---|---|
 | `smith` | Agent Smith `.smith` | musande `web/src/lib/agent-smith` | — | native | canonical parser + typechecker + town; the smith-ide compiler is a stub (U-smi-5) |
+| `shapeshifter` | (`.ss`, not registered: no front end rejects anything, U-ss-1) | lavoisier `web/src/lib` @ `dacc197` | — | native | the only implementation of the paper's generative library; formalised with F12 |
+| `ladder` | — | levinthal `enzymes/web/src/lib/engine.js` | — | native | byte-identical to upstream; formalised with F13 |
+| `spectral` | — | gospel `vivid-symbolism/src/lib` | — | native | spectral embedding, shader-kernel ranking, matched filter; planted motifs recovered exactly |
 | `synopsis` | synopsis `.syp` | gospel `synopsis/ts/src` | — | native | the upstream conformance corpus (4 positive, 16 negative) runs as the test; no evaluator exists upstream, so none is exposed |
 | `cfc` | cause-for-concern `.cfc` | syndrome `cause-for-concern/webtool/src/cfc` | — | native | Python ↔ JS parity checked; all five examples reproduce their statuses |
 | `sthurbert` | st-Hurbert `.sth` | bloodhound `thrust/src/lib/repo-lens` | — | native | a real lexer → parser → interpreter; χ computed by the engine |
@@ -21,14 +24,12 @@ Evidence was gathered read-only: upstream repositories were inspected at their c
 
 ## 2. Already running in long-grass, to be formalised
 
-These engines are vendored and bound in long-grass today but are not catalogue members, so nothing checks their provenance or conformance. Each has a concrete defect in its current adapter, recorded here so formalisation fixes it rather than enshrining it.
+These engines are vendored and bound in long-grass today but are not catalogue members, so nothing checks their provenance or conformance. (Shapeshifter and ladder were formalised in this pass; see §1, F12–F14.) Each has a concrete defect in its current adapter, recorded here so formalisation fixes it rather than enshrining it.
 
 | Module | Language | Upstream | Adapter defect to fix on formalisation |
 |---|---|---|---|
-| `shapeshifter` | Shapeshifter `.ss` | lavoisier `web/src/lib/shapeshifter` | global runtime failures report `ok: true` (the engine swallows them into `result.type: "empty"`); residue is `workspace.length`, a size. Vendor copy is at `162ae1b`, upstream is ahead (`experiment.js`, nine operations). The validator accepts almost any text (U-ss-1) |
 | `graffiti` | Graffiti `.grf` | graffiti `web/src/graffiti` | residue is the count of yields, not the engine's `ClaimValue.residue`; `actBudget` ignored (it maps to `maxCatalystInvocations`); upstream is ahead (`5d90402f`, additive) |
 | `scope` | SCOPE | helicopter `scope-lang` | residue is `sEntropy.sum`, which the engine normalises to 1 every time; `relativeUncertainty` or failed goals are the honest measures. Vendor copy is byte-identical upstream |
-| `ladder` | — | levinthal `enzymes/web/src/lib/engine.js` | `climb` re-implements the subfloor check and builds an unrelated graph to satisfy the `Machine` constructor; residue always 0 though commitments were made. Engine copy is byte-identical |
 
 ## 3. Deferred — an upstream defect or a missing piece blocks binding
 
@@ -72,4 +73,5 @@ These engines are vendored and bound in long-grass today but are not catalogue m
 | `long-grass/src/lib/modules/cytochrome-module.js` | not an engine wrapper: hand tables whose cycle ΔM sums to 4.053 while it reports the reference 4.963; the test checks only the constant | open — re-base on the lesson oracle or relabel as curated tables (U-cyt-1) |
 | `long-grass/src/lib/zangalewa/` | byte copies of zoom-climb's `prompt.ts`, `coord-extract.ts`, `desk/*` that nothing imports | open — dead code (U-zng-5) |
 | vaHera validity | long-grass's parser rejects coordinates outside [0, 1]; zoom-climb's TS parser and the vendored Rust `zangalewa-dsl` accept them, and zoom-climb's pack teaches `S(0.2, 1.0, -0.5)`. A chunk the broker's agent accepts can be refused when long-grass dispatches it | open — the three parsers must agree (U-zng-6) |
+| `long-grass/src/lib/lavoisier/shapeshifter/` | a third copy of the Shapeshifter compiler (the `162ae1b` logic with rewritten imports) that nothing imports; the rest of `src/lib/lavoisier` backs the host-local `lavoisier` module | open — dead code |
 | `long-grass/src/lib/purpose/dsl-generator.js` | integrates drafts into one (the loop's contract returns every accepted draft) and frames packs as domain facts | open (U-zng-3) |

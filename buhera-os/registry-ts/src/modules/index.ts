@@ -16,11 +16,14 @@ import type { WasmEngine } from "../wasm.ts";
 import { cfcDsl, makeCfcModule, type CfcEngine } from "./cfc.ts";
 import { hfqDsl, makeHfqModule, type HfqEngine } from "./hfq.ts";
 import { honjoDsl, makeHonjoModule, type HonjoEngine } from "./honjo.ts";
+import { makeLadderModule, type LadderEngine } from "./ladder.ts";
 import { makePylonModule, pylonDsl, type PylonEngine } from "./pylon.ts";
 import { GATEWAY_MODULES, makeRemoteModule, type GatewayTransport } from "./remote.ts";
 import { makeWasmDsls, makeWasmModules } from "./rust-wasm.ts";
 import { makeSbsModule, sbsDsl, type SbsEngine } from "./sbs.ts";
+import { makeShapeshifterModule, type ShapeshifterEngine } from "./shapeshifter.ts";
 import { makeSmithModule, smithDsl, type SmithEngine } from "./smith.ts";
+import { makeSpectralModule, type SpectralEngine } from "./spectral.ts";
 import { makeSthurbertModule, sthurbertDsl, type SthurbertEngine } from "./sthurbert.ts";
 import { makeSynopsisModule, synopsisDsl, type SynopsisEngine } from "./synopsis.ts";
 import { makeTempusModule, tempusDsl, type TempusEngine } from "./tempus.ts";
@@ -29,11 +32,14 @@ import { makeZangalewaModule, type InterceptorClientCtor } from "./zangalewa-dsl
 export * from "./cfc.ts";
 export * from "./hfq.ts";
 export * from "./honjo.ts";
+export * from "./ladder.ts";
 export * from "./pylon.ts";
 export * from "./remote.ts";
 export * from "./rust-wasm.ts";
 export * from "./sbs.ts";
+export * from "./shapeshifter.ts";
 export * from "./smith.ts";
+export * from "./spectral.ts";
 export * from "./sthurbert.ts";
 export * from "./synopsis.ts";
 export * from "./tempus.ts";
@@ -51,6 +57,9 @@ export interface Engines {
   cfc?: CfcEngine;
   sthurbert?: SthurbertEngine;
   honjo?: HonjoEngine;
+  shapeshifter?: ShapeshifterEngine;
+  ladder?: LadderEngine;
+  spectral?: SpectralEngine;
   /** The vendored interceptor client class, plus the broker URL. */
   zangalewa?: { Client: InterceptorClientCtor; baseUrl?: string };
   /** buhera-gateway, for the Rust-only modules reached remotely. */
@@ -105,6 +114,9 @@ export function createFederation(engines: Engines, into?: Federation): Federatio
     registry.register(makeHonjoModule(engines.honjo));
     dsls.register(honjoDsl(engines.honjo));
   }
+  if (engines.shapeshifter) registry.register(makeShapeshifterModule(engines.shapeshifter));
+  if (engines.ladder) registry.register(makeLadderModule(engines.ladder));
+  if (engines.spectral) registry.register(makeSpectralModule(engines.spectral));
   if (engines.zangalewa) {
     registry.register(makeZangalewaModule(engines.zangalewa.Client, engines.zangalewa.baseUrl));
   }

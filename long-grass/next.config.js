@@ -22,6 +22,7 @@ const nextConfig = {
     "@syndrome/cfc",
     "@bloodhound/sthurbert",
     "@borgia/honjo",
+    "@gospel/spectral",
   ],
   webpack: (config) => {
     // @xenova/transformers is dynamically imported by the turbulance

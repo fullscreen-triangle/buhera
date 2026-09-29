@@ -375,3 +375,68 @@ test("wasm: heihachi, olduvai, levinthal are the Rust modules — same numbers a
   const again = await registry.dispatch("olduvai", { kind: "nearest", coords: { s_k: 0.3, s_t: 0.6, s_e: 0.2 } });
   assert.equal(again.residue, 0, "the trie persists across acts and an exact hit loses nothing");
 });
+
+test("shapeshifter: runs the generative library; a global failure is ok:false; residue counts warnings and pending lookups", async () => {
+  const engines = await realEngines();
+  const { registry } = createFederation({ shapeshifter: engines.shapeshifter });
+  const demo = await registry.dispatch("shapeshifter", "demo");
+  assert.equal(demo.ok, true, demo.error);
+  const d = demo.output_delta as unknown as { workspace: Array<{ name: string; kind: string }>; term: Array<{ text: string }>; timing: string[] };
+  assert.deepEqual(d.workspace.map((w) => w.name), ["records", "field"], "declaration order (Thm 6.6)");
+  assert.equal(demo.residue, 0);
+  assert.ok(!d.term.some((l) => /in [\d.]+ ms/.test(l.text)), "timing lines are moved out of the terminal stream");
+  assert.ok(d.timing.length >= 1);
+
+  const empty = await registry.dispatch("shapeshifter", 'phase p:\n  records = lavoisier.instrument.run_experiment(classes: ["ZZZ"])\n');
+  assert.equal(empty.ok, false, "an empty resolved class set is a global failure (Prop 6.12 ii), not a successful run");
+  assert.match(empty.error!, /No valid lipid classes/);
+
+  const partial = await registry.dispatch("shapeshifter", "phase p:\n  x = lavoisier.nope.thing(a: 1)\n  y = lavoisier.db.search(prec_mz: 500)\n");
+  assert.equal(partial.ok, true);
+  assert.equal(partial.residue, 2, "one unknown operation (warn) + one unresolved db lookup (pending)");
+  assert.deepEqual((partial.output_delta as unknown as { pending: string[] }).pending, ["y"]);
+});
+
+test("ladder: verdicts are Machine.runVerdict's in one shape; residue is the distance still to the target", async () => {
+  const engines = await realEngines();
+  const { registry } = createFederation({ ladder: engines.ladder });
+  const demo = await registry.dispatch("ladder", "demo");
+  assert.equal((demo.output_delta as unknown as { powers: unknown[] }).powers.length, 6);
+  const compose = await registry.dispatch("ladder", { op: "compose", powers: [0.45, 0.3, 0.55] });
+  assert.ok(Math.abs((compose.output_delta as unknown as { multiplicative: number }).multiplicative - 0.82675) < 1e-12);
+  const reached = await registry.dispatch("ladder", { op: "climb", powers: [0.45, 0.3, 0.55], target: 0.7 });
+  const r = reached.output_delta as unknown as { verdict: string; M: number; residues: unknown[] };
+  assert.deepEqual([r.verdict, r.M, reached.residue], ["reached", 3, 0]);
+  assert.deepEqual(r.residues, [null, null, null], "no graph given, so no floor to report — not an invented one");
+  const sub = await registry.dispatch("ladder", { op: "climb", powers: [0.45, 0.3, 0.55], target: 0.95 });
+  const s = sub.output_delta as unknown as { verdict: string; M: number; payload: { shortfall: number } };
+  assert.deepEqual([s.verdict, s.M], ["subfloor", 0], "refused before any commitment");
+  assert.ok(Math.abs(sub.residue - 0.12325) < 1e-9);
+  assert.ok(Math.abs(s.payload.shortfall - 0.12325) < 1e-9);
+  const big = await registry.dispatch("ladder", { op: "derive", graph: { vertices: ["m", ...Array.from({ length: 25 }, (_, i) => `v${i}`)], weights: { "v0|m": 1 }, medium: "m" }, vertex: "v0" });
+  assert.equal(big.ok, false, "derive is exponential in ball size; large graphs are refused, not run for minutes");
+});
+
+test("spectral: embeddings are unit vectors; homology ranks the identical sequence first; the matched filter finds planted motifs", async () => {
+  const engines = await realEngines();
+  const { registry } = createFederation({ spectral: engines.spectral });
+  const demo = await registry.dispatch("spectral", "demo");
+  const ranked = (demo.output_delta as unknown as { ranked: Array<{ name: string; cosine: number }> }).ranked;
+  assert.equal(ranked[0]!.name, "near-identical");
+  assert.ok(Math.abs(ranked[0]!.cosine - 1) < 1e-5);
+  assert.equal(ranked.at(-1)!.name, "unrelated");
+  const emb = await registry.dispatch("spectral", { kind: "embed", sequence: "ACGTACGTTGCA", alphabet: "dna", coeffs: 4 });
+  const v = (emb.output_delta as unknown as { vector: number[] }).vector;
+  assert.ok(Math.abs(Math.hypot(...v) - 1) < 1e-5);
+  let seed = 12345;
+  const rand = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+  let t = "";
+  for (let i = 0; i < 3000; i++) t += "ACGT"[Math.floor(rand() * 4)];
+  const motif = "ACGTTGCAAGGCTTAC";
+  t = t.slice(0, 1000) + motif + t.slice(1000, 2000) + motif + t.slice(2000);
+  const hit = await registry.dispatch("spectral", { kind: "motif", query: motif, target: t, z: 4, min_distance: 30, min_score: 0.35 });
+  const offsets = (hit.output_delta as unknown as { hits: Array<{ offset: number }> }).hits.map((h) => h.offset).sort((a, b) => a - b);
+  assert.deepEqual(offsets, [1000, 2016]);
+  const noDefaults = await registry.dispatch("spectral", { kind: "motif", query: motif, target: t });
+  assert.equal(noDefaults.ok, false, "thresholds are never defaulted");
+});

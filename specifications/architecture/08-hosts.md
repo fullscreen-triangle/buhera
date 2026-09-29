@@ -8,7 +8,7 @@ A *host* is a process that owns one registry. There are four.
 
 - **Registry:** `src/lib/modules/registry.js`, a facade over one `@buhera/registry` `Registry`. It keeps the historical free functions (`register`, `dispatch`, `onDispatch`, `getAuditLog`, …), so all pre-existing modules and pages work unchanged.
 - **Bootstrap:** `src/lib/runtime/bootstrap.js` registers, in order:
-  1. the host-local modules: vahera, echo, lavoisier, purpose, zangalewa (coordinate extractor), graffiti, desk, dsl-writer, srn, ckg, cytochrome, gateway, triangle, spraypaint, ladder, interceptor, and others;
+  1. the host-local modules: vahera, echo, lavoisier, purpose, zangalewa (coordinate extractor), graffiti, desk, dsl-writer, srn, ckg, cytochrome, gateway, triangle, spraypaint, interceptor, and others;
   2. the library federation.
 - **The library federation in long-grass:**
 
@@ -23,6 +23,9 @@ A *host* is a process that owns one registry. There are four.
 | `cfc` | `cfc-module.js` | native, `makeCfcModule(@syndrome/cfc)` |
 | `sthurbert` | `sthurbert-module.js` | native, `makeSthurbertModule(@bloodhound/sthurbert)` |
 | `honjo` | `honjo-module.js` | native, `makeHonjoModule(@borgia/honjo)` |
+| `shapeshifter` | `shapeshifter-module.js` | native, `makeShapeshifterModule(@lavoisier/shapeshifter)` |
+| `ladder` | `ladder-module.js` | native, `makeLadderModule(@levinthal/ladder)` |
+| `spectral` | `spectral-module.js` | native, `makeSpectralModule(@gospel/spectral)` |
 | `zangalewa-dsl` | `zangalewa-dsl-module.js` | remote (broker; `NEXT_PUBLIC_ZANGALEWA_BROKER`) |
 | `ndombolo`, `windtunnel`, `tracker`, `heihachi`, `olduvai`, `levinthal` | `rust-wasm-modules.js` | native (wasm, lazy from `/wasm/buhera_modules.wasm`) |
 | `sbs-core` | `gateway-remote-modules.js` | remote (gateway session from `gateway-module.js`) |

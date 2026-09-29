@@ -15,7 +15,7 @@ The formal specification of how Buhera's modules and languages are integrated: t
 | `architecture/09-conformance.md` | How to run every check; results; claim → proof |
 | `architecture/10-findings.md` | Defects found and fixed, and upstream change requests |
 | `architecture/11-survey.md` | The second survey: every candidate examined across the repositories, its disposition, and what would unblock it |
-| `specs/*.md` | vahera · ndombolo · sbs · sbs-core · tempus · hfq · pylon · windtunnel · tracker · zangalewa-dsl · smith · synopsis · cfc · sthurbert · honjo · heihachi · olduvai · levinthal |
+| `specs/*.md` | vahera · ndombolo · sbs · sbs-core · tempus · hfq · pylon · windtunnel · tracker · zangalewa-dsl · smith · synopsis · cfc · sthurbert · honjo · heihachi · olduvai · levinthal · shapeshifter · ladder · spectral |
 | `registry/catalogue.json` | Machine-readable members; checked by both libraries' tests |
 | `registry/vendor.json` | Every vendored engine copy and its upstream commit |
 | `site/` | Vite site rendering all of this, with diagrams drawn from the catalogue |
