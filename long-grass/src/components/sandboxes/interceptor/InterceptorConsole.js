@@ -5,7 +5,7 @@
 //  no data fetching of its own — same convention as
 //  sandboxes/spraypaint/SpraypaintAllocationChart.js.
 // =====================================================================
-import { useState } from "react";
+import { useDisclosure } from "@/components/artifacts/disclosure";
 
 const OK = "#58E6D9";
 const BAD = "#f87171";
@@ -24,18 +24,18 @@ function regimeColor(name) {
 }
 
 export function CodeBlock({ language, code }) {
-  const [expanded, setExpanded] = useState(true);
+  const d = useDisclosure(true);
   if (!code) return null;
   return (
     <div className="rounded-md border border-neutral-700 bg-[#151515] p-2 mb-2">
       <button
         type="button"
         className="mb-1 px-1 text-[11px] uppercase tracking-wider text-neutral-400 w-full text-left"
-        onClick={() => setExpanded((e) => !e)}
+        onClick={() => !d.flat && d.toggle()}
       >
-        generated {language} {expanded ? "▾" : "▸"}
+        generated {language} {d.flat ? "" : d.open ? "▾" : "▸"}
       </button>
-      {expanded && (
+      {d.open && (
         <pre className="p-2 bg-black/40 border border-gray-800 rounded text-xs font-mono whitespace-pre-wrap break-all text-teal-100">
           {code}
         </pre>

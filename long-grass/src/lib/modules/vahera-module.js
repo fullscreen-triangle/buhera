@@ -30,6 +30,11 @@ export function resetKernel() {
   _kernel = null;
 }
 
+/** Install a specific kernel as the shared one (hosts that boot their own). */
+export function replaceKernel(kernel) {
+  _kernel = kernel;
+}
+
 // --------------------------------------------------------------------------
 // The Module trait implementation.
 // --------------------------------------------------------------------------

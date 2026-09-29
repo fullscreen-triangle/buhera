@@ -19,7 +19,7 @@ import { runInput } from "@/lib/runtime/run-input";
 // tutorial pages stay SSG-friendly and only pay the bundle cost when a
 // cell is actually run.
 const Artifact = dynamic(
-  () => import("@/components/BuheraTerminal").then((m) => m.Artifact),
+  () => import("@/components/artifacts/Artifact").then((m) => m.Artifact),
   { ssr: false }
 );
 
