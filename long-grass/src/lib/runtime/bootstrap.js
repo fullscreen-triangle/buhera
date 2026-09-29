@@ -41,6 +41,7 @@ import { hfqModule } from "@/lib/modules/hfq-module";
 import { ladderModule } from "@/lib/modules/ladder-module";
 import { interceptorModule } from "@/lib/modules/interceptor-module";
 import { systemModules } from "@/lib/modules/system-modules";
+import { visModule } from "@/lib/modules/vis-module";
 // Library federation (specifications/registry/catalogue.json): adapters from
 // @buhera/registry bound to vendored engines, plus the Rust modules via wasm.
 import { pylonModule } from "@/lib/modules/pylon-module";
@@ -98,6 +99,7 @@ export function bootstrapFederation() {
   for (const m of rustWasmModules) register(m);
   for (const m of gatewayRemoteModules) register(m);
   for (const m of systemModules) register(m);
+  register(visModule);
 
   const session = getPurposeSession();
   const unhook = onDispatch((entry) => {

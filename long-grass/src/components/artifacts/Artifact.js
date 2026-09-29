@@ -14,6 +14,7 @@ import WorkspaceValue from "@/components/shapeshifter/WorkspaceValue";
 import SpraypaintAllocationChart from "@/components/sandboxes/spraypaint/SpraypaintAllocationChart";
 import { CodeBlock as InterceptorCodeBlock, ConsoleOutput as InterceptorConsoleOutput, WindTunnelReadout } from "@/components/sandboxes/interceptor/InterceptorConsole";
 import { useDisclosure } from "@/components/artifacts/disclosure";
+import VisBoard from "@/components/vis/VisBoard";
 
 // The show/hide control for one disclosure. Toggleable hosts get a button;
 // flat hosts (the surface) get a static label, since the section is open.
@@ -1753,6 +1754,7 @@ export function Artifact({ result }) {
     case "ckg_ack":         return <ArtifactText lines={[result.message, result.trajectory && result.trajectory.length ? `trajectory: ${result.trajectory.join("  ")}` : null, result.chunks ? `chunks: ${result.chunks.join(", ")}` : null, result.emitted ? `emitted: ${result.emitted.join(", ")}` : null].filter(Boolean)} />;
     case "text":            return <ArtifactText lines={result.lines} />;
     case "kv":              return <ArtifactKV title={result.title} rows={result.rows} />;
+    case "vis":             return <VisBoard title={result.title} dataset={result.dataset} charts={result.charts} notes={result.notes} />;
     case "list":            return <ArtifactFind query={result.title || ""} items={result.items} />;
     case "gateway_session": return <ArtifactText lines={result.lines} />;
     case "gateway_machines": return <ArtifactGatewayMachines entries={result.entries} />;

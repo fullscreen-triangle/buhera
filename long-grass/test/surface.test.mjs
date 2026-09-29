@@ -130,3 +130,12 @@ test("isTemplate spots instructions that need filling in", () => {
   assert.equal(isTemplate('dispatch("disk", "usage")'), false);
   assert.equal(isTemplate("kernel stats"), false);
 });
+
+test("searchModules ranks name matches above description matches", () => {
+  const reg = [
+    { id: "sbs", description: "flux visibility V" },
+    { id: "vis", description: "charts" },
+    { id: "revise", description: "" },
+  ];
+  assert.deepEqual(searchModules(reg, "vis").map((m) => m.id), ["vis", "revise", "sbs"]);
+});

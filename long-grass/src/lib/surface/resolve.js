@@ -1,7 +1,9 @@
 /* ============================================================================
  * The surface's resolver seam.
  *
- * The surface never interprets what the user wrote. It hands the utterance —
+ * The surface interprets one verb itself — "chart", which needs the page in
+ * view and so cannot live anywhere else (see VIS_VERB below). Everything else
+ * it never interprets: it hands the utterance —
  * together with the one page the user was looking at when they started
  * writing — to a resolver, and draws whatever envelope comes back as the next
  * page. The resolver is the intent layer (Layer 4 of the integration paper);
@@ -21,6 +23,7 @@ import { runInput } from "@/lib/runtime/run-input";
 import { getKernel, replaceKernel } from "@/lib/modules/vahera-module";
 import { getModule, dispatch as dispatchModule } from "@/lib/modules/registry";
 import { glanceOf, edgeOf } from "@/lib/surface/edges";
+import { visInstruction } from "@/lib/surface/verbs";
 
 /**
  * The runtime the surface resolves against. Unlike run-input's own
@@ -37,6 +40,24 @@ export function createSurfaceRuntime() {
   };
 }
 
+// The surface's own verb (lib/surface/verbs.js): "chart" charts the page in
+// view, or a named source. Everything else goes to the installed resolver.
+async function chart(utterance, page) {
+  const instruction = visInstruction(utterance, page);
+  if (!instruction) return null;
+  if (instruction.missing) {
+    return {
+      kind: "text",
+      lines: [
+        "nothing on screen to chart — flip to a page with data,",
+        "or chart memory · chart audit · chart pages.",
+      ],
+    };
+  }
+  const res = await dispatchModule("vis", instruction);
+  return res?.output_delta ? { kind: "artifact", result: res.output_delta } : { kind: "text", lines: ["(vis: no output)"] };
+}
+
 async function lineResolver(utterance, { runtime }) {
   return runInput(utterance, runtime);
 }
@@ -51,6 +72,8 @@ export function setResolver(fn) {
 /** Resolve one utterance to an envelope. Never throws. */
 export async function resolve(utterance, ctx) {
   try {
+    const charted = await chart(utterance, ctx?.page ?? null);
+    if (charted) return charted;
     const env = await _resolver(utterance, ctx);
     return env || { kind: "text", lines: ["(no result)"] };
   } catch (err) {

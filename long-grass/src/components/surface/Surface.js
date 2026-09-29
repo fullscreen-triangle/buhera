@@ -8,15 +8,21 @@
  *
  * Presentation states (blank-screen-interceptor.tex §single-surface):
  *   B   blank page, nothing written          — a caret on black
- *   P   blank page, writing                  — the words, centred
+ *   P   blank page, writing                  — the words, where a first line sits
  *   A   viewing a page                       — the page; caret hidden
- *   AP  viewing a page, writing              — the page, words along the foot
+ *   AP  viewing a page, writing              — the page, words along its foot
  * Writing while on an older page forks to the end: the new page is appended
  * after the latest one; nothing is rewritten.
  *
  * Edges: the pointer at the top, right, bottom or left edge opens that edge's
  * drawer (components/surface/EdgeDrawer.js; the filing is lib/surface/edges.js).
- * Picking a module opens its page as a new step.
+ * Picking a module opens its page as a new step; the module's mark flies from
+ * the drawer to the head of that page (a shared layout id, `fly`).
+ *
+ * Motion: pages turn — the old page leaves the way the new one arrives from;
+ * the caret glides between the blank page's first line and a page's foot;
+ * drawers slide from their edge. All of it is layout motion, never content:
+ * nothing appears on a page that was not in its snapshot.
  *
  * Flipping: PageUp / PageDown, Alt+← / Alt+→, or ← / → and Home / End when
  * nothing is written; a horizontal swipe on a trackpad.
@@ -27,12 +33,15 @@
  * ========================================================================== */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { bootstrapFederation } from "@/lib/runtime/bootstrap";
 import { listModules } from "@/lib/modules/registry";
 import { appendPage, loadBook, pageContext, saveBook } from "@/lib/surface/book";
+import { edgeOf } from "@/lib/surface/edges";
 import { createSurfaceRuntime, openModule, resolve } from "@/lib/surface/resolve";
-import PageView from "@/components/surface/PageView";
+import PageView, { ModuleHead } from "@/components/surface/PageView";
 import EdgeDrawer from "@/components/surface/EdgeDrawer";
+import { SurfaceActions } from "@/components/surface/actions";
 
 // Pointer must sit within EDGE_PX of an edge for EDGE_DWELL_MS before the
 // drawer opens, so crossing an edge on the way somewhere does not flash one.
@@ -41,6 +50,16 @@ const EDGE_DWELL_MS = 140;
 
 // Routes a line-router "external" envelope navigates to.
 const EXTERNAL_ROUTES = { tutorials: "/tutorials", experiment: "/protein-modelling" };
+
+const GLIDE = { type: "spring", stiffness: 320, damping: 36, mass: 0.9 };
+
+// A page turn: dir 1 arrives from the right and leaves to the left; -1 the
+// reverse; 0 (a module opening, carried by its flying mark) just fades.
+const TURN = {
+  enter: (dir) => ({ opacity: 0, x: dir * 56 }),
+  center: { opacity: 1, x: 0, transition: { x: GLIDE, opacity: { duration: 0.22 } } },
+  exit: (dir) => ({ opacity: 0, x: dir * -56, transition: { x: GLIDE, opacity: { duration: 0.16 } } }),
+};
 
 function edgeAt(x, y) {
   if (y <= EDGE_PX) return "top";
@@ -60,12 +79,13 @@ export default function Surface() {
   const bookRef = useRef(book);                   // latest book, for commit()
   // Open on a blank page, with the history behind it.
   const [view, setView] = useState(() => book.pages.length); // pages.length ⇒ blank
-  const [dir, setDir] = useState(1);              // last flip direction, for the turn
+  const [dir, setDir] = useState(1);              // direction of the last turn
   const [draft, setDraft] = useState("");
-  const [pending, setPending] = useState(null);   // words of the step being resolved
+  const [pending, setPending] = useState(null);   // { type, text? , moduleId? } being resolved
   const [edge, setEdge] = useState(null);
   const [registered, setRegistered] = useState([]);
   const [showFolio, setShowFolio] = useState(false);
+  const [fly, setFly] = useState(null);           // { layoutId, moduleId, page? } — a mark in flight
 
   const pages = book.pages;
   const onBlank = view >= pages.length;
@@ -121,6 +141,8 @@ export default function Surface() {
     return () => window.removeEventListener("wheel", onWheel);
   }, [edge, flipTo, view]);
 
+  // Keys that land while focus is elsewhere (after selecting text on a page):
+  // printable keys start writing, flip keys flip. Drawer open ⇒ hands off.
   useEffect(() => {
     const onKey = (e) => {
       if (edge || e.defaultPrevented) return;
@@ -144,10 +166,12 @@ export default function Surface() {
   // ── edges ───────────────────────────────────────────────────────────────
   const dwell = useRef({ edge: null, timer: null });
   useEffect(() => {
+    const d = dwell.current; // one object for the component's lifetime
     const onMove = (e) => {
-      if (edge) return; // an open drawer closes on its own mouseleave
       const at = edgeAt(e.clientX, e.clientY);
-      const d = dwell.current;
+      // An open drawer closes on its own (pointer leaves, click outside,
+      // Escape); reaching a DIFFERENT edge while it is open switches to it.
+      if (edge && (!at || at === edge)) return;
       if (at === d.edge) return;
       clearTimeout(d.timer);
       d.edge = at;
@@ -161,7 +185,7 @@ export default function Surface() {
     window.addEventListener("mousemove", onMove);
     return () => {
       window.removeEventListener("mousemove", onMove);
-      clearTimeout(dwell.current.timer);
+      clearTimeout(d.timer);
     };
   }, [edge]);
 
@@ -176,15 +200,16 @@ export default function Surface() {
   // Every step appends one page and shows it. When the step began on an
   // older page (not the latest), `from` records it, so the fork is legible
   // on the new page. The resolver still sees whichever page was in view.
+  // Returns the new page's number, or null if nothing was committed.
   async function commit(source, produce) {
-    if (busy) return;
+    if (busy) return null;
     const latest = bookRef.current.pages.length;
     const from = current && current.n !== latest ? current.n : null;
-    setPending(source.type === "module" ? source.moduleId : source.text);
+    setPending(source);
     setDraft("");
     const envelope = await produce();
     setPending(null);
-    if (!envelope || envelope.kind === "noop") return;
+    if (!envelope || envelope.kind === "noop") return null;
     if (envelope.kind === "external" && EXTERNAL_ROUTES[envelope.meta]) {
       const w = window.open(EXTERNAL_ROUTES[envelope.meta], "_blank", "noopener");
       if (!w) window.location.href = EXTERNAL_ROUTES[envelope.meta];
@@ -192,8 +217,9 @@ export default function Surface() {
     const next = appendPage(bookRef.current, { source, envelope, from });
     bookRef.current = next;
     setBook(next);
-    setDir(1);
+    setDir(source.type === "module" ? 0 : 1);
     setView(next.pages.length - 1);
+    return next.pages.length;
   }
 
   function commitUtterance(text) {
@@ -205,9 +231,23 @@ export default function Surface() {
     );
   }
 
+  // Picking a module: first mark the picked tile as in flight (so it carries
+  // the shared layout id), then — next frame — close the drawer and open the
+  // module. The pending head and then the page head take the same id, so the
+  // mark travels drawer → head instead of vanishing and reappearing.
   function pickModule(moduleId) {
-    closeEdge();
-    commit({ type: "module", moduleId }, () => openModule(moduleId));
+    if (busy) return;
+    const layoutId = `fly-${Date.now()}`;
+    setFly({ layoutId, moduleId });
+    requestAnimationFrame(async () => {
+      closeEdge();
+      const n = await commit({ type: "module", moduleId }, () => openModule(moduleId));
+      setFly((f) => (f && f.layoutId === layoutId ? (n ? { ...f, page: n } : null) : f));
+      // Once landed, retire the id. A mark left carrying it would share it with
+      // the next drawer's row for the same module, and the page head would
+      // fly back into the drawer.
+      setTimeout(() => setFly((f) => (f && f.layoutId === layoutId ? null : f)), 900);
+    });
   }
 
   // A module page's action: runnable as written → a new step; a template →
@@ -220,6 +260,12 @@ export default function Surface() {
     }
     commitUtterance(instruction);
   }
+
+  // What a page's contents may start: a new step with given words.
+  const actions = useMemo(() => ({
+    derive: (label, produce) => commit({ type: "utterance", text: label }, produce),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }), [current, busy]);
 
   // ── keys ────────────────────────────────────────────────────────────────
   function onKeyDown(e) {
@@ -251,27 +297,21 @@ export default function Surface() {
   }
 
   // ── drawing ─────────────────────────────────────────────────────────────
-  const writing = draft.length > 0 || busy;
+  const pendingWords = pending?.type === "utterance" ? pending.text : "";
+  const writing = draft.length > 0 || !!pendingWords;
   // The caret shows on a blank page always, and on a page only once writing.
-  const caretVisible = onBlank || writing;
+  const caretVisible = (onBlank || writing) && !busy;
+  const openingModule = pending?.type === "module";
 
-  const words = (
-    <textarea
-      ref={inputRef}
-      value={busy ? pending : draft}
-      onChange={onInput}
-      onKeyDown={onKeyDown}
-      readOnly={busy}
-      rows={1}
-      spellCheck={false}
-      autoFocus
-      aria-label="write"
-      className={`w-full bg-transparent border-none outline-none resize-none font-mono text-sm leading-relaxed ${
-        busy ? "text-gray-500 animate-pulse" : "text-gray-200"
-      }`}
-      style={{ caretColor: caretVisible && !busy ? "#2a9d8f" : "transparent" }}
-    />
-  );
+  // One key per thing that can occupy the page layer.
+  const layerKey = openingModule ? `opening-${fly?.layoutId}` : onBlank ? `blank-${pages.length}` : `page-${current.n}`;
+  // The page a mark flew to keeps its layout id — including the first render
+  // after it lands, before `fly.page` is recorded (then it is the latest page).
+  const flyForPage =
+    current && fly && current.source?.type === "module" && current.source.moduleId === fly.moduleId &&
+    (fly.page === current.n || (fly.page == null && current.n === pages.length))
+      ? fly.layoutId
+      : null;
 
   const folio = useMemo(
     () => (onBlank ? `${pages.length + 1}` : `${view + 1} / ${pages.length}`),
@@ -279,63 +319,90 @@ export default function Surface() {
   );
 
   return (
-    <div
-      className="fixed inset-0 bg-black text-gray-300 font-mono text-sm leading-relaxed overflow-hidden"
-      onMouseDown={(e) => {
-        // Clicking empty surface returns to writing; clicks on page content
-        // (selecting text, actions) are left alone.
-        if (e.target === e.currentTarget) { e.preventDefault(); focusCaret(); }
-      }}
-    >
-      {onBlank ? (
-        // B / P — the words sit where a first line would, nothing else.
-        <div key={`blank-${pages.length}`} className={`absolute inset-x-0 top-[38%] mx-auto w-full max-w-3xl px-10 md:px-5 ${dir > 0 ? "turn-fwd" : "turn-back"}`}>
-          {words}
-        </div>
-      ) : (
-        // A / AP — the page; words along its foot once writing begins.
-        <>
-          <div
-            key={`page-${current.n}`}
-            className={`absolute inset-0 overflow-y-auto no-scrollbar ${dir > 0 ? "turn-fwd" : "turn-back"}`}
+    <SurfaceActions.Provider value={actions}>
+      <div
+        className="fixed inset-0 bg-black text-gray-300 font-mono text-sm leading-relaxed overflow-hidden"
+        onMouseDown={(e) => {
+          // Clicking empty surface returns to writing; clicks on page content
+          // (selecting text, actions, charts) are left alone.
+          if (e.target === e.currentTarget) { e.preventDefault(); focusCaret(); }
+        }}
+      >
+        {/* the page layer — one page at a time, turning */}
+        <AnimatePresence initial={false} custom={dir}>
+          <motion.div
+            key={layerKey}
+            custom={dir}
+            variants={TURN}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="absolute inset-0 overflow-y-auto no-scrollbar"
             onMouseDown={(e) => { if (e.target === e.currentTarget) { e.preventDefault(); focusCaret(); } }}
           >
-            <div className={`mx-auto w-full max-w-4xl px-10 pt-16 md:px-5 ${writing ? "pb-40" : "pb-24"} ${writing ? "opacity-60" : ""} transition-opacity`}>
-              <PageView page={current} onAct={act} />
-            </div>
-          </div>
-          <div className={`absolute inset-x-0 bottom-0 ${writing ? "bg-gradient-to-t from-black via-black/95 to-transparent pt-10" : "pointer-events-none"}`}>
-            <div className="mx-auto w-full max-w-4xl px-10 pb-8 md:px-5">{words}</div>
-          </div>
-        </>
-      )}
+            {openingModule ? (
+              <div className="mx-auto w-full max-w-4xl px-10 pt-16 md:px-5">
+                <ModuleHead id={pending.moduleId} edge={edgeOf(pending.moduleId)} fly={fly?.layoutId} pending />
+              </div>
+            ) : current ? (
+              <div className={`mx-auto w-full max-w-4xl px-10 pt-16 md:px-5 transition-opacity duration-300 ${writing ? "pb-40 opacity-60" : "pb-24"}`}>
+                <PageView page={current} onAct={act} fly={flyForPage} />
+              </div>
+            ) : null}
+          </motion.div>
+        </AnimatePresence>
 
-      <div
-        className={`fixed bottom-3 right-4 text-[10px] text-gray-700 pointer-events-none transition-opacity duration-500 ${
-          showFolio ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        {folio}
+        {/* the writing layer — one caret, gliding between the blank page's
+            first line and a page's foot */}
+        <motion.div
+          layout
+          transition={GLIDE}
+          className={
+            onBlank
+              ? "absolute inset-x-0 top-[38%]"
+              : `absolute inset-x-0 bottom-0 ${writing ? "bg-gradient-to-t from-black via-black/95 to-transparent pt-10" : "pointer-events-none"}`
+          }
+        >
+          <motion.div layout="position" transition={GLIDE}
+            className={`mx-auto w-full px-10 md:px-5 ${onBlank ? "max-w-3xl" : "max-w-4xl pb-8"}`}>
+            <textarea
+              ref={inputRef}
+              value={pendingWords || draft}
+              onChange={onInput}
+              onKeyDown={onKeyDown}
+              readOnly={busy}
+              rows={1}
+              spellCheck={false}
+              autoFocus
+              aria-label="write"
+              className={`w-full bg-transparent border-none outline-none resize-none font-mono text-sm leading-relaxed ${
+                busy ? "text-gray-500 animate-pulse" : "text-gray-200"
+              }`}
+              style={{ caretColor: caretVisible ? "#2a9d8f" : "transparent" }}
+            />
+          </motion.div>
+        </motion.div>
+
+        <div
+          className={`fixed bottom-3 right-4 text-[10px] text-gray-700 pointer-events-none transition-opacity duration-500 ${
+            showFolio ? "opacity-100" : "opacity-0"
+          }`}
+          aria-hidden="true"
+        >
+          {folio}
+        </div>
+
+        <AnimatePresence>
+          {edge && (
+            <EdgeDrawer key={edge} edge={edge} registered={registered} onPick={pickModule} onClose={closeEdge} fly={fly} />
+          )}
+        </AnimatePresence>
+
+        <style jsx global>{`
+          .no-scrollbar { scrollbar-width: none; }
+          .no-scrollbar::-webkit-scrollbar { display: none; }
+        `}</style>
       </div>
-
-      <EdgeDrawer edge={edge} registered={registered} onPick={pickModule} onClose={closeEdge} />
-
-      <style jsx global>{`
-        .no-scrollbar { scrollbar-width: none; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .turn-fwd  { animation: turn-fwd 0.28s ease; }
-        .turn-back { animation: turn-back 0.28s ease; }
-        @keyframes turn-fwd  { from { opacity: 0; transform: translateX(24px); }  to { opacity: 1; transform: none; } }
-        @keyframes turn-back { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
-        .drawer-down  { animation: drawer-down 0.18s ease; }
-        .drawer-up    { animation: drawer-up 0.18s ease; }
-        .drawer-left  { animation: drawer-left 0.18s ease; }
-        .drawer-right { animation: drawer-right 0.18s ease; }
-        @keyframes drawer-down  { from { transform: translateY(-100%); } to { transform: none; } }
-        @keyframes drawer-up    { from { transform: translateY(100%); }  to { transform: none; } }
-        @keyframes drawer-left  { from { transform: translateX(100%); }  to { transform: none; } }
-        @keyframes drawer-right { from { transform: translateX(-100%); } to { transform: none; } }
-      `}</style>
-    </div>
+    </SurfaceActions.Provider>
   );
 }

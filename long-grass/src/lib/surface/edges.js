@@ -84,19 +84,29 @@ export function modulesAt(edge, registered) {
 }
 
 /**
- * Filter the full module list for the left column's search. Matches the
- * query against id and description, case-insensitively; an empty query
- * returns everything, sorted by id.
+ * Filter the full module list for the left column's search, case-insensitive.
+ * An empty query returns everything, sorted by id. Otherwise matches rank by
+ * where the query was found — the id exactly, then the id's start, then
+ * anywhere in the id, then only in the description — and by id within a rank,
+ * so typing a module's name puts that module first.
  */
 export function searchModules(registered, query) {
   const q = (query || "").trim().toLowerCase();
   const sorted = [...registered].sort((a, b) => a.id.localeCompare(b.id));
   if (!q) return sorted;
-  return sorted.filter(
-    (m) =>
-      m.id.toLowerCase().includes(q) ||
-      (m.description || "").toLowerCase().includes(q)
-  );
+  const rank = (m) => {
+    const id = m.id.toLowerCase();
+    if (id === q) return 0;
+    if (id.startsWith(q)) return 1;
+    if (id.includes(q)) return 2;
+    if ((m.description || "").toLowerCase().includes(q)) return 3;
+    return -1;
+  };
+  return sorted
+    .map((m) => [rank(m), m])
+    .filter(([r]) => r >= 0)
+    .sort((a, b) => a[0] - b[0])
+    .map(([, m]) => m);
 }
 
 /**
