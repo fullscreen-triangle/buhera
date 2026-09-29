@@ -272,3 +272,80 @@ test("synopsis: parse/tokens are plain JSON; running is refused, never approxima
   const params = (report.output_delta as unknown as { report: { parameters: Record<string, unknown> } }).report.parameters;
   assert.ok(Object.keys(params).length > 0, "the checker's report records the script's parameters");
 });
+
+test("cfc: the five upstream examples reproduce their statuses; verdicts carry tolerances; ERROR is the only failure", async () => {
+  const engines = await realEngines();
+  const { registry, dsls } = createFederation({ cfc: engines.cfc });
+  const expect: Record<string, { ok: boolean; status: string; residue?: number }> = {
+    "01_validity_gate.cfc": { ok: true, status: "OK", residue: 0 },
+    "02_undecidable.cfc": { ok: true, status: "OK", residue: 1 },
+    "03_invalid_reference.cfc": { ok: true, status: "INVALID", residue: 1 },
+    "04_rejected.cfc": { ok: false, status: "ERROR" },
+    "05_node_vs_edge.cfc": { ok: true, status: "OK", residue: 0 },
+  };
+  for (const [name, want] of Object.entries(expect)) {
+    const r = await registry.dispatch("cfc", { kind: "example", name });
+    const d = r.output_delta as unknown as { status: string; verdicts: Array<{ verdict: string; tolerance: { star: number } }> };
+    assert.equal(r.ok, want.ok, name);
+    assert.equal(d.status, want.status, name);
+    if (want.residue != null) assert.equal(r.residue, want.residue, name);
+    for (const v of d.verdicts) assert.equal(typeof v.tolerance.star, "number", `${name}: a verdict never exists without its tolerance`);
+    const src = (engines.cfc as unknown as { EXAMPLES: Record<string, string> }).EXAMPLES[name]!;
+    assert.equal(dsls.validate("cfc", src).ok, want.status !== "ERROR", name);
+  }
+  const demo = await registry.dispatch("cfc", "demo");
+  assert.deepEqual((demo.output_delta as unknown as { witnessSet: string[] }).witnessSet, ["SHNT"]);
+  assert.equal((demo.output_delta as unknown as { committedMeasurements: number }).committedMeasurements, 5);
+  const bad = dsls.validate("cfc", "floor 1e-9\nadmit h yield v\n");
+  assert.equal(bad.ok, false);
+  assert.equal(typeof bad.errors[0]!.line, "number");
+});
+
+test("sthurbert: load a symbol index, query it with the engine's own χ; refusals carry line/column", async () => {
+  const engines = await realEngines();
+  const { registry, dsls } = createFederation({ sthurbert: engines.sthurbert });
+  const empty = await registry.dispatch("sthurbert", "navigate * ; show chi");
+  assert.equal(empty.ok, false, "no repos analysed yet is a runtime refusal");
+  const demo = await registry.dispatch("sthurbert", "demo");
+  assert.equal(demo.ok, true, demo.error);
+  const blocks = (demo.output_delta as unknown as { blocks: Array<{ kind: string; lines: string[] }> }).blocks;
+  assert.ok(blocks.some((b) => b.kind === "chi"), "show chi yields a chi block");
+  const syms = blocks.find((b) => b.kind === "symbols")!;
+  assert.ok(syms.lines.some((l) => l.includes("alpha")) && syms.lines.some((l) => l.includes("gamma")));
+  const again = await registry.dispatch("sthurbert", "navigate demo ; find \"Delta\"");
+  assert.equal(again.ok, true, "the federation persists across acts (R6)");
+  const v = dsls.validate("sthurbert", "show nope");
+  assert.equal(v.ok, false);
+  assert.equal(v.errors[0]!.line, 1);
+  assert.equal(typeof v.errors[0]!.column, "number");
+  assert.equal(dsls.validate("sthurbert", "slice where line > abc").ok, false);
+  const reset = await registry.dispatch("sthurbert", "reset");
+  assert.equal(reset.ok, true);
+  assert.equal((await registry.dispatch("sthurbert", "navigate demo ; show chi")).ok, false);
+});
+
+test("honjo: the four upstream examples run; M is honjo's clock; errors carry line/col; range errors surface at run", async () => {
+  const engines = await realEngines();
+  const { registry, dsls } = createFederation({ honjo: engines.honjo });
+  const dir = new URL("../../../long-grass/vendor/honjo/examples/", import.meta.url);
+  const M: Record<string, number> = { "carbon.hj": 1, "salt.hj": 4, "track.hj": 6, "water.hj": 5 };
+  for (const [file, m] of Object.entries(M)) {
+    const src = await readFile(new URL(file, dir), "utf8");
+    assert.equal(dsls.validate("honjo", src).ok, true, file);
+    const r = await registry.dispatch("honjo", src);
+    assert.equal(r.ok, true, `${file}: ${r.error}`);
+    assert.equal((r.output_delta as unknown as { cutCount: number }).cutCount, m, file);
+    assert.equal(r.residue, 0);
+  }
+  const water = await registry.dispatch("honjo", await readFile(new URL("water.hj", dir), "utf8"));
+  assert.match((water.output_delta as unknown as { values: Record<string, string> }).values["W"]!, /OH2\s+geometry=bent\s+angle=104\.5/);
+  const floor0 = dsls.validate("honjo", "floor 0\nO := cut 8");
+  assert.equal(floor0.ok, false);
+  assert.deepEqual([floor0.errors[0]!.line, floor0.errors[0]!.column], [1, 1]);
+  assert.match(floor0.errors[0]!.message, /sharp cut is not expressible/);
+  assert.equal(dsls.validate("honjo", "floor 1\ny := z").errors[0]!.line, 2);
+  const range = await registry.dispatch("honjo", "floor 1\nX := cut 200");
+  assert.equal(range.ok, false, "Z beyond the named elements is refused when the program runs");
+  const fe = await registry.dispatch("honjo", { kind: "derive", z: 26 });
+  assert.equal((fe.output_delta as unknown as { atom: { symbol: string } }).atom.symbol, "Fe");
+});

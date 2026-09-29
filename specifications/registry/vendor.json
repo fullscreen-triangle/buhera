@@ -9,7 +9,9 @@
     "fullscreen-triangle/bloodhound": "../../distributed/bloodhound",
     "fullscreen-triangle/kwasa-kwasa": "../../semantics/kwasa-kwasa",
     "fullscreen-triangle/musande": "../../semantics/musande",
-    "fullscreen-triangle/gospel": "../../bioinformatics/gospel"
+    "fullscreen-triangle/gospel": "../../bioinformatics/gospel",
+    "fullscreen-triangle/syndrome": "../../health/syndrome",
+    "fullscreen-triangle/borgia": "../../bioinformatics/borgia"
   },
   "entries": [
     {
@@ -168,6 +170,61 @@
       "mode": "file",
       "commit": "f4b695b105a5c80d94e858f91cbc63a56f988b77",
       "note": "The conformance corpus (positive + negative programs with expected error classes), extracted from the Python reference; the module tests run it."
+    },
+    {
+      "id": "cfc",
+      "module": "cfc",
+      "repo": "fullscreen-triangle/syndrome",
+      "from": "cause-for-concern/webtool/src/cfc",
+      "to": "long-grass/vendor/cfc/src",
+      "mode": "tree",
+      "commit": "6cf55884e5c0c4651607cf2651039941f784260a",
+      "note": "The JS port of the cause-for-concern reference (prototype/cfc, Python): lexer, parser, kernel, interpreter, seeded sweeps. Parity with the Python reference was checked on all four Python examples (status, clock, verdicts, holonomies, witness sets). package.json one level up is local."
+    },
+    {
+      "id": "cfc-examples",
+      "module": "cfc",
+      "repo": "fullscreen-triangle/syndrome",
+      "from": "cause-for-concern/webtool/src/data/examples.js",
+      "to": "long-grass/vendor/cfc/examples.js",
+      "mode": "file",
+      "commit": "6cf55884e5c0c4651607cf2651039941f784260a",
+      "note": "The five example programs the upstream IDE ships; the module test runs them all."
+    },
+    {
+      "id": "sthurbert",
+      "module": "sthurbert",
+      "repo": "fullscreen-triangle/bloodhound",
+      "from": "thrust/src/lib/repo-lens",
+      "to": "long-grass/vendor/sthurbert/src",
+      "mode": "tree",
+      "commit": "d6144274759ee4f210973a8ea3acb214b2262ef2",
+      "exclude": [
+        "ai.ts",
+        "analyse.ts",
+        "engine/"
+      ],
+      "note": "The st-Hurbert repo-query language (lexer, parser, interpreter) and the model it navigates (model.ts, chi.ts, lineage.ts; github.ts for types only, its fetch code is never reached from the language). Excluded: the LLM front door (ai.ts), the analysis orchestrator and the engine transport. Same commit as tracker-chi; chi.ts is thrust's TS port of the chi.rs that tracker vendors (specs/sthurbert.md section 7)."
+    },
+    {
+      "id": "honjo",
+      "module": "honjo",
+      "repo": "fullscreen-triangle/borgia",
+      "from": "honjo-masamune/src/lib/honjo.js",
+      "to": "long-grass/vendor/honjo/honjo.js",
+      "mode": "file",
+      "commit": "28a633a3687f32c9e350a88e77a9b4b1ef4de33c",
+      "note": "The committed zero-dependency ESM bundle of honjo/src (lexer, parser, checker, Cut-IR lowering, shell derivation Z=1..118, interpreter), which is what the honjo web app runs. It is four lines AHEAD of its TypeScript source (a `shells` field in individuate; U-hjo-1). package.json is local."
+    },
+    {
+      "id": "honjo-examples",
+      "module": "honjo",
+      "repo": "fullscreen-triangle/borgia",
+      "from": "honjo-masamune/honjo/examples",
+      "to": "long-grass/vendor/honjo/examples",
+      "mode": "tree",
+      "commit": "28a633a3687f32c9e350a88e77a9b4b1ef4de33c",
+      "note": "The four .hj example programs; the module test runs them all."
     }
   ]
 }

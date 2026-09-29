@@ -354,6 +354,86 @@
       "residue": "0 when the program checks; 1 when the checker refuses it (one refusal is reported at a time).",
       "side_effects": [],
       "spec": "specs/synopsis.md"
+    },
+    {
+      "id": "cfc",
+      "name": "cause-for-concern",
+      "layer": "science",
+      "summary": "Thermodynamic cycle-consistency experiments on metabolic circuits: solved potentials, cycle holonomies, two error floors per cycle, and three-valued verdicts that never exist without their tolerance.",
+      "dsl": "cfc",
+      "upstream": [
+        {
+          "repo": "fullscreen-triangle/syndrome",
+          "path": "cause-for-concern/webtool/src/cfc",
+          "language": "js",
+          "commit": "6cf55884e5c0c4651607cf2651039941f784260a",
+          "vendored_at": "long-grass/vendor/cfc/src"
+        }
+      ],
+      "bindings": {
+        "rust": "none",
+        "ts": "native"
+      },
+      "output_kinds": [
+        "cfc_record",
+        "cfc_check"
+      ],
+      "residue": "UNDECIDABLE verdicts (the data floor swallows the holonomy), plus one if the reference is INVALID (no conclusion licensed).",
+      "side_effects": [],
+      "spec": "specs/cfc.md"
+    },
+    {
+      "id": "sthurbert",
+      "name": "st-Hurbert",
+      "layer": "observation",
+      "summary": "bloodhound's repo-query language: navigate, slice and query an analysed federation of repositories (symbols, files, character χ, salient files, fragments, lineage, health).",
+      "dsl": "sthurbert",
+      "upstream": [
+        {
+          "repo": "fullscreen-triangle/bloodhound",
+          "path": "thrust/src/lib/repo-lens",
+          "language": "ts",
+          "commit": "d6144274759ee4f210973a8ea3acb214b2262ef2",
+          "vendored_at": "long-grass/vendor/sthurbert/src"
+        }
+      ],
+      "bindings": {
+        "rust": "none",
+        "ts": "native"
+      },
+      "output_kinds": [
+        "repo_query"
+      ],
+      "residue": "0 for an answered query; 1 for a refused one. The engine defines no working-set residue.",
+      "side_effects": [],
+      "spec": "specs/sthurbert.md"
+    },
+    {
+      "id": "honjo",
+      "name": "Honjo Masamune",
+      "layer": "science",
+      "summary": "borgia's cut calculus for chemistry: atoms, bonds, compounds and tracked processes as cuts at a strictly positive floor; shell structure derived for Z = 1..118; the cut count M is a monotone clock.",
+      "dsl": "honjo",
+      "upstream": [
+        {
+          "repo": "fullscreen-triangle/borgia",
+          "path": "honjo-masamune/src/lib/honjo.js",
+          "language": "js",
+          "commit": "28a633a3687f32c9e350a88e77a9b4b1ef4de33c",
+          "vendored_at": "long-grass/vendor/honjo/honjo.js"
+        }
+      ],
+      "bindings": {
+        "rust": "none",
+        "ts": "native"
+      },
+      "output_kinds": [
+        "honjo_result",
+        "honjo_atom"
+      ],
+      "residue": "0: programs are straight-line and run to completion (honjo's per-value residue is chemistry, reported in the delta).",
+      "side_effects": [],
+      "spec": "specs/honjo.md"
     }
   ],
   "dsls": [
@@ -445,6 +525,36 @@
       "extension": ".syp",
       "module_id": "synopsis",
       "pack_id": "synopsis",
+      "validators": [
+        "ts"
+      ]
+    },
+    {
+      "id": "cfc",
+      "label": "cause-for-concern",
+      "extension": ".cfc",
+      "module_id": "cfc",
+      "pack_id": "cfc",
+      "validators": [
+        "ts"
+      ]
+    },
+    {
+      "id": "sthurbert",
+      "label": "st-Hurbert",
+      "extension": ".sth",
+      "module_id": "sthurbert",
+      "pack_id": "sthurbert",
+      "validators": [
+        "ts"
+      ]
+    },
+    {
+      "id": "honjo",
+      "label": "Honjo Masamune",
+      "extension": ".hj",
+      "module_id": "honjo",
+      "pack_id": "honjo",
       "validators": [
         "ts"
       ]

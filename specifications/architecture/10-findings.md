@@ -16,6 +16,7 @@ Reading ten upstream targets closely surfaced defects in them and in Buhera. Thi
 | F8 | `buhera-gateway` | The vaHera renderer was private, so a second path would have duplicated it | Moved to `buhera_vahera::render_result` and shared |
 | F9 | `long-grass/src/lib/smith` | long-grass ran a port of musande's `smith-ide` **stub** compiler (regex-based, no typechecker, `Math.random` in its output); its own test programs are rejected by the real Agent Smith parser | Removed; the `smith` module wraps the canonical `web/src/lib/agent-smith` (parser + typechecker + town), vendored byte-exact |
 | F10 | `long-grass` `smith` adapter | Residue was the sum of realised floors (a size); runs enabled models by default | Residue is the shared residual still above the reachable floor; every run passes `useModel: false` |
+| F11 | `long-grass/src/lib/sandboxes/honjo/honjo.js` | A stale copy of the honjo bundle (pre-`shell.ts`: Z ≤ 18, `3P0` term notation) backed the honjo sandbox | Removed; the sandbox imports the vendored `@borgia/honjo` |
 
 ## 2. Upstream change requests
 
@@ -50,6 +51,13 @@ Reading ten upstream targets closely surfaced defects in them and in Buhera. Thi
 | U-smi-5 | musande | `smith-ide/src/compiler` is a self-declared stub that drops society members' `self` and `budget`; retire it or point the IDE at `web/src/lib/agent-smith` |
 | U-syn-1 | gospel | `synopsis/rs` parses but does not check, so it cannot be bound as `synopsis` (it would accept programs the TS checker refuses) |
 | U-syn-2 | gospel | Some truncated inputs raise a JS `TypeError` from inside the parser rather than a `ParseError` |
+| U-cfc-1 | syndrome | `webtool` `npm test` runs zero tests: the script globs `test/*.test.mjs`, the files are `test/*.mjs` |
+| U-cfc-2 | syndrome | `measure`, `localize`, `close` and gap closure are lexed but not implemented; `import` binds a placeholder that returns `<name.attr>` strings |
+| U-sth-1 | bloodhound | `thrust/src/lib/repo-lens/chi.ts` is a TS port of `thrust/tracker/src/chi.rs`; two χ implementations can drift, and their field names already differ |
+| U-sth-2 | bloodhound | The st-Hurbert number lexer accepts `1.2.3`; identifiers cannot start with a digit, so such repositories cannot be navigated to; `KEYWORDS` is exported and never enforced |
+| U-hjo-1 | borgia | The committed bundle `src/lib/honjo.js` is ahead of `honjo/src/stdlib.ts` (a `shells` field in `individuate`); rebuild or reconcile |
+| U-hjo-2 | borgia | `honjo-rs` supports Z = 1..18 only, has no Cut-IR lowering and prints `3P0` for `3P_0`; `lib.rs` exposes `serve` (TcpListener, SystemTime) from the library |
+| U-hjo-3 | borgia | The web workbench labels files `.hnj`; the spec and CLI use `.hj` |
 
 ## 3. Naming collisions, recorded and not renamed
 

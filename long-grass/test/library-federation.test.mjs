@@ -29,6 +29,9 @@ test("each language's own front end accepts a valid script and rejects a broken 
       "open m = \"m.fa\"\nopen t = \"t.fa\"\nunder nucleotide {\n    let q = project m by channels(dna)\n    let s = project t by channels(dna)\n    bind r, res_r = compare q against s by xcorr(normalised)\n    record r, res_r\n}\nreport to \"x.report\"\n",
       "open m = \"m.fa\"\nopen t = \"t.fa\"\nunder nucleotide {\n    let q = project m by channels(dna)\n    let s = project t by channels(dna)\n    bind r, res_r = compare q against s by xcorr(normalised)\n    record r\n}\nreport to \"x.report\"\n",
     ],
+    cfc: ["floor 1e-9\nemit \"ok\"\n", "floor 1e-9\nadmit h yield v\n"],
+    sthurbert: ["navigate * ; show chi", "show nope"],
+    honjo: ["floor 1.0\nO := cut 8\nobserve O\n", "floor 0\nO := cut 8\n"],
     tempus: ["sync c at 1e6 freq\ncell A bounds (0, 1) action 0\ncompose d=1 channels c into t\nwhen A do emit ok", "cell A bounds (1, 0) action 0"],
   };
   for (const [id, [good, bad]] of Object.entries(cases)) {

@@ -1,0 +1,6 @@
+-- carbon.hj — individuating carbon (a length-one cut)
+floor 1.0                 -- set the ambient floor; nothing is free
+
+C := cut 6                -- individuate Z=6 against the medium
+observe C                 -- force the measurement now
+-- expect: Atom  [He] 2s2 2p2  3P_0  vacancy=4

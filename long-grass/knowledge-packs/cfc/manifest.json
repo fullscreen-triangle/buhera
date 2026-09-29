@@ -1,0 +1,24 @@
+{
+  "id": "cfc",
+  "name": "cause-for-concern Reference",
+  "short_label": "cause-for-concern",
+  "summary": "Grammar and worked examples for cause-for-concern, projected from specifications/specs/cfc.md. Used to ground natural-language-to-cfc generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/syndrome",
+  "trigger_keywords": [
+    "cfc",
+    "cause-for-concern",
+    "thermodynamic",
+    "holonomy",
+    "metabolic",
+    "cycle",
+    "verdict"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "cause-for-concern grammar and validated examples"
+    }
+  ]
+}

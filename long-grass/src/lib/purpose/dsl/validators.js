@@ -22,7 +22,7 @@
 import fs from "fs";
 import path from "path";
 import { DslRegistry, fromThrowing, loadWasmEngineSync } from "@buhera/registry";
-import { hfqDsl, pylonDsl, sbsDsl, smithDsl, synopsisDsl, tempusDsl } from "@buhera/registry/modules";
+import { cfcDsl, hfqDsl, honjoDsl, pylonDsl, sbsDsl, smithDsl, sthurbertDsl, synopsisDsl, tempusDsl } from "@buhera/registry/modules";
 import * as sbsEngine from "@sachikonye/sbs";
 import * as pylonEngine from "@buhera/pylon";
 import { parseVahera } from "@/lib/vahera";
@@ -30,6 +30,9 @@ import { hfqEngine } from "@/lib/modules/hfq-module";
 import { tempusEngine } from "@/lib/modules/tempus-module";
 import { smithEngine } from "@/lib/modules/smith-module";
 import { synopsisEngine } from "@/lib/modules/synopsis-module";
+import { cfcEngine } from "@/lib/modules/cfc-module";
+import { sthurbertEngine } from "@/lib/modules/sthurbert-module";
+import { honjoEngine } from "@/lib/modules/honjo-module";
 
 /**
  * vaHera — `parseVahera(src)` THROWS on the first invalid line, embedding
@@ -46,6 +49,9 @@ registry.register(pylonDsl(pylonEngine));
 registry.register(tempusDsl(tempusEngine));
 registry.register(smithDsl(smithEngine));
 registry.register(synopsisDsl(synopsisEngine));
+registry.register(cfcDsl(cfcEngine));
+registry.register(sthurbertDsl(sthurbertEngine));
+registry.register(honjoDsl(honjoEngine));
 
 // Rust front ends via wasm: registered now, engine loaded on first validate.
 let _wasm = null;

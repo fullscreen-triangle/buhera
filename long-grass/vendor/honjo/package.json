@@ -1,0 +1,13 @@
+{
+  "name": "@borgia/honjo",
+  "version": "0.1.0",
+  "description": "VENDORED from fullscreen-triangle/borgia honjo-masamune/src/lib/honjo.js and honjo/examples (byte-exact at the commit recorded in specifications/registry/vendor.json; this package.json is local). Honjo Masamune: chemistry as cuts. Zero-dependency ESM, no I/O.",
+  "type": "module",
+  "main": "./honjo.js",
+  "exports": {
+    ".": "./honjo.js"
+  },
+  "sideEffects": false,
+  "private": true,
+  "license": "UNLICENSED"
+}

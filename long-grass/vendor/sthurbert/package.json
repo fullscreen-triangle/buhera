@@ -1,0 +1,14 @@
+{
+  "name": "@bloodhound/sthurbert",
+  "version": "0.1.0",
+  "description": "VENDORED from fullscreen-triangle/bloodhound thrust/src/lib/repo-lens (src/ byte-exact at the commit recorded in specifications/registry/vendor.json, minus ai.ts, analyse.ts and engine/; this package.json is local). st-Hurbert: a small language that navigates and slices an analysed federation of repositories. Pure TypeScript, no I/O.",
+  "type": "module",
+  "main": "./src/sthurbert/index.ts",
+  "exports": {
+    ".": "./src/sthurbert/index.ts",
+    "./chi": "./src/chi.ts"
+  },
+  "sideEffects": false,
+  "private": true,
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "sthurbert",
+  "name": "st-Hurbert Reference",
+  "short_label": "st-Hurbert",
+  "summary": "Grammar and worked examples for st-Hurbert, projected from specifications/specs/sthurbert.md. Used to ground natural-language-to-sthurbert generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/bloodhound",
+  "trigger_keywords": [
+    "sthurbert",
+    "st-hurbert",
+    "repo",
+    "repository",
+    "symbols",
+    "query"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "st-Hurbert grammar and validated examples"
+    }
+  ]
+}

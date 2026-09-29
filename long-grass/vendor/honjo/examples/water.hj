@@ -1,0 +1,14 @@
+-- water.hj — cuts to closure, geometry by maximal separation
+floor 1.0
+
+O := cut 8
+H := cut 1
+
+-- a bond is a cut between two items, admitted only if it lowers thickness
+OH := O ~ H when delta > 0
+observe OH
+
+-- close drives every vacancy to zero: stoichiometry + geometry follow
+W := close O(H, H)        -- 2:1, bent, ~104.5 deg
+observe W
+assert W.valence == closed emit "water did not close"

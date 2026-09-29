@@ -19,6 +19,9 @@ const nextConfig = {
     "@zangalewa/interceptor-client",
     "@musande/agent-smith",
     "@gospel/synopsis",
+    "@syndrome/cfc",
+    "@bloodhound/sthurbert",
+    "@borgia/honjo",
   ],
   webpack: (config) => {
     // @xenova/transformers is dynamically imported by the turbulance

@@ -1,0 +1,15 @@
+-- salt.hj — ionic contact: Na ~ Cl (both open-shell, bond lowers thickness)
+floor 1.0
+
+Na := cut 11
+Cl := cut 17
+observe Na
+observe Cl
+
+NaCl := close Na(Cl)      -- 1:1
+observe NaCl
+
+-- a closed-shell partner forms no bond (Ne has vacancy 0)
+Ne := cut 10
+dead := Na ~ Ne when delta > 0
+observe dead              -- exists=false

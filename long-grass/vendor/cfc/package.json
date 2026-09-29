@@ -1,0 +1,18 @@
+{
+  "name": "@syndrome/cfc",
+  "version": "0.1.0",
+  "description": "VENDORED from fullscreen-triangle/syndrome cause-for-concern/webtool (src/ and examples.js byte-exact at the commit recorded in specifications/registry/vendor.json; this package.json is local). The cause-for-concern language: thermodynamic cycle-consistency verdicts with their tolerances. Pure JS, no I/O.",
+  "type": "module",
+  "main": "./src/interpreter.js",
+  "exports": {
+    ".": "./src/interpreter.js",
+    "./parser": "./src/parser.js",
+    "./lexer": "./src/lexer.js",
+    "./kernel": "./src/kernel.js",
+    "./sweeps": "./src/sweeps.js",
+    "./examples": "./examples.js"
+  },
+  "sideEffects": false,
+  "private": true,
+  "license": "UNLICENSED"
+}

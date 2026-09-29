@@ -779,48 +779,248 @@ function lower(p) {
   return new Lowering().lower(p);
 }
 
-// src/stdlib.ts
-var ELEMENTS = [
-  { sym: "H", Z: 1, qv: 1, capV: 2, config: "1s1", term: "2S1/2" },
-  { sym: "He", Z: 2, qv: 2, capV: 2, config: "1s2", term: "1S0" },
-  { sym: "Li", Z: 3, qv: 1, capV: 8, config: "[He] 2s1", term: "2S1/2" },
-  { sym: "Be", Z: 4, qv: 2, capV: 8, config: "[He] 2s2", term: "1S0" },
-  { sym: "B", Z: 5, qv: 3, capV: 8, config: "[He] 2s2 2p1", term: "2P1/2" },
-  { sym: "C", Z: 6, qv: 4, capV: 8, config: "[He] 2s2 2p2", term: "3P0" },
-  { sym: "N", Z: 7, qv: 5, capV: 8, config: "[He] 2s2 2p3", term: "4S3/2" },
-  { sym: "O", Z: 8, qv: 6, capV: 8, config: "[He] 2s2 2p4", term: "3P2" },
-  { sym: "F", Z: 9, qv: 7, capV: 8, config: "[He] 2s2 2p5", term: "2P3/2" },
-  { sym: "Ne", Z: 10, qv: 8, capV: 8, config: "[He] 2s2 2p6", term: "1S0" },
-  { sym: "Na", Z: 11, qv: 1, capV: 8, config: "[Ne] 3s1", term: "2S1/2" },
-  { sym: "Mg", Z: 12, qv: 2, capV: 8, config: "[Ne] 3s2", term: "1S0" },
-  { sym: "Al", Z: 13, qv: 3, capV: 8, config: "[Ne] 3s2 3p1", term: "2P1/2" },
-  { sym: "Si", Z: 14, qv: 4, capV: 8, config: "[Ne] 3s2 3p2", term: "3P0" },
-  { sym: "P", Z: 15, qv: 5, capV: 8, config: "[Ne] 3s2 3p3", term: "4S3/2" },
-  { sym: "S", Z: 16, qv: 6, capV: 8, config: "[Ne] 3s2 3p4", term: "3P2" },
-  { sym: "Cl", Z: 17, qv: 7, capV: 8, config: "[Ne] 3s2 3p5", term: "2P3/2" },
-  { sym: "Ar", Z: 18, qv: 8, capV: 8, config: "[Ne] 3s2 3p6", term: "1S0" }
+// src/shell.ts
+function subshellCapacity(l) {
+  return 2 * (2 * l + 1);
+}
+function shellCapacity(n) {
+  let c = 0;
+  for (let l = 0; l < n; l++) c += subshellCapacity(l);
+  return c;
+}
+var L_LETTER = ["s", "p", "d", "f", "g", "h"];
+var S_LABELS = "S P D F G H I K L M N O Q R T U V".split(" ");
+var MADELUNG_ORDER = [
+  [1, 0],
+  [2, 0],
+  [2, 1],
+  [3, 0],
+  [3, 1],
+  [4, 0],
+  [3, 2],
+  [4, 1],
+  [5, 0],
+  [4, 2],
+  [5, 1],
+  [6, 0],
+  [4, 3],
+  [5, 2],
+  [6, 1],
+  [7, 0],
+  [5, 3],
+  [6, 2],
+  [7, 1]
 ];
-var BY_Z = new Map(ELEMENTS.map((e) => [e.Z, e]));
+var CORE_CONFIGS = [
+  ["[Rn]", expand([[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6], [4, 2, 10], [4, 3, 14], [5, 0, 2], [5, 1, 6], [5, 2, 10], [6, 0, 2], [6, 1, 6]])],
+  ["[Xe]", expand([[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6], [4, 2, 10], [5, 0, 2], [5, 1, 6]])],
+  ["[Kr]", expand([[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6]])],
+  ["[Ar]", expand([[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6]])],
+  ["[Ne]", expand([[1, 0, 2], [2, 0, 2], [2, 1, 6]])],
+  ["[He]", expand([[1, 0, 2]])]
+];
+function expand(rows) {
+  return rows.map(([n, l, occ]) => ({ n, l, occ }));
+}
+function canonical(cfg) {
+  return [...cfg].sort((a, b) => a.n - b.n || a.l - b.l);
+}
+var AUFBAU_EXCEPTIONS = {
+  24: [[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 5], [4, 0, 1]],
+  // Cr [Ar]3d5 4s1
+  29: [[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 1]],
+  // Cu [Ar]3d10 4s1
+  41: [[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6], [4, 2, 4], [5, 0, 1]],
+  // Nb
+  42: [[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6], [4, 2, 5], [5, 0, 1]],
+  // Mo
+  44: [[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6], [4, 2, 7], [5, 0, 1]],
+  // Ru
+  45: [[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6], [4, 2, 8], [5, 0, 1]],
+  // Rh
+  46: [[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6], [4, 2, 10]],
+  // Pd (no 5s)
+  47: [[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6], [4, 2, 10], [5, 0, 1]],
+  // Ag
+  64: [[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6], [4, 2, 10], [4, 3, 7], [5, 0, 2], [5, 1, 6], [5, 2, 1], [6, 0, 2]],
+  // Gd
+  78: [[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6], [4, 2, 10], [4, 3, 14], [5, 0, 2], [5, 1, 6], [5, 2, 9], [6, 0, 1]],
+  // Pt
+  79: [[1, 0, 2], [2, 0, 2], [2, 1, 6], [3, 0, 2], [3, 1, 6], [3, 2, 10], [4, 0, 2], [4, 1, 6], [4, 2, 10], [4, 3, 14], [5, 0, 2], [5, 1, 6], [5, 2, 10], [6, 0, 1]]
+  // Au
+};
+var SYMBOLS = "H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm Bk Cf Es Fm Md No Lr Rf Db Sg Bh Hs Mt Ds Rg Cn Nh Fl Mc Lv Ts Og".split(" ");
+var MAX_Z = SYMBOLS.length;
+function symbolOf(Z) {
+  return SYMBOLS[Z - 1] ?? `Z${Z}`;
+}
+function aufbauConfig(Z) {
+  let remaining = Z;
+  const cfg = [];
+  for (const [n, l] of MADELUNG_ORDER) {
+    if (remaining <= 0) break;
+    const occ = Math.min(remaining, subshellCapacity(l));
+    cfg.push({ n, l, occ });
+    remaining -= occ;
+  }
+  if (remaining > 0) {
+    throw new Error(
+      `cut: Z=${Z} exceeds the subshells in the Madelung order (through 7p)`
+    );
+  }
+  return canonical(cfg);
+}
+function deriveConfiguration(Z) {
+  const ex = AUFBAU_EXCEPTIONS[Z];
+  if (ex) return canonical(expand(ex));
+  return aufbauConfig(Z);
+}
+function isAufbauException(Z) {
+  return AUFBAU_EXCEPTIONS[Z] !== void 0;
+}
+function configToString(cfg, abbreviate = true) {
+  const full = () => cfg.map((s) => `${s.n}${L_LETTER[s.l]}${s.occ}`).join(" ");
+  if (!abbreviate) return full();
+  const byNL = new Map(cfg.map((s) => [`${s.n},${s.l}`, s.occ]));
+  for (const [label, core] of CORE_CONFIGS) {
+    const matches = core.every((c) => byNL.get(`${c.n},${c.l}`) === c.occ);
+    if (!matches) continue;
+    const coreSet = new Set(core.map((c) => `${c.n},${c.l}`));
+    const valence = cfg.filter((s) => !coreSet.has(`${s.n},${s.l}`));
+    if (valence.length === 0) return label;
+    return `${label} ` + valence.map((s) => `${s.n}${L_LETTER[s.l]}${s.occ}`).join(" ");
+  }
+  return full();
+}
+function openShells(cfg) {
+  return cfg.filter((s) => s.occ > 0 && s.occ < subshellCapacity(s.l));
+}
+function couple(s) {
+  const nOrb = 2 * s.l + 1;
+  const mls = [];
+  for (let m = s.l; m >= -s.l; m--) mls.push(m);
+  const occPer = new Array(nOrb).fill(0);
+  const spinPer = new Array(nOrb).fill(0);
+  let remaining = s.occ;
+  for (let i = 0; i < nOrb && remaining > 0; i++) {
+    spinPer[i] += 0.5;
+    occPer[i] += 1;
+    remaining--;
+  }
+  for (let i = 0; i < nOrb && remaining > 0; i++) {
+    spinPer[i] -= 0.5;
+    occPer[i] += 1;
+    remaining--;
+  }
+  return {
+    S: spinPer.reduce((a, b) => a + b, 0),
+    ML: mls.reduce((acc, m, i) => acc + m * occPer[i], 0)
+  };
+}
+function formatJ(J) {
+  return J === Math.trunc(J) ? String(J) : `${Math.round(2 * J)}/2`;
+}
+function hundTerm(cfg) {
+  const open = openShells(cfg);
+  if (open.length === 0) return "1S_0";
+  let totalS = 0;
+  let totalML = 0;
+  for (const s of open) {
+    const { S, ML } = couple(s);
+    totalS += S;
+    totalML += ML;
+  }
+  const L = Math.abs(Math.round(totalML));
+  const mult = Math.round(2 * totalS + 1);
+  const occ = open.reduce((a, s) => a + s.occ, 0);
+  const cap = open.reduce((a, s) => a + subshellCapacity(s.l), 0);
+  const J = occ <= cap / 2 ? Math.abs(L - totalS) : L + totalS;
+  const letter = L < S_LABELS.length ? S_LABELS[L] : `[${L}]`;
+  return `${mult}${letter}_${formatJ(J)}`;
+}
+function valenceShell(cfg) {
+  const nMax = Math.max(...cfg.map((s) => s.n));
+  const outer = cfg.filter((s) => s.n === nMax);
+  const innerOpen = cfg.filter((s) => s.n < nMax && s.occ < subshellCapacity(s.l) && s.occ > 0);
+  return [...innerOpen, ...outer];
+}
+function valenceCounts(cfg) {
+  const nMax = Math.max(...cfg.map((s) => s.n));
+  if (nMax === 1) {
+    const occ = cfg.find((s) => s.n === 1 && s.l === 0)?.occ ?? 0;
+    return { qv: occ, capV: 2 };
+  }
+  const sp = cfg.filter((s) => s.n === nMax && s.l <= 1);
+  const qv = sp.reduce((a, s) => a + s.occ, 0);
+  return { qv, capV: 8 };
+}
+function periodGroup(cfg) {
+  const nMax = Math.max(...cfg.map((s2) => s2.n));
+  const dLate = cfg.filter((s2) => s2.l === 2 && s2.occ > 0).map((s2) => s2.n + 1);
+  const period = Math.max(nMax, ...dLate.length ? dLate : [nMax]);
+  const outer = cfg.filter((s2) => s2.n === period);
+  const s = outer.find((x) => x.l === 0)?.occ ?? 0;
+  const p = outer.find((x) => x.l === 1)?.occ ?? 0;
+  const d = cfg.find((x) => x.n === period - 1 && x.l === 2)?.occ ?? 0;
+  const f = cfg.find((x) => x.n === period - 2 && x.l === 3)?.occ ?? 0;
+  if (f > 0 && f < 14) return { period, group: null };
+  if (d > 0 && p === 0) return { period, group: Math.min(s + d, 12) };
+  if (p > 0) return { period, group: 10 + s + p };
+  if (period === 1 && s === 2) return { period, group: 18 };
+  return { period, group: s };
+}
+function deriveAtom(Z) {
+  if (!Number.isInteger(Z) || Z < 1) {
+    throw new Error(`cut: atomic number must be a positive integer (got ${Z})`);
+  }
+  if (Z > MAX_Z) {
+    throw new Error(`cut: Z=${Z} is beyond the named elements (1..${MAX_Z})`);
+  }
+  const config = deriveConfiguration(Z);
+  const { qv, capV } = valenceCounts(config);
+  const vacancy = Math.max(capV - qv, 0);
+  const valence = Math.min(vacancy, capV - vacancy);
+  const { period, group } = periodGroup(config);
+  return {
+    Z,
+    symbol: symbolOf(Z),
+    config,
+    configStr: configToString(config),
+    term: hundTerm(config),
+    qv,
+    capV,
+    vacancy,
+    valence,
+    period,
+    group,
+    exception: isAufbauException(Z)
+  };
+}
+
+// src/stdlib.ts
 function thickness(nu, floor, kappa = 1) {
   return floor + kappa * nu;
 }
 function individuate(Z, floor) {
-  if (!Number.isInteger(Z) || Z < 1) throw new Error(`cut: atomic number must be a positive integer (got ${Z})`);
-  const e = BY_Z.get(Z);
-  if (!e) throw new Error(`cut: element Z=${Z} not in the light-element table (1..18 supported)`);
-  const vacancy = e.capV - e.qv;
-  const valence = Math.min(vacancy, e.capV - vacancy);
-  const residue = thickness(vacancy, floor);
+  const d = deriveAtom(Z);
+  const residue = thickness(d.vacancy, floor);
   return {
     ty: "Atom",
     Z,
-    symbol: e.sym,
-    config: e.config,
-    term: e.term,
-    qv: e.qv,
-    capV: e.capV,
-    vacancy,
-    valence,
+    symbol: d.symbol,
+    config: d.configStr,
+    // The shells themselves, not just their printed form: the subshell
+    // occupancies are what `cut` actually derived, and a caller that wants to
+    // draw the derivation needs the numbers, not the string.
+    shells: d.config,
+    term: d.term,
+    qv: d.qv,
+    capV: d.capV,
+    vacancy: d.vacancy,
+    valence: d.valence,
+    period: d.period,
+    group: d.group,
+    exception: d.exception,
     floor,
     residue
   };
@@ -856,6 +1056,7 @@ function close(central, ligands, floor) {
       geometry: "linear",
       angleDeg: 180,
       valenceClosed: true,
+      mainGroupModel: true,
       floor,
       residue: thickness(central.vacancy, floor)
     };
@@ -881,6 +1082,7 @@ function close(central, ligands, floor) {
     geometry = lonePairs === 0 ? "tetrahedral" : lonePairs === 1 ? "pyramidal" : "bent";
     angleDeg = lonePairs === 0 ? round2(ANGLE_TET) : lonePairs === 1 ? 107 : 104.5;
   }
+  const dBlock = central.group !== null && central.group >= 3 && central.group <= 12;
   return {
     ty: "Compound",
     central: central.symbol,
@@ -890,6 +1092,7 @@ function close(central, ligands, floor) {
     geometry,
     angleDeg,
     valenceClosed: true,
+    mainGroupModel: !dBlock,
     floor,
     residue: thickness(0, floor) + nLig * floor
   };
@@ -1101,13 +1304,13 @@ function renderValue(v, name) {
   const tag = name ? `${name} : ` : "";
   switch (v.ty) {
     case "Atom":
-      return `${tag}Atom @ ${fmt(v.floor)}  Z=${v.Z} ${v.symbol}  ${v.config}  ${v.term}  vacancy=${v.vacancy}  valence=${v.valence}  residue=${fmt(v.residue)}`;
+      return `${tag}Atom @ ${fmt(v.floor)}  Z=${v.Z} ${v.symbol}  ${v.config}  ${v.term}  period=${v.period} group=${v.group ?? "f"}  vacancy=${v.vacancy}  valence=${v.valence}  residue=${fmt(v.residue)}` + (v.exception ? "  [ground state departs from aufbau]" : "");
     case "Bond":
       return `${tag}Bond @ ${fmt(v.floor)}  ${v.a}~${v.b}  exists=${v.exists}  delta=${fmt(v.delta)}  shared=${v.shared}  residue=${fmt(v.residue)}`;
     case "Compound": {
       const lig = v.formula[1] > 1 ? v.ligand + v.formula[1] : v.formula[1] === 1 ? v.ligand : "";
       const formula = v.formula[0] === 2 ? v.central + "2" : v.central + lig;
-      return `${tag}Compound @ ${fmt(v.floor)}  ${formula}  geometry=${v.geometry}  angle=${v.angleDeg ?? "-"}  closed=${v.valenceClosed}  residue=${fmt(v.residue)}`;
+      return `${tag}Compound @ ${fmt(v.floor)}  ${formula}  geometry=${v.geometry}  angle=${v.angleDeg ?? "-"}  closed=${v.valenceClosed}  residue=${fmt(v.residue)}` + (v.mainGroupModel ? "" : "  [octet/VSEPR extrapolated beyond main group]");
     }
     case "Path":
       return `${tag}Path @ ${fmt(v.floor)}  item=${v.item}  steps=${v.steps}  converged=${v.converged}  reps=[${v.reps.join(",")}]  amalgamation=[${v.amalgamation.join(", ")}]  residue=${fmt(v.residue)}`;
@@ -1137,13 +1340,27 @@ function exec(src) {
   return { log: r.log, cutCount: r.cutCount, ok: r.ok };
 }
 export {
+  MADELUNG_ORDER,
+  MAX_Z,
+  aufbauConfig,
   check,
   compile,
+  configToString,
+  deriveAtom,
+  deriveConfiguration,
   evaluate,
   exec,
+  hundTerm,
+  isAufbauException,
   lex,
   lower,
+  openShells,
   parse,
   renderValue,
-  run
+  run,
+  shellCapacity,
+  subshellCapacity,
+  symbolOf,
+  valenceCounts,
+  valenceShell
 };

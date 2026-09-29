@@ -70,12 +70,15 @@ flowchart TB
 | `sbs` | science | SBS | — | native | hegel (JS) |
 | `sbs-core` | science | — | native | remote | hegel (Rust) |
 | `tempus` | science | Tempus | — | native | stella-lorraine (web) |
+| `cfc` | science | cause-for-concern | — | native | syndrome (JS) |
+| `honjo` | science | Honjo Masamune | — (Rust twin lags, U-hjo-2) | native | borgia (JS bundle) |
 | `synopsis` | science | synopsis | — (Rust twin parses only, U-syn-1) | native | gospel (TS) |
 | `hfq` | coordination | HFQ | — | native | hegel (JS) |
 | `pylon` | coordination | SRN | — | native | pylon (TS) |
 | `smith` | coordination | Agent Smith | — (Rust crate lags, U-smi-1..3) | native | musande (web) |
 | `windtunnel` | observation | .wt | native | native (wasm) | wind-tunnel |
 | `tracker` | observation | — | native | native (wasm) | bloodhound |
+| `sthurbert` | observation | st-Hurbert | — | native | bloodhound (TS) |
 | `zangalewa-dsl` | generation | — | native (feature) | remote (broker) | zangalewa |
 
 Each `—` is deliberate and justified in the module's specification. The main reasons:

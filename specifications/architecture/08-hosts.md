@@ -20,6 +20,9 @@ A *host* is a process that owns one registry. There are four.
 | `tempus` | `tempus-module.js` | native, `makeTempusModule(@stella-lorraine/tempus)` |
 | `smith` | `smith-module.js` | native, `makeSmithModule(@musande/agent-smith)` |
 | `synopsis` | `synopsis-module.js` | native, `makeSynopsisModule(@gospel/synopsis)` |
+| `cfc` | `cfc-module.js` | native, `makeCfcModule(@syndrome/cfc)` |
+| `sthurbert` | `sthurbert-module.js` | native, `makeSthurbertModule(@bloodhound/sthurbert)` |
+| `honjo` | `honjo-module.js` | native, `makeHonjoModule(@borgia/honjo)` |
 | `zangalewa-dsl` | `zangalewa-dsl-module.js` | remote (broker; `NEXT_PUBLIC_ZANGALEWA_BROKER`) |
 | `ndombolo`, `windtunnel`, `tracker` | `rust-wasm-modules.js` | native (wasm, lazy from `/wasm/buhera_modules.wasm`) |
 | `sbs-core` | `gateway-remote-modules.js` | remote (gateway session from `gateway-module.js`) |

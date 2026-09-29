@@ -28,6 +28,9 @@ const KEYWORDS = {
   tempus: ["tempus", "timing", "delta p", "cell", "sync"],
   smith: ["smith", "agent smith", "split-attention", "self-graph", "scene", "society"],
   synopsis: ["synopsis", "genomic", "motif", "homology", "residue", "variant", "frame"],
+  cfc: ["cfc", "cause-for-concern", "thermodynamic", "holonomy", "metabolic", "cycle", "verdict"],
+  sthurbert: ["sthurbert", "st-hurbert", "repo", "repository", "symbols", "query"],
+  honjo: ["honjo", "masamune", "chemistry", "atom", "bond", "molecule", "cut"],
 };
 
 function languageSection(md) {

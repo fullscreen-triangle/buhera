@@ -1,7 +1,7 @@
 /* ============================================================================
  * HonjoSandboxPanel — the REAL honjo (Honjo Masamune) sandbox, embedded.
  *
- * Runs the real honjo compiler in the browser (src/lib/honjo.js, a zero-dep
+ * Runs the real honjo compiler in the browser (vendor/honjo, borgia src/lib/honjo.js — a zero-dep
  * esbuild bundle: lex -> parse -> accountability check -> Cut-IR -> exact
  * interpreter). Seeded with the real `track.hj` example, whose output is the
  * causal table — a Path @ floor with converged=true and an amalgamation — plus
@@ -11,7 +11,7 @@
  * ========================================================================== */
 
 import { useState, useCallback, useEffect } from "react";
-import { evaluate, compile } from "@/lib/sandboxes/honjo/honjo";
+import { evaluate, compile } from "@borgia/honjo";
 import ValueCard, { fmt } from "./ValueCard";
 import SandboxFrame from "../SandboxFrame";
 

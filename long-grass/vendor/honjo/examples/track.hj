@@ -1,0 +1,16 @@
+-- track.hj — tracking an item through a process (the causal table)
+floor 1.0
+import honjo.causal
+
+O := cut 8
+H := cut 1
+W := close O(H, H)
+
+-- propagate O's uncertainty through the process; admissible iff it
+-- S-entropy-converges to the observed output. representation switching allowed.
+path := track O in W
+          with reps mass, charge, time
+          until converge
+          yield amalgamation
+
+observe path              -- the amalgamation IS the result

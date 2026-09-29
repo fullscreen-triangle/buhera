@@ -1,0 +1,24 @@
+{
+  "id": "honjo",
+  "name": "Honjo Masamune Reference",
+  "short_label": "Honjo Masamune",
+  "summary": "Grammar and worked examples for Honjo Masamune, projected from specifications/specs/honjo.md. Used to ground natural-language-to-honjo generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/borgia",
+  "trigger_keywords": [
+    "honjo",
+    "masamune",
+    "chemistry",
+    "atom",
+    "bond",
+    "molecule",
+    "cut"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "Honjo Masamune grammar and validated examples"
+    }
+  ]
+}
