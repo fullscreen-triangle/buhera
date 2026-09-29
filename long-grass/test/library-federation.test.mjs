@@ -32,6 +32,8 @@ test("each language's own front end accepts a valid script and rejects a broken 
     cfc: ["floor 1e-9\nemit \"ok\"\n", "floor 1e-9\nadmit h yield v\n"],
     sthurbert: ["navigate * ; show chi", "show nope"],
     honjo: ["floor 1.0\nO := cut 8\nobserve O\n", "floor 0\nO := cut 8\n"],
+    mishima: ["floor 0.02\nseek g\n  not    { thin }\n  toward { region(r) }\n  via    { rung a at 0.45 >> rung b at 0.30 >> rung c at 0.55 }\n  until  closure\n  otherwise decline\n  yield  found\n", "floor 0.02\nseek g\n  toward { region(r) }\n  via    { rung a at 0.45 >> rung b at 0.30 >> rung c at 0.55 }\n  until  closure\n  otherwise decline\n  yield  found\n"],
+    sangoma: ["floor 0.02\nconstruct c {\n  stage s\n  target {\n    crest >= 6.0#0.5\n  }\n  via { rung s at 0.40 >> rung t at 0.35 >> rung u at 0.55 }\n}\n", "floor 0.0\n"],
     tempus: ["sync c at 1e6 freq\ncell A bounds (0, 1) action 0\ncompose d=1 channels c into t\nwhen A do emit ok", "cell A bounds (1, 0) action 0"],
   };
   for (const [id, [good, bad]] of Object.entries(cases)) {

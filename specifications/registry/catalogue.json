@@ -434,6 +434,102 @@
       "residue": "0: programs are straight-line and run to completion (honjo's per-value residue is chemistry, reported in the delta).",
       "side_effects": [],
       "spec": "specs/honjo.md"
+    },
+    {
+      "id": "heihachi",
+      "name": "heihachi (mishima / sangoma)",
+      "layer": "language",
+      "summary": "The two languages of the heihachi micro-kernel: mishima seeks over an accumulated record and sangoma constructs material against declared targets. Checked for floor negotiation, bounded seeks, coherent and unsaturated ladders; each ladder's composite power reported.",
+      "dsl": "mishima",
+      "upstream": [
+        {
+          "repo": "fullscreen-triangle/heihachi",
+          "path": "micro-kernel/daemon/src/lang",
+          "language": "rust",
+          "commit": "bd521db766e5d2b29129d36dd0971f2d831b29ba",
+          "vendored_at": "buhera-os/vendor/heihachi/src/lang"
+        },
+        {
+          "repo": "fullscreen-triangle/heihachi",
+          "path": "micro-kernel/daemon/src/graph",
+          "language": "rust",
+          "commit": "bd521db766e5d2b29129d36dd0971f2d831b29ba",
+          "vendored_at": "buhera-os/vendor/heihachi/src/graph"
+        }
+      ],
+      "bindings": {
+        "rust": "native",
+        "ts": "native"
+      },
+      "output_kinds": [
+        "heihachi_check"
+      ],
+      "residue": "Error diagnostics still to fix (0 when the program is accepted).",
+      "side_effects": [],
+      "spec": "specs/heihachi.md"
+    },
+    {
+      "id": "olduvai",
+      "name": "Olduvai addressing",
+      "layer": "coordination",
+      "summary": "Intrinsic addressing from the Olduvai exchange: S-coordinates to ternary addresses and back, similarity by shared prefix, a trie of labelled points with an explicit fallback, water-filled attention, foreman cycle coherence.",
+      "dsl": null,
+      "upstream": [
+        {
+          "repo": "fullscreen-triangle/olduvai-exchange",
+          "path": "crates/olduvai-core/src",
+          "language": "rust",
+          "commit": "a7b520daad226e2f2bc2b8b743019edb224a202f",
+          "vendored_at": "buhera-os/vendor/olduvai-core/src"
+        }
+      ],
+      "bindings": {
+        "rust": "native",
+        "ts": "native"
+      },
+      "output_kinds": [
+        "olduvai_address",
+        "olduvai_coords",
+        "olduvai_similarity",
+        "olduvai_trie",
+        "olduvai_nearest",
+        "olduvai_ranked",
+        "olduvai_water_fill",
+        "olduvai_cycle",
+        "text"
+      ],
+      "residue": "nearest: trits of resolution given up by the fallback (0 on an exact hit); 0 otherwise.",
+      "side_effects": [],
+      "spec": "specs/olduvai.md"
+    },
+    {
+      "id": "levinthal",
+      "name": "levinthal",
+      "layer": "science",
+      "summary": "Protein folding as backward trajectory completion: partition states (n, l, m, s) under selection rules, the trajectory from a goal back to the origin with its coherence profile, state capacities, per-residue S-entropy coordinates of a sequence.",
+      "dsl": null,
+      "upstream": [
+        {
+          "repo": "fullscreen-triangle/levinthal",
+          "path": "crates/levinthal-core/src",
+          "language": "rust",
+          "commit": "eca659697ec11e7fe56f0d2f22b12ec03d59715e",
+          "vendored_at": "buhera-os/vendor/levinthal-core/src"
+        }
+      ],
+      "bindings": {
+        "rust": "native",
+        "ts": "native"
+      },
+      "output_kinds": [
+        "levinthal_trajectory",
+        "levinthal_analysis",
+        "levinthal_capacity",
+        "text"
+      ],
+      "residue": "0: every operation is a closed-form derivation that completes in one act.",
+      "side_effects": [],
+      "spec": "specs/levinthal.md"
     }
   ],
   "dsls": [
@@ -556,6 +652,28 @@
       "module_id": "honjo",
       "pack_id": "honjo",
       "validators": [
+        "ts"
+      ]
+    },
+    {
+      "id": "mishima",
+      "label": "mishima",
+      "extension": ".mma",
+      "module_id": "heihachi",
+      "pack_id": "mishima",
+      "validators": [
+        "rust",
+        "ts"
+      ]
+    },
+    {
+      "id": "sangoma",
+      "label": "sangoma",
+      "extension": ".sgn",
+      "module_id": "heihachi",
+      "pack_id": "sangoma",
+      "validators": [
+        "rust",
         "ts"
       ]
     }

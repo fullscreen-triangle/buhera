@@ -1,0 +1,21 @@
+# VENDORED — fullscreen-triangle/heihachi micro-kernel/daemon/src/{lang,graph}
+# (see specifications/registry/vendor.json). src/lang and src/graph are
+# byte-exact copies; this Cargo.toml and src/lib.rs are the local shim that
+# turns the daemon's private modules into a library without its server,
+# audio and model dependencies. Do not edit src/lang or src/graph — run
+# `node scripts/vendor-sync.mjs --sync heihachi-lang heihachi-graph`.
+[package]
+name = "heihachi-lang"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "Vendored: the mishima and sangoma front ends and the record graph of the heihachi micro-kernel."
+
+[lib]
+name = "heihachi"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }

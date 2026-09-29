@@ -164,7 +164,7 @@ test("lazy wasm modules: describe before load, run after; a failed load is a res
   const { makeLazyWasmModules } = await import("../src/modules/rust-wasm.ts");
   const { loadWasmEngine } = await import("../src/wasm.ts");
   const bytes = await readFile(new URL("../wasm/buhera_modules.wasm", import.meta.url));
-  const [nd] = makeLazyWasmModules(() => loadWasmEngine(bytes));
+  const nd = makeLazyWasmModules(() => loadWasmEngine(bytes)).find((m) => m.id === "ndombolo");
   assert.equal(nd?.describe().dsl, "turbulance");
   const r = await nd!.execute("demo", 1);
   assert.equal(r.ok, true);
@@ -348,4 +348,30 @@ test("honjo: the four upstream examples run; M is honjo's clock; errors carry li
   assert.equal(range.ok, false, "Z beyond the named elements is refused when the program runs");
   const fe = await registry.dispatch("honjo", { kind: "derive", z: 26 });
   assert.equal((fe.output_delta as unknown as { atom: { symbol: string } }).atom.symbol, "Fe");
+});
+
+test("wasm: heihachi, olduvai, levinthal are the Rust modules — same numbers as the Rust tests", async () => {
+  const engines = await realEngines();
+  const { registry, dsls } = createFederation({ wasm: engines.wasm });
+  const ex = new URL("../../vendor/heihachi/examples/", import.meta.url);
+  const recall = await readFile(new URL("recall.mma", ex), "utf8");
+  const reese = await readFile(new URL("reese.sgn", ex), "utf8");
+  assert.equal(dsls.validate("mishima", recall).ok, true);
+  assert.equal(dsls.validate("sangoma", reese).ok, true);
+  const demo = await registry.dispatch("heihachi", "demo");
+  const cp = (demo.output_delta as unknown as { ladders: Array<{ composite_power: number }> }).ladders[0]!.composite_power;
+  assert.ok(Math.abs(cp - 0.8245) < 1e-12, `reese composite ${cp}`);
+  const noNot = dsls.validate("mishima", "floor 0.02\nseek x\n  toward { region(y) }\n  via { rung a at 0.4 >> rung b at 0.4 >> rung c at 0.4 }\n  until closure\n  yield r\n");
+  assert.equal(noNot.ok, false);
+  assert.match(noNot.errors[0]!.message, /rule:mandatory-not/);
+
+  const lev = await registry.dispatch("levinthal", "demo");
+  const states = (lev.output_delta as unknown as { states: Array<{ n: number; l: number; m: number }> }).states.map((s) => [s.n, s.l, s.m]);
+  assert.deepEqual(states, [[1, 0, 0], [2, 0, 0], [3, 0, 0], [3, 1, 1], [3, 2, 1]]);
+
+  const old = await registry.dispatch("olduvai", "demo");
+  assert.equal(old.ok, true);
+  assert.equal(old.residue, (old.output_delta as unknown as { resolution_lost: number }).resolution_lost);
+  const again = await registry.dispatch("olduvai", { kind: "nearest", coords: { s_k: 0.3, s_t: 0.6, s_e: 0.2 } });
+  assert.equal(again.residue, 0, "the trie persists across acts and an exact hit loses nothing");
 });

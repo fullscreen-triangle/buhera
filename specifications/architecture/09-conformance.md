@@ -35,15 +35,18 @@ node scripts/vendor-sync.mjs --check
 | vendored `wt-dsl` | 19 passed |
 | vendored `hegel-sbs` | 6 passed |
 | vendored `tracker-chi` | 2 passed |
+| vendored `heihachi-lang` (mishima, sangoma, record graph) | 32 passed |
+| vendored `olduvai-core` (unit + property) | 188 passed |
+| vendored `levinthal-core` | 42 passed |
 | vendored `zangalewa-dsl` (with `ZANGALEWA_PACKS` → long-grass packs, set in `buhera-os/.cargo/config.toml`) | 20 passed |
-| `buhera-modules --features full` (catalogue C1–C5 + module behaviour) | 11 passed |
+| `buhera-modules --features full` (catalogue C1–C5 + module behaviour, incl. heihachi, olduvai, levinthal) | 19 passed |
 | `buhera-wasm` (native) | 3 passed |
 | `buhera-gateway` (36 existing + 4 `/api/dispatch`) | 40 passed |
-| `cargo test --workspace` (default features; every crate above plus kernel, substrate, vahera, embed, os) | 222 passed, 0 failed |
-| `registry-ts` (R1–R6, D1, catalogue C1–C5, 26 module cases incl. wasm, lazy wasm, remote, smith, the full synopsis corpus, the cfc and honjo example corpora, st-Hurbert) | 34 passed; `tsc` strict clean |
-| long-grass `npm test` | 100 passed |
+| `cargo test --workspace --no-fail-fast` (default features; every crate above plus kernel, substrate, vahera, embed, os) | 506 passed, 0 failed |
+| `registry-ts` (R1–R6, D1, catalogue C1–C5, 27 module cases incl. wasm, lazy wasm, remote, smith, the full synopsis corpus, the cfc and honjo example corpora, st-Hurbert, heihachi/olduvai/levinthal through wasm) | 35 passed; `tsc` strict clean |
+| long-grass `npm test` | 103 passed |
 | long-grass `next build` | success |
-| `vendor-sync --check` | 19 verified, 1 built, 0 failed |
+| `vendor-sync --check` | 24 verified, 1 built, 0 failed |
 
 ## 3. Claim → proof
 

@@ -14,8 +14,8 @@
  * Each entry also records which module executes the code (moduleId, for
  * dispatch) and which knowledge pack grounds generation (packId).
  *
- * Server-side only (dsl-generator, /api/dsl-generate): the Turbulance and
- * .wt validators are the Rust front ends compiled to wasm, loaded
+ * Server-side only (dsl-generator, /api/dsl-generate): the Turbulance, .wt,
+ * mishima and sangoma validators are the Rust front ends compiled to wasm, loaded
  * synchronously from public/wasm on first use.
  */
 
@@ -69,6 +69,14 @@ registry.register({
 registry.register({
   id: "wt", label: "Wind Tunnel (.wt)", extension: ".wt", moduleId: "windtunnel", packId: "wt",
   validate: (src) => wasmEngine().validate("wt", src),
+});
+registry.register({
+  id: "mishima", label: "mishima", extension: ".mma", moduleId: "heihachi", packId: "mishima",
+  validate: (src) => wasmEngine().validate("mishima", src),
+});
+registry.register({
+  id: "sangoma", label: "sangoma", extension: ".sgn", moduleId: "heihachi", packId: "sangoma",
+  validate: (src) => wasmEngine().validate("sangoma", src),
 });
 
 /** The registry instance (typed API). */

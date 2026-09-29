@@ -5,12 +5,12 @@ edition.workspace = true
 authors.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "The pure Rust federation modules compiled to one wasm32 module with a C-ABI JSON interface; backs the TypeScript host's in-process (native) binding for ndombolo, windtunnel and tracker."
+description = "The pure Rust federation modules compiled to one wasm32 module with a C-ABI JSON interface; backs the TypeScript host's in-process (native) binding for ndombolo, windtunnel, tracker, heihachi, olduvai and levinthal."
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 buhera-registry = { workspace = true }
-buhera-modules = { workspace = true, features = ["ndombolo", "windtunnel", "tracker"] }
+buhera-modules = { workspace = true, features = ["ndombolo", "windtunnel", "tracker", "heihachi", "olduvai", "levinthal"] }
 serde_json = { workspace = true }

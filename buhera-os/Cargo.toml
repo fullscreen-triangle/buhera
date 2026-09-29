@@ -25,6 +25,9 @@ members = [
     "vendor/tracker-chi",
     "vendor/zangalewa-dsl",
     "vendor/hegel-sbs",
+    "vendor/heihachi",
+    "vendor/olduvai-core",
+    "vendor/levinthal-core",
 ]
 
 [workspace.package]
@@ -54,6 +57,9 @@ ndombolo-core    = { path = "vendor/ndombolo-core" }
 tracker-chi      = { path = "vendor/tracker-chi" }
 zangalewa-dsl    = { path = "vendor/zangalewa-dsl" }
 sbs              = { path = "vendor/hegel-sbs" }
+heihachi-lang    = { path = "vendor/heihachi" }
+olduvai-core     = { path = "vendor/olduvai-core" }
+levinthal-core   = { path = "vendor/levinthal-core" }
 buhera-modules   = { path = "crates/buhera-modules", default-features = false }
 
 [profile.release]

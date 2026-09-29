@@ -11,7 +11,10 @@
     "fullscreen-triangle/musande": "../../semantics/musande",
     "fullscreen-triangle/gospel": "../../bioinformatics/gospel",
     "fullscreen-triangle/syndrome": "../../health/syndrome",
-    "fullscreen-triangle/borgia": "../../bioinformatics/borgia"
+    "fullscreen-triangle/borgia": "../../bioinformatics/borgia",
+    "fullscreen-triangle/heihachi": "../../audio/heihachi",
+    "fullscreen-triangle/olduvai-exchange": "../../portfolio/olduvai-exchange",
+    "fullscreen-triangle/levinthal": "../../bioinformatics/levinthal"
   },
   "entries": [
     {
@@ -225,6 +228,56 @@
       "mode": "tree",
       "commit": "28a633a3687f32c9e350a88e77a9b4b1ef4de33c",
       "note": "The four .hj example programs; the module test runs them all."
+    },
+    {
+      "id": "heihachi-lang",
+      "module": "heihachi",
+      "repo": "fullscreen-triangle/heihachi",
+      "from": "micro-kernel/daemon/src/lang",
+      "to": "buhera-os/vendor/heihachi/src/lang",
+      "mode": "tree",
+      "commit": "bd521db766e5d2b29129d36dd0971f2d831b29ba",
+      "note": "The two language front ends of the heihachi micro-kernel: mishima (.mma) and sangoma (.sgn), their shared lexer, the Diagnostic/CheckResult shape and composite_power. Pure (serde, thiserror). The daemon crate itself (tokio, axum, reqwest, CLAP host, file watching) is not vendored; lib.rs and Cargo.toml in buhera-os/vendor/heihachi are the local shim (tracker-chi precedent)."
+    },
+    {
+      "id": "heihachi-graph",
+      "module": "heihachi",
+      "repo": "fullscreen-triangle/heihachi",
+      "from": "micro-kernel/daemon/src/graph",
+      "to": "buhera-os/vendor/heihachi/src/graph",
+      "mode": "tree",
+      "commit": "bd521db766e5d2b29129d36dd0971f2d831b29ba",
+      "note": "The record graph (Runtime, Value::reading, min-cut contact graph, seek_to_closure). Vendored because lang/ and graph/ are one unit upstream (graph::reach imports lang::mishima) and graph/ carries tests the module relies on; the adapter does not yet drive a Runtime (the run orchestration lives in the daemon's HTTP handler, U-hei-1)."
+    },
+    {
+      "id": "heihachi-examples",
+      "module": "heihachi",
+      "repo": "fullscreen-triangle/heihachi",
+      "from": "micro-kernel/daemon/examples",
+      "to": "buhera-os/vendor/heihachi/examples",
+      "mode": "tree",
+      "commit": "bd521db766e5d2b29129d36dd0971f2d831b29ba",
+      "note": "recall.mma and reese.sgn, the two upstream example programs; the module's demos and tests use them verbatim (include_str!)."
+    },
+    {
+      "id": "olduvai-core",
+      "module": "olduvai",
+      "repo": "fullscreen-triangle/olduvai-exchange",
+      "from": "crates/olduvai-core/src",
+      "to": "buhera-os/vendor/olduvai-core/src",
+      "mode": "tree",
+      "commit": "a7b520daad226e2f2bc2b8b743019edb224a202f",
+      "note": "Pure, deterministic core of the Olduvai exchange: ternary S-coordinate addresses, the prefix trie with honest fallback, water-filling, foreman cycle coherence. Recorded at origin/main (a7b520d): the local clone is 9 commits ahead, but this path is identical at both. Local Cargo.toml (upstream uses workspace keys)."
+    },
+    {
+      "id": "levinthal-core",
+      "module": "levinthal",
+      "repo": "fullscreen-triangle/levinthal",
+      "from": "crates/levinthal-core/src",
+      "to": "buhera-os/vendor/levinthal-core/src",
+      "mode": "tree",
+      "commit": "eca659697ec11e7fe56f0d2f22b12ec03d59715e",
+      "note": "Partition states (n,l,m,s), backward trajectory completion, per-residue S-entropy coordinates. Recorded at origin/main (the local clone's 3 unpushed commits do not touch crates/). Local Cargo.toml declares only serde and thiserror: upstream also declares nalgebra, num-traits, num-complex and rand, which the library never uses and which (rand → getrandom) block wasm32 (U-lev-1). levinthal-msms and levinthal-folding are deliberately not vendored (U-lev-2, U-lev-3)."
     }
   ]
 }

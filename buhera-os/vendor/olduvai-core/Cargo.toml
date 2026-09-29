@@ -1,0 +1,20 @@
+# VENDORED — fullscreen-triangle/olduvai-exchange crates/olduvai-core/src
+# (see specifications/registry/vendor.json). src/ is a byte-exact copy; this
+# Cargo.toml is local (upstream inherits workspace keys). Do not edit src/ —
+# run `node scripts/vendor-sync.mjs --sync olduvai-core`, then restore the
+# recorded commit to a published one (see the entry's note).
+[package]
+name = "olduvai-core"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+description = "Vendored: encoder, trie, water-filling and foreman checks of the Olduvai exchange."
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+proptest = "1"
+serde_json = { workspace = true }

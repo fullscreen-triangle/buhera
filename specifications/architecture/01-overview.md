@@ -67,15 +67,18 @@ flowchart TB
 |---|---|---|---|---|---|
 | `vahera` | language | vaHera | native | — (host-local in long-grass) | buhera-os |
 | `ndombolo` | language | Turbulance | native | native (wasm) | kwasa-kwasa |
+| `heihachi` | language | mishima, sangoma | native | native (wasm) | heihachi |
 | `sbs` | science | SBS | — | native | hegel (JS) |
 | `sbs-core` | science | — | native | remote | hegel (Rust) |
 | `tempus` | science | Tempus | — | native | stella-lorraine (web) |
 | `cfc` | science | cause-for-concern | — | native | syndrome (JS) |
 | `honjo` | science | Honjo Masamune | — (Rust twin lags, U-hjo-2) | native | borgia (JS bundle) |
+| `levinthal` | science | — | native | native (wasm) | levinthal |
 | `synopsis` | science | synopsis | — (Rust twin parses only, U-syn-1) | native | gospel (TS) |
 | `hfq` | coordination | HFQ | — | native | hegel (JS) |
 | `pylon` | coordination | SRN | — | native | pylon (TS) |
 | `smith` | coordination | Agent Smith | — (Rust crate lags, U-smi-1..3) | native | musande (web) |
+| `olduvai` | coordination | — | native | native (wasm) | olduvai-exchange |
 | `windtunnel` | observation | .wt | native | native (wasm) | wind-tunnel |
 | `tracker` | observation | — | native | native (wasm) | bloodhound |
 | `sthurbert` | observation | st-Hurbert | — | native | bloodhound (TS) |

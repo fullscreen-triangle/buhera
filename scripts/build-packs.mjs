@@ -31,6 +31,8 @@ const KEYWORDS = {
   cfc: ["cfc", "cause-for-concern", "thermodynamic", "holonomy", "metabolic", "cycle", "verdict"],
   sthurbert: ["sthurbert", "st-hurbert", "repo", "repository", "symbols", "query"],
   honjo: ["honjo", "masamune", "chemistry", "atom", "bond", "molecule", "cut"],
+  mishima: ["mishima", "heihachi", "seek", "recall", "record"],
+  sangoma: ["sangoma", "heihachi", "construct", "sound", "synthesis"],
 };
 
 function languageSection(md) {

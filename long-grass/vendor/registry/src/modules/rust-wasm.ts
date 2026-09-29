@@ -1,7 +1,6 @@
 /* ============================================================================
  * Rust modules hosted in-process through buhera-wasm: ndombolo, windtunnel,
- * tracker (specifications specs/ndombolo.md, specs/windtunnel.md,
- * specs/tracker.md).
+ * tracker, heihachi, olduvai, levinthal (specifications specs/<id>.md).
  *
  * These adapters contain no module logic at all: the descriptor, the act and
  * the language validator are the Rust module's own, executed in wasm. That
@@ -14,7 +13,7 @@ import type { DslEntry } from "../dsl.ts";
 import type { WasmEngine } from "../wasm.ts";
 import { wasmDslSummaries } from "../wasm.ts";
 
-export const WASM_MODULE_IDS = ["ndombolo", "tracker", "windtunnel"] as const;
+export const WASM_MODULE_IDS = ["heihachi", "levinthal", "ndombolo", "olduvai", "tracker", "windtunnel"] as const;
 
 export function makeWasmModules(engine: WasmEngine): Module[] {
   return engine.describe().modules.map((d) => ({
@@ -31,7 +30,10 @@ export function makeWasmDsls(engine: WasmEngine): DslEntry[] {
 
 /** The language each wasm module executes (null = none), for lazy registration. */
 const WASM_DSL: Record<(typeof WASM_MODULE_IDS)[number], string | null> = {
+  heihachi: "mishima",
+  levinthal: null,
   ndombolo: "turbulance",
+  olduvai: null,
   tracker: null,
   windtunnel: "wt",
 };

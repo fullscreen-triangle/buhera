@@ -1,0 +1,22 @@
+{
+  "id": "sangoma",
+  "name": "sangoma Reference",
+  "short_label": "sangoma",
+  "summary": "Grammar and worked examples for sangoma, projected from specifications/specs/heihachi.md. Used to ground natural-language-to-sangoma generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/heihachi",
+  "trigger_keywords": [
+    "sangoma",
+    "heihachi",
+    "construct",
+    "sound",
+    "synthesis"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "sangoma grammar and validated examples"
+    }
+  ]
+}

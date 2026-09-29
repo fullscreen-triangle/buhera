@@ -24,7 +24,7 @@ A *host* is a process that owns one registry. There are four.
 | `sthurbert` | `sthurbert-module.js` | native, `makeSthurbertModule(@bloodhound/sthurbert)` |
 | `honjo` | `honjo-module.js` | native, `makeHonjoModule(@borgia/honjo)` |
 | `zangalewa-dsl` | `zangalewa-dsl-module.js` | remote (broker; `NEXT_PUBLIC_ZANGALEWA_BROKER`) |
-| `ndombolo`, `windtunnel`, `tracker` | `rust-wasm-modules.js` | native (wasm, lazy from `/wasm/buhera_modules.wasm`) |
+| `ndombolo`, `windtunnel`, `tracker`, `heihachi`, `olduvai`, `levinthal` | `rust-wasm-modules.js` | native (wasm, lazy from `/wasm/buhera_modules.wasm`) |
 | `sbs-core` | `gateway-remote-modules.js` | remote (gateway session from `gateway-module.js`) |
 
 - **DSL registry:** `src/lib/purpose/dsl/validators.js`, a facade over `DslRegistry` that carries all seven catalogue languages with their real front ends. It is server-only: it loads the wasm validators synchronously from `public/wasm`.

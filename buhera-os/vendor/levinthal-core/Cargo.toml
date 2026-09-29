@@ -1,0 +1,21 @@
+# VENDORED — fullscreen-triangle/levinthal crates/levinthal-core/src (see
+# specifications/registry/vendor.json). src/ is a byte-exact copy; this
+# Cargo.toml is local: it declares only the dependencies the library uses
+# (upstream also declares nalgebra, num-traits, num-complex and rand, unused,
+# and rand blocks wasm32). Do not edit src/ — run
+# `node scripts/vendor-sync.mjs --sync levinthal-core`, then restore the
+# recorded commit to a published one (see the entry's note).
+[package]
+name = "levinthal-core"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+description = "Vendored: partition states, trajectory completion and S-entropy coordinates of the levinthal framework."
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+approx = "0.5"

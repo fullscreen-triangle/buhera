@@ -13,8 +13,14 @@
 
 use buhera_registry::{DslRegistry, Registry};
 
+#[cfg(feature = "heihachi")]
+pub mod heihachi;
+#[cfg(feature = "levinthal")]
+pub mod levinthal;
 #[cfg(feature = "ndombolo")]
 pub mod ndombolo;
+#[cfg(feature = "olduvai")]
+pub mod olduvai;
 #[cfg(feature = "sbs-core")]
 pub mod sbs_core;
 #[cfg(feature = "tracker")]
@@ -64,6 +70,21 @@ pub fn federation(options: Options) -> (Registry, DslRegistry) {
     #[cfg(feature = "tracker")]
     {
         modules.register(Box::new(tracker::Tracker { filesystem: options.filesystem }));
+    }
+    #[cfg(feature = "heihachi")]
+    {
+        modules.register(Box::new(heihachi::Heihachi::new()));
+        for d in heihachi::dsls() {
+            dsls.register(d);
+        }
+    }
+    #[cfg(feature = "levinthal")]
+    {
+        modules.register(Box::new(levinthal::Levinthal::new()));
+    }
+    #[cfg(feature = "olduvai")]
+    {
+        modules.register(Box::new(olduvai::Olduvai::new()));
     }
     #[cfg(feature = "sbs-core")]
     {

@@ -44,6 +44,8 @@ Reading ten upstream targets closely surfaced defects in them and in Buhera. Thi
 | U-zng-2 | zangalewa | Upstream's DSL registry has vaHera only; add entries for the other Buhera languages, or a `generate_with(validator)` |
 | U-zng-3 | buhera/long-grass | `dsl-writer` reimplements the zangalewa loop in JS and collapses drafts to one; migrate to `zangalewa-dsl` |
 | U-zng-4 | zangalewa | Five crates are manifest-only; `consciousness-core` fails to compile (20 errors) |
+| U-zng-5 | buhera/long-grass | `src/lib/zangalewa/` holds byte copies of zoom-climb's `prompt.ts`, `coord-extract.ts` and `desk/*` that nothing imports |
+| U-zng-6 | zangalewa + buhera | vaHera validity differs: long-grass rejects S-coordinates outside [0, 1] (without a line number), zoom-climb's TS parser and the Rust `zangalewa-dsl` accept them, and zoom-climb's pack teaches `S(0.2, 1.0, -0.5)`; the three must agree |
 | U-smi-1 | musande | `crates/agent-smith` computes the realised floor as a singleton cut: on the path a–9–b–1–c–9–d it reports 9, the JS (and the definition) give 1 |
 | U-smi-2 | musande | The Rust `CONVEX_POTENTIALS` list is short of the JS registry; 8 of the 10 tutorials fail to typecheck in Rust |
 | U-smi-3 | musande | Rust residuals live in a `HashMap`, so trace order is nondeterministic natively |
@@ -58,6 +60,18 @@ Reading ten upstream targets closely surfaced defects in them and in Buhera. Thi
 | U-hjo-1 | borgia | The committed bundle `src/lib/honjo.js` is ahead of `honjo/src/stdlib.ts` (a `shells` field in `individuate`); rebuild or reconcile |
 | U-hjo-2 | borgia | `honjo-rs` supports Z = 1..18 only, has no Cut-IR lowering and prints `3P0` for `3P_0`; `lib.rs` exposes `serve` (TcpListener, SystemTime) from the library |
 | U-hjo-3 | borgia | The web workbench labels files `.hnj`; the spec and CLI use `.hj` |
+| U-hei-1 | heihachi | Running a program (driving the record graph per seek/construct) lives in the daemon's axum handler `server.rs::run`, not a library function; extract a `run_source(&mut Runtime, lang, src, backend)` |
+| U-hei-2 | heihachi | `class_reached` matches channels named after rungs, which only the audio integrations emit, so in a fresh graph every seek "converges" with `classes: []` |
+| U-hei-3 | heihachi | `required_power 0.8` is hard-coded in both the CLI and the server |
+| U-hei-4 | heihachi | The mishima parser silently skips unknown top-level tokens, so `observe`/`assert`/`emit` lines in a `.mma` are neither parsed nor validated |
+| U-wgb-1 | verum | `philharmonic/crates/dsl-wagenbau` fails 9 of its 20 tests at HEAD `bdef6b1`: the statement splitter rejects the continuation lines of a `part` (`expresses` on the next line is "not a wagenbau declaration"), so the default `STANDARD_CHASSIS` does not build. wagenbau is deferred until it does |
+| U-old-1 | olduvai-exchange | The local clone is nine commits ahead of origin; `olduvai-core` is identical at both, and the vendor records origin/main |
+| U-lev-1 | levinthal | `levinthal-core` declares `nalgebra`, `num-traits`, `num-complex` and `rand` but uses none; `rand` → `getrandom` blocks wasm32 |
+| U-lev-2 | levinthal | `levinthal-msms` and `AminoAcid::molecular_weight` sum free amino-acid average masses labelled monoisotopic: +18.01 Da per residue (PEPTIDE 925.92 vs 799.36 Da) |
+| U-lev-3 | levinthal | `levinthal-folding` is nondeterministic (`thread_rng`, no seed), fails wasm32, and at 13.2 THz with any usable `dt` the phases re-randomise every step (`fold` reported 10 164 000 000 ATP cycles in 11 steps) |
+| U-lev-4 | levinthal | `TernaryString::to_sentropy` returns a constant (0.5, 0.5, 0.5); `to_cell_bounds` computes its offset from the string length, not the trit values |
+| U-cyt-1 | buhera/long-grass | `cytochrome-module.js` is hand tables, not an engine wrapper: its cycle ΔM values sum to 4.053 while it reports the oracle's 4.963, and its test asserts only the constant |
+| U-ss-1 | lavoisier | No Shapeshifter front end rejects arbitrary text (`compileStage` of garbage is `ok` with warnings); the web interpreter swallows runtime errors, assigns kinds by value shape rather than producer, and reorders integer-named phases |
 
 ## 3. Naming collisions, recorded and not renamed
 

@@ -1,0 +1,22 @@
+{
+  "id": "mishima",
+  "name": "mishima Reference",
+  "short_label": "mishima",
+  "summary": "Grammar and worked examples for mishima, projected from specifications/specs/heihachi.md. Used to ground natural-language-to-mishima generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/heihachi",
+  "trigger_keywords": [
+    "mishima",
+    "heihachi",
+    "seek",
+    "recall",
+    "record"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "mishima grammar and validated examples"
+    }
+  ]
+}
