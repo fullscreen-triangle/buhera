@@ -1,4 +1,4 @@
-# Buhera OS â€” standalone categorical operating system.
+# Buhera OS — standalone categorical operating system.
 #
 # This workspace is self-contained. It depends on nothing outside its
 # own crates plus a small set of well-known third-party libraries
