@@ -65,6 +65,42 @@ levinthal-core   = { path = "vendor/levinthal-core" }
 mekaneck-lang    = { path = "vendor/mekaneck/crates/lang" }
 buhera-modules   = { path = "crates/buhera-modules", default-features = false }
 
+# Release packaging for `buhera-pair`, the one binary meant for end-user
+# download — a machine's owner installs this, not the OS core (`buhera-os`'s
+# demo/repl bins, opted out via its own `dist = false`) or the gateway
+# (deployed by hand, also opted out; see buhera-gateway/DEPLOYMENT.md).
+[workspace.metadata.dist]
+cargo-dist-version = "0.32.0"
+ci = ["github"]
+installers = ["shell", "powershell"]
+targets = [
+    "x86_64-pc-windows-msvc",
+    "x86_64-unknown-linux-gnu",
+    "aarch64-apple-darwin",
+    "x86_64-apple-darwin",
+]
+pr-run-mode = "plan"
+# The generated ../../.github/workflows/release.yml is hand-patched to `cd
+# buhera-os` (or use `working-directory:`) before every `dist` invocation,
+# since this workspace lives in a subdirectory of the git repo rather than
+# at its root — a layout cargo-dist has no native support for (confirmed:
+# https://github.com/axodotdev/cargo-dist/issues, no `repository-root`-style
+# key exists as of 0.32). Without `allow-dirty`, `dist plan`/`build`/`host`
+# refuse to run at all once the checked-in workflow diverges from what a
+# fresh `dist generate` would produce — which every one of those hand
+# patches necessarily causes. Re-apply the patches after any `dist init` or
+# `dist generate` regenerates this file from scratch.
+allow-dirty = ["ci"]
+
+# cargo-dist builds release binaries under this profile rather than
+# `release` directly — inherited from it, with debug info stripped, since a
+# 2MB binary a user downloads has no use for symbols the OS core's own
+# `release` profile keeps for local debugging.
+[profile.dist]
+inherits = "release"
+debug = false
+strip = true
+
 [profile.release]
 opt-level = 3
 codegen-units = 1

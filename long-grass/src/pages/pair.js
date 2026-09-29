@@ -85,7 +85,7 @@ function FreshToken({ result }) {
     (typeof window !== "undefined" && window.__BUHERA_GATEWAY_URL__) ||
     process.env.NEXT_PUBLIC_BUHERA_GATEWAY_URL ||
     "https://buhera-91-98-157-147.sslip.io";
-  const command = `buhera-pair pair --token ${result.token} --gateway ${gateway}`;
+  const command = `buhera-pair pair --token ${result.token} --name ${result.name} --gateway ${gateway}`;
   return (
     <div className="mb-8 border border-emerald-800 p-4">
       <div className="text-xs text-emerald-400 mb-2">
@@ -97,6 +97,9 @@ function FreshToken({ result }) {
       <div className="flex items-start gap-2 bg-black border border-gray-800 p-3">
         <pre className="flex-1 whitespace-pre-wrap break-all text-xs text-gray-200">{command}</pre>
         <CopyButton text={command} />
+      </div>
+      <div className="text-xs text-gray-500 mt-3">
+        then start accepting work: <code className="text-gray-300">buhera-pair run</code>
       </div>
       <div className="text-xs text-gray-600 mt-3">
         expires {new Date(result.expires_at * 1000).toLocaleString()}

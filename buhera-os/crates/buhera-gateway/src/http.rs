@@ -8,7 +8,16 @@
 //! * `/api/catalysts/*` — the account's machine roster, session-authenticated,
 //!   except `/api/catalysts/whoami` which is catalyst-token-authenticated —
 //!   the one route a *machine* calls about itself, used by `buhera-pair`.
-//! * `/api/run`         — submit work; the router decides where it executes.
+//! * `/api/run`, `/api/dispatch` — submit work; private to the caller's
+//!   account unless `/api/dispatch` names an `experiment`, in which case
+//!   the caller must hold standing on it (spec-free, this crate's own:
+//!   see `/api/experiments/*` and `store::Experiment`).
+//! * `/api/experiments/*` — shared dispatch scopes. The owner creates one
+//!   and grants other accounts a capped roster of capabilities on it;
+//!   every grantee's `/api/dispatch` calls against it share one module
+//!   federation and one audit log, so account identity there is
+//!   provenance on an act, never a partition of what the experiment
+//!   contains.
 //!
 //! Every authenticated route resolves its account from a *verified* token
 //! (see [`crate::token`]), never from a header the caller can simply assert.
@@ -56,10 +65,18 @@ pub struct AppState {
     pub signer: Signer,
     /// Per-account kernels for the degraded path.
     pub sessions: session::Sessions,
+    /// Live catalyst connections, dialed out by the machine itself.
+    pub relay: crate::relay::Relay,
     /// Per-account module federations for `/api/dispatch` (spec 07 §2):
     /// module state (a vaHera kernel, a pylon-free Rust module set) is scoped
     /// to the account, exactly as `sessions` scopes the `/api/run` kernel.
     pub federations: std::sync::Mutex<std::collections::HashMap<String, buhera_registry::Registry>>,
+    /// Per-experiment module federations, shared by every account holding a
+    /// grant on that experiment — the collaboration surface the account-keyed
+    /// `federations` map deliberately does not provide. Keyed by experiment
+    /// id, not by any account, so two grantees dispatching into the same
+    /// experiment see the same state and the same audit log.
+    pub experiment_federations: std::sync::Mutex<std::collections::HashMap<String, buhera_registry::Registry>>,
 }
 
 /// The gateway's federation for one account. Filesystem-reading operations are
@@ -76,7 +93,9 @@ impl AppState {
             store: Mutex::new(store),
             signer,
             sessions: session::Sessions::new(),
+            relay: crate::relay::Relay::new(),
             federations: std::sync::Mutex::new(std::collections::HashMap::new()),
+            experiment_federations: std::sync::Mutex::new(std::collections::HashMap::new()),
         }
     }
 }
@@ -105,6 +124,7 @@ impl From<StoreError> for ApiError {
         match e {
             StoreError::Duplicate => ApiError::Conflict("already registered".into()),
             StoreError::NoSuchAccount => ApiError::Unauthorized,
+            StoreError::NoSuchExperiment => ApiError::NotFound("no such experiment".into()),
             other => ApiError::Internal(other.to_string()),
         }
     }
@@ -360,6 +380,121 @@ async fn unpair_catalyst(
     }
 }
 
+/// `GET /api/catalysts/relay` — the connection a paired machine dials out
+/// over. Catalyst-token-authenticated, like `/api/catalysts/whoami`; unlike
+/// it, this connection is held open for as long as the machine wants to be
+/// dispatchable.
+async fn catalyst_relay(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+    ws: axum::extract::WebSocketUpgrade,
+) -> Result<Response, ApiError> {
+    let account_id = authenticate_catalyst(&state, &headers)?;
+    Ok(ws.on_upgrade(move |socket| relay_connection(state, account_id, socket)))
+}
+
+/// Drive one catalyst's connection for as long as it stays open.
+///
+/// The first frame must be `Hello`, naming which of the account's paired
+/// machines this is — the catalyst token alone does not disambiguate, since
+/// one account can hold several. Anything else first, or a name that is not
+/// actually paired to this account, closes the socket without registering
+/// it: a connection that never announces itself correctly can never be
+/// dispatched to, so there is nothing to clean up by leaving it open.
+async fn relay_connection(state: Arc<AppState>, account_id: String, mut socket: axum::extract::ws::WebSocket) {
+    use axum::extract::ws::Message;
+    use futures_util::SinkExt;
+
+    let name = match socket.recv().await {
+        Some(Ok(Message::Text(text))) => match serde_json::from_str::<crate::relay::ClientMsg>(&text) {
+            Ok(crate::relay::ClientMsg::Hello { name }) => name,
+            _ => {
+                tracing::debug!("relay connection's first frame was not Hello; closing");
+                return;
+            }
+        },
+        _ => return,
+    };
+
+    let known = {
+        match state.store.lock().await.catalysts(&account_id) {
+            Ok(catalysts) => catalysts.iter().any(|c| c.name == name),
+            Err(e) => {
+                tracing::error!(error = %e, "could not verify catalyst roster for relay connection");
+                false
+            }
+        }
+    };
+    if !known {
+        tracing::debug!(%account_id, %name, "relay Hello named a machine not paired to this account; closing");
+        return;
+    }
+
+    let (mut sink, mut stream) = socket.split();
+    let (outbound_tx, mut outbound_rx) = tokio::sync::mpsc::unbounded_channel::<crate::relay::ServerMsg>();
+
+    state.relay.register(account_id.clone(), name.clone(), outbound_tx.clone());
+    let now = now_unix();
+    if let Err(e) = state.store.lock().await.touch_catalyst(&account_id, &name, now) {
+        tracing::warn!(error = %e, %account_id, %name, "could not record initial relay heartbeat");
+    }
+    tracing::info!(%account_id, %name, "catalyst connected");
+
+    let ack = serde_json::to_string(&crate::relay::ServerMsg::HelloAck).expect("HelloAck serializes");
+    if sink.send(Message::Text(ack)).await.is_err() {
+        state.relay.deregister(&account_id, &name, &outbound_tx);
+        return;
+    }
+
+    // Forward outbound frames (dispatched runs) to the socket, and read
+    // inbound frames (heartbeats and run answers), until either side closes.
+    let writer_account = account_id.clone();
+    let writer_name = name.clone();
+    let writer = tokio::spawn(async move {
+        while let Some(msg) = outbound_rx.recv().await {
+            let text = match serde_json::to_string(&msg) {
+                Ok(t) => t,
+                Err(e) => {
+                    tracing::error!(error = %e, "could not serialize a relay ServerMsg");
+                    continue;
+                }
+            };
+            if sink.send(Message::Text(text)).await.is_err() {
+                break;
+            }
+        }
+        let _ = (writer_account, writer_name);
+    });
+
+    use futures_util::StreamExt;
+    while let Some(frame) = stream.next().await {
+        let text = match frame {
+            Ok(Message::Text(t)) => t,
+            Ok(Message::Close(_)) | Err(_) => break,
+            Ok(_) => continue,
+        };
+        let msg: crate::relay::ClientMsg = match serde_json::from_str(&text) {
+            Ok(m) => m,
+            Err(e) => {
+                tracing::debug!(error = %e, "unparseable relay frame; ignoring");
+                continue;
+            }
+        };
+        if let crate::relay::ClientMsg::Heartbeat = msg {
+            let now = now_unix();
+            if let Err(e) = state.store.lock().await.touch_catalyst(&account_id, &name, now) {
+                tracing::warn!(error = %e, %account_id, %name, "could not record relay heartbeat");
+            }
+            continue;
+        }
+        crate::relay::resolve_client_msg(&state.relay, &account_id, &name, msg);
+    }
+
+    writer.abort();
+    state.relay.deregister(&account_id, &name, &outbound_tx);
+    tracing::info!(%account_id, %name, "catalyst disconnected");
+}
+
 // ─────────────────────────── run ───────────────────────────
 
 /// A unit of work.
@@ -433,14 +568,228 @@ async fn run(
             }))
         }
         Route::Catalyst { name } => {
-            // The relay lands next. Until a machine can actually be reached,
-            // say so plainly rather than silently running it here — that
-            // would return an answer computed against the wrong filesystem.
-            Err(ApiError::Unroutable(format!(
-                "machine {name:?} is live but the relay is not yet implemented; \
-                 retry with prefer=\"gateway\" to run on the server"
-            )))
+            let outcome = state.relay.dispatch(&account_id, &name, &body.source).await.map_err(|e| {
+                // The router saw this catalyst as live a moment ago (its
+                // last heartbeat was inside the liveness window), but the
+                // socket itself is the source of truth for whether work can
+                // actually reach it — the two can disagree by a few seconds.
+                // Report it plainly rather than silently falling back to
+                // the gateway, which would answer against the wrong
+                // filesystem.
+                ApiError::Unroutable(format!(
+                    "machine {name:?} could not run this: {e}; retry with prefer=\"gateway\" to run on the server"
+                ))
+            })?;
+            Ok(Json(RunResponse {
+                ok: true,
+                executed_on: name,
+                note: None,
+                results: outcome.results,
+                trace: outcome.trace,
+            }))
         }
+    }
+}
+
+// ─────────────────────────── experiments ───────────────────────────
+//
+// An experiment is a shared dispatch scope: one account owns it, any
+// number of other accounts can hold a grant on it, and every grantee
+// dispatching against it sees the same module federation and the same
+// audit log — the collaboration surface `/api/dispatch`'s per-account
+// federation deliberately does not provide (see `store::Experiment`).
+//
+// What an account's identity does here is exactly provenance: every
+// audited act names the `account_id` that made it, and nothing about the
+// shared state is ever filtered, gated, or partitioned by that id. A
+// grant narrows *capability* (which modules an account may dispatch),
+// never *visibility* of what others in the same experiment have already
+// done — the audit log is the one shared, append-only record everyone
+// with standing can read in full.
+
+/// Body of `POST /api/experiments`.
+#[derive(Debug, Deserialize)]
+pub struct CreateExperimentRequest {
+    /// Human label. Not unique; display only.
+    pub name: String,
+}
+
+/// One experiment as the API renders it.
+#[derive(Debug, Serialize)]
+pub struct ExperimentView {
+    /// Stable opaque id.
+    pub id: String,
+    /// The account that owns it and can grant/revoke access.
+    pub owner_account_id: String,
+    /// Human label.
+    pub name: String,
+    /// Unix seconds at creation.
+    pub created_at: i64,
+    /// This caller's standing: `"owner"` or the capability list of its grant.
+    pub standing: StandingView,
+}
+
+/// JSON-friendly rendering of [`crate::store::ExperimentStanding`].
+#[derive(Debug, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum StandingView {
+    /// Every capability, plus the right to grant and revoke.
+    Owner,
+    /// Capped to these capabilities.
+    Grantee {
+        /// The capability tags this account may dispatch.
+        capabilities: Vec<String>,
+    },
+}
+
+impl From<crate::store::ExperimentStanding> for StandingView {
+    fn from(s: crate::store::ExperimentStanding) -> Self {
+        match s {
+            crate::store::ExperimentStanding::Owner => StandingView::Owner,
+            crate::store::ExperimentStanding::Grantee(capabilities) => StandingView::Grantee { capabilities },
+        }
+    }
+}
+
+async fn create_experiment(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+    Json(body): Json<CreateExperimentRequest>,
+) -> Result<Json<ExperimentView>, ApiError> {
+    let account_id = authenticate(&state, &headers)?;
+    let name = body.name.trim();
+    if name.is_empty() {
+        return Err(ApiError::BadRequest("name is required".into()));
+    }
+    let now = now_unix();
+    let exp = {
+        let store = state.store.lock().await;
+        store.create_experiment(&account_id, name, now)?
+    };
+    Ok(Json(ExperimentView {
+        id: exp.id,
+        owner_account_id: exp.owner_account_id,
+        name: exp.name,
+        created_at: exp.created_at,
+        standing: StandingView::Owner,
+    }))
+}
+
+/// `GET /api/experiments` — every experiment the caller owns or is granted into.
+async fn list_experiments(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+) -> Result<Json<serde_json::Value>, ApiError> {
+    let account_id = authenticate(&state, &headers)?;
+    let store = state.store.lock().await;
+    let experiments = store.experiments_for_account(&account_id)?;
+    let mut views = Vec::with_capacity(experiments.len());
+    for exp in experiments {
+        // Each of these accounts is exactly the ones just listed as owned
+        // or granted, so a standing always exists here.
+        let standing = store
+            .experiment_grant_for(&exp.id, &account_id)?
+            .expect("account_id was just listed as having standing on this experiment");
+        views.push(ExperimentView {
+            id: exp.id,
+            owner_account_id: exp.owner_account_id,
+            name: exp.name,
+            created_at: exp.created_at,
+            standing: standing.into(),
+        });
+    }
+    Ok(Json(serde_json::json!({ "ok": true, "experiments": views })))
+}
+
+/// Body of `POST /api/experiments/:id/grants`.
+#[derive(Debug, Deserialize)]
+pub struct GrantRequest {
+    /// The account to grant, by email — matching how a person identifies
+    /// a collaborator, not by an opaque id they would have to ask for.
+    pub email: String,
+    /// Capability tags this account may dispatch inside the experiment.
+    #[serde(default)]
+    pub capabilities: Vec<String>,
+}
+
+/// One entry in an experiment's roster, as the owner reviews it.
+#[derive(Debug, Serialize)]
+pub struct GrantView {
+    /// The granted account.
+    pub account_id: String,
+    /// The capability tags this account may dispatch.
+    pub capabilities: Vec<String>,
+    /// Unix seconds when the grant was made (or last replaced).
+    pub granted_at: i64,
+}
+
+async fn grant(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+    Path(experiment_id): Path<String>,
+    Json(body): Json<GrantRequest>,
+) -> Result<Json<GrantView>, ApiError> {
+    let account_id = authenticate(&state, &headers)?;
+    let now = now_unix();
+    let store = state.store.lock().await;
+    require_owner(&store, &experiment_id, &account_id)?;
+
+    let grantee_email = body.email.trim().to_lowercase();
+    if grantee_email.is_empty() {
+        return Err(ApiError::BadRequest("email is required".into()));
+    }
+    // No account enumeration via this route either: a caller who already
+    // holds ownership of the experiment can still only learn "no such
+    // account", never distinguish that from any other rejection reason.
+    let grantee = store
+        .account_by_email(&grantee_email)?
+        .ok_or_else(|| ApiError::NotFound("no account with that email".into()))?;
+
+    let g = store.grant_experiment(&experiment_id, &grantee.id, &body.capabilities, now)?;
+    Ok(Json(GrantView { account_id: g.account_id, capabilities: g.capabilities, granted_at: g.granted_at }))
+}
+
+/// `GET /api/experiments/:id/grants` — the owner's view of the roster.
+async fn list_grants(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+    Path(experiment_id): Path<String>,
+) -> Result<Json<serde_json::Value>, ApiError> {
+    let account_id = authenticate(&state, &headers)?;
+    let store = state.store.lock().await;
+    require_owner(&store, &experiment_id, &account_id)?;
+    let grants: Vec<GrantView> = store
+        .experiment_grants(&experiment_id)?
+        .into_iter()
+        .map(|g| GrantView { account_id: g.account_id, capabilities: g.capabilities, granted_at: g.granted_at })
+        .collect();
+    Ok(Json(serde_json::json!({ "ok": true, "grants": grants })))
+}
+
+async fn revoke_grant(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+    Path((experiment_id, grantee_account_id)): Path<(String, String)>,
+) -> Result<Json<serde_json::Value>, ApiError> {
+    let account_id = authenticate(&state, &headers)?;
+    let store = state.store.lock().await;
+    require_owner(&store, &experiment_id, &account_id)?;
+    if store.revoke_experiment_grant(&experiment_id, &grantee_account_id)? {
+        Ok(Json(serde_json::json!({ "ok": true })))
+    } else {
+        Err(ApiError::NotFound("no such grant".into()))
+    }
+}
+
+/// Confirm `account_id` owns `experiment_id`, mapping every other
+/// standing (grantee or none) to the same `Unauthorized` — a grantee
+/// probing whether they can manage the roster learns nothing about
+/// whether the experiment exists that `/api/experiments` wouldn't
+/// already have told them.
+fn require_owner(store: &Store, experiment_id: &str, account_id: &str) -> Result<(), ApiError> {
+    match store.experiment_grant_for(experiment_id, account_id)? {
+        Some(crate::store::ExperimentStanding::Owner) => Ok(()),
+        _ => Err(ApiError::Unauthorized),
     }
 }
 
@@ -457,6 +806,13 @@ pub struct DispatchRequest {
     /// Act budget (≥ 1).
     #[serde(default = "one")]
     pub act_budget: u32,
+    /// Dispatch into a shared experiment's federation instead of the
+    /// caller's private one. The caller must hold standing on it, and if
+    /// they are a grantee (not the owner) `module` must be within their
+    /// grant's capabilities — a ceiling on what a grant can reach, never
+    /// a way around what the account could already do unaided.
+    #[serde(default)]
+    pub experiment: Option<String>,
 }
 
 fn one() -> u32 {
@@ -471,7 +827,9 @@ pub struct DispatchResponse {
     /// The module's ActResult, verbatim — `ok:false` is the module's verdict,
     /// not a transport failure.
     pub result: buhera_registry::ActResult,
-    /// The act id in this account's audit log on the gateway.
+    /// The act id in the audit log this act was recorded to — the
+    /// caller's own when `experiment` was absent, the experiment's shared
+    /// log otherwise.
     pub act_id: u64,
 }
 
@@ -481,15 +839,44 @@ async fn dispatch(
     Json(body): Json<DispatchRequest>,
 ) -> Result<Json<DispatchResponse>, ApiError> {
     let account_id = authenticate(&state, &headers)?;
+
+    let experiment_id = if let Some(experiment_id) = &body.experiment {
+        let store = state.store.lock().await;
+        let standing = store
+            .experiment_grant_for(experiment_id, &account_id)?
+            .ok_or(ApiError::Unauthorized)?;
+        if !standing.allows(&body.module) {
+            return Err(ApiError::Unauthorized);
+        }
+        Some(experiment_id.clone())
+    } else {
+        None
+    };
+
     // Module acts are synchronous CPU work (contract M5); run them off the
     // async executor.
     tokio::task::block_in_place(|| {
-        let mut feds = state.federations.lock().map_err(|_| ApiError::Internal("federation lock poisoned".into()))?;
-        let reg = feds.entry(account_id).or_insert_with(account_federation);
-        let result = reg
-            .dispatch(&body.module, body.instruction, body.act_budget.max(1))
-            .map_err(|e| ApiError::NotFound(e.to_string()))?;
-        let act_id = reg.audit_log().last().map(|e| e.act_id).unwrap_or(0);
+        let (result, act_id) = if let Some(experiment_id) = experiment_id {
+            let mut feds = state
+                .experiment_federations
+                .lock()
+                .map_err(|_| ApiError::Internal("experiment federation lock poisoned".into()))?;
+            let reg = feds.entry(experiment_id).or_insert_with(account_federation);
+            let result = reg
+                .dispatch(&body.module, body.instruction, body.act_budget.max(1))
+                .map_err(|e| ApiError::NotFound(e.to_string()))?;
+            let act_id = reg.audit_log().last().map(|e| e.act_id).unwrap_or(0);
+            (result, act_id)
+        } else {
+            let mut feds =
+                state.federations.lock().map_err(|_| ApiError::Internal("federation lock poisoned".into()))?;
+            let reg = feds.entry(account_id).or_insert_with(account_federation);
+            let result = reg
+                .dispatch(&body.module, body.instruction, body.act_budget.max(1))
+                .map_err(|e| ApiError::NotFound(e.to_string()))?;
+            let act_id = reg.audit_log().last().map(|e| e.act_id).unwrap_or(0);
+            (result, act_id)
+        };
         Ok(Json(DispatchResponse { executed_on: "gateway".into(), result, act_id }))
     })
 }
@@ -525,8 +912,12 @@ pub fn app(state: Arc<AppState>) -> Router {
         .route("/api/auth/login", post(login))
         .route("/api/catalysts", get(list_catalysts).post(pair_catalyst))
         .route("/api/catalysts/whoami", get(catalyst_whoami))
+        .route("/api/catalysts/relay", get(catalyst_relay))
         .route("/api/catalysts/:name", axum::routing::delete(unpair_catalyst))
         .route("/api/run", post(run))
+        .route("/api/experiments", get(list_experiments).post(create_experiment))
+        .route("/api/experiments/:id/grants", get(list_grants).post(grant))
+        .route("/api/experiments/:id/grants/:account_id", axum::routing::delete(revoke_grant))
         .route("/api/dispatch", post(dispatch))
         .route("/api/modules", get(list_modules))
         .layer(CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any))
@@ -597,5 +988,272 @@ mod dispatch_tests {
         let (s, alice, _) = state();
         let (_, body) = post(&s, Some(&alice), serde_json::json!({ "module": "tracker", "instruction": { "kind": "list", "root": "/" } })).await;
         assert_eq!(body["result"]["error"], "unavailable on this host");
+    }
+}
+
+#[cfg(test)]
+mod experiment_tests {
+    //! `/api/experiments/*` and the `experiment` field on `/api/dispatch`:
+    //! shared federation, capability as a ceiling, and no partitioning of
+    //! the shared state by who's calling.
+    use super::*;
+    use axum::body::{to_bytes, Body};
+    use axum::http::Request;
+    use tower::ServiceExt;
+
+    /// Same shape as `dispatch_tests::state`, but the accounts are real
+    /// DB rows (email-addressable) rather than bare token subjects, since
+    /// granting works by email.
+    async fn state() -> (Arc<AppState>, String, crate::store::Account, crate::store::Account) {
+        let signer = Signer::new(vec![7u8; 32]).unwrap();
+        let store = Store::open_memory().unwrap();
+        let now = now_unix();
+        let alice = store.create_account("alice@example.org", "correct horse battery", now).unwrap();
+        let bob = store.create_account("bob@example.org", "correct horse battery", now).unwrap();
+        let app_state = Arc::new(AppState::new(store, signer));
+        (app_state, "unused".into(), alice, bob)
+    }
+
+    fn token(state: &AppState, account_id: &str) -> String {
+        state.signer.mint(Audience::Session, account_id, now_unix(), 3600)
+    }
+
+    async fn call(
+        state: &Arc<AppState>,
+        method: &str,
+        path: &str,
+        token: Option<&str>,
+        body: Option<serde_json::Value>,
+    ) -> (StatusCode, serde_json::Value) {
+        let mut req = Request::builder().method(method).uri(path).header("content-type", "application/json");
+        if let Some(t) = token {
+            req = req.header("authorization", format!("Bearer {t}"));
+        }
+        let payload = body.map(|b| b.to_string()).unwrap_or_default();
+        let res = app(state.clone()).oneshot(req.body(Body::from(payload)).unwrap()).await.unwrap();
+        let status = res.status();
+        let bytes = to_bytes(res.into_body(), 1 << 22).await.unwrap();
+        (status, serde_json::from_slice(&bytes).unwrap_or(serde_json::Value::Null))
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn owner_creates_and_sees_it_without_granting_self() {
+        let (s, _, alice, _) = state().await;
+        let at = token(&s, &alice.id);
+
+        let (status, body) =
+            call(&s, "POST", "/api/experiments", Some(&at), Some(serde_json::json!({ "name": "nfdi4cat-run" }))).await;
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(body["standing"]["kind"], "owner");
+        let exp_id = body["id"].as_str().unwrap().to_string();
+
+        let (_, list) = call(&s, "GET", "/api/experiments", Some(&at), None).await;
+        assert_eq!(list["experiments"].as_array().unwrap().len(), 1);
+        assert_eq!(list["experiments"][0]["id"], exp_id);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn a_stranger_cannot_see_or_dispatch_into_an_experiment() {
+        let (s, _, alice, bob) = state().await;
+        let at = token(&s, &alice.id);
+        let bt = token(&s, &bob.id);
+
+        let (_, created) =
+            call(&s, "POST", "/api/experiments", Some(&at), Some(serde_json::json!({ "name": "x" }))).await;
+        let exp_id = created["id"].as_str().unwrap();
+
+        // Bob has no grant yet — the experiment is invisible to him and
+        // dispatch into it is refused, not merely empty.
+        let (_, list) = call(&s, "GET", "/api/experiments", Some(&bt), None).await;
+        assert_eq!(list["experiments"].as_array().unwrap().len(), 0);
+
+        let (status, _) = call(
+            &s,
+            "POST",
+            "/api/dispatch",
+            Some(&bt),
+            Some(serde_json::json!({ "module": "ndombolo", "instruction": "demo", "experiment": exp_id })),
+        )
+        .await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn grant_is_a_ceiling_on_capability() {
+        let (s, _, alice, bob) = state().await;
+        let at = token(&s, &alice.id);
+        let bt = token(&s, &bob.id);
+
+        let (_, created) =
+            call(&s, "POST", "/api/experiments", Some(&at), Some(serde_json::json!({ "name": "x" }))).await;
+        let exp_id = created["id"].as_str().unwrap().to_string();
+
+        // Grant bob only "vahera" — never "ndombolo".
+        let (status, _) = call(
+            &s,
+            "POST",
+            &format!("/api/experiments/{exp_id}/grants"),
+            Some(&at),
+            Some(serde_json::json!({ "email": "bob@example.org", "capabilities": ["vahera"] })),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK);
+
+        // Now bob can see it and dispatch the granted capability...
+        let (_, list) = call(&s, "GET", "/api/experiments", Some(&bt), None).await;
+        assert_eq!(list["experiments"][0]["standing"]["kind"], "grantee");
+
+        let (status, body) = call(
+            &s,
+            "POST",
+            "/api/dispatch",
+            Some(&bt),
+            Some(serde_json::json!({ "module": "vahera", "instruction": "memory list", "experiment": exp_id })),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+
+        // ...but not one outside the grant, even though ndombolo dispatch
+        // succeeds for bob outside any experiment (it is not forbidden to
+        // him in general — only inside this experiment's narrower grant).
+        let (status, _) = call(
+            &s,
+            "POST",
+            "/api/dispatch",
+            Some(&bt),
+            Some(serde_json::json!({ "module": "ndombolo", "instruction": "demo", "experiment": exp_id })),
+        )
+        .await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED);
+
+        let (status, _) =
+            call(&s, "POST", "/api/dispatch", Some(&bt), Some(serde_json::json!({ "module": "ndombolo", "instruction": "demo" })))
+                .await;
+        assert_eq!(status, StatusCode::OK);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn acts_land_in_one_shared_log_not_partitioned_by_account() {
+        let (s, _, alice, bob) = state().await;
+        let at = token(&s, &alice.id);
+        let bt = token(&s, &bob.id);
+
+        let (_, created) =
+            call(&s, "POST", "/api/experiments", Some(&at), Some(serde_json::json!({ "name": "x" }))).await;
+        let exp_id = created["id"].as_str().unwrap().to_string();
+        call(
+            &s,
+            "POST",
+            &format!("/api/experiments/{exp_id}/grants"),
+            Some(&at),
+            Some(serde_json::json!({ "email": "bob@example.org", "capabilities": ["vahera"] })),
+        )
+        .await;
+
+        // Alice writes a fact into the shared kernel...
+        call(
+            &s,
+            "POST",
+            "/api/dispatch",
+            Some(&at),
+            Some(serde_json::json!({
+                "module": "vahera",
+                "instruction": "memory store \"k\" = \"alice wrote this\"",
+                "experiment": exp_id,
+            })),
+        )
+        .await;
+
+        // ...and bob, dispatching into the same experiment, sees it. This
+        // is the opposite property from `/api/dispatch`'s per-account
+        // federation test (`a_real_act_runs_and_is_audited_per_account`),
+        // deliberately: inside an experiment, state is shared.
+        let (_, b) = call(
+            &s,
+            "POST",
+            "/api/dispatch",
+            Some(&bt),
+            Some(serde_json::json!({ "module": "vahera", "instruction": "memory list", "experiment": exp_id })),
+        )
+        .await;
+        assert!(b.to_string().contains("\"k\""), "{b}");
+
+        // The act ids are drawn from the experiment's own counter, shared
+        // across both accounts' acts — 1 for alice's write, 2 for bob's read.
+        assert_eq!(b["act_id"], 2);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn only_the_owner_manages_the_roster() {
+        let (s, _, alice, bob) = state().await;
+        let at = token(&s, &alice.id);
+        let bt = token(&s, &bob.id);
+
+        let (_, created) =
+            call(&s, "POST", "/api/experiments", Some(&at), Some(serde_json::json!({ "name": "x" }))).await;
+        let exp_id = created["id"].as_str().unwrap().to_string();
+
+        // Bob, with no standing at all yet, cannot grant himself access.
+        let (status, _) = call(
+            &s,
+            "POST",
+            &format!("/api/experiments/{exp_id}/grants"),
+            Some(&bt),
+            Some(serde_json::json!({ "email": "bob@example.org", "capabilities": ["vahera"] })),
+        )
+        .await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED);
+
+        // Alice grants him narrowly...
+        call(
+            &s,
+            "POST",
+            &format!("/api/experiments/{exp_id}/grants"),
+            Some(&at),
+            Some(serde_json::json!({ "email": "bob@example.org", "capabilities": ["vahera"] })),
+        )
+        .await;
+
+        // ...but even as a grantee, bob still cannot manage the roster —
+        // a grant is capability inside the experiment, not co-ownership.
+        let (status, _) = call(
+            &s,
+            "POST",
+            &format!("/api/experiments/{exp_id}/grants"),
+            Some(&bt),
+            Some(serde_json::json!({ "email": "bob@example.org", "capabilities": ["ndombolo"] })),
+        )
+        .await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED);
+
+        // Only alice can revoke, and only alice can list the roster.
+        let (status, _) = call(&s, "DELETE", &format!("/api/experiments/{exp_id}/grants/{}", bob.id), Some(&bt), None).await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED);
+
+        let (status, grants) = call(&s, "GET", &format!("/api/experiments/{exp_id}/grants"), Some(&at), None).await;
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(grants["grants"].as_array().unwrap().len(), 1);
+
+        let (status, _) = call(&s, "DELETE", &format!("/api/experiments/{exp_id}/grants/{}", bob.id), Some(&at), None).await;
+        assert_eq!(status, StatusCode::OK);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn granting_a_nonexistent_email_is_not_found_not_a_leak() {
+        let (s, _, alice, _) = state().await;
+        let at = token(&s, &alice.id);
+        let (_, created) =
+            call(&s, "POST", "/api/experiments", Some(&at), Some(serde_json::json!({ "name": "x" }))).await;
+        let exp_id = created["id"].as_str().unwrap().to_string();
+
+        let (status, _) = call(
+            &s,
+            "POST",
+            &format!("/api/experiments/{exp_id}/grants"),
+            Some(&at),
+            Some(serde_json::json!({ "email": "ghost@example.org", "capabilities": [] })),
+        )
+        .await;
+        assert_eq!(status, StatusCode::NOT_FOUND);
     }
 }

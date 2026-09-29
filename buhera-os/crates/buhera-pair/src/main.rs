@@ -1,16 +1,21 @@
-//! `buhera-pair` — the client half of gateway pairing.
+//! `buhera-pair` — the client half of gateway pairing, and the worker that
+//! runs on the paired machine.
 //!
 //! The gateway (`buhera-gateway`) mints a catalyst token when a user clicks
 //! "pair a machine" on the web (`long-grass` /pair page, `POST
-//! /api/catalysts`). This binary is what the user runs *on the machine being
-//! paired* to hold that token: `buhera-pair pair --token <token> --name
-//! <name>` writes it to a local config file and confirms it against the
-//! gateway.
+//! /api/catalysts`). `buhera-pair pair --token <token> --name <name>` is what
+//! the user runs *on the machine being paired* to hold that token, writing it
+//! to a local config file and confirming it against the gateway.
 //!
-//! This is deliberately small. The full relay — the gateway dialing back
-//! into this machine to run work here — is not implemented yet (see
-//! `buhera-gateway`'s `DEPLOYMENT.md`, "What is not here yet"). Until it
-//! lands, this binary's job is just: hold the credential, prove it works.
+//! `buhera-pair run` is the other half: it dials the gateway's relay
+//! (`GET /api/catalysts/relay`), holds the connection open, and executes
+//! whatever vaHera work the gateway dispatches against a local
+//! `buhera_kernel::Kernel` — see [`worker`]. The connection direction is
+//! forced: this machine may sit behind NAT, so the gateway can never reach
+//! it directly; it must be the one to dial out and hold the line open.
+
+mod protocol;
+mod worker;
 
 use std::path::PathBuf;
 
@@ -22,7 +27,11 @@ use serde::{Deserialize, Serialize};
 const DEFAULT_GATEWAY: &str = "https://buhera-91-98-157-147.sslip.io";
 
 #[derive(Parser, Debug)]
-#[command(name = "buhera-pair", about = "Pair this machine to a buhera-gateway account.")]
+#[command(
+    name = "buhera-pair",
+    version,
+    about = "Pair this machine to a buhera-gateway account, and run its local worker."
+)]
 struct Cli {
     #[command(subcommand)]
     command: Command,
@@ -36,6 +45,12 @@ enum Command {
         /// paste it here right away.
         #[arg(long)]
         token: String,
+        /// This machine's name, exactly as it was named when the token was
+        /// minted on the /pair page — the relay handshake asserts it, since
+        /// the token alone only proves the account, not which of its
+        /// machines this is.
+        #[arg(long)]
+        name: String,
         /// Gateway base URL.
         #[arg(long, default_value = DEFAULT_GATEWAY)]
         gateway: String,
@@ -47,6 +62,9 @@ enum Command {
     /// key, or unpairing the machine from the web /pair page) — this only
     /// clears the local copy.
     Forget,
+    /// Hold the relay connection open and execute work dispatched to this
+    /// machine, until interrupted (Ctrl-C).
+    Run,
 }
 
 /// What's saved to disk after a successful pair.
@@ -54,6 +72,11 @@ enum Command {
 struct StoredCredential {
     gateway: String,
     token: String,
+    /// This machine's name. Absent in credentials saved by older `pair`
+    /// invocations that took no `--name` — `run` refuses cleanly rather
+    /// than guessing when it's missing, since the relay handshake needs it.
+    #[serde(default)]
+    name: Option<String>,
 }
 
 fn config_path() -> Result<PathBuf, String> {
@@ -119,9 +142,10 @@ fn check_token(gateway: &str, token: &str) -> Result<String, String> {
 fn main() {
     let cli = Cli::parse();
     let result = match cli.command {
-        Command::Pair { token, gateway } => run_pair(&gateway, &token),
+        Command::Pair { token, name, gateway } => run_pair(&gateway, &token, &name),
         Command::Status => run_status(),
         Command::Forget => run_forget(),
+        Command::Run => run_worker(),
     };
     if let Err(e) = result {
         eprintln!("error: {e}");
@@ -129,7 +153,7 @@ fn main() {
     }
 }
 
-fn run_pair(gateway: &str, token: &str) -> Result<(), String> {
+fn run_pair(gateway: &str, token: &str, name: &str) -> Result<(), String> {
     println!("checking token against {gateway} …");
     let account_id = check_token(gateway, token)?;
     println!("token verified for account {account_id}");
@@ -137,14 +161,11 @@ fn run_pair(gateway: &str, token: &str) -> Result<(), String> {
     let cred = StoredCredential {
         gateway: gateway.to_string(),
         token: token.to_string(),
+        name: Some(name.to_string()),
     };
     save(&cred)?;
-    println!("paired. credential stored at {}", config_path()?.display());
-    println!(
-        "note: the gateway relay is not live yet — this machine holds the \
-         credential, but the gateway cannot dispatch work to it until that \
-         ships. see buhera-gateway's DEPLOYMENT.md."
-    );
+    println!("paired as {name:?}. credential stored at {}", config_path()?.display());
+    println!("run `buhera-pair run` to start accepting work on this machine.");
     Ok(())
 }
 
@@ -156,10 +177,37 @@ fn run_status() -> Result<(), String> {
                 Ok(account_id) => println!("token is valid, account {account_id}."),
                 Err(e) => println!("token check failed: {e}"),
             }
+            match &cred.name {
+                Some(name) => println!("machine name: {name}"),
+                None => println!(
+                    "no machine name on record (paired before --name existed) — \
+                     re-run `buhera-pair pair` with --name to enable `run`."
+                ),
+            }
         }
-        None => println!("not paired. run `buhera-pair pair --token <token>` with a token from the /pair page."),
+        None => {
+            println!("not paired. run `buhera-pair pair --token <token> --name <name>` with a token from the /pair page.")
+        }
     }
     Ok(())
+}
+
+fn run_worker() -> Result<(), String> {
+    let cred = load()?.ok_or("not paired. run `buhera-pair pair` first.")?;
+    let name = cred
+        .name
+        .ok_or("this pairing has no machine name on record — re-run `buhera-pair pair` with --name.")?;
+
+    let rt = tokio::runtime::Runtime::new().map_err(|e| format!("starting async runtime: {e}"))?;
+    rt.block_on(async {
+        tokio::select! {
+            result = worker::run(&cred.gateway, &name, &cred.token) => result,
+            _ = tokio::signal::ctrl_c() => {
+                println!("\nstopping.");
+                Ok(())
+            }
+        }
+    })
 }
 
 fn run_forget() -> Result<(), String> {

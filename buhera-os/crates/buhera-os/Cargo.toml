@@ -7,6 +7,12 @@ license.workspace = true
 repository.workspace = true
 description = "Buhera OS binaries: end-to-end NIST demo and interactive vaHera REPL."
 
+# Not meant for end-user download — `demo`/`repl` are developer tools run
+# from a source checkout. See the workspace root Cargo.toml's
+# [workspace.metadata.dist] comment for what is released (buhera-pair only).
+[package.metadata.dist]
+dist = false
+
 [lib]
 path = "src/lib.rs"
 

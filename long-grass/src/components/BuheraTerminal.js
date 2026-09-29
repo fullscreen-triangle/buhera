@@ -541,6 +541,12 @@ export default function BuheraTerminal() {
         >
           ▶ pair a machine
         </Link>
+        <Link
+          href="/experiments"
+          className="text-xs text-green-400 hover:text-green-300 no-underline font-mono"
+        >
+          ▶ experiments
+        </Link>
         {email && (
           <div className="flex items-center gap-2 text-xs text-gray-500">
             <span>{email}</span>

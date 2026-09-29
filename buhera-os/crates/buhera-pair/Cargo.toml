@@ -11,10 +11,22 @@ description = "Minimal client CLI: pairs this machine to a buhera-gateway accoun
 name = "buhera-pair"
 path = "src/main.rs"
 
+# The one binary in this workspace meant for end-user download and install —
+# see the workspace root Cargo.toml's [workspace.metadata.dist] comment.
+[package.metadata.dist]
+dist = true
+
 [dependencies]
+buhera-kernel = { workspace = true }
+buhera-vahera = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 clap = { workspace = true }
 
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "blocking", "json"] }
 dirs = "5"
+
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "time", "sync", "signal"] }
+tokio-tungstenite = { version = "0.24", default-features = false, features = ["connect", "rustls-tls-webpki-roots"] }
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
+url = "2"

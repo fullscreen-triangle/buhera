@@ -7,6 +7,12 @@ license.workspace = true
 repository.workspace = true
 description = "Buhera gateway: accounts, sessions, verified tokens, and compute routing across catalysts."
 
+# Not meant for end-user download — deployed by hand onto the server; see
+# DEPLOYMENT.md. See the workspace root Cargo.toml's
+# [workspace.metadata.dist] comment for what is released (buhera-pair only).
+[package.metadata.dist]
+dist = false
+
 [[bin]]
 name = "buhera-gateway"
 path = "src/main.rs"
@@ -24,6 +30,7 @@ clap = { workspace = true }
 
 axum = { version = "0.7", features = ["ws"] }
 tokio = { version = "1", features = ["rt-multi-thread", "macros", "signal", "sync", "time"] }
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
 tower-http = { version = "0.5", features = ["trace", "cors"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }

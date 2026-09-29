@@ -390,6 +390,7 @@ dependencies = [
  "buhera-substrate",
  "buhera-vahera",
  "clap",
+ "futures-util",
  "hmac",
  "rand 0.8.8",
  "rusqlite",
@@ -455,11 +456,17 @@ dependencies = [
 name = "buhera-pair"
 version = "0.1.0"
 dependencies = [
+ "buhera-kernel",
+ "buhera-vahera",
  "clap",
  "dirs 5.0.1",
+ "futures-util",
  "reqwest 0.12.28",
  "serde",
  "serde_json",
+ "tokio",
+ "tokio-tungstenite",
+ "url",
 ]
 
 [[package]]
@@ -3464,8 +3471,12 @@ checksum = "edc5f74e248dc973e0dbb7b74c7e0d6fcc301c694ff50049504004ef4d0cdcd9"
 dependencies = [
  "futures-util",
  "log",
+ "rustls 0.23.40",
+ "rustls-pki-types",
  "tokio",
+ "tokio-rustls 0.26.5",
  "tungstenite",
+ "webpki-roots 0.26.11",
 ]
 
 [[package]]
@@ -3648,6 +3659,8 @@ dependencies = [
  "httparse",
  "log",
  "rand 0.8.8",
+ "rustls 0.23.40",
+ "rustls-pki-types",
  "sha1",
  "thiserror 1.0.69",
  "utf-8",

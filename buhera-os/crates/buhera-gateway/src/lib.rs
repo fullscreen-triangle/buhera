@@ -20,12 +20,14 @@
 //! * [`store`]   — durable accounts and catalyst roster (SQLite).
 //! * [`router`]  — the placement decision, including the degraded path.
 //! * [`session`] — per-account kernels backing that degraded path.
+//! * [`relay`]   — live catalyst connections, dialed out by the machine.
 //! * [`http`]    — the HTTP surface.
 
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]
 
 pub mod http;
+pub mod relay;
 pub mod router;
 pub mod session;
 pub mod store;
