@@ -14,6 +14,8 @@ Reading ten upstream targets closely surfaced defects in them and in Buhera. Thi
 | F6 | `long-grass` `sbs` / `hfq` adapters | Residue was a size (`nodes + edges`, `steps.length`), not remaining work | `1 − V`; blocked steps |
 | F7 | long-grass vendored SBS, HFQ, scheduler | No recorded provenance | `vendor.json` entries, byte-verified |
 | F8 | `buhera-gateway` | The vaHera renderer was private, so a second path would have duplicated it | Moved to `buhera_vahera::render_result` and shared |
+| F9 | `long-grass/src/lib/smith` | long-grass ran a port of musande's `smith-ide` **stub** compiler (regex-based, no typechecker, `Math.random` in its output); its own test programs are rejected by the real Agent Smith parser | Removed; the `smith` module wraps the canonical `web/src/lib/agent-smith` (parser + typechecker + town), vendored byte-exact |
+| F10 | `long-grass` `smith` adapter | Residue was the sum of realised floors (a size); runs enabled models by default | Residue is the shared residual still above the reachable floor; every run passes `useModel: false` |
 
 ## 2. Upstream change requests
 
@@ -41,6 +43,13 @@ Reading ten upstream targets closely surfaced defects in them and in Buhera. Thi
 | U-zng-2 | zangalewa | Upstream's DSL registry has vaHera only; add entries for the other Buhera languages, or a `generate_with(validator)` |
 | U-zng-3 | buhera/long-grass | `dsl-writer` reimplements the zangalewa loop in JS and collapses drafts to one; migrate to `zangalewa-dsl` |
 | U-zng-4 | zangalewa | Five crates are manifest-only; `consciousness-core` fails to compile (20 errors) |
+| U-smi-1 | musande | `crates/agent-smith` computes the realised floor as a singleton cut: on the path a–9–b–1–c–9–d it reports 9, the JS (and the definition) give 1 |
+| U-smi-2 | musande | The Rust `CONVEX_POTENTIALS` list is short of the JS registry; 8 of the 10 tutorials fail to typecheck in Rust |
+| U-smi-3 | musande | Rust residuals live in a `HashMap`, so trace order is nondeterministic natively |
+| U-smi-4 | musande | `defaultCtx()` defaults `useModel: true`, and the model transport POSTs the user's provider keys to an app route; a library default should be models-off |
+| U-smi-5 | musande | `smith-ide/src/compiler` is a self-declared stub that drops society members' `self` and `budget`; retire it or point the IDE at `web/src/lib/agent-smith` |
+| U-syn-1 | gospel | `synopsis/rs` parses but does not check, so it cannot be bound as `synopsis` (it would accept programs the TS checker refuses) |
+| U-syn-2 | gospel | Some truncated inputs raise a JS `TypeError` from inside the parser rather than a `ParseError` |
 
 ## 3. Naming collisions, recorded and not renamed
 

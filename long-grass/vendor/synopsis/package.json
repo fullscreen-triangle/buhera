@@ -1,0 +1,14 @@
+{
+  "name": "@gospel/synopsis",
+  "version": "0.1.0",
+  "description": "VENDORED from fullscreen-triangle/gospel synopsis/ts/src and synopsis/corpus/corpus.json (byte-exact at the commit recorded in specifications/registry/vendor.json; this package.json is local). The synopsis genomic scripting language: tokeniser, parser and Stage-B checker. There is no evaluator upstream, by design. Pure TypeScript, no I/O.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./corpus.json": "./corpus/corpus.json"
+  },
+  "sideEffects": false,
+  "private": true,
+  "license": "MIT"
+}

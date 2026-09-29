@@ -18,6 +18,8 @@ import { makePylonModule, pylonDsl, type PylonEngine } from "./pylon.ts";
 import { GATEWAY_MODULES, makeRemoteModule, type GatewayTransport } from "./remote.ts";
 import { makeWasmDsls, makeWasmModules } from "./rust-wasm.ts";
 import { makeSbsModule, sbsDsl, type SbsEngine } from "./sbs.ts";
+import { makeSmithModule, smithDsl, type SmithEngine } from "./smith.ts";
+import { makeSynopsisModule, synopsisDsl, type SynopsisEngine } from "./synopsis.ts";
 import { makeTempusModule, tempusDsl, type TempusEngine } from "./tempus.ts";
 import { makeZangalewaModule, type InterceptorClientCtor } from "./zangalewa-dsl.ts";
 
@@ -26,6 +28,8 @@ export * from "./pylon.ts";
 export * from "./remote.ts";
 export * from "./rust-wasm.ts";
 export * from "./sbs.ts";
+export * from "./smith.ts";
+export * from "./synopsis.ts";
 export * from "./tempus.ts";
 export * from "./zangalewa-dsl.ts";
 
@@ -36,6 +40,8 @@ export interface Engines {
   hfq?: HfqEngine;
   pylon?: PylonEngine;
   tempus?: TempusEngine;
+  smith?: SmithEngine;
+  synopsis?: SynopsisEngine;
   /** The vendored interceptor client class, plus the broker URL. */
   zangalewa?: { Client: InterceptorClientCtor; baseUrl?: string };
   /** buhera-gateway, for the Rust-only modules reached remotely. */
@@ -69,6 +75,14 @@ export function createFederation(engines: Engines, into?: Federation): Federatio
   if (engines.tempus) {
     registry.register(makeTempusModule(engines.tempus));
     dsls.register(tempusDsl(engines.tempus));
+  }
+  if (engines.smith) {
+    registry.register(makeSmithModule(engines.smith));
+    dsls.register(smithDsl(engines.smith));
+  }
+  if (engines.synopsis) {
+    registry.register(makeSynopsisModule(engines.synopsis));
+    dsls.register(synopsisDsl(engines.synopsis));
   }
   if (engines.zangalewa) {
     registry.register(makeZangalewaModule(engines.zangalewa.Client, engines.zangalewa.baseUrl));

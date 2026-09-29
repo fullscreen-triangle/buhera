@@ -7,7 +7,9 @@
     "fullscreen-triangle/stella-lorraine": "../../physics/stella-lorraine",
     "fullscreen-triangle/wind-tunnel": "../../portfolio/wind-tunnel",
     "fullscreen-triangle/bloodhound": "../../distributed/bloodhound",
-    "fullscreen-triangle/kwasa-kwasa": "../../semantics/kwasa-kwasa"
+    "fullscreen-triangle/kwasa-kwasa": "../../semantics/kwasa-kwasa",
+    "fullscreen-triangle/musande": "../../semantics/musande",
+    "fullscreen-triangle/gospel": "../../bioinformatics/gospel"
   },
   "entries": [
     {
@@ -28,8 +30,17 @@
       "to": "long-grass/vendor/sbs",
       "mode": "tree",
       "commit": "63d09c447df766bf843bb04a55a5cd571acada0b",
-      "exclude": ["circuitBuilder.js", "compartmentMapper.js", "sbmlParser.js", "dsl/examples.js", "dsl/compiler/"],
-      "local": ["index.js", "package.json"],
+      "exclude": [
+        "circuitBuilder.js",
+        "compartmentMapper.js",
+        "sbmlParser.js",
+        "dsl/examples.js",
+        "dsl/compiler/"
+      ],
+      "local": [
+        "index.js",
+        "package.json"
+      ],
       "note": "Subset: the browser-only SBML/three.js helpers and the unused TypeScript compiler tree are not vendored. index.js appends re-exports (compileSBS, validateSBS, SCRIPTS, DEFAULT_SCRIPT, solveCircuit, computeFluxPattern, extractMetrics) after the upstream body; package.json adds the ./scripts export and relies on the host for d3."
     },
     {
@@ -127,6 +138,36 @@
       "mode": "tree",
       "commit": "674b965c1bbda1147082fc619b405d209b81fc7c",
       "note": "The differential oracle corpora (tokens/ast/eval/graph .json) and their harnesses; run in-workspace as the engine's own conformance suite."
+    },
+    {
+      "id": "agent-smith",
+      "module": "smith",
+      "repo": "fullscreen-triangle/musande",
+      "from": "web/src/lib/agent-smith",
+      "to": "long-grass/vendor/agent-smith/src",
+      "mode": "tree",
+      "commit": "0fc4aaeaa8b03a87ad7666f7610e9819eb08548a",
+      "note": "The canonical Agent Smith front end (parser + typechecker + town). NOT smith-ide/src/compiler, which is a self-declared regex stub, and not crates/agent-smith (Rust), which lags the JS (singleton-cut floor, short potential list). The adapter imports only compile.js and town.js."
+    },
+    {
+      "id": "synopsis",
+      "module": "synopsis",
+      "repo": "fullscreen-triangle/gospel",
+      "from": "synopsis/ts/src",
+      "to": "long-grass/vendor/synopsis/src",
+      "mode": "tree",
+      "commit": "f4b695b105a5c80d94e858f91cbc63a56f988b77",
+      "note": "The TypeScript synopsis front end (tokeniser, parser, Stage-B checker). Upstream ships no evaluator, by design (IDE-PLAN.md); the module checks and reports, it does not run. The Rust twin (synopsis/rs) is parse-only and is not bound. package.json one level up is local."
+    },
+    {
+      "id": "synopsis-corpus",
+      "module": "synopsis",
+      "repo": "fullscreen-triangle/gospel",
+      "from": "synopsis/corpus/corpus.json",
+      "to": "long-grass/vendor/synopsis/corpus/corpus.json",
+      "mode": "file",
+      "commit": "f4b695b105a5c80d94e858f91cbc63a56f988b77",
+      "note": "The conformance corpus (positive + negative programs with expected error classes), extracted from the Python reference; the module tests run it."
     }
   ]
 }

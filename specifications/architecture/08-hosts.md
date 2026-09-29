@@ -8,7 +8,7 @@ A *host* is a process that owns one registry. There are four.
 
 - **Registry:** `src/lib/modules/registry.js`, a facade over one `@buhera/registry` `Registry`. It keeps the historical free functions (`register`, `dispatch`, `onDispatch`, `getAuditLog`, …), so all pre-existing modules and pages work unchanged.
 - **Bootstrap:** `src/lib/runtime/bootstrap.js` registers, in order:
-  1. the host-local modules: vahera, echo, lavoisier, purpose, zangalewa (coordinate extractor), graffiti, desk, dsl-writer, srn, smith, ckg, cytochrome, gateway, triangle, spraypaint, ladder, interceptor, and others;
+  1. the host-local modules: vahera, echo, lavoisier, purpose, zangalewa (coordinate extractor), graffiti, desk, dsl-writer, srn, ckg, cytochrome, gateway, triangle, spraypaint, ladder, interceptor, and others;
   2. the library federation.
 - **The library federation in long-grass:**
 
@@ -18,6 +18,8 @@ A *host* is a process that owns one registry. There are four.
 | `hfq` | `hfq-module.js` | native, `makeHfqModule(@hegel/hfq)` |
 | `pylon` | `pylon-module.js` | native, `makePylonModule(@buhera/pylon)` |
 | `tempus` | `tempus-module.js` | native, `makeTempusModule(@stella-lorraine/tempus)` |
+| `smith` | `smith-module.js` | native, `makeSmithModule(@musande/agent-smith)` |
+| `synopsis` | `synopsis-module.js` | native, `makeSynopsisModule(@gospel/synopsis)` |
 | `zangalewa-dsl` | `zangalewa-dsl-module.js` | remote (broker; `NEXT_PUBLIC_ZANGALEWA_BROKER`) |
 | `ndombolo`, `windtunnel`, `tracker` | `rust-wasm-modules.js` | native (wasm, lazy from `/wasm/buhera_modules.wasm`) |
 | `sbs-core` | `gateway-remote-modules.js` | remote (gateway session from `gateway-module.js`) |

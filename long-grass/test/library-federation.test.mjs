@@ -24,6 +24,11 @@ test("each language's own front end accepts a valid script and rejects a broken 
     sbs: ["circuit c { node A { mu: 1 } }", "circuit c { node A { mu: 1 }"],
     hfq: ["plan p {\n  budget 5 requests\n  let x = from chebi ask descendants_of(\"CHEBI:1\")\n  emit x\n}", "plan p {\n  let x = from chebi ask\n}"],
     srn: ["|t : (2,1,0,+)| not { k } do { emit self.n } to { * }", "|t : (2,1,0,+)| do { emit self.n } to { * }"],
+    smith: ["agent a { purpose reach done scenes { scene s serves done with h } self { parts { p, q } separations { (p, q: 3) } } budget 1 floor 2 }", "agent a { purpose reach done }"],
+    synopsis: [
+      "open m = \"m.fa\"\nopen t = \"t.fa\"\nunder nucleotide {\n    let q = project m by channels(dna)\n    let s = project t by channels(dna)\n    bind r, res_r = compare q against s by xcorr(normalised)\n    record r, res_r\n}\nreport to \"x.report\"\n",
+      "open m = \"m.fa\"\nopen t = \"t.fa\"\nunder nucleotide {\n    let q = project m by channels(dna)\n    let s = project t by channels(dna)\n    bind r, res_r = compare q against s by xcorr(normalised)\n    record r\n}\nreport to \"x.report\"\n",
+    ],
     tempus: ["sync c at 1e6 freq\ncell A bounds (0, 1) action 0\ncompose d=1 channels c into t\nwhen A do emit ok", "cell A bounds (1, 0) action 0"],
   };
   for (const [id, [good, bad]] of Object.entries(cases)) {

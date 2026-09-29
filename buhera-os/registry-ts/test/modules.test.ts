@@ -3,6 +3,7 @@
 // buhera-modules/tests/conformance.rs: one implementation, two hosts.
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 
 import { createFederation } from "../src/modules/index.ts";
 import { realEngines } from "./engines.ts";
@@ -162,7 +163,6 @@ when WARM do emit status_warn`;
 test("lazy wasm modules: describe before load, run after; a failed load is a result", async () => {
   const { makeLazyWasmModules } = await import("../src/modules/rust-wasm.ts");
   const { loadWasmEngine } = await import("../src/wasm.ts");
-  const { readFile } = await import("node:fs/promises");
   const bytes = await readFile(new URL("../wasm/buhera_modules.wasm", import.meta.url));
   const [nd] = makeLazyWasmModules(() => loadWasmEngine(bytes));
   assert.equal(nd?.describe().dsl, "turbulance");
@@ -191,4 +191,84 @@ test("remote (gateway): verbatim result with executed_on; transport failures are
   assert.equal((await signedOut.execute("demo", 1)).error, "remote unauthorized");
   const down = makeRemoteModule({ id: "sbs-core", description: "", instructions: [] }, { baseUrl: () => "http://127.0.0.1:9", token: () => "t" });
   assert.equal((await down.execute("demo", 1)).error, "remote unreachable");
+});
+
+test("smith: the canonical front end types the demo and runs it deterministically, models off", async () => {
+  const chk = await run("smith", { source: SMITH_CLERK });
+  assert.equal(chk.ok, true);
+  const a = (chk.output_delta as any).agents[0];
+  assert.equal(a.name, "clerk");
+  assert.equal(a.chi, 4);
+  assert.equal(a.floor, 4);
+  const r1 = await run("smith", "demo");
+  const r2 = await run("smith", "demo");
+  const strip = (d: any) => JSON.stringify({ ...d, steps: d.steps.map((s: any) => ({ ...s, content: null })) });
+  assert.equal(strip(r1.output_delta), strip(r2.output_delta), "deterministic across runs");
+  assert.ok((r1.output_delta as any).steps.length > 0);
+  assert.equal(r1.completed, true, "a reach task-agent halts at quiescence");
+  assert.ok((r1.output_delta as any).steps.every((s: any) => s.model == null), "no model was called");
+});
+
+test("smith: typing rules come from the real checker (disconnected self-graph, unknown potential)", () => {
+  const disconnected = SMITH_CLERK.replace("(patience, memory: 2)", "(memory, memory: 2)");
+  assert.equal(fed.dsls.validate("smith", disconnected).ok, false);
+  const v = fed.dsls.validate("smith", SMITH_CLERK.replace("minimise backlog", "minimise Threat"));
+  assert.equal(v.ok, false);
+  assert.match(v.errors[0]?.message ?? "", /convex/);
+});
+
+const SMITH_CLERK = `agent clerk {
+  purpose minimise backlog
+  scenes {
+    scene counter serves backlog with serve_hook
+    scene filing  serves backlog with file_hook
+  }
+  self {
+    parts { memory, manner, patience }
+    separations {
+      (memory, manner: 2), (manner, patience: 3), (patience, memory: 2)
+    }
+  }
+  budget 1.0
+  floor  2.0
+}`;
+
+test("synopsis: the upstream conformance corpus — positives check, negatives refuse with the declared class", async () => {
+  const engines = await realEngines();
+  const { registry, dsls } = createFederation({ synopsis: engines.synopsis });
+  const corpus = JSON.parse(await readFile(new URL("../../../long-grass/vendor/synopsis/corpus/corpus.json", import.meta.url), "utf8"));
+  const { isSubclassOf } = engines.synopsis as unknown as { isSubclassOf: (got: string, want: string) => boolean };
+  for (const p of corpus.positive) {
+    const r = await registry.dispatch("synopsis", p.src);
+    assert.equal(r.ok, true, `${p.name}: ${r.error}`);
+    assert.equal(r.residue, 0);
+    assert.equal(dsls.validate("synopsis", p.src).ok, true, p.name);
+  }
+  for (const n of corpus.negative) {
+    const r = await registry.dispatch("synopsis", n.src);
+    assert.equal(r.ok, false, n.name);
+    const cls = (r.output_delta as unknown as { refusal: { className: string } }).refusal.className;
+    assert.ok(isSubclassOf(cls, n.expect), `${n.name}: got ${cls}, expected ${n.expect} or a subclass`);
+    const v = dsls.validate("synopsis", n.src);
+    assert.equal(v.ok, false, n.name);
+    assert.ok(v.errors[0]!.message.startsWith(cls), n.name);
+  }
+});
+
+test("synopsis: parse/tokens are plain JSON; running is refused, never approximated", async () => {
+  const engines = await realEngines();
+  const { registry } = createFederation({ synopsis: engines.synopsis });
+  const corpus = JSON.parse(await readFile(new URL("../../../long-grass/vendor/synopsis/corpus/corpus.json", import.meta.url), "utf8"));
+  const src = corpus.positive[0].src;
+  const ast = await registry.dispatch("synopsis", { kind: "parse", source: src });
+  assert.equal(ast.ok, true);
+  assert.deepEqual(JSON.parse(JSON.stringify(ast.output_delta)), ast.output_delta, "no Maps survive into the delta");
+  const toks = await registry.dispatch("synopsis", { kind: "tokens", source: src });
+  assert.ok((toks.output_delta as unknown as { count: number }).count > 10);
+  const run = await registry.dispatch("synopsis", { kind: "run", source: src });
+  assert.equal(run.ok, false);
+  assert.equal(run.error, "no evaluator exists");
+  const report = await registry.dispatch("synopsis", src);
+  const params = (report.output_delta as unknown as { report: { parameters: Record<string, unknown> } }).report.parameters;
+  assert.ok(Object.keys(params).length > 0, "the checker's report records the script's parameters");
 });

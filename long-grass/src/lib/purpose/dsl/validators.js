@@ -22,12 +22,14 @@
 import fs from "fs";
 import path from "path";
 import { DslRegistry, fromThrowing, loadWasmEngineSync } from "@buhera/registry";
-import { hfqDsl, pylonDsl, sbsDsl, tempusDsl } from "@buhera/registry/modules";
+import { hfqDsl, pylonDsl, sbsDsl, smithDsl, synopsisDsl, tempusDsl } from "@buhera/registry/modules";
 import * as sbsEngine from "@sachikonye/sbs";
 import * as pylonEngine from "@buhera/pylon";
 import { parseVahera } from "@/lib/vahera";
 import { hfqEngine } from "@/lib/modules/hfq-module";
 import { tempusEngine } from "@/lib/modules/tempus-module";
+import { smithEngine } from "@/lib/modules/smith-module";
+import { synopsisEngine } from "@/lib/modules/synopsis-module";
 
 /**
  * vaHera — `parseVahera(src)` THROWS on the first invalid line, embedding
@@ -42,6 +44,8 @@ registry.register(sbsDsl(sbsEngine));
 registry.register(hfqDsl(hfqEngine));
 registry.register(pylonDsl(pylonEngine));
 registry.register(tempusDsl(tempusEngine));
+registry.register(smithDsl(smithEngine));
+registry.register(synopsisDsl(synopsisEngine));
 
 // Rust front ends via wasm: registered now, engine loaded on first validate.
 let _wasm = null;

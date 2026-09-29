@@ -7,6 +7,8 @@ import type { Engines } from "../src/modules/index.ts";
 const LG = "../../../long-grass/vendor";
 
 export async function realEngines(): Promise<Required<Engines>> {
+  const [smithCompile, smithTown] = await Promise.all([import(`${LG}/agent-smith/src/compile.js`), import(`${LG}/agent-smith/src/town.js`)]);
+  const synopsis = await import(`${LG}/synopsis/src/index.ts`);
   const [sbs, hfq, plans, pylon, tcompile, truntime, tconstruct, tcompose, icept] = await Promise.all([
     import(`${LG}/sbs/index.js`),
     import(`${LG}/hfq/src/index.js`),
@@ -26,6 +28,8 @@ export async function realEngines(): Promise<Required<Engines>> {
     pylon,
     tempus: { ...tcompile, ...truntime, ...tconstruct, ...tcompose },
     zangalewa: { Client: icept.Interceptor, baseUrl: "http://127.0.0.1:9" },
+    smith: { ...smithCompile, ...smithTown },
+    synopsis,
     gateway: { baseUrl: () => "http://127.0.0.1:9", token: () => null },
   } as Required<Engines>;
 }

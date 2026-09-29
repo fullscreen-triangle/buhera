@@ -28,6 +28,7 @@ import { deskModule, observeAct as deskObserveAct } from "@/lib/modules/desk-mod
 import { dslWriterModule } from "@/lib/modules/dsl-writer-module";
 import { srnModule } from "@/lib/modules/srn-module";
 import { smithModule } from "@/lib/modules/smith-module";
+import { synopsisModule } from "@/lib/modules/synopsis-module";
 import { ckgModule } from "@/lib/modules/ckg-module";
 import { cytochromeModule } from "@/lib/modules/cytochrome-module";
 import { gatewayModule } from "@/lib/modules/gateway-module";
@@ -76,6 +77,7 @@ export function bootstrapFederation() {
   register(dslWriterModule);
   register(srnModule);
   register(smithModule);
+  register(synopsisModule);
   register(ckgModule);
   register(cytochromeModule);
   register(gatewayModule);

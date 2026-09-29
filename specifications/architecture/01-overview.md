@@ -70,8 +70,10 @@ flowchart TB
 | `sbs` | science | SBS | — | native | hegel (JS) |
 | `sbs-core` | science | — | native | remote | hegel (Rust) |
 | `tempus` | science | Tempus | — | native | stella-lorraine (web) |
+| `synopsis` | science | synopsis | — (Rust twin parses only, U-syn-1) | native | gospel (TS) |
 | `hfq` | coordination | HFQ | — | native | hegel (JS) |
 | `pylon` | coordination | SRN | — | native | pylon (TS) |
+| `smith` | coordination | Agent Smith | — (Rust crate lags, U-smi-1..3) | native | musande (web) |
 | `windtunnel` | observation | .wt | native | native (wasm) | wind-tunnel |
 | `tracker` | observation | — | native | native (wasm) | bloodhound |
 | `zangalewa-dsl` | generation | — | native (feature) | remote (broker) | zangalewa |

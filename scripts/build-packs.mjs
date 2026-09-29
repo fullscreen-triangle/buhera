@@ -26,6 +26,8 @@ const KEYWORDS = {
   hfq: ["hfq", "federated query", "plan", "budget", "chebi", "rhea"],
   srn: ["srn", "glyph", "sango rine shumba", "pylon"],
   tempus: ["tempus", "timing", "delta p", "cell", "sync"],
+  smith: ["smith", "agent smith", "split-attention", "self-graph", "scene", "society"],
+  synopsis: ["synopsis", "genomic", "motif", "homology", "residue", "variant", "frame"],
 };
 
 function languageSection(md) {

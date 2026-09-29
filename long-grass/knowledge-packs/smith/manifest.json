@@ -1,0 +1,23 @@
+{
+  "id": "smith",
+  "name": "Agent Smith Reference",
+  "short_label": "Agent Smith",
+  "summary": "Grammar and worked examples for Agent Smith, projected from specifications/specs/smith.md. Used to ground natural-language-to-smith generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/musande",
+  "trigger_keywords": [
+    "smith",
+    "agent smith",
+    "split-attention",
+    "self-graph",
+    "scene",
+    "society"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "Agent Smith grammar and validated examples"
+    }
+  ]
+}

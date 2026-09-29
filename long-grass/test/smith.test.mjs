@@ -1,126 +1,76 @@
-// Unit tests for the smith agent-generation module and its compiler.
-// Runs against the REAL ported compiler (the web-side twin of the Rust agent
-// tool), so this doubles as a conformance check for the DSL and the split-
-// attention mathematics (χ, realised floor, deterministic tick loop).
+// The smith module over musande's canonical Agent Smith engine
+// (vendor/agent-smith). Replaces the tests of the former regex-stub port:
+// every claim is now checked against the language's real front end.
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { compile, run, parse } from "../src/lib/smith/compiler.js";
 import { smithModule } from "../src/lib/modules/smith-module.js";
 
-const SCOUT = `
-agent Scout {
-  purpose minimise Threat;
-  scene watch serves Threat with radar;
-  scene listen serves Threat with sonar;
-  self { parts { eye, ear, mind } separations (eye,ear: 3) (ear,mind: 2) (eye,mind: 2) }
-  budget 4; floor 2;
-  coherence keeps { eye, mind }
-}
-`;
+const SCOUT = `agent Scout {
+  purpose minimise backlog
+  scenes {
+    scene watch serves backlog with look_hook
+    scene report serves backlog with tell_hook
+  }
+  self {
+    parts { eyes, legs, voice }
+    separations { (eyes, legs: 3), (legs, voice: 2), (voice, eyes: 4) }
+  }
+  budget 2.0
+  floor 2.0
+}`;
 
-test("valid multiline agent checks, with χ / floor / partition", () => {
-  const c = compile(SCOUT);
-  assert.equal(c.check.ok, true);
-  assert.deepEqual(c.check.errors, []);
-  assert.equal(c.check.agents.length, 1);
-  const a = c.check.agents[0];
+test("check: a typed agent carries χ, realised floor and a two-sided partition", async () => {
+  const r = await smithModule.execute(SCOUT);
+  assert.equal(r.ok, true);
+  const a = r.output_delta.agents[0];
   assert.equal(a.name, "Scout");
-  assert.equal(a.regime, "character"); // purpose minimise → character regime
-  assert.equal(Number.isFinite(a.chi), true);
-  assert.equal(Number.isFinite(a.floor), true);
-  assert.ok(a.chiPartition.length >= 2); // χ is over ≥2-block partitions
+  assert.equal(a.regime, "character", "purpose minimise → character regime");
+  assert.equal(a.chi, 5, "cheapest bipartition of the triangle: {legs} | {eyes, voice}, cut 3 + 2");
+  assert.equal(a.chiPartition.length, 2);
+  assert.equal(r.residue, 0);
+  assert.equal(r.completed, true);
 });
 
-test("single-line agent parses (the webtool terminal route)", () => {
-  const c = compile(
-    `agent Ok { purpose minimise T; scene s serves T with h; self { parts { a, b } separations (a,b: 3) } budget 2; floor 2 }`
-  );
-  assert.equal(c.check.ok, true);
-  assert.equal(c.check.agents[0].name, "Ok");
+test("check: the one-line canonical syntax parses (the terminal route)", async () => {
+  const r = await smithModule.execute("agent Ok { purpose reach done scenes { scene s serves done with h } self { parts { p, q } separations { (p, q: 3) } } budget 1 floor 2 }");
+  assert.equal(r.ok, true);
+  assert.equal(r.output_delta.agents[0].regime, "task", "purpose reach → task-agent");
 });
 
-test("checker rejects below-floor separations and off-target scenes", () => {
-  const c = compile(
-    `agent Bad { purpose reach Goal; scene s serves Other with h; self { parts { a, b } separations (a,b: 1) } budget 2; floor 2 }`
-  );
-  assert.equal(c.check.ok, false);
-  const msgs = c.check.errors.map((e) => e.message).join(" | ");
-  assert.match(msgs, /below the floor/);
-  assert.match(msgs, /serves "Other"/);
+test("check: the real typechecker refuses below-floor costs and off-target scenes", async () => {
+  const below = await smithModule.execute(SCOUT.replace("(legs, voice: 2)", "(legs, voice: 1)"));
+  assert.equal(below.ok, false);
+  const off = await smithModule.execute(SCOUT.replace("scene report serves backlog", "scene report serves other"));
+  assert.equal(off.ok, false);
+  assert.ok(off.residue >= 1, "check-only residue counts the diagnostics");
 });
 
-test("society extracts inner agents despite nested self-braces", () => {
-  const c = compile(
-    `society Team {
-       agent A { purpose minimise T; scene s serves T with h; self { parts { p, q } separations (p,q: 3) } budget 3; floor 2 }
-       agent B { purpose minimise T; scene s2 serves T with h2; self { parts { r, w } separations (r,w: 3) } budget 3; floor 2 }
-       tie(A,B: 3);
-       couple 1
-     }`
-  );
-  assert.equal(c.check.ok, true);
-  assert.deepEqual(c.check.agents.map((a) => a.name), ["A", "B"]);
+test("check: society members are typed individually", async () => {
+  const src = `society pair {
+    agent A { purpose minimise forge_residual scenes { scene s serves forge_residual with h } self { parts { a1, a2 } separations { (a1, a2: 3) } } budget 1 floor 2 }
+    agent B { purpose minimise forge_residual scenes { scene t serves forge_residual with h } self { parts { b1, b2 } separations { (b1, b2: 2) } } budget 1 floor 2 }
+    tie (A, B: 2)
+    couple 3
+  }`;
+  const r = await smithModule.execute(src);
+  assert.equal(r.ok, true);
+  assert.deepEqual(r.output_delta.agents.map((a) => a.name), ["A", "B"]);
+  assert.ok(r.output_delta.society);
 });
 
-test("run is deterministic across compiles (no Math.random)", () => {
-  const a = compile(SCOUT);
-  const b = compile(SCOUT);
-  const ra = run(a.file, 12);
-  const rb = run(b.file, 12);
-  assert.deepEqual(ra.finalCounts, rb.finalCounts);
-  assert.deepEqual(ra.steps, rb.steps);
+test("run: deterministic, models off, trace flattened for the renderer", async () => {
+  const a = await smithModule.execute({ source: SCOUT, run: true, maxTicks: 8 });
+  const b = await smithModule.execute({ source: SCOUT, run: true, maxTicks: 8 });
+  assert.deepEqual(a.output_delta.steps, b.output_delta.steps);
+  assert.ok(a.output_delta.steps.length >= 1);
+  assert.ok(a.output_delta.steps.every((s) => typeof s.tick === "number" && s.agent === "Scout"));
+  assert.ok(a.output_delta.finalCounts.Scout >= 1);
+  assert.ok(a.output_delta.steps.every((s) => s.model == null));
 });
 
-test("run alternates construction/commitment phases", () => {
-  const c = compile(SCOUT);
-  const r = run(c.file, 9);
-  // tick % 3 === 0 is construction (observe); others are commitment.
-  const t3 = r.steps.find((s) => s.tick === 3);
-  const t1 = r.steps.find((s) => s.tick === 1);
-  assert.equal(t3.phase, "construction");
-  assert.equal(t3.outcome, "observe");
-  assert.equal(t1.phase, "commitment");
-});
-
-test("empty source yields no agent/society declaration error", () => {
-  const { file, errors } = parse("   ");
-  assert.equal(file.items.length, 0);
-  assert.equal(errors.length, 1);
-  assert.match(errors[0].message, /No agent or society declarations/);
-});
-
-test("module: string instruction checks and returns agent_generated", async () => {
-  const res = await smithModule.execute(SCOUT);
-  assert.equal(res.ok, true);
-  assert.equal(res.output_delta.kind, "agent_generated");
-  assert.equal(res.output_delta.agents[0].name, "Scout");
-  assert.equal(res.completed, true);
-  // residue mirrors aggregate realised floor (finite, ≥ 0)
-  assert.equal(typeof res.residue, "number");
-  assert.ok(res.residue >= 0);
-});
-
-test("module: { source, run:true } attaches a run trace", async () => {
-  const res = await smithModule.execute({ source: SCOUT, run: true, maxTicks: 9 });
-  assert.equal(res.ok, true);
-  assert.ok(Array.isArray(res.output_delta.steps));
-  assert.equal(res.output_delta.steps.length, 9);
-  assert.ok(res.output_delta.finalCounts.Scout >= 1);
-});
-
-test("module: empty source is a clean error, not a throw", async () => {
-  const res = await smithModule.execute("");
-  assert.equal(res.ok, false);
-  assert.equal(res.output_delta.kind, "agent_generated");
-  assert.equal(res.error, "no-source");
-});
-
-test("module: rejected check does not run the tick loop", async () => {
-  const res = await smithModule.execute({
-    source: `agent Bad { purpose reach Goal; scene s serves Other with h; self { parts { a, b } separations (a,b: 1) } budget 2; floor 2 }`,
-    run: true,
-  });
-  assert.equal(res.ok, false);
-  assert.equal(res.output_delta.steps, undefined); // no trace when check failed
+test("a refused program does not run", async () => {
+  const r = await smithModule.execute({ source: "agent x {", run: true });
+  assert.equal(r.ok, false);
+  assert.equal(r.output_delta.steps, undefined);
 });
