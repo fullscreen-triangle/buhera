@@ -52,6 +52,7 @@ These engines are vendored and bound in long-grass today but are not catalogue m
 | honjo-rs | borgia | Z ≤ 18, no lowering, different term notation (U-hjo-2) | parity with the TS |
 | agent-smith (Rust) | musande | singleton-cut floor, short potential list (U-smi-1..3) | parity with the JS |
 | synopsis (Rust) | gospel | parse only (U-syn-1) | a Rust checker passing the same corpus |
+| Shapeshifter reference (`shapeshifter-ref`) | lavoisier `catalogue/web/src/lib/ss` | none in the engine: a bit-exact JS port of the paper's Python reference (its `check_port.mjs` gate passes), whose ladder operations are pure; but its AST and kind function are incompatible with the bound interpreter, and its ladder semantics overlap the `ladder` module | the user's choice of which module owns ladder semantics; it would then be a second module, never merged into `shapeshifter` |
 
 ## 4. Skipped — no engine to bind
 
@@ -62,6 +63,8 @@ These engines are vendored and bound in long-grass today but are not catalogue m
 | Turbulance variants (7) | kwasa-kwasa, hegel, nebuchadnezzar, four-sided-triangle, moriarty, borgia, gospel | none adds grammar ndombolo-core lacks; four do not build |
 | lavoisier-buhera `.bh` | lavoisier | a different language that happens to share a name; a stub that does not compile |
 | hieronymus scope-compiler | helicopter | an older ancestor of the vendored scope-lang |
+| enzymes/webtool | levinthal | superseded by `enzymes/web` (its README says so); its `engine.js` is the same body wrapped for `window`, and does not load in Node despite its README |
+| zoom-climb `bridge/`, `desk/`, `prompt.ts`, `coord-extract.ts` | zangalewa | `bridge/` is the predecessor of the interceptor broker Buhera already binds; `desk/` is a single-user GitHub/Hugging Face indexer with no language; the other two belong to the old research-card module (long-grass keeps dead copies, U-zng-5) |
 | mogadishu, huygens, conclave, berlin, faraday, fourth-stomach, lagrangian | — | no pure engine reachable from either host (pyo3/tokio throughout, empty manifests, LaTeX only, Python only, GPU only) |
 
 ## 5. Drift and defects found in Buhera itself
