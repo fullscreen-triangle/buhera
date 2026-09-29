@@ -13,27 +13,42 @@ import {
   HardDrive, SlidersHorizontal, RotateCw, CloudDownload, ChartScatter, MemoryStick, Repeat,
   FlaskConical, BrainCircuit, Terminal, Route, Sparkles, Languages, Crosshair, Shapes, Microscope,
   NotebookPen, Braces, Hammer, Workflow, Pill, Bot, Layers, Timer, Waves, Radar, Wind,
+  MonitorSmartphone, Microchip, FlaskRound, TramFront, ALargeSmall, Monitor, Code, Printer, UserCog,
+  FolderKanban, LibraryBig, ListChecks, FileText,
 } from "lucide-react";
 
 export const ICONS = {
-  // top — streams, data, connection
+  // top — where the session is
+  devices: MonitorSmartphone,
+  machine: Microchip,
   network: Wifi,
+  experiments: FlaskRound,
+  runtime: TramFront,
+  // right — how the screen is used
+  preferences: ALargeSmall,
+  screen: Monitor,
+  code: Code,
+  peripherals: Printer,
+  // bottom — who the work is for
+  model: UserCog,
+  projects: FolderKanban,
+  rag: LibraryBig,
+  plans: ListChecks,
+  reports: FileText,
+  // the federation (left column)
   spraypaint: SprayCan,
   triangle: Triangle,
   hfq: Database,
-  // right — compute, servers, network
   gateway: Server,
   catalysts: Boxes,
   compute: Cpu,
   srn: Network,
   pylon: Waypoints,
   "sbs-core": Cable,
-  // bottom — system
   disk: HardDrive,
   config: SlidersHorizontal,
   restart: RotateCw,
   update: CloudDownload,
-  // the rest of the federation
   vis: ChartScatter,
   vahera: MemoryStick,
   echo: Repeat,

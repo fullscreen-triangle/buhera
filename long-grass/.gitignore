@@ -31,3 +31,5 @@ yarn-error.log*
 # vercel
 .vercel
 .env.local
+# the RAG player's persistent receiver graphs (server-side retrieval state)
+/.receivers/

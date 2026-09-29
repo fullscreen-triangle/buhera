@@ -97,20 +97,20 @@ test("saveBook trims the oldest pages to fit, renumbering on load", () => {
   assert.ok(back.pages.every((p) => p.from === null), "stale fork links are dropped");
 });
 
-test("every edge module is filed exactly once", () => {
+test("the edges hold the refined layout, each item filed once", () => {
   const ids = Object.values(EDGES).flatMap((e) => e.entries.map((x) => x.id));
   assert.equal(new Set(ids).size, ids.length);
-  assert.equal(edgeOf("gateway"), "right");
-  assert.equal(edgeOf("disk"), "bottom");
-  assert.equal(edgeOf("spraypaint"), "top");
-  assert.equal(edgeOf("lavoisier"), null, "domain modules live only in the left column");
-  assert.deepEqual(glanceOf("catalysts"), "list");
-  assert.equal(glanceOf("restart"), undefined, "restart has no glance — opening it must not act");
+  assert.deepEqual(EDGES.top.entries.map((e) => e.id), ["devices", "machine", "network", "experiments", "runtime"]);
+  assert.deepEqual(EDGES.right.entries.map((e) => e.id), ["preferences", "screen", "code", "peripherals"]);
+  assert.deepEqual(EDGES.bottom.entries.map((e) => e.id), ["model", "projects", "rag", "plans", "reports"]);
+  assert.equal(edgeOf("lavoisier"), null, "the federation lives in the left column");
+  assert.equal(edgeOf("restart"), null, "system housekeeping moved to the left column");
+  assert.ok(ids.every((id) => glanceOf(id) !== undefined), "every edge item opens showing something");
 });
 
 test("modulesAt keeps table order and skips unregistered ids", () => {
-  const reg = [{ id: "catalysts" }, { id: "gateway" }, { id: "echo" }];
-  assert.deepEqual(modulesAt("right", reg).map((m) => m.id), ["gateway", "catalysts"]);
+  const reg = [{ id: "code" }, { id: "preferences" }, { id: "echo" }];
+  assert.deepEqual(modulesAt("right", reg).map((m) => m.id), ["preferences", "code"]);
 });
 
 test("searchModules matches id and description, sorted by id", () => {
@@ -138,4 +138,41 @@ test("searchModules ranks name matches above description matches", () => {
     { id: "revise", description: "" },
   ];
   assert.deepEqual(searchModules(reg, "vis").map((m) => m.id), ["vis", "revise", "sbs"]);
+});
+
+// ── pieces: the pure half ────────────────────────────────────────────────
+import { pieceFromDrag, loadPieces, savePieces, PIECES_KEY } from "../src/lib/surface/pieces.js";
+
+test("a drag over a frame becomes a piece in that frame's content coordinates", () => {
+  const box = { left: 100, top: 50, right: 900, bottom: 1250, width: 800 };
+  const p = pieceFromDrag({ n: 4, box, start: { x: 300, y: 400 }, end: { x: 150, y: 200 }, placed: 0 });
+  assert.equal(p.n, 4);
+  assert.deepEqual(p.rect, { x: 50, y: 150, w: 150, h: 200 }, "drag direction does not matter");
+  assert.equal(p.width, 800, "the piece remembers the width it was cut at");
+});
+
+test("a cut is clipped to the frame, and too small a cut is nothing", () => {
+  const box = { left: 100, top: 50, right: 900, bottom: 1250, width: 800 };
+  const p = pieceFromDrag({ n: 1, box, start: { x: 0, y: 0 }, end: { x: 300, y: 200 } });
+  assert.deepEqual(p.rect, { x: 0, y: 0, w: 200, h: 150 });
+  assert.equal(pieceFromDrag({ n: 1, box, start: { x: 200, y: 200 }, end: { x: 210, y: 400 } }), null);
+});
+
+test("new pieces cascade instead of stacking exactly", () => {
+  const box = { left: 0, top: 0, right: 500, bottom: 500, width: 500 };
+  const a = pieceFromDrag({ n: 1, box, start: { x: 0, y: 0 }, end: { x: 100, y: 100 }, placed: 0 });
+  const b = pieceFromDrag({ n: 1, box, start: { x: 0, y: 0 }, end: { x: 100, y: 100 }, placed: 1 });
+  assert.notDeepEqual(a.at, b.at);
+});
+
+test("pieces round-trip through storage; malformed entries are dropped", () => {
+  const store = memoryStorage();
+  const box = { left: 0, top: 0, right: 500, bottom: 500, width: 500 };
+  const a = pieceFromDrag({ n: 2, box, start: { x: 0, y: 0 }, end: { x: 100, y: 100 } });
+  savePieces([a], store);
+  assert.deepEqual(loadPieces(store), [a]);
+  store.setItem(PIECES_KEY, JSON.stringify([a, { id: 3 }, null]));
+  assert.deepEqual(loadPieces(store), [a]);
+  store.setItem(PIECES_KEY, "{broken");
+  assert.deepEqual(loadPieces(store), []);
 });

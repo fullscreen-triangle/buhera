@@ -3,9 +3,13 @@
  *
  * The blank surface shows nothing until the pointer reaches an edge:
  *
- *   top     streams, databases, internet connection
- *   right   cluster / distributed compute, servers, VPNs
- *   bottom  configuration: disk space, setup-config, restart, update
+ *   top     where the session is: connected devices, this machine, the
+ *           network, shared experiments, and the runtime graph
+ *   right   how the screen is used: preferences (text size, spacing),
+ *           screen, code visibility, device connections (printer, pointer,
+ *           screen → image)
+ *   bottom  who the work is for: the personalised model, groups and
+ *           projects, RAG settings, plans, reports
  *   left    every registered module, with a search at the top
  *
  * This table is the single place that decision is written down, so it can be
@@ -22,33 +26,32 @@
 
 export const EDGES = {
   top: {
-    title: "streams · data · connection",
+    title: "devices · machine · network · experiments · runtime",
     entries: [
+      { id: "devices", glance: "list" },
+      { id: "machine", glance: "specs" },
       { id: "network", glance: { kind: "status" } },
-      { id: "spraypaint", glance: { kind: "scenes" } },
-      { id: "triangle", glance: "sources" },
-      { id: "hfq" },
-      // group stream and database connectors land here as they are built
+      { id: "experiments", glance: "list" },
+      { id: "runtime", glance: "map" },
     ],
   },
   right: {
-    title: "compute · servers · network",
+    title: "preferences · screen · code · devices",
     entries: [
-      { id: "gateway", glance: "catalysts" },
-      { id: "catalysts", glance: "list" },
-      { id: "compute" },
-      { id: "srn", glance: { kind: "peers" } },
-      { id: "pylon" },
-      { id: "sbs-core" },
+      { id: "preferences", glance: "show" },
+      { id: "screen", glance: "size" },
+      { id: "code", glance: "show" },
+      { id: "peripherals", glance: "show" },
     ],
   },
   bottom: {
-    title: "system",
+    title: "model · projects · rag · plans · reports",
     entries: [
-      { id: "disk", glance: { kind: "usage" } },
-      { id: "config", glance: { kind: "show" } },
-      { id: "restart" },
-      { id: "update", glance: { kind: "check" } },
+      { id: "model", glance: "show" },
+      { id: "projects", glance: "show" },
+      { id: "rag", glance: "show" },
+      { id: "plans", glance: "show" },
+      { id: "reports", glance: "show" },
     ],
   },
 };

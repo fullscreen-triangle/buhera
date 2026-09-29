@@ -15,6 +15,7 @@ import SpraypaintAllocationChart from "@/components/sandboxes/spraypaint/Spraypa
 import { CodeBlock as InterceptorCodeBlock, ConsoleOutput as InterceptorConsoleOutput, WindTunnelReadout } from "@/components/sandboxes/interceptor/InterceptorConsole";
 import { useDisclosure } from "@/components/artifacts/disclosure";
 import VisBoard from "@/components/vis/VisBoard";
+import SurfaceArtifact from "@/components/surface/SurfaceArtifacts";
 
 // The show/hide control for one disclosure. Toggleable hosts get a button;
 // flat hosts (the surface) get a static label, since the section is open.
@@ -1772,7 +1773,9 @@ export function Artifact({ result }) {
     case "interceptor_run_result": return <ArtifactInterceptorRun language={result.language} code={result.code} ok={result.ok} stdout={result.stdout} stderr={result.stderr} exit_code={result.exit_code} elapsed_ms={result.elapsed_ms} timed_out={result.timed_out} truncated={result.truncated} vahera_memory={result.vahera_memory} />;
     case "windtunnel_report": return <ArtifactWindTunnelReport language={result.language} code={result.code} elapsed_ms={result.elapsed_ms} runs={result.runs} order_parameter={result.order_parameter} regime={result.regime} reference_index={result.reference_index} per_run={result.per_run} crash_count={result.crash_count} />;
     case "interceptor_assist_result": return <ArtifactInterceptorAssist language={result.language} task={result.task} code={result.code} provider={result.provider} model={result.model} run={result.run} vahera_memory={result.vahera_memory} windtunnel={result.windtunnel} />;
-    default:                return null;
+    // What the surface itself produces (settings, stacks, the runtime map,
+    // player runs) renders in its own file; it receives this renderer back.
+    default:                return <SurfaceArtifact result={result} Artifact={Artifact} />;
   }
 }
 

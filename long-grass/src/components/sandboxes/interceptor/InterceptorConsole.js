@@ -6,6 +6,7 @@
 //  sandboxes/spraypaint/SpraypaintAllocationChart.js.
 // =====================================================================
 import { useDisclosure } from "@/components/artifacts/disclosure";
+import { useSettings } from "@/lib/surface/settings";
 
 const OK = "#58E6D9";
 const BAD = "#f87171";
@@ -25,7 +26,11 @@ function regimeColor(name) {
 
 export function CodeBlock({ language, code }) {
   const d = useDisclosure(true);
+  const { code: visibility } = useSettings();
   if (!code) return null;
+  if (!visibility.showCodeBlocks) {
+    return <div className="mb-2 px-1 text-[11px] text-neutral-600">generated {language} — hidden (code visibility, right edge)</div>;
+  }
   return (
     <div className="rounded-md border border-neutral-700 bg-[#151515] p-2 mb-2">
       <button

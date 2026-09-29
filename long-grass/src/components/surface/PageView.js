@@ -110,21 +110,13 @@ function ModuleCard({ envelope, onAct, fly }) {
   );
 }
 
+// The words that started the step. A module page's head already names the
+// module, so it has none. Frames carry no other bookkeeping: which frame
+// matters is the user's to decide, by what they cut from it.
 function SourceLine({ page }) {
   const src = page.source || {};
-  // A module page's head already names the module; the words line is for
-  // steps that were written.
-  if (src.type === "module") {
-    return page.from != null ? <div className="text-gray-700 text-xs mb-4">continued from page {page.from}</div> : null;
-  }
-  return (
-    <div className="mb-6">
-      <div className="text-gray-200 whitespace-pre-wrap">{src.text}</div>
-      {page.from != null && (
-        <div className="text-gray-700 text-xs mt-1">continued from page {page.from}</div>
-      )}
-    </div>
-  );
+  if (src.type === "module") return null;
+  return <div className="mb-6 text-gray-200 whitespace-pre-wrap">{src.text}</div>;
 }
 
 export default function PageView({ page, onAct, fly }) {
