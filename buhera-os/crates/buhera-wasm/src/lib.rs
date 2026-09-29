@@ -34,7 +34,7 @@ thread_local! {
 /// build, so relying on this crate's feature list would let non-wasm-safe
 /// modules (vahera's kernel, sbs-core's clock) in under `cargo test --workspace`.
 fn wasm_federation() -> (Registry, DslRegistry) {
-    use buhera_modules::{heihachi, levinthal, ndombolo, olduvai, tracker, windtunnel};
+    use buhera_modules::{heihachi, levinthal, mekaneck, ndombolo, olduvai, tracker, windtunnel};
     let mut modules = Registry::new();
     let mut dsls = DslRegistry::new();
     modules.register(Box::new(ndombolo::Ndombolo::new()));
@@ -48,6 +48,8 @@ fn wasm_federation() -> (Registry, DslRegistry) {
     }
     modules.register(Box::new(olduvai::Olduvai::new()));
     modules.register(Box::new(levinthal::Levinthal::new()));
+    modules.register(Box::new(mekaneck::Mekaneck::new()));
+    dsls.register(mekaneck::dsl());
     (modules, dsls)
 }
 
@@ -143,7 +145,7 @@ mod tests {
     fn describes_exactly_the_pure_modules() {
         let d = describe();
         let ids: Vec<&str> = d["modules"].as_array().unwrap().iter().map(|m| m["id"].as_str().unwrap()).collect();
-        assert_eq!(ids, ["heihachi", "levinthal", "ndombolo", "olduvai", "tracker", "windtunnel"]);
+        assert_eq!(ids, ["heihachi", "levinthal", "mekaneck", "ndombolo", "olduvai", "tracker", "windtunnel"]);
     }
 
     #[test]

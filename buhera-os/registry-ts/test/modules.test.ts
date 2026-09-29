@@ -440,3 +440,46 @@ test("spectral: embeddings are unit vectors; homology ranks the identical sequen
   const noDefaults = await registry.dispatch("spectral", { kind: "motif", query: motif, target: t });
   assert.equal(noDefaults.ok, false, "thresholds are never defaulted");
 });
+
+test("wasm: mekaneck is the Rust module — the README runs reproduce; a declination is ok", async () => {
+  const engines = await realEngines();
+  const { registry, dsls } = createFederation({ wasm: engines.wasm });
+  const src = await readFile(new URL("../../vendor/mekaneck/examples/coherence.mck", import.meta.url), "utf8");
+  assert.equal(dsls.validate("mekaneck", src).ok, true);
+  const noExcl = dsls.validate("mekaneck", src.replace("  excluding   all_other_states()\n", ""));
+  assert.equal(noExcl.ok, false, "a seek without excluding is refused (Thm 4.3)");
+  assert.equal(typeof noExcl.errors[0]!.line, "number");
+  const demo = await registry.dispatch("mekaneck", "demo");
+  const ev = (demo.output_delta as unknown as { evaluations: Array<{ evaluation: { outcome: unknown; record: number } }> }).evaluations[0]!.evaluation;
+  assert.deepEqual(ev.outcome, { outcome: "resolved", cell: "high" });
+  assert.equal(ev.record, 1);
+  const mixed = await registry.dispatch("mekaneck", { kind: "run", source: src, cells: { spectral: "high", surrogate: "high", phase: "mixed" } });
+  assert.equal(mixed.ok, true, "declined is a result, not a failure");
+  const out = (mixed.output_delta as unknown as { evaluations: Array<{ evaluation: { outcome: { outcome: string; cells: string[] } } }> }).evaluations[0]!.evaluation.outcome;
+  assert.equal(out.outcome, "declined");
+  assert.equal(out.cells.length, 2);
+});
+
+test("scope: whole programs are the compiler's; REPL cells accumulate; residue is the goals the result did not meet", async () => {
+  const engines = await realEngines();
+  const { registry, dsls } = createFederation({ scope: engines.scope });
+  const bad = dsls.validate("scope", "scope x { }");
+  assert.equal(bad.ok, false, "`x` is a keyword");
+  assert.deepEqual([bad.errors[0]!.line, bad.errors[0]!.column], [1, 7]);
+  const W = 64, H = 64, data = new Float32Array(W * H);
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) data[y * W + x] = Math.exp(-((x - 20) ** 2 + (y - 30) ** 2) / 30) + Math.exp(-((x - 44) ** 2 + (y - 30) ** 2) / 30);
+  const mod = registry.get("scope") as unknown as { linkImage(i: unknown): void };
+  mod.linkImage({ data, width: W, height: H });
+  assert.equal((await registry.dispatch("scope", "coordinate_space {\n  field 6.4 x 6.4 µm\n  depth 4\n  lambda_s 0.10\n  lambda_t 0.05\n}")).ok, true);
+  assert.equal((await registry.dispatch("scope", "goal {\n  snr > 1000.0\n}")).ok, true);
+  const run = await registry.dispatch("scope", 'm = observe(load(db="synthetic", dataset="two-gaussians", image="g.tif"), n = 4)\n  |> access(nucleus_a)\n  |> access(nucleus_b)\n  |> measure_distance(nucleus_a, nucleus_b)\n  |> visualise(scale_field)');
+  assert.equal(run.ok, true, run.error);
+  const r = (run.output_delta as unknown as { kind: string; result: { goalStatus: Array<{ passed: boolean; actual: number }>; sEntropy: { sum: number } } });
+  assert.equal(r.kind, "scope_run");
+  assert.equal(r.result.goalStatus[0]!.passed, false, "SNR ~31 does not clear 1000");
+  assert.equal(run.residue, 1, "one declared goal unmet");
+  assert.ok(Math.abs(r.result.sEntropy.sum - 1) < 1e-9, "the engine normalises S-entropy, which is why it cannot be the residue");
+  assert.equal((await registry.dispatch("scope", "reset")).ok, true);
+  const state = await registry.dispatch("scope", "state");
+  assert.ok((state.output_delta as unknown as { lines: string[] }).lines.includes("image: not linked"));
+});

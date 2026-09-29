@@ -20,6 +20,7 @@ Reading ten upstream targets closely surfaced defects in them and in Buhera. Thi
 | F12 | `long-grass` `shapeshifter` adapter | A global runtime failure (the interpreter swallows it into an empty result) was reported `ok: true`; residue was `workspace.length` (output, not remaining work) | `ok: false` on the interpreter's `error: runtime` line; residue = warnings + unresolved pending lookups; timing lines moved out of the terminal stream |
 | F13 | `long-grass` `ladder` adapter | `climb` re-implemented the subfloor check with a different result shape, built an unrelated chain graph to satisfy the `Machine`, and reported residue 0 after commitments | every verdict from `Machine.runVerdict`; optional real graph, otherwise null residues; residue = distance still to the target; `derive` capped at 20 items |
 | F14 | `long-grass/vendor/shapeshifter`, `vendor/ladder` | No recorded provenance; shapeshifter was a stale snapshot (`162ae1b`) | `vendor.json` entries; shapeshifter upgraded to `dacc197` (additive: `experiment.js`, nine operations); ladder recorded at origin/main |
+| F15 | `long-grass` `scope` adapter; `test/resolver.mjs` | Residue was `sEntropy.sum`, which the engine normalises to 1 on every run; the session was a module-level global; the Node test resolver could not follow directory imports to `index.ts`, so SCOPE had never been tested outside the browser | residue = declared goals not met; per-instance session with host handles; the resolver resolves `index.ts`, and SCOPE runs in both test suites |
 
 ## 2. Upstream change requests
 
@@ -75,6 +76,7 @@ Reading ten upstream targets closely surfaced defects in them and in Buhera. Thi
 | U-lev-4 | levinthal | `TernaryString::to_sentropy` returns a constant (0.5, 0.5, 0.5); `to_cell_bounds` computes its offset from the string length, not the trit values |
 | U-cyt-1 | buhera/long-grass | `cytochrome-module.js` is hand tables, not an engine wrapper: its cycle ΔM values sum to 4.053 while it reports the oracle's 4.963, and its test asserts only the constant |
 | U-ss-1 | lavoisier | No Shapeshifter front end rejects arbitrary text (`compileStage` of garbage is `ok` with warnings); the web interpreter swallows runtime errors, assigns kinds by value shape rather than producer, and reorders integer-named phases |
+| U-scp-1 | helicopter | `scope-lang/src/runtime` ships ~1.8 kLOC of legacy executors and API clients (network fetches, `NEXT_PUBLIC_HF_TOKEN`) that nothing reachable from `index.ts` imports |
 
 ## 3. Naming collisions, recorded and not renamed
 

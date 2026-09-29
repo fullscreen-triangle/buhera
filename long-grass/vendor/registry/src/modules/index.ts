@@ -21,6 +21,7 @@ import { makePylonModule, pylonDsl, type PylonEngine } from "./pylon.ts";
 import { GATEWAY_MODULES, makeRemoteModule, type GatewayTransport } from "./remote.ts";
 import { makeWasmDsls, makeWasmModules } from "./rust-wasm.ts";
 import { makeSbsModule, sbsDsl, type SbsEngine } from "./sbs.ts";
+import { makeScopeModule, scopeDsl, type ScopeEngine } from "./scope.ts";
 import { makeShapeshifterModule, type ShapeshifterEngine } from "./shapeshifter.ts";
 import { makeSmithModule, smithDsl, type SmithEngine } from "./smith.ts";
 import { makeSpectralModule, type SpectralEngine } from "./spectral.ts";
@@ -37,6 +38,7 @@ export * from "./pylon.ts";
 export * from "./remote.ts";
 export * from "./rust-wasm.ts";
 export * from "./sbs.ts";
+export * from "./scope.ts";
 export * from "./shapeshifter.ts";
 export * from "./smith.ts";
 export * from "./spectral.ts";
@@ -60,6 +62,7 @@ export interface Engines {
   shapeshifter?: ShapeshifterEngine;
   ladder?: LadderEngine;
   spectral?: SpectralEngine;
+  scope?: ScopeEngine;
   /** The vendored interceptor client class, plus the broker URL. */
   zangalewa?: { Client: InterceptorClientCtor; baseUrl?: string };
   /** buhera-gateway, for the Rust-only modules reached remotely. */
@@ -117,6 +120,10 @@ export function createFederation(engines: Engines, into?: Federation): Federatio
   if (engines.shapeshifter) registry.register(makeShapeshifterModule(engines.shapeshifter));
   if (engines.ladder) registry.register(makeLadderModule(engines.ladder));
   if (engines.spectral) registry.register(makeSpectralModule(engines.spectral));
+  if (engines.scope) {
+    registry.register(makeScopeModule(engines.scope));
+    dsls.register(scopeDsl(engines.scope));
+  }
   if (engines.zangalewa) {
     registry.register(makeZangalewaModule(engines.zangalewa.Client, engines.zangalewa.baseUrl));
   }

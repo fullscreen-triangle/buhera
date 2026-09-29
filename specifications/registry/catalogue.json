@@ -630,6 +630,68 @@
       "residue": "0: every operation completes in one act.",
       "side_effects": [],
       "spec": "specs/spectral.md"
+    },
+    {
+      "id": "mekaneck",
+      "name": "Mekaneck",
+      "layer": "language",
+      "summary": "A substrate-neutral inquiry language with one primitive, seek: a positive description plus a mandatory exclusion, at least three mutually independent catalysts, termination by closure. A seek resolves to a cell or declines with the incompatible cells; declining is a result.",
+      "dsl": "mekaneck",
+      "upstream": [
+        {
+          "repo": "fullscreen-triangle/mekaneck",
+          "path": "chatelier/crates/lang",
+          "language": "rust",
+          "commit": "de81b8b9af69b84322623aaf4a66496dab912e8b",
+          "vendored_at": "buhera-os/vendor/mekaneck/crates/lang"
+        },
+        {
+          "repo": "fullscreen-triangle/mekaneck",
+          "path": "chatelier/crates/algebra",
+          "language": "rust",
+          "commit": "de81b8b9af69b84322623aaf4a66496dab912e8b",
+          "vendored_at": "buhera-os/vendor/mekaneck/crates/algebra"
+        }
+      ],
+      "bindings": {
+        "rust": "native",
+        "ts": "native"
+      },
+      "output_kinds": [
+        "mekaneck_check",
+        "mekaneck_result",
+        "text"
+      ],
+      "residue": "check: error diagnostics to fix; run: 0 (Resolved and Declined are both complete results), 1 on a refusal.",
+      "side_effects": [],
+      "spec": "specs/mekaneck.md"
+    },
+    {
+      "id": "scope",
+      "name": "SCOPE",
+      "layer": "observation",
+      "summary": "helicopter's microscopy-analysis language as a REPL: channels, a coordinate space, goals and morphisms (observe, catalyze, access, measure, visualise) declared cell by cell; an executing cell measures against the linked image with its uncertainty, S-entropy and goal status.",
+      "dsl": "scope",
+      "upstream": [
+        {
+          "repo": "fullscreen-triangle/helicopter",
+          "path": "scope-lang/src",
+          "language": "ts",
+          "commit": "8dd41733498c157c6a8d3898829d423bde561d57",
+          "vendored_at": "long-grass/vendor/scope-lang/src"
+        }
+      ],
+      "bindings": {
+        "rust": "none",
+        "ts": "native"
+      },
+      "output_kinds": [
+        "scope_run",
+        "text"
+      ],
+      "residue": "An executing cell: declared goals the result did not meet. Defining cells, state, load, reset: 0. A refused cell: 1.",
+      "side_effects": [],
+      "spec": "specs/scope.md"
     }
   ],
   "dsls": [
@@ -774,6 +836,27 @@
       "pack_id": "sangoma",
       "validators": [
         "rust",
+        "ts"
+      ]
+    },
+    {
+      "id": "mekaneck",
+      "label": "Mekaneck",
+      "extension": ".mck",
+      "module_id": "mekaneck",
+      "pack_id": "mekaneck",
+      "validators": [
+        "rust",
+        "ts"
+      ]
+    },
+    {
+      "id": "scope",
+      "label": "SCOPE",
+      "extension": ".scope",
+      "module_id": "scope",
+      "pack_id": "scope",
+      "validators": [
         "ts"
       ]
     }

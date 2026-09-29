@@ -38,15 +38,16 @@ node scripts/vendor-sync.mjs --check
 | vendored `heihachi-lang` (mishima, sangoma, record graph) | 32 passed |
 | vendored `olduvai-core` (unit + property) | 188 passed |
 | vendored `levinthal-core` | 42 passed |
+| vendored `mekaneck-algebra`, `mekaneck-lang` (incl. the fixtures pinning the TS mirror) | 72 passed |
 | vendored `zangalewa-dsl` (with `ZANGALEWA_PACKS` → long-grass packs, set in `buhera-os/.cargo/config.toml`) | 20 passed |
-| `buhera-modules --features full` (catalogue C1–C5 + module behaviour, incl. heihachi, olduvai, levinthal) | 19 passed |
+| `buhera-modules --features full` (catalogue C1–C5 + module behaviour, incl. heihachi, olduvai, levinthal, mekaneck) | 21 passed |
 | `buhera-wasm` (native) | 3 passed |
 | `buhera-gateway` (36 existing + 4 `/api/dispatch`) | 40 passed |
-| `cargo test --workspace --no-fail-fast` (default features; every crate above plus kernel, substrate, vahera, embed, os) | 506 passed, 0 failed |
-| `registry-ts` (R1–R6, D1, catalogue C1–C5, 30 module cases incl. wasm, lazy wasm, remote, smith, the full synopsis corpus, the cfc and honjo example corpora, st-Hurbert, heihachi/olduvai/levinthal through wasm, shapeshifter, ladder, spectral) | 38 passed; `tsc` strict clean |
-| long-grass `npm test` | 103 passed |
+| `cargo test --workspace --no-fail-fast` (default features; every crate above plus kernel, substrate, vahera, embed, os) | 583 passed, 0 failed |
+| `registry-ts` (R1–R6, D1, catalogue C1–C5, 32 module cases incl. wasm, lazy wasm, remote, smith, the full synopsis corpus, the cfc and honjo example corpora, st-Hurbert, heihachi/olduvai/levinthal/mekaneck through wasm, shapeshifter, ladder, spectral, scope) | 40 passed; `tsc` strict clean |
+| long-grass `npm test` | 105 passed |
 | long-grass `next build` | success |
-| `vendor-sync --check` | 30 verified, 1 built, 0 failed |
+| `vendor-sync --check` | 35 verified, 1 built, 0 failed |
 
 ## 3. Claim → proof
 

@@ -1,0 +1,23 @@
+{
+  "id": "mekaneck",
+  "name": "Mekaneck Reference",
+  "short_label": "Mekaneck",
+  "summary": "Grammar and worked examples for Mekaneck, projected from specifications/specs/mekaneck.md. Used to ground natural-language-to-mekaneck generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/mekaneck",
+  "trigger_keywords": [
+    "mekaneck",
+    "seek",
+    "inquiry",
+    "substrate",
+    "catalyst",
+    "regime"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "Mekaneck grammar and validated examples"
+    }
+  ]
+}

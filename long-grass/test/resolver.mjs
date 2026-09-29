@@ -19,8 +19,11 @@ function withExtension(urlStr) {
   }
   if (existsSync(p)) {
     if (statSync(p).isDirectory()) {
-      const idx = path.join(p, "index.js");
-      return existsSync(idx) ? pathToFileURL(idx).href : urlStr;
+      for (const name of ["index.js", "index.ts"]) {
+        const idx = path.join(p, name);
+        if (existsSync(idx)) return pathToFileURL(idx).href;
+      }
+      return urlStr;
     }
     return urlStr;
   }

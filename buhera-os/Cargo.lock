@@ -426,6 +426,7 @@ dependencies = [
  "buhera-vahera",
  "heihachi-lang",
  "levinthal-core",
+ "mekaneck-lang",
  "ndombolo-core",
  "olduvai-core",
  "sbs",
@@ -1865,6 +1866,25 @@ checksum = "8ea1f30cedd69f0a2954655f7188c6a834246d2bcf1e315e2ac40c4b24dc9519"
 dependencies = [
  "cfg-if",
  "rayon",
+]
+
+[[package]]
+name = "mekaneck-algebra"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+]
+
+[[package]]
+name = "mekaneck-lang"
+version = "0.1.0"
+dependencies = [
+ "mekaneck-algebra",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
 ]
 
 [[package]]

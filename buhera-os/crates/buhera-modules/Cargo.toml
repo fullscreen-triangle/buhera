@@ -8,7 +8,7 @@ repository.workspace = true
 description = "Buhera federation module adapters: thin wrappers that expose vendored engines through the buhera-registry Module contract. One cargo feature per module."
 
 [features]
-default = ["vahera", "ndombolo", "windtunnel", "tracker", "sbs-core", "heihachi", "olduvai", "levinthal"]
+default = ["vahera", "ndombolo", "windtunnel", "tracker", "sbs-core", "heihachi", "olduvai", "levinthal", "mekaneck"]
 # Pure engines (no I/O beyond what the spec declares); these also build for
 # wasm32 and back the TypeScript host's in-process binding (buhera-wasm).
 vahera = ["dep:buhera-vahera", "dep:buhera-kernel"]
@@ -18,11 +18,12 @@ tracker = ["dep:tracker-chi"]
 heihachi = ["dep:heihachi-lang"]
 olduvai = ["dep:olduvai-core"]
 levinthal = ["dep:levinthal-core"]
+mekaneck = ["dep:mekaneck-lang"]
 # Native-only: the engine reads std::time::Instant, which panics on wasm32.
 sbs-core = ["dep:sbs"]
 # Network + model providers; heavy (tokio, reqwest/rustls). Off by default.
 zangalewa = ["dep:zangalewa-dsl", "dep:tokio"]
-full = ["vahera", "ndombolo", "windtunnel", "tracker", "sbs-core", "heihachi", "olduvai", "levinthal", "zangalewa"]
+full = ["vahera", "ndombolo", "windtunnel", "tracker", "sbs-core", "heihachi", "olduvai", "levinthal", "mekaneck", "zangalewa"]
 
 [dependencies]
 buhera-registry = { workspace = true }
@@ -37,6 +38,7 @@ tracker-chi = { workspace = true, optional = true }
 heihachi-lang = { workspace = true, optional = true }
 olduvai-core = { workspace = true, optional = true }
 levinthal-core = { workspace = true, optional = true }
+mekaneck-lang = { workspace = true, optional = true }
 sbs = { workspace = true, optional = true }
 zangalewa-dsl = { workspace = true, optional = true }
 tokio = { version = "1.35", features = ["rt"], optional = true }

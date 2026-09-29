@@ -33,6 +33,8 @@ const KEYWORDS = {
   honjo: ["honjo", "masamune", "chemistry", "atom", "bond", "molecule", "cut"],
   mishima: ["mishima", "heihachi", "seek", "recall", "record"],
   sangoma: ["sangoma", "heihachi", "construct", "sound", "synthesis"],
+  mekaneck: ["mekaneck", "seek", "inquiry", "substrate", "catalyst", "regime"],
+  scope: ["scope", "microscopy", "image", "nucleus", "segmentation", "distance"],
 };
 
 function languageSection(md) {

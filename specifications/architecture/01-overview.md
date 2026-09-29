@@ -68,6 +68,7 @@ flowchart TB
 | `vahera` | language | vaHera | native | — (host-local in long-grass) | buhera-os |
 | `ndombolo` | language | Turbulance | native | native (wasm) | kwasa-kwasa |
 | `heihachi` | language | mishima, sangoma | native | native (wasm) | heihachi |
+| `mekaneck` | language | Mekaneck | native | native (wasm) | mekaneck |
 | `sbs` | science | SBS | — | native | hegel (JS) |
 | `sbs-core` | science | — | native | remote | hegel (Rust) |
 | `tempus` | science | Tempus | — | native | stella-lorraine (web) |
@@ -85,6 +86,7 @@ flowchart TB
 | `windtunnel` | observation | .wt | native | native (wasm) | wind-tunnel |
 | `tracker` | observation | — | native | native (wasm) | bloodhound |
 | `sthurbert` | observation | st-Hurbert | — | native | bloodhound (TS) |
+| `scope` | observation | SCOPE | — | native | helicopter (scope-lang) |
 | `zangalewa-dsl` | generation | — | native (feature) | remote (broker) | zangalewa |
 
 Each `—` is deliberate and justified in the module's specification. The main reasons:

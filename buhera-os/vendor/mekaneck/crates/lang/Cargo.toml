@@ -1,0 +1,21 @@
+# VENDORED — fullscreen-triangle/mekaneck chatelier/crates/lang (see
+# specifications/registry/vendor.json). Everything but this Cargo.toml is a
+# byte-exact copy; this file is local (upstream inherits workspace keys).
+# Upstream's workspace pins thiserror 2; the Buhera workspace pins 1, so 2 is
+# declared here directly. Do not edit src/ or tests/ — run
+# `node scripts/vendor-sync.mjs --sync mekaneck-lang`.
+[package]
+name = "mekaneck-lang"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+description = "Vendored: The Mekaneck (.mck) language: lexer, LL(1) parser, type checker, small-step evaluator."
+
+[dependencies]
+mekaneck-algebra = { path = "../algebra" }
+serde = { workspace = true }
+thiserror = "2"
+
+[dev-dependencies]
+serde_json = { workspace = true }

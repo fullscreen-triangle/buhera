@@ -14,6 +14,7 @@ export async function realEngines(): Promise<Required<Engines>> {
   const honjo = await import(`${LG}/honjo/honjo.js`);
   const shapeshifter = await import(`${LG}/shapeshifter/shapeshifter/compiler.js`);
   const ladder = await import(`${LG}/ladder/src/engine.js`);
+  const scope = await import(`${LG}/scope-lang/src/index.ts`);
   const [emb, mf] = await Promise.all([import(`${LG}/spectral/src/embedding.js`), import(`${LG}/spectral/src/matched_filter.js`)]);
   const [sbs, hfq, plans, pylon, tcompile, truntime, tconstruct, tcompose, icept] = await Promise.all([
     import(`${LG}/sbs/index.js`),
@@ -42,6 +43,7 @@ export async function realEngines(): Promise<Required<Engines>> {
     shapeshifter,
     ladder,
     spectral: { ...emb, ...mf },
+    scope,
     gateway: { baseUrl: () => "http://127.0.0.1:9", token: () => null },
   } as Required<Engines>;
 }

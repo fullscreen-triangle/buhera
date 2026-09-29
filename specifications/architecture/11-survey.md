@@ -14,6 +14,7 @@ Evidence was gathered read-only: upstream repositories were inspected at their c
 | `shapeshifter` | (`.ss`, not registered: no front end rejects anything, U-ss-1) | lavoisier `web/src/lib` @ `dacc197` | — | native | the only implementation of the paper's generative library; formalised with F12 |
 | `ladder` | — | levinthal `enzymes/web/src/lib/engine.js` | — | native | byte-identical to upstream; formalised with F13 |
 | `spectral` | — | gospel `vivid-symbolism/src/lib` | — | native | spectral embedding, shader-kernel ranking, matched filter; planted motifs recovered exactly |
+| `scope` | SCOPE `.scope` | helicopter `scope-lang/src` | — | native | byte-identical to upstream; residue fixed and first tested outside the browser (F15) |
 | `synopsis` | synopsis `.syp` | gospel `synopsis/ts/src` | — | native | the upstream conformance corpus (4 positive, 16 negative) runs as the test; no evaluator exists upstream, so none is exposed |
 | `cfc` | cause-for-concern `.cfc` | syndrome `cause-for-concern/webtool/src/cfc` | — | native | Python ↔ JS parity checked; all five examples reproduce their statuses |
 | `sthurbert` | st-Hurbert `.sth` | bloodhound `thrust/src/lib/repo-lens` | — | native | a real lexer → parser → interpreter; χ computed by the engine |
@@ -21,22 +22,21 @@ Evidence was gathered read-only: upstream repositories were inspected at their c
 | `heihachi` | mishima `.mma`, sangoma `.sgn` | heihachi `micro-kernel/daemon/src/{lang,graph}` | native | native (wasm) | 32 upstream tests in-workspace; wasm-clean |
 | `olduvai` | — | olduvai-exchange `crates/olduvai-core` | native | native (wasm) | 181 + 7 upstream tests in-workspace; pure |
 | `levinthal` | — | levinthal `crates/levinthal-core` | native | native (wasm) | 40 + 2 upstream tests; wasm-clean once unused deps are dropped |
+| `mekaneck` | Mekaneck `.mck` | mekaneck `chatelier/crates/{lang,algebra}` | native | native (wasm) | 72 upstream tests in-workspace (incl. the fixtures that pin its TS mirror); the README's runs reproduce on both hosts; `thiserror 2` declared locally |
 
 ## 2. Already running in long-grass, to be formalised
 
-These engines are vendored and bound in long-grass today but are not catalogue members, so nothing checks their provenance or conformance. (Shapeshifter and ladder were formalised in this pass; see §1, F12–F14.) Each has a concrete defect in its current adapter, recorded here so formalisation fixes it rather than enshrining it.
+These engines are vendored and bound in long-grass today but are not catalogue members, so nothing checks their provenance or conformance. (Shapeshifter, ladder and SCOPE were formalised in this pass; see §1, F12–F15.) Each has a concrete defect in its current adapter, recorded here so formalisation fixes it rather than enshrining it.
 
 | Module | Language | Upstream | Adapter defect to fix on formalisation |
 |---|---|---|---|
 | `graffiti` | Graffiti `.grf` | graffiti `web/src/graffiti` | residue is the count of yields, not the engine's `ClaimValue.residue`; `actBudget` ignored (it maps to `maxCatalystInvocations`); upstream is ahead (`5d90402f`, additive) |
-| `scope` | SCOPE | helicopter `scope-lang` | residue is `sEntropy.sum`, which the engine normalises to 1 every time; `relativeUncertainty` or failed goals are the honest measures. Vendor copy is byte-identical upstream |
 
 ## 3. Deferred — an upstream defect or a missing piece blocks binding
 
 | Candidate | Repository | Blocking finding | What unblocks it |
 |---|---|---|---|
 | wagenbau `.wgb` | verum `philharmonic/crates` | 9 of 20 upstream tests fail at HEAD; the default chassis does not build (U-wgb-1) | upstream fixes continuation lines; then vendor vesicle-abi/kernel/lang + dsl-wagenbau (wasm-clean) |
-| mekaneck `.mck` | mekaneck `chatelier/crates/{lang,algebra}` | none in the engine (41 + 28 tests pass; wasm-clean); it needs `thiserror 2`, which the workspace does not yet carry | add `thiserror 2` beside `1` in the workspace; the TS mirror validates, execution goes through wasm |
 | vitruvius `.vvs` | hehahe `musculo-skeletal/web/src/lang` | none in the engine (115/116 vitest, the one failure a timeout); runs take up to 15 s and import a JSON rig table | a Node JSON-import path in the test hooks, and running acts off the request thread |
 | mutapa reactor | mutapa `web/src/lib/experiment-engine.js` | none (pure, seeded); not yet run here | a module over `Reactor` stepping, with `actBudget` = steps |
 | MPL `.mpl` | bene-gesserit `phosphate/src/components/mpl` | the only export evaluates (no validator can avoid running); `T(k,d)` disagrees with the spec; the budget is never enforced; `ceil(log₃ N)` is wrong at exact powers | upstream exports `tokenize`/`parse` and fixes `T`, the budget and the log |

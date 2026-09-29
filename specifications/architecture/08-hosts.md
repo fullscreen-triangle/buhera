@@ -26,8 +26,9 @@ A *host* is a process that owns one registry. There are four.
 | `shapeshifter` | `shapeshifter-module.js` | native, `makeShapeshifterModule(@lavoisier/shapeshifter)` |
 | `ladder` | `ladder-module.js` | native, `makeLadderModule(@levinthal/ladder)` |
 | `spectral` | `spectral-module.js` | native, `makeSpectralModule(@gospel/spectral)` |
+| `scope` | `scope-module.js` | native, `makeScopeModule(scope-lang)`; the terminal links images through `linkScopeImage` |
 | `zangalewa-dsl` | `zangalewa-dsl-module.js` | remote (broker; `NEXT_PUBLIC_ZANGALEWA_BROKER`) |
-| `ndombolo`, `windtunnel`, `tracker`, `heihachi`, `olduvai`, `levinthal` | `rust-wasm-modules.js` | native (wasm, lazy from `/wasm/buhera_modules.wasm`) |
+| `ndombolo`, `windtunnel`, `tracker`, `heihachi`, `olduvai`, `levinthal`, `mekaneck` | `rust-wasm-modules.js` | native (wasm, lazy from `/wasm/buhera_modules.wasm`) |
 | `sbs-core` | `gateway-remote-modules.js` | remote (gateway session from `gateway-module.js`) |
 
 - **DSL registry:** `src/lib/purpose/dsl/validators.js`, a facade over `DslRegistry` that carries all seven catalogue languages with their real front ends. It is server-only: it loads the wasm validators synchronously from `public/wasm`.

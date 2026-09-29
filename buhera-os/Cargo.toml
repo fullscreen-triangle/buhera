@@ -1,4 +1,4 @@
-# Buhera OS — standalone categorical operating system.
+# Buhera OS â€” standalone categorical operating system.
 #
 # This workspace is self-contained. It depends on nothing outside its
 # own crates plus a small set of well-known third-party libraries
@@ -28,6 +28,8 @@ members = [
     "vendor/heihachi",
     "vendor/olduvai-core",
     "vendor/levinthal-core",
+    "vendor/mekaneck/crates/algebra",
+    "vendor/mekaneck/crates/lang",
 ]
 
 [workspace.package]
@@ -60,6 +62,7 @@ sbs              = { path = "vendor/hegel-sbs" }
 heihachi-lang    = { path = "vendor/heihachi" }
 olduvai-core     = { path = "vendor/olduvai-core" }
 levinthal-core   = { path = "vendor/levinthal-core" }
+mekaneck-lang    = { path = "vendor/mekaneck/crates/lang" }
 buhera-modules   = { path = "crates/buhera-modules", default-features = false }
 
 [profile.release]

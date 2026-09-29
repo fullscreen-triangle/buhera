@@ -17,6 +17,8 @@ use buhera_registry::{DslRegistry, Registry};
 pub mod heihachi;
 #[cfg(feature = "levinthal")]
 pub mod levinthal;
+#[cfg(feature = "mekaneck")]
+pub mod mekaneck;
 #[cfg(feature = "ndombolo")]
 pub mod ndombolo;
 #[cfg(feature = "olduvai")]
@@ -81,6 +83,11 @@ pub fn federation(options: Options) -> (Registry, DslRegistry) {
     #[cfg(feature = "levinthal")]
     {
         modules.register(Box::new(levinthal::Levinthal::new()));
+    }
+    #[cfg(feature = "mekaneck")]
+    {
+        modules.register(Box::new(mekaneck::Mekaneck::new()));
+        dsls.register(mekaneck::dsl());
     }
     #[cfg(feature = "olduvai")]
     {

@@ -1,0 +1,23 @@
+{
+  "id": "scope",
+  "name": "SCOPE Reference",
+  "short_label": "SCOPE",
+  "summary": "Grammar and worked examples for SCOPE, projected from specifications/specs/scope.md. Used to ground natural-language-to-scope generation; contains grammar and examples, never domain facts.",
+  "source_repo": "fullscreen-triangle/helicopter",
+  "trigger_keywords": [
+    "scope",
+    "microscopy",
+    "image",
+    "nucleus",
+    "segmentation",
+    "distance"
+  ],
+  "trigger_match": "any",
+  "context_budget_tokens": 4000,
+  "files": [
+    {
+      "path": "reference.md",
+      "description": "SCOPE grammar and validated examples"
+    }
+  ]
+}

@@ -15,7 +15,9 @@
     "fullscreen-triangle/heihachi": "../../audio/heihachi",
     "fullscreen-triangle/olduvai-exchange": "../../portfolio/olduvai-exchange",
     "fullscreen-triangle/levinthal": "../../bioinformatics/levinthal",
-    "fullscreen-triangle/lavoisier": "../../bioinformatics/lavoisier"
+    "fullscreen-triangle/lavoisier": "../../bioinformatics/lavoisier",
+    "fullscreen-triangle/mekaneck": "../../systems/mekaneck",
+    "fullscreen-triangle/helicopter": "../../vision/helicopter"
   },
   "entries": [
     {
@@ -345,6 +347,62 @@
       "mode": "file",
       "commit": "eca659697ec11e7fe56f0d2f22b12ec03d59715e",
       "note": "The Shakespeare ladder kernel (a port of shk_core.py): contact graphs, intensive power, multiplicative composition, the costed Machine. Vendored 2026-07 without provenance (long-grass c648362); recorded here at origin/main, where it is identical up to line endings. package.json at vendor/ladder is local (its UNLICENSED field predates this entry; upstream levinthal is MIT)."
+    },
+    {
+      "id": "mekaneck-lang",
+      "module": "mekaneck",
+      "repo": "fullscreen-triangle/mekaneck",
+      "from": "chatelier/crates/lang",
+      "to": "buhera-os/vendor/mekaneck/crates/lang",
+      "mode": "tree",
+      "commit": "de81b8b9af69b84322623aaf4a66496dab912e8b",
+      "local": [
+        "Cargo.toml"
+      ],
+      "note": "The Mekaneck (.mck) language: lexer, LL(1) parser, type checker, small-step evaluator, and its fixtures test. Cargo.toml is local (upstream inherits workspace keys; thiserror 2 is declared directly). The upstream layout under buhera-os/vendor/mekaneck is kept so tests/fixtures.rs finds ../../web/.../fixtures.json."
+    },
+    {
+      "id": "mekaneck-algebra",
+      "module": "mekaneck",
+      "repo": "fullscreen-triangle/mekaneck",
+      "from": "chatelier/crates/algebra",
+      "to": "buhera-os/vendor/mekaneck/crates/algebra",
+      "mode": "tree",
+      "commit": "de81b8b9af69b84322623aaf4a66496dab912e8b",
+      "local": [
+        "Cargo.toml"
+      ],
+      "note": "Residual algebra: derived floors, catalytic power, multiplicative composition, closure (Cell, Outcome). Cargo.toml is local."
+    },
+    {
+      "id": "mekaneck-fixtures",
+      "module": "mekaneck",
+      "repo": "fullscreen-triangle/mekaneck",
+      "from": "chatelier/web/src/languages/mekaneck/fixtures.json",
+      "to": "buhera-os/vendor/mekaneck/web/src/languages/mekaneck/fixtures.json",
+      "mode": "file",
+      "commit": "de81b8b9af69b84322623aaf4a66496dab912e8b",
+      "note": "The Rust-generated diagnostic fixtures (exact line/column) that pin the TS mirror to the Rust front end; the vendored lang crate's own fixtures test reads them."
+    },
+    {
+      "id": "mekaneck-examples",
+      "module": "mekaneck",
+      "repo": "fullscreen-triangle/mekaneck",
+      "from": "chatelier/examples",
+      "to": "buhera-os/vendor/mekaneck/examples",
+      "mode": "tree",
+      "commit": "de81b8b9af69b84322623aaf4a66496dab912e8b",
+      "note": "coherence.mck, sleep_cardiac.mck, cardiac_quantum.mck; the module's demo and tests use them verbatim."
+    },
+    {
+      "id": "scope-lang",
+      "module": "scope",
+      "repo": "fullscreen-triangle/helicopter",
+      "from": "scope-lang/src",
+      "to": "long-grass/vendor/scope-lang/src",
+      "mode": "tree",
+      "commit": "8dd41733498c157c6a8d3898829d423bde561d57",
+      "note": "The SCOPE compiler (lexer, parser, type checker with depth, overlap, entropy-budget and grounding analyses) and runtime (observe, catalyze, access, measure, visualise; session REPL). Vendored 2026-07-20 without provenance; recorded here, byte-identical. runtime/ carries ~1.8 kLOC of legacy executors and API clients (fetch, NEXT_PUBLIC_HF_TOKEN) unreachable from index.ts (U-scp-1). package.json and tsconfig.json one level up are local."
     }
   ]
 }

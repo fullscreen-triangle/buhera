@@ -15,14 +15,14 @@
  * dispatch) and which knowledge pack grounds generation (packId).
  *
  * Server-side only (dsl-generator, /api/dsl-generate): the Turbulance, .wt,
- * mishima and sangoma validators are the Rust front ends compiled to wasm, loaded
+ * mishima, sangoma and Mekaneck validators are the Rust front ends compiled to wasm, loaded
  * synchronously from public/wasm on first use.
  */
 
 import fs from "fs";
 import path from "path";
 import { DslRegistry, fromThrowing, loadWasmEngineSync } from "@buhera/registry";
-import { cfcDsl, hfqDsl, honjoDsl, pylonDsl, sbsDsl, smithDsl, sthurbertDsl, synopsisDsl, tempusDsl } from "@buhera/registry/modules";
+import { cfcDsl, hfqDsl, honjoDsl, pylonDsl, sbsDsl, scopeDsl, smithDsl, sthurbertDsl, synopsisDsl, tempusDsl } from "@buhera/registry/modules";
 import * as sbsEngine from "@sachikonye/sbs";
 import * as pylonEngine from "@buhera/pylon";
 import { parseVahera } from "@/lib/vahera";
@@ -33,6 +33,7 @@ import { synopsisEngine } from "@/lib/modules/synopsis-module";
 import { cfcEngine } from "@/lib/modules/cfc-module";
 import { sthurbertEngine } from "@/lib/modules/sthurbert-module";
 import { honjoEngine } from "@/lib/modules/honjo-module";
+import { scopeEngine } from "@/lib/modules/scope-module";
 
 /**
  * vaHera — `parseVahera(src)` THROWS on the first invalid line, embedding
@@ -52,6 +53,7 @@ registry.register(synopsisDsl(synopsisEngine));
 registry.register(cfcDsl(cfcEngine));
 registry.register(sthurbertDsl(sthurbertEngine));
 registry.register(honjoDsl(honjoEngine));
+registry.register(scopeDsl(scopeEngine));
 
 // Rust front ends via wasm: registered now, engine loaded on first validate.
 let _wasm = null;
@@ -77,6 +79,10 @@ registry.register({
 registry.register({
   id: "sangoma", label: "sangoma", extension: ".sgn", moduleId: "heihachi", packId: "sangoma",
   validate: (src) => wasmEngine().validate("sangoma", src),
+});
+registry.register({
+  id: "mekaneck", label: "Mekaneck", extension: ".mck", moduleId: "mekaneck", packId: "mekaneck",
+  validate: (src) => wasmEngine().validate("mekaneck", src),
 });
 
 /** The registry instance (typed API). */
