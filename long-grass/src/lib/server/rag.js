@@ -32,8 +32,15 @@ export function envFolders() {
   return (process.env.RAG_FOLDERS || "").split(",").map((s) => s.trim()).filter(Boolean);
 }
 
-/** Whether a Next.js API request came from this machine. */
+/**
+ * Whether a Next.js API request came from this machine. Behind a reverse
+ * proxy every request arrives from loopback, so a request carrying proxy
+ * headers is never local — otherwise any visitor could name a folder on the
+ * server for it to read.
+ */
 export function isLocalRequest(req) {
+  const h = req.headers || {};
+  if (h["x-forwarded-for"] || h["x-real-ip"] || h.forwarded || h["x-forwarded-host"]) return false;
   const addr = req.socket?.remoteAddress || "";
   return addr === "127.0.0.1" || addr === "::1" || addr === "::ffff:127.0.0.1";
 }
