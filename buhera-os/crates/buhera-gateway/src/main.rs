@@ -115,7 +115,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         std::fs::create_dir_all(dir)?;
     }
     let store = Store::open(&args.db)?;
-    let state = Arc::new(AppState::new(store, signer));
+    // Optional: unset means /api/profiles refuses every request rather
+    // than being open. There is no flag for this either, for the same
+    // reason as the signing key — a long-lived secret has no business in
+    // the process table or shell history.
+    let profiles_token = std::env::var("BUHERA_PROFILES_TOKEN").ok();
+    if profiles_token.is_none() {
+        tracing::info!("BUHERA_PROFILES_TOKEN is not set; /api/profiles will refuse every request");
+    }
+    let state = Arc::new(AppState::new(store, signer).with_profiles_token(profiles_token));
 
     let listener = tokio::net::TcpListener::bind(&args.bind).await?;
     let addr = listener.local_addr()?;

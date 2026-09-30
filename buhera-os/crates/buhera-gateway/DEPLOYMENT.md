@@ -92,6 +92,26 @@ a record of the intended roster without re-hashing existing passwords.
 There is currently no way to *change* a seeded password short of dropping the
 row from `accounts` and re-seeding — no password-reset flow exists yet.
 
+## The profiles directory (`/api/profiles`)
+
+A read-only, cross-account view — every account, its paired machines, and
+its experiment standings — meant for tooling (e.g. a session building a UI
+against the current roster), not for a browser session. It is deliberately
+*not* reachable with any account's session token: there is no role system
+in this crate, so rather than inventing one for five accounts, the route
+has its own shared secret, checked independently of `Signer`/`Audience`.
+
+```bash
+# generate once, store like the signing key
+BUHERA_PROFILES_TOKEN=$(openssl rand -base64 32)
+printf 'BUHERA_PROFILES_TOKEN=%s\n' "$BUHERA_PROFILES_TOKEN" >> /etc/buhera/gateway.env
+systemctl restart buhera-gateway
+```
+
+Unset (or absent from `gateway.env`), the route refuses every request — it
+does not default open. There is no revocation finer than rotating this
+value and restarting.
+
 ## Verified on deploy
 
 Checked against the running service, over the public internet:

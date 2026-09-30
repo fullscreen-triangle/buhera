@@ -18,6 +18,10 @@
 //!   federation and one audit log, so account identity there is
 //!   provenance on an act, never a partition of what the experiment
 //!   contains.
+//! * `/api/profiles` — a cross-account directory (every account, its
+//!   catalysts, its experiment standings), gated by its own shared-secret
+//!   scheme (`profiles_token`), not by any account's session token. See
+//!   that route's own docs for why.
 //!
 //! Every authenticated route resolves its account from a *verified* token
 //! (see [`crate::token`]), never from a header the caller can simply assert.
@@ -77,6 +81,11 @@ pub struct AppState {
     /// id, not by any account, so two grantees dispatching into the same
     /// experiment see the same state and the same audit log.
     pub experiment_federations: std::sync::Mutex<std::collections::HashMap<String, buhera_registry::Registry>>,
+    /// Shared secret gating `GET /api/profiles` (see that handler's docs).
+    /// `None` — the default, and what a fresh `AppState::new` gets — means
+    /// the route refuses every request; there is no "no token configured
+    /// so it's open" fallback. Set with [`AppState::with_profiles_token`].
+    pub profiles_token: Option<String>,
 }
 
 /// The gateway's federation for one account. Filesystem-reading operations are
@@ -96,7 +105,14 @@ impl AppState {
             relay: crate::relay::Relay::new(),
             federations: std::sync::Mutex::new(std::collections::HashMap::new()),
             experiment_federations: std::sync::Mutex::new(std::collections::HashMap::new()),
+            profiles_token: None,
         }
+    }
+
+    /// Enable `GET /api/profiles`, gated by this shared secret.
+    pub fn with_profiles_token(mut self, token: Option<String>) -> Self {
+        self.profiles_token = token;
+        self
     }
 }
 
@@ -793,6 +809,139 @@ fn require_owner(store: &Store, experiment_id: &str, account_id: &str) -> Result
     }
 }
 
+// ─────────────────────────── profiles ───────────────────────────
+//
+// A read-only, cross-account directory: every seeded account, its
+// catalysts, and its experiment standings — composed entirely from reads
+// `store.rs` already exposes for other routes. Nothing here is reachable
+// by a session token: no account, however privileged its own data, is
+// entitled to enumerate every other account's, and there is no role
+// system in this crate to grant such an entitlement narrowly. Instead
+// this route has its own, separate shared-secret scheme, deliberately
+// independent of `Signer`/`Audience` — the intended caller is a build or
+// tooling process with no account of its own, not a browser session. The
+// pattern mirrors `long-grass`'s own `BUHERA_DISPATCH_TOKEN` on
+// `pages/api/dispatch.js`.
+
+/// One account as `/api/profiles` renders it.
+#[derive(Debug, Serialize)]
+pub struct ProfileView {
+    /// Stable opaque id.
+    pub account_id: String,
+    /// Login address.
+    pub email: String,
+    /// Unix seconds at creation.
+    pub created_at: i64,
+    /// This account's paired machines.
+    pub catalysts: Vec<CatalystView>,
+    /// Experiments this account owns.
+    pub experiments_owned: Vec<OwnedExperimentView>,
+    /// Experiments this account holds a grant on (not counting the ones
+    /// it owns, which are listed separately above).
+    pub experiments_granted: Vec<GrantedExperimentView>,
+}
+
+/// One owned experiment, from the owner's side.
+#[derive(Debug, Serialize)]
+pub struct OwnedExperimentView {
+    /// Stable opaque id.
+    pub id: String,
+    /// Human label.
+    pub name: String,
+    /// Unix seconds at creation.
+    pub created_at: i64,
+    /// How many accounts hold a grant on it (not counting the owner).
+    pub grantee_count: usize,
+}
+
+/// One granted experiment, from the grantee's side.
+#[derive(Debug, Serialize)]
+pub struct GrantedExperimentView {
+    /// Stable opaque id.
+    pub id: String,
+    /// Human label.
+    pub name: String,
+    /// The account that owns it.
+    pub owner_account_id: String,
+    /// The capability tags this account may dispatch inside it.
+    pub capabilities: Vec<String>,
+}
+
+/// Confirm the caller presented the configured `profiles_token` exactly.
+/// A missing configuration refuses every request rather than defaulting
+/// open — see [`AppState::profiles_token`].
+fn authenticate_profiles(state: &AppState, headers: &HeaderMap) -> Result<(), ApiError> {
+    let Some(expected) = &state.profiles_token else {
+        return Err(ApiError::Unauthorized);
+    };
+    let presented = bearer(headers).ok_or(ApiError::Unauthorized)?;
+    // Constant-time compare: this is a long-lived shared secret, not a
+    // per-account, expiring, signed token like everything else in this
+    // file, so nothing else here already protects it from timing analysis.
+    use subtle::ConstantTimeEq;
+    if presented.as_bytes().ct_eq(expected.as_bytes()).unwrap_u8() != 1 {
+        return Err(ApiError::Unauthorized);
+    }
+    Ok(())
+}
+
+/// `GET /api/profiles` — every account, its machines, and its experiment
+/// standings. See the module docs above for why this is not
+/// session-authenticated.
+async fn profiles(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+) -> Result<Json<serde_json::Value>, ApiError> {
+    authenticate_profiles(&state, &headers)?;
+    let now = now_unix();
+    let store = state.store.lock().await;
+
+    let mut views = Vec::new();
+    for account in store.accounts()? {
+        let catalysts: Vec<CatalystView> = store
+            .catalysts(&account.id)?
+            .into_iter()
+            .map(|c| CatalystView { live: crate::router::is_live(&c, now), name: c.name, capabilities: c.capabilities, last_seen: c.last_seen })
+            .collect();
+
+        let mut experiments_owned = Vec::new();
+        let mut experiments_granted = Vec::new();
+        for exp in store.experiments_for_account(&account.id)? {
+            if exp.owner_account_id == account.id {
+                let grantee_count = store.experiment_grants(&exp.id)?.len();
+                experiments_owned.push(OwnedExperimentView { id: exp.id, name: exp.name, created_at: exp.created_at, grantee_count });
+            } else {
+                let crate::store::ExperimentStanding::Grantee(capabilities) =
+                    store.experiment_grant_for(&exp.id, &account.id)?.ok_or(ApiError::Internal(
+                        "experiments_for_account listed an experiment with no standing".into(),
+                    ))?
+                else {
+                    // experiments_for_account only lists owned-or-granted, and the
+                    // owned case was already handled above.
+                    return Err(ApiError::Internal("owner standing on a non-owned experiment".into()));
+                };
+                experiments_granted.push(GrantedExperimentView {
+                    id: exp.id,
+                    name: exp.name,
+                    owner_account_id: exp.owner_account_id,
+                    capabilities,
+                });
+            }
+        }
+
+        views.push(ProfileView {
+            account_id: account.id,
+            email: account.email,
+            created_at: account.created_at,
+            catalysts,
+            experiments_owned,
+            experiments_granted,
+        });
+    }
+
+    Ok(Json(serde_json::json!({ "ok": true, "profiles": views })))
+}
+
 // ─────────────────────────── module dispatch ───────────────────────────
 
 /// Body of `POST /api/dispatch` (specification 07 §2.1).
@@ -920,6 +1069,7 @@ pub fn app(state: Arc<AppState>) -> Router {
         .route("/api/experiments/:id/grants/:account_id", axum::routing::delete(revoke_grant))
         .route("/api/dispatch", post(dispatch))
         .route("/api/modules", get(list_modules))
+        .route("/api/profiles", get(profiles))
         .layer(CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any))
         .with_state(state)
 }
@@ -1255,5 +1405,95 @@ mod experiment_tests {
         )
         .await;
         assert_eq!(status, StatusCode::NOT_FOUND);
+    }
+}
+
+#[cfg(test)]
+mod profiles_tests {
+    //! `/api/profiles`: the shared-secret scheme is separate from every
+    //! account's session token, refuses by default, and the composed view
+    //! matches what the store actually holds.
+    use super::*;
+    use axum::body::{to_bytes, Body};
+    use axum::http::Request;
+    use tower::ServiceExt;
+
+    fn signer() -> Signer {
+        Signer::new(vec![7u8; 32]).unwrap()
+    }
+
+    async fn get(state: &Arc<AppState>, token: Option<&str>) -> (StatusCode, serde_json::Value) {
+        let mut req = Request::get("/api/profiles");
+        if let Some(t) = token {
+            req = req.header("authorization", format!("Bearer {t}"));
+        }
+        let res = app(state.clone()).oneshot(req.body(Body::empty()).unwrap()).await.unwrap();
+        let status = res.status();
+        let bytes = to_bytes(res.into_body(), 1 << 22).await.unwrap();
+        (status, serde_json::from_slice(&bytes).unwrap_or(serde_json::Value::Null))
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn refuses_when_no_token_is_configured() {
+        // The important default: absence of configuration is refusal, not
+        // an open route. Even a request with no Authorization header at
+        // all must not be treated as "any caller is fine".
+        let state = Arc::new(AppState::new(Store::open_memory().unwrap(), signer()));
+        let (status, _) = get(&state, None).await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED);
+        let (status, _) = get(&state, Some("anything")).await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn refuses_without_the_configured_token() {
+        let state = Arc::new(
+            AppState::new(Store::open_memory().unwrap(), signer()).with_profiles_token(Some("secret-1".into())),
+        );
+        let (status, _) = get(&state, None).await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED);
+        let (status, _) = get(&state, Some("wrong")).await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn a_session_token_does_not_work_here() {
+        // The whole point of the separate scheme: a real, validly-signed
+        // account session must not open this route.
+        let s = signer();
+        let state = Arc::new(AppState::new(Store::open_memory().unwrap(), s.clone()).with_profiles_token(Some("secret-1".into())));
+        let session_token = s.mint(Audience::Session, "some-account-id", now_unix(), 3600);
+        let (status, _) = get(&state, Some(&session_token)).await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn lists_every_account_with_its_catalysts_and_experiments() {
+        let store = Store::open_memory().unwrap();
+        let now = now_unix();
+        let alice = store.create_account("alice@example.org", "correct horse battery", now).unwrap();
+        let bob = store.create_account("bob@example.org", "correct horse battery", now).unwrap();
+        store.upsert_catalyst(&alice.id, "office", &["vahera".into()], now).unwrap();
+        let exp = store.create_experiment(&alice.id, "shared-run", now).unwrap();
+        store.grant_experiment(&exp.id, &bob.id, &["vahera".into()], now).unwrap();
+
+        let state = Arc::new(AppState::new(store, signer()).with_profiles_token(Some("secret-1".into())));
+        let (status, body) = get(&state, Some("secret-1")).await;
+        assert_eq!(status, StatusCode::OK);
+
+        let profiles = body["profiles"].as_array().unwrap();
+        assert_eq!(profiles.len(), 2);
+
+        let alice_view = profiles.iter().find(|p| p["email"] == "alice@example.org").unwrap();
+        assert_eq!(alice_view["catalysts"][0]["name"], "office");
+        assert_eq!(alice_view["experiments_owned"][0]["name"], "shared-run");
+        assert_eq!(alice_view["experiments_owned"][0]["grantee_count"], 1);
+        assert_eq!(alice_view["experiments_granted"].as_array().unwrap().len(), 0);
+
+        let bob_view = profiles.iter().find(|p| p["email"] == "bob@example.org").unwrap();
+        assert_eq!(bob_view["catalysts"].as_array().unwrap().len(), 0);
+        assert_eq!(bob_view["experiments_owned"].as_array().unwrap().len(), 0);
+        assert_eq!(bob_view["experiments_granted"][0]["id"], exp.id);
+        assert_eq!(bob_view["experiments_granted"][0]["capabilities"][0], "vahera");
     }
 }

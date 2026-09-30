@@ -23,6 +23,17 @@
  *   • { kind: "pair", name, capabilities? }                    → register a machine
  *   • { kind: "unpair", name }
  *   • { kind: "run", source, capability?, prefer? }            → execute vaHera
+ *   • { kind: "dispatch", module, instruction?, act_budget?, experiment? }
+ *   • { kind: "experiments" }                                  → list mine (owned + granted)
+ *   • { kind: "create_experiment", name }
+ *   • { kind: "grant", experiment, email, capabilities? }       → invite a collaborator
+ *   • { kind: "revoke_grant", experiment, account_id }
+ *   • { kind: "grants", experiment }                            → owner's roster view
+ *
+ * Experiments are a shared dispatch scope on the gateway (buhera-gateway's
+ * /api/experiments): the owner grants other accounts a capped list of
+ * capabilities, and every grantee's dispatch into it shares one module
+ * federation and one audit log — see /api/dispatch's `experiment` field.
  * ========================================================================== */
 
 const STORAGE_KEY = "buhera.gateway.session";
@@ -334,6 +345,208 @@ export const gatewayModule = {
           lines,
         },
         residue: (res.results || []).length,
+        completed: true,
+      };
+    }
+
+    if (kind === "dispatch") {
+      // Named moduleId, not `module` — the bare identifier `module` is
+      // reserved by Next.js's webpack build (no-assign-module-variable).
+      const moduleId = String(inst.module || "").trim();
+      if (!moduleId) {
+        return {
+          ok: false,
+          output_delta: { kind: "text", lines: ["gateway dispatch: module is required"] },
+          residue: 0,
+          completed: true,
+          error: "no-module",
+        };
+      }
+      const body = { module: moduleId, instruction: inst.instruction ?? "" };
+      if (inst.act_budget) body.act_budget = Number(inst.act_budget);
+      if (inst.experiment) body.experiment = String(inst.experiment);
+      const res = await call("/api/dispatch", { method: "POST", auth: true, body });
+      if (!res.ok) {
+        return {
+          ok: false,
+          output_delta: { kind: "text", lines: [`gateway dispatch: ${res.error}`] },
+          residue: 0,
+          completed: true,
+          error: res.error,
+        };
+      }
+      const scope = inst.experiment ? ` (experiment ${inst.experiment})` : "";
+      return {
+        ok: res.result?.ok !== false,
+        output_delta: {
+          kind: "gateway_dispatch",
+          module: moduleId,
+          executed_on: res.executed_on,
+          act_id: res.act_id,
+          result: res.result,
+          lines: [`dispatched "${moduleId}" on ${res.executed_on}${scope} (act ${res.act_id})`],
+        },
+        residue: res.result?.residue ?? 0,
+        completed: true,
+      };
+    }
+
+    if (kind === "experiments") {
+      const res = await call("/api/experiments", { auth: true });
+      if (!res.ok) {
+        return {
+          ok: false,
+          output_delta: { kind: "text", lines: [`gateway experiments: ${res.error}`] },
+          residue: 0,
+          completed: true,
+          error: res.error,
+        };
+      }
+      const items = res.experiments || [];
+      const lines = items.length
+        ? items.map((e) => {
+            const standing =
+              e.standing?.kind === "owner" ? "owner" : `grantee — [${(e.standing?.capabilities || []).join(", ")}]`;
+            return `  ${e.name} (${e.id}) — ${standing}`;
+          })
+        : ["  (no experiments yet)"];
+      return {
+        ok: true,
+        output_delta: { kind: "gateway_experiments", entries: items, count: items.length, lines: ["experiments:", ...lines] },
+        residue: items.length,
+        completed: true,
+      };
+    }
+
+    if (kind === "create_experiment") {
+      const name = String(inst.name || "").trim();
+      if (!name) {
+        return {
+          ok: false,
+          output_delta: { kind: "text", lines: ["gateway create_experiment: name is required"] },
+          residue: 0,
+          completed: true,
+          error: "no-name",
+        };
+      }
+      const res = await call("/api/experiments", { method: "POST", auth: true, body: { name } });
+      if (!res.ok) {
+        return {
+          ok: false,
+          output_delta: { kind: "text", lines: [`gateway create_experiment: ${res.error}`] },
+          residue: 0,
+          completed: true,
+          error: res.error,
+        };
+      }
+      return {
+        ok: true,
+        output_delta: { kind: "text", lines: [`gateway: created experiment "${res.name}" (${res.id})`] },
+        residue: 1,
+        completed: true,
+      };
+    }
+
+    if (kind === "grant") {
+      const experimentId = String(inst.experiment || "").trim();
+      const email = String(inst.email || "").trim();
+      if (!experimentId || !email) {
+        return {
+          ok: false,
+          output_delta: { kind: "text", lines: ["gateway grant: experiment and email are required"] },
+          residue: 0,
+          completed: true,
+          error: "missing-fields",
+        };
+      }
+      const capabilities = Array.isArray(inst.capabilities) ? inst.capabilities.map(String) : [];
+      const res = await call(`/api/experiments/${encodeURIComponent(experimentId)}/grants`, {
+        method: "POST",
+        auth: true,
+        body: { email, capabilities },
+      });
+      if (!res.ok) {
+        return {
+          ok: false,
+          output_delta: { kind: "text", lines: [`gateway grant: ${res.error}`] },
+          residue: 0,
+          completed: true,
+          error: res.error,
+        };
+      }
+      return {
+        ok: true,
+        output_delta: {
+          kind: "text",
+          lines: [`gateway: granted ${email} [${res.capabilities.join(", ") || "(no capabilities)"}] on ${experimentId}`],
+        },
+        residue: 1,
+        completed: true,
+      };
+    }
+
+    if (kind === "revoke_grant") {
+      const experimentId = String(inst.experiment || "").trim();
+      const accountId = String(inst.account_id || "").trim();
+      if (!experimentId || !accountId) {
+        return {
+          ok: false,
+          output_delta: { kind: "text", lines: ["gateway revoke_grant: experiment and account_id are required"] },
+          residue: 0,
+          completed: true,
+          error: "missing-fields",
+        };
+      }
+      const res = await call(
+        `/api/experiments/${encodeURIComponent(experimentId)}/grants/${encodeURIComponent(accountId)}`,
+        { method: "DELETE", auth: true },
+      );
+      if (!res.ok) {
+        return {
+          ok: false,
+          output_delta: { kind: "text", lines: [`gateway revoke_grant: ${res.error}`] },
+          residue: 0,
+          completed: true,
+          error: res.error,
+        };
+      }
+      return {
+        ok: true,
+        output_delta: { kind: "text", lines: [`gateway: revoked ${accountId} from ${experimentId}`] },
+        residue: 0,
+        completed: true,
+      };
+    }
+
+    if (kind === "grants") {
+      const experimentId = String(inst.experiment || "").trim();
+      if (!experimentId) {
+        return {
+          ok: false,
+          output_delta: { kind: "text", lines: ["gateway grants: experiment is required"] },
+          residue: 0,
+          completed: true,
+          error: "no-experiment",
+        };
+      }
+      const res = await call(`/api/experiments/${encodeURIComponent(experimentId)}/grants`, { auth: true });
+      if (!res.ok) {
+        return {
+          ok: false,
+          output_delta: { kind: "text", lines: [`gateway grants: ${res.error}`] },
+          residue: 0,
+          completed: true,
+          error: res.error,
+        };
+      }
+      const items = res.grants || [];
+      const lines = items.length
+        ? items.map((g) => `  ${g.account_id} — [${g.capabilities.join(", ")}]`)
+        : ["  (no grants yet)"];
+      return {
+        ok: true,
+        output_delta: { kind: "gateway_grants", entries: items, count: items.length, lines: ["roster:", ...lines] },
+        residue: items.length,
         completed: true,
       };
     }

@@ -678,6 +678,74 @@ function ArtifactGatewayRun({ executed_on, note, results, trace }) {
   );
 }
 
+function ArtifactGatewayExperiments({ entries }) {
+  if (!Array.isArray(entries) || entries.length === 0) {
+    return <p className="text-gray-500 text-sm">(no experiments yet)</p>;
+  }
+  return (
+    <div className="text-gray-300 text-sm">
+      <p className="text-xs text-gray-500 mb-2">
+        {entries.length} experiment{entries.length === 1 ? "" : "s"}
+      </p>
+      <ul>
+        {entries.map((e) => (
+          <li key={e.id} className="mb-1">
+            <span className="text-white font-mono">{e.name}</span>{" "}
+            <span className="text-gray-600 text-xs">({e.id})</span>
+            {e.standing?.kind === "owner" ? (
+              <span className="text-emerald-400 text-xs"> — owner</span>
+            ) : (
+              <span className="text-gray-500 text-xs">
+                {" "}
+                — grantee · [{(e.standing?.capabilities || []).join(", ") || "no capabilities"}]
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ArtifactGatewayGrants({ entries }) {
+  if (!Array.isArray(entries) || entries.length === 0) {
+    return <p className="text-gray-500 text-sm">(no grants yet)</p>;
+  }
+  return (
+    <div className="text-gray-300 text-sm">
+      <p className="text-xs text-gray-500 mb-2">
+        {entries.length} grant{entries.length === 1 ? "" : "s"}
+      </p>
+      <ul>
+        {entries.map((g) => (
+          <li key={g.account_id} className="mb-1">
+            <span className="text-white font-mono">{g.account_id}</span>
+            <span className="text-gray-500 text-xs"> — [{g.capabilities.join(", ") || "no capabilities"}]</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ArtifactGatewayDispatch({ module, executed_on, act_id, result }) {
+  return (
+    <div className="text-gray-300 text-sm">
+      <p>
+        <span className="text-gray-400">dispatched</span>{" "}
+        <span className="text-white font-mono">{module}</span>{" "}
+        <span className="text-gray-500">on {executed_on}</span>{" "}
+        <span className="text-gray-600 text-xs">(act {act_id})</span>
+      </p>
+      {result && (
+        <pre className="mt-2 font-mono text-xs whitespace-pre-wrap">
+          {JSON.stringify(result.output_delta ?? result, null, 2)}
+        </pre>
+      )}
+    </div>
+  );
+}
+
 function ArtifactSpraypaintResult({ query, results, allocation, price, budget, committed_count, elapsed_ms }) {
   const rowD = useDisclosure(null);
   const items = Array.isArray(results) ? results : [];
@@ -1761,6 +1829,9 @@ export function Artifact({ result }) {
     case "gateway_machines": return <ArtifactGatewayMachines entries={result.entries} />;
     case "gateway_pair_token": return <ArtifactGatewayPairToken name={result.name} token={result.token} expires_at={result.expires_at} />;
     case "gateway_run":     return <ArtifactGatewayRun executed_on={result.executed_on} note={result.note} results={result.results} trace={result.trace} />;
+    case "gateway_experiments": return <ArtifactGatewayExperiments entries={result.entries} />;
+    case "gateway_grants":  return <ArtifactGatewayGrants entries={result.entries} />;
+    case "gateway_dispatch": return <ArtifactGatewayDispatch module={result.module} executed_on={result.executed_on} act_id={result.act_id} result={result.result} />;
     case "spraypaint_result": return <ArtifactSpraypaintResult query={result.query} results={result.results} allocation={result.allocation} price={result.price} budget={result.budget} committed_count={result.committed_count} elapsed_ms={result.elapsed_ms} />;
     case "spraypaint_index_result": return <ArtifactSpraypaintIndexResult root={result.root} documents={result.documents} passages={result.passages} scenes={result.scenes} would_index={result.would_index} identity_fingerprint={result.identity_fingerprint} elapsed_ms={result.elapsed_ms} />;
     case "web_search_result": return <ArtifactWebSearchResult query={result.query} content={result.content} webSearchQueries={result.webSearchQueries} sources={result.sources} grounded={result.grounded} />;
