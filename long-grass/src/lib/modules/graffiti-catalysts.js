@@ -74,9 +74,22 @@ export function createKernelSearchCatalyst(name, kernel, power = 0.7) {
  *   - "query" (string): the search text; defaults to currentClaim
  *
  * Result:
- *   claim = the top-scoring passage's snippet, or a no-hits marker
- *   power = 0.5 + 0.4 * normalised top score, capped at `power`
+ *   claim = the top passage's evidence lines, cited path:start-end
+ *   power = from spraypaint's coverage verdict, never from its score (a BM25
+ *           score means something only within one query): covered 0.8,
+ *           partial 0.4–0.7 by the share of the query's weight found,
+ *           declined 0 — the corpus does not hold what the query names.
+ *           An older build with no verdict gets 0.3: a possible look-alike.
+ *   All capped at `power`.
  */
+function verdictPower(coverage) {
+  const v = coverage?.verdict;
+  if (v === "covered") return 0.8;
+  if (v === "partial") return 0.4 + 0.3 * (coverage.weight_share ?? 0.5);
+  if (v === "declined") return 0;
+  return 0.3;
+}
+
 export function createSpraypaintCatalyst(name, power = 0.7) {
   return {
     name,
@@ -96,17 +109,19 @@ export function createSpraypaintCatalyst(name, power = 0.7) {
         if (!res.ok || !body?.output_delta) {
           return { claim: `${name}:unreachable:${query}`, power: 0 };
         }
-        const results = body.output_delta.results || [];
+        const { results = [], coverage } = body.output_delta;
+        if (coverage?.verdict === "declined") {
+          return { claim: `${name}:declined:${coverage.reason}`, power: 0 };
+        }
         if (results.length === 0) {
           return { claim: `${name}:no-hits:${query}`, power: 0 };
         }
-        const top = results[0];
-        // score is unbounded BM25; 20 is a generous ceiling seen in practice
-        // for this repo's index, used only to keep power in [0, power].
-        const normalised = Math.max(0, Math.min(1, top.score / 20));
-        const p = Math.min(0.9, 0.5 + 0.4 * normalised);
-        const claim = `${top.path}:${top.start_line}-${top.end_line}: ${top.snippet}`;
-        return { claim, power: Math.min(p, power) };
+        // Results come grouped by scene; the best passage is the top score.
+        const top = results.reduce((a, b) => (b.score > a.score ? b : a));
+        const from = top.evidence_start_line ?? top.start_line;
+        const to = top.evidence_end_line ?? top.end_line;
+        const claim = `${top.path}:${from}-${to}: ${top.snippet}`;
+        return { claim, power: Math.min(verdictPower(coverage), power) };
       } catch {
         return { claim: `${name}:error:${query}`, power: 0 };
       }

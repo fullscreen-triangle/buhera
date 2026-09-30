@@ -16,9 +16,23 @@ test("a remote request is not local", () => {
   assert.equal(isLocalRequest(req("203.0.113.9")), false);
 });
 
-test("a request relayed by a reverse proxy is never local, though it arrives from loopback", () => {
+test("a request relayed from a visitor is never local, though it arrives from loopback", () => {
   assert.equal(isLocalRequest(req("127.0.0.1", { "x-forwarded-for": "203.0.113.9" })), false);
+  assert.equal(isLocalRequest(req("127.0.0.1", { "x-forwarded-for": "127.0.0.1, 203.0.113.9" })), false);
   assert.equal(isLocalRequest(req("127.0.0.1", { "x-real-ip": "203.0.113.9" })), false);
-  assert.equal(isLocalRequest(req("::1", { forwarded: "for=203.0.113.9" })), false);
-  assert.equal(isLocalRequest(req("127.0.0.1", { "x-forwarded-host": "example.org" })), false);
+  assert.equal(isLocalRequest(req("::1", { forwarded: "for=203.0.113.9;proto=https" })), false);
+  assert.equal(isLocalRequest(req("::1", { forwarded: "for=\"[2001:db8::1]:443\"" })), false);
+  assert.equal(isLocalRequest(req("::1", { forwarded: "for=\"[::1]:443\", for=203.0.113.9" })), false);
+});
+
+test("a forwarding header that cannot be read fails closed", () => {
+  assert.equal(isLocalRequest(req("127.0.0.1", { forwarded: "proto=https" })), false);
+  assert.equal(isLocalRequest(req("127.0.0.1", { "x-forwarded-for": " , " })), false);
+});
+
+test("Next.js's own relay (forwarded for loopback) stays local", () => {
+  assert.equal(isLocalRequest(req("::1", { "x-forwarded-for": "::1", "x-forwarded-host": "localhost:3000" })), true);
+  assert.equal(isLocalRequest(req("127.0.0.1", { "x-forwarded-for": "127.0.0.1" })), true);
+  assert.equal(isLocalRequest(req("127.0.0.1", { forwarded: "for=127.0.0.1:52100" })), true);
+  assert.equal(isLocalRequest(req("::1", { forwarded: "for=\"[::1]:52100\";proto=http" })), true);
 });

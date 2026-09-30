@@ -32,17 +32,55 @@ export function envFolders() {
   return (process.env.RAG_FOLDERS || "").split(",").map((s) => s.trim()).filter(Boolean);
 }
 
+const LOOPBACK = new Set(["127.0.0.1", "::1", "::ffff:127.0.0.1", "localhost"]);
+
+// One forwarded address, bare: quotes, IPv6 brackets and any port removed.
+function bareAddress(raw) {
+  let a = raw.trim().replace(/^"|"$/g, "");
+  const v6 = /^\[([^\]]+)\](?::\d+)?$/.exec(a);
+  if (v6) return v6[1];
+  if (/^[\d.]+:\d+$/.test(a)) a = a.slice(0, a.lastIndexOf(":"));
+  return a;
+}
+
+// The addresses a request says it was forwarded for, from every forwarding
+// header — or null when a forwarding header is present but yields none, so
+// an unreadable header fails closed instead of reading as "no proxy".
+function forwardedFor(h) {
+  const raw = [];
+  let present = false;
+  for (const v of [h["x-forwarded-for"], h["x-real-ip"]]) {
+    if (v) { present = true; raw.push(...String(v).split(",")); }
+  }
+  if (h.forwarded) {
+    present = true;
+    for (const element of String(h.forwarded).split(",")) {
+      for (const pair of element.split(";")) {
+        const [k, ...v] = pair.split("=");
+        if (k.trim().toLowerCase() === "for") raw.push(v.join("="));
+      }
+    }
+  }
+  const out = raw.map(bareAddress).filter(Boolean);
+  return present && out.length === 0 ? null : out;
+}
+
 /**
- * Whether a Next.js API request came from this machine. Behind a reverse
- * proxy every request arrives from loopback, so a request carrying proxy
- * headers is never local — otherwise any visitor could name a folder on the
- * server for it to read.
+ * Whether a Next.js API request came from this machine. The socket being
+ * loopback is not enough: behind a reverse proxy every request arrives from
+ * loopback. So every address in the forwarding chain must be loopback too.
+ * Next's own server relays requests with X-Forwarded-For: 127.0.0.1, which
+ * passes; Caddy replaces a client's forwarding headers with the client's
+ * real address, which does not — otherwise any visitor could name a folder
+ * on the server for it to read. (A proxy that passes a client's
+ * X-Forwarded-For through unchanged would defeat this; Caddy and nginx's
+ * $proxy_add_x_forwarded_for do not.)
  */
 export function isLocalRequest(req) {
-  const h = req.headers || {};
-  if (h["x-forwarded-for"] || h["x-real-ip"] || h.forwarded || h["x-forwarded-host"]) return false;
   const addr = req.socket?.remoteAddress || "";
-  return addr === "127.0.0.1" || addr === "::1" || addr === "::ffff:127.0.0.1";
+  if (!LOOPBACK.has(addr)) return false;
+  const chain = forwardedFor(req.headers || {});
+  return chain !== null && chain.every((a) => LOOPBACK.has(a));
 }
 
 const safeName = (s) => String(s || "default").replace(/[^A-Za-z0-9._-]/g, "_").slice(0, 64) || "default";

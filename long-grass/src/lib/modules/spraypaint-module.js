@@ -8,7 +8,8 @@
  * actual Gemini call happen server-side in those two routes.
  *
  * Instruction shapes:
- *   { kind: "ask", query, root?, budget?, scenes? }  → local search
+ *   { kind: "ask", query, root?, budget?, scenes?, dry_run? }  → local search;
+ *        dry_run previews (verdict + passages, no committed act)
  *   { kind: "index", root? }                          → (re)build the local index
  *   { kind: "web", query }                             → internet search
  *   { kind: "both", query, root?, budget?, scenes? }   → both, in parallel
@@ -54,6 +55,7 @@ async function runAsk(inst) {
     root: inst.root,
     budget: inst.budget,
     scenes: inst.scenes,
+    dry_run: !!inst.dry_run,
   });
   if (!res.ok) {
     return {
@@ -164,13 +166,15 @@ export const spraypaintModule = {
       id: "spraypaint",
       description:
         "Search: spraypaint (local full-text passage retrieval over this repo, " +
-        "BM25 within scenes + water-filling across them) and internet search " +
+        "BM25 within scenes + water-filling across them, and a verdict on " +
+        "whether the repo covers the query at all) and internet search " +
         "(an LLM's own browsing tool). No shared state with vaHera's own " +
         "memory — this searches files on disk / the web, not what you've " +
         "`memory store`d.",
       instructions: [
         'dispatch("spraypaint", { kind: "ask", query: "admissibility floor" })',
         'dispatch("spraypaint", { kind: "ask", query: "...", scenes: ["long-grass"], budget: 5 })',
+        'dispatch("spraypaint", { kind: "ask", query: "...", dry_run: true })',
         'dispatch("spraypaint", { kind: "index" })',
         'dispatch("spraypaint", { kind: "web", query: "..." })',
         'dispatch("spraypaint", { kind: "both", query: "..." })',
