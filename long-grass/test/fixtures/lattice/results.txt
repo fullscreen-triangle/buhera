@@ -1,0 +1,9 @@
+score — results at 23a2c1f54f (44s ago)
+  part 1/1    done         on f25aeab1b569: 3 shard(s), 3 at a time, 8 CPU(s), 0 GPU(s); updated 45s ago
+
+  shard                                    state      exit     took  host
+  seed-1                                   done          0       0s  f25aeab1b569
+  seed-2                                   done          0       0s  f25aeab1b569
+  seed-3                                   done          0       0s  f25aeab1b569
+
+  3 done, 0 failed, 0 running, 0 not reported, of 3

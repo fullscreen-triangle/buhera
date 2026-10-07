@@ -13,6 +13,8 @@
 import { useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import { runInput } from "@/lib/runtime/run-input";
+import { dispatch } from "@/lib/modules/registry";
+import { workVerb } from "@/lib/surface/verbs";
 
 // The Artifact component pulls in the terminal's whole render tree
 // (charts, workspaces, etc.). Load it dynamically, ssr-off, so the
@@ -39,7 +41,12 @@ export default function RunnableCell({ source, ctxRef }) {
     setOutput(null);
     try {
       const ctx = ctxRef.current;
-      const envelope = await runInput(editing ? draft : source, ctx);
+      const words = editing ? draft : source;
+      // The blank screen's work verbs (mail, find, plan, apphub) run here too.
+      const verb = workVerb(words);
+      const envelope = verb
+        ? { kind: "artifact", result: (await dispatch(verb.module, verb.instruction))?.output_delta ?? { kind: "text", lines: ["(no output)"] } }
+        : await runInput(words, ctx);
       if (envelope.kind === "error") {
         setError(envelope.message);
       } else {

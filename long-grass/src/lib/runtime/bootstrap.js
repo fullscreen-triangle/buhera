@@ -44,6 +44,9 @@ import { interceptorModule } from "@/lib/modules/interceptor-module";
 import { systemModules } from "@/lib/modules/system-modules";
 import { visModule } from "@/lib/modules/vis-module";
 import { surfaceModules } from "@/lib/modules/surface-modules";
+import { mailModule } from "@/lib/modules/mail-module";
+import { latticeModule } from "@/lib/modules/lattice-module";
+import { planningModule } from "@/lib/modules/planning-module";
 // Library federation (specifications/registry/catalogue.json): adapters from
 // @buhera/registry bound to vendored engines, plus the Rust modules via wasm.
 import { pylonModule } from "@/lib/modules/pylon-module";
@@ -104,6 +107,9 @@ export function bootstrapFederation() {
   for (const m of systemModules) register(m);
   register(visModule);
   for (const m of surfaceModules) register(m);
+  register(mailModule);
+  register(latticeModule);
+  register(planningModule);
 
   const session = getPurposeSession();
   const unhook = onDispatch((entry) => {

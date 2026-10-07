@@ -416,6 +416,8 @@ export default function Surface() {
           <style jsx global>{`
             .no-scrollbar { scrollbar-width: none; }
             .no-scrollbar::-webkit-scrollbar { display: none; }
+            [data-surface-root] ::placeholder { color: #4b5563; opacity: 1; }
+            [data-surface-root] input[type="checkbox"] { color-scheme: dark; }
             @media print {
               [data-edge-drawer] { display: none !important; }
               [data-surface-root] { position: static !important; overflow: visible !important; }

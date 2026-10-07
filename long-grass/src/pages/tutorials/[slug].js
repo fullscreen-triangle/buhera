@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import Link from "next/link";
 import { parseTutorial, extractMeta } from "@/lib/tutorial-markdown";
+import { bySlugOrder } from "@/lib/tutorial-order";
 import { createRuntimeContext } from "@/lib/runtime/run-input";
 import { bootstrapFederation } from "@/lib/runtime/bootstrap";
 
@@ -25,33 +26,12 @@ const TutorialRenderer = dynamic(
   { ssr: false }
 );
 
-const ORDER = [
-  "basic-routines",
-  "vahera-dsl",
-  "spraypaint-search",
-  "interceptor-assistant",
-  "vahera-search-catalysts",
-  "kwasa-kwasa-routines",
-  "purpose-routines",
-  "zangalewa-routines",
-  "shapeshifter-routines",
-  "scope-routines",
-  "complete-ckg-experiment",
-  "data-modeling-capability",
-];
 
 function orderedSlugs() {
   const dir = path.join(process.cwd(), "tutorials");
   const files = fs.readdirSync(dir).filter((f) => f.endsWith(".md"));
   const slugs = files.map((f) => f.replace(/\.md$/, ""));
-  slugs.sort((a, b) => {
-    const ai = ORDER.indexOf(a);
-    const bi = ORDER.indexOf(b);
-    if (ai === -1 && bi === -1) return a.localeCompare(b);
-    if (ai === -1) return 1;
-    if (bi === -1) return -1;
-    return ai - bi;
-  });
+  slugs.sort(bySlugOrder);
   return slugs;
 }
 
@@ -123,7 +103,7 @@ export default function TutorialPage({ title, description, blocks, prev, next })
               ← all tutorials
             </Link>
             <Link href="/" className="text-blue-400 hover:text-blue-300">
-              terminal →
+              blank screen →
             </Link>
           </nav>
 

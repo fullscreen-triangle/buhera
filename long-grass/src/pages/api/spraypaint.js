@@ -22,59 +22,12 @@
 // — a remote request may only search SPRAYPAINT_ROOT, never choose a root.
 
 import path from "path";
-import os from "os";
-import { spawn } from "child_process";
-import { existsSync } from "fs";
 import { isLocalRequest } from "@/lib/server/rag";
+import { findBinary, run } from "@/lib/server/spawn";
 import { askArgs, parseJsonLoose, readCount, readIdentity, readScenes, readVerify, resolveRoot } from "@/lib/server/spraypaint";
 
-const MAX_STDOUT_BYTES = 4 * 1024 * 1024; // 4 MiB cap
 const FALLBACK_ROOT = path.resolve(process.cwd(), ".."); // the buhera repo, when run from long-grass/
-
-function resolveBinary() {
-  if (process.env.SPRAYPAINT_CLI && existsSync(process.env.SPRAYPAINT_CLI)) {
-    return process.env.SPRAYPAINT_CLI;
-  }
-  const suffix = process.platform === "win32" ? ".exe" : "";
-  const candidates = [
-    path.join(os.homedir(), ".cargo", "bin", `spraypaint${suffix}`),
-    "/usr/local/bin/spraypaint",
-    "/usr/bin/spraypaint",
-  ];
-  return candidates.find((c) => existsSync(c)) || null;
-}
-
-function runSpraypaint(binary, args) {
-  return new Promise((resolve) => {
-    const child = spawn(binary, args, { windowsHide: true });
-    const stdoutChunks = [];
-    const stderrChunks = [];
-    let bytes = 0;
-    let truncated = false;
-
-    child.stdout.on("data", (chunk) => {
-      bytes += chunk.length;
-      if (bytes > MAX_STDOUT_BYTES) {
-        truncated = true;
-        child.kill("SIGTERM");
-        return;
-      }
-      stdoutChunks.push(chunk);
-    });
-    child.stderr.on("data", (chunk) => stderrChunks.push(chunk));
-    child.on("error", (err) =>
-      resolve({ code: -1, stdout: "", stderr: err.message, truncated })
-    );
-    child.on("close", (code) =>
-      resolve({
-        code: code ?? -1,
-        stdout: Buffer.concat(stdoutChunks).toString("utf8"),
-        stderr: Buffer.concat(stderrChunks).toString("utf8"),
-        truncated,
-      })
-    );
-  });
-}
+const runSpraypaint = (binary, args) => run(binary, args, { timeoutMs: 300_000 });
 
 const OUTPUTS = {
   identity: (stdout) => ({ kind: "spraypaint_identity_result", ...readIdentity(stdout) }),
@@ -90,7 +43,7 @@ export default async function handler(req, res) {
 
   const { action = "ask", query, root, budget, scenes, dry_run } = req.body ?? {};
 
-  const binary = resolveBinary();
+  const binary = findBinary("spraypaint", "SPRAYPAINT_CLI");
   if (!binary) {
     return res.status(503).json({
       ok: false,

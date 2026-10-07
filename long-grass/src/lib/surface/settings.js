@@ -44,6 +44,9 @@ export const DEFAULTS = Object.freeze({
     folders: [],         // local folders the retrieval reads (served by /api/player)
     extensions: [".md", ".txt", ".tex"],
   },
+  lattice: {
+    repos: [],           // repositories on this machine whose tasks can go to AppHub
+  },
   project: "default",    // the active project: names the receiver and scopes plans
   plans: [],             // [{ id, at, project, source, script, by }]
   reports: [],           // [{ id, at, project, source, script, summary, graph, retrieval }]

@@ -13,9 +13,14 @@
 //
 //  A result from an older build has no `coverage`; it is shown with a note
 //  that there is no verdict, so each passage may be a look-alike.
+//
+//  `rowAction(r)` draws a control beside each passage (planning keeps a
+//  passage on a plan with it); `compact` drops the header, the allocation
+//  chart and the footer, for a result shown inside another view.
 // =====================================================================
 
 import SpraypaintAllocationChart from "@/components/sandboxes/spraypaint/SpraypaintAllocationChart";
+import { useStep } from "@/components/surface/actions";
 
 const VERDICT = {
   covered: { ink: "text-teal-300", ring: "border-teal-700/60", word: "covered" },
@@ -74,19 +79,20 @@ function Terms({ terms }) {
   );
 }
 
-export function SpraypaintResult({ query, results, allocation, price, budget, committed_count, dry_run, coverage, query_terms, identity_fingerprint, elapsed_ms }) {
+export function SpraypaintResult({ query, results, allocation, price, budget, committed_count, dry_run, coverage, query_terms, identity_fingerprint, elapsed_ms, corpus, rowAction, compact }) {
   const items = Array.isArray(results) ? results : [];
   const terms = Array.isArray(query_terms) ? query_terms : (coverage?.terms || []).map((t) => t.term);
   const v = coverage ? VERDICT[coverage.verdict] : null;
+  const step = useStep(); // on the surface, a kept-mail passage opens its message
   let lastScene = null;
 
   return (
     <div className="text-gray-300 text-sm">
-      <div className="text-xs text-gray-500 mb-3">
-        <span className="text-gray-400">spraypaint</span>{" "}
+      {!compact && <div className="text-xs text-gray-500 mb-3">
+        <span className="text-gray-400">spraypaint{corpus === "mail" ? " · kept mail" : ""}</span>{" "}
         <span className="text-white font-mono">&quot;{query}&quot;</span>
         {dry_run ? <> · preview, nothing committed</> : typeof committed_count === "number" && <> · committed act #{committed_count}</>}
-      </div>
+      </div>}
 
       {coverage ? (
         <div className={`border-l-2 ${v?.ring || "border-gray-700"} pl-3 mb-4`}>
@@ -122,6 +128,11 @@ export function SpraypaintResult({ query, results, allocation, price, budget, co
                     <span className="text-[11px] text-gray-500">matched {r.matched_terms.join(", ")}</span>
                   )}
                   <span className="text-[11px] text-gray-700">score {typeof r.score === "number" ? r.score.toFixed(2) : r.score}</span>
+                  {corpus === "mail" && step && (
+                    <button type="button" className="text-[11px] text-gray-500 hover:text-teal-300"
+                      onClick={() => step(`mail: ${r.path}`, "mail", { kind: "open", path: r.path })}>open the mail</button>
+                  )}
+                  {rowAction && rowAction(r)}
                 </div>
                 <Evidence r={r} terms={terms} />
               </div>
@@ -130,14 +141,14 @@ export function SpraypaintResult({ query, results, allocation, price, budget, co
         </div>
       )}
 
-      {Array.isArray(allocation) && allocation.length > 0 && <SpraypaintAllocationChart allocation={allocation} />}
+      {!compact && Array.isArray(allocation) && allocation.length > 0 && <SpraypaintAllocationChart allocation={allocation} />}
 
-      <div className="text-[11px] text-gray-600 mt-2">
+      {!compact && <div className="text-[11px] text-gray-600 mt-2">
         {typeof price === "number" && <>p* {price.toFixed(2)}{price === 0 ? " (budget not used up)" : ""}</>}
         {typeof budget === "number" && <> · budget {budget}</>}
         {identity_fingerprint && <> · index {identity_fingerprint.slice(0, 14)}</>}
         {typeof elapsed_ms === "number" && <> · {elapsed_ms} ms</>}
-      </div>
+      </div>}
     </div>
   );
 }

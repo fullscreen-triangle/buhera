@@ -2,7 +2,9 @@
  * The surface's resolver seam.
  *
  * The surface interprets one verb itself — "chart", which needs the page in
- * view and so cannot live anywhere else (see VIS_VERB below). Everything else
+ * view and so cannot live anywhere else (see VIS_VERB below) — and routes the
+ * work verbs (mail, find, plan, apphub; workVerb in verbs.js) straight to
+ * their modules. Everything else
  * it never interprets: it hands the utterance —
  * together with the one page the user was looking at when they started
  * writing — to a resolver, and draws whatever envelope comes back as the next
@@ -23,7 +25,7 @@ import { runInput } from "@/lib/runtime/run-input";
 import { getKernel, replaceKernel } from "@/lib/modules/vahera-module";
 import { getModule, dispatch as dispatchModule } from "@/lib/modules/registry";
 import { glanceOf, edgeOf } from "@/lib/surface/edges";
-import { visInstruction } from "@/lib/surface/verbs";
+import { visInstruction, workVerb } from "@/lib/surface/verbs";
 
 /**
  * The runtime the surface resolves against. Unlike run-input's own
@@ -58,6 +60,15 @@ async function chart(utterance, page) {
   return res?.output_delta ? { kind: "artifact", result: res.output_delta } : { kind: "text", lines: ["(vis: no output)"] };
 }
 
+// The work verbs (mail, find, plan, apphub): each names a module and an
+// instruction, so they resolve here, before the player sees the words.
+async function work(utterance) {
+  const verb = workVerb(utterance);
+  if (!verb) return null;
+  const res = await dispatchModule(verb.module, verb.instruction);
+  return res?.output_delta ? { kind: "artifact", result: res.output_delta } : { kind: "text", lines: [`(${verb.module}: no output)`] };
+}
+
 async function lineResolver(utterance, { runtime }) {
   return runInput(utterance, runtime);
 }
@@ -74,6 +85,8 @@ export async function resolve(utterance, ctx) {
   try {
     const charted = await chart(utterance, ctx?.page ?? null);
     if (charted) return charted;
+    const worked = await work(utterance);
+    if (worked) return worked;
     const env = await _resolver(utterance, ctx);
     return env || { kind: "text", lines: ["(no result)"] };
   } catch (err) {

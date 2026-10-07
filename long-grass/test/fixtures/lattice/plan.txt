@@ -1,0 +1,16 @@
+unit         score — 3 shard(s) (seed×3)
+from         task "score"
+runs         ( cd "${LATTICE_ROOT}" && python3 score.py {seed} )
+environment  venv in .; built on first run, kept in $HOME after
+compute      CPU is enough: no GPU library found
+profile      any CPU profile
+parallel     one shard per CPU of the session
+results      each shard's $LATTICE_OUT folder
+
+On AppHub (Code-Server → Terminal):
+  1. get it: git clone <the repository's Gitea URL>
+             (already cloned: cd <repo> && git pull)
+  2. run:    cd <repo> && bash .lattice/score/run.sh --detach
+             more sessions? start one per session with --part 1/2, --part 2/2, …
+
+Back here: lattice results score   (--get copies the outputs into this working tree)

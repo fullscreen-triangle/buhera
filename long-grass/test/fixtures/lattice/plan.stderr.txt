@@ -1,0 +1,3 @@
+lattice: read 3 tracked file(s), 0.0 MB: what AppHub will get
+lattice: no remote of this repository is on git.uni-greifswald.de, so AppHub can't get it. Create the repository on https://git.uni-greifswald.de, then `git remote add uni https://git.uni-greifswald.de/<user>/<repo>.git` (or `--remote <name>`)
+lattice: nothing written; `lattice wrap` with the same arguments makes the unit
