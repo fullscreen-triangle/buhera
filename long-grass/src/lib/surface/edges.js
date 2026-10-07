@@ -4,14 +4,15 @@
  * The blank surface shows nothing until the pointer reaches an edge:
  *
  *   top     where the session is: connected devices, this machine, the
- *           network, your mail, shared experiments, jobs on AppHub, and the
- *           runtime graph
+ *           network, the web you read, your mail, shared experiments, jobs on
+ *           AppHub, and the runtime graph
  *   right   how the screen is used: preferences (text size, spacing),
  *           screen, code visibility, device connections (printer, pointer,
  *           screen → image)
  *   bottom  who the work is for: the personalised model, groups and
  *           projects, RAG settings, planning (find things, plan experiments
- *           and tasks), reports
+ *           and tasks), spec (understand a specification: its model, diagrams,
+ *           what a profile changes), reports
  *   left    every registered module, with a search at the top
  *
  * This table is the single place that decision is written down, so it can be
@@ -28,11 +29,12 @@
 
 export const EDGES = {
   top: {
-    title: "devices · machine · network · mail · experiments · apphub · runtime",
+    title: "devices · machine · network · web · mail · experiments · apphub · runtime",
     entries: [
       { id: "devices", glance: "list" },
       { id: "machine", glance: "specs" },
       { id: "network", glance: { kind: "status" } },
+      { id: "web", glance: "library" },
       { id: "mail", glance: "accounts" },
       { id: "experiments", glance: "list" },
       { id: "lattice", glance: "show" },
@@ -49,12 +51,13 @@ export const EDGES = {
     ],
   },
   bottom: {
-    title: "model · projects · rag · planning · reports",
+    title: "model · projects · rag · planning · spec · reports",
     entries: [
       { id: "model", glance: "show" },
       { id: "projects", glance: "show" },
       { id: "rag", glance: "show" },
       { id: "planning", glance: "board" },
+      { id: "spec", glance: { kind: "mermaid", title: "a diagram you write", text: "flowchart LR\n  read([read the specification]) --> note([note what matters]) --> draw([draw what it states])" } },
       { id: "reports", glance: "show" },
     ],
   },

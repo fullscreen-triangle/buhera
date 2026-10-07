@@ -1,6 +1,6 @@
 # Finding and Planning
 
-`find` looks for something everywhere at once — your mail, your files, the web, your own plans — and shows each answer under the place it came from, with that place's own honesty about how good the match is. `plan` turns what you found into an experiment or a task: steps, the evidence you kept and how sure each search was, and the AppHub jobs that run it.
+`find` looks for something everywhere at once — what you have read, your mail, your files, the web, your own plans — and shows each answer under the place it came from, with that place's own honesty about how good the match is. `plan` turns what you found into an experiment or a task: steps, the evidence you kept and how sure each search was, and the AppHub jobs that run it.
 
 **Time:** 20 minutes.
 
@@ -16,7 +16,7 @@ Write what the answer would contain — words, not a question:
 find internal standard blanks
 ```
 
-Run against a test mailbox and a small folder of lab notes (an extraction protocol, a meeting note), it gave:
+Run against a test mailbox and a small folder of lab notes (an extraction protocol, a meeting note), before anything had been read from the web, it gave:
 
 ```text
 found for "internal standard blanks" — previews: nothing is committed until you keep it.
@@ -37,19 +37,21 @@ YOUR PLANS
   no plan of yours mentions it.
 
 THE WEB
-  gemini HTTP 401
+  duckduckgo · the pages themselves are not read until you read them
+  (ten results, each with read and + keep on a plan)
 ```
 
 - **Your mail** is searched live in every account, and — once mail is kept — once more with a verdict.
 - **Your files** are searched by spraypaint: passages ranked by the words in them, each shown as the few lines where your words are densest, numbered as in the file.
-- **The web** is a model with a search tool. It needs a valid `GEMINI_API_KEY` on the server; without one, as here, the section says why it is empty instead of failing silently. When it works, an answer that came back without citations is marked as the model's own words.
+- **What you have read** — every page kept with `read` ([Understanding a Specification](./understanding-a-specification)) — is searched with a verdict, like your files. Before you have read anything, it says so.
+- **The web** is a search engine: DuckDuckGo, with no key needed (a server can be pointed at its own SearXNG with `SEARXNG_URL`, or Brave with `BRAVE_SEARCH_KEY`). A result is the engine's title and snippet — a pointer, not a reading. **read** keeps the page; then it is searched with a verdict too.
 - **Your plans** are the plan items whose title, notes, steps or kept evidence contain every word.
 
 Each source is asked on its own, so one failing does not hide the others.
 
 ## 2. What a verdict lets you say
 
-A search over words always returns *something* that shares a word with your query. The verdict says whether that something is about what you asked:
+A search over words always returns something that shares a word with your query. The verdict says whether that something is about what you asked:
 
 | Verdict | Means | You may say |
 |---|---|---|
@@ -69,7 +71,7 @@ YOUR FILES
   declined — no returned passage contains any query term; not in the corpus: suitable, dentist
 ```
 
-Declined is not "it does not exist" — it is "not in what was searched, in these words". Try another word for it (*Zahnarzt*), or look on the web. And covered is not "answered": it means the words are together, so read the passage before you rely on it.
+Declined is not "it does not exist" — it is "not in what was searched, in these words". Try another word for it (Zahnarzt), or look on the web. And covered is not "answered": it means the words are together, so read the passage before you rely on it.
 
 ## 3. Plan
 

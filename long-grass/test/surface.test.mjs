@@ -100,9 +100,9 @@ test("saveBook trims the oldest pages to fit, renumbering on load", () => {
 test("the edges hold the refined layout, each item filed once", () => {
   const ids = Object.values(EDGES).flatMap((e) => e.entries.map((x) => x.id));
   assert.equal(new Set(ids).size, ids.length);
-  assert.deepEqual(EDGES.top.entries.map((e) => e.id), ["devices", "machine", "network", "mail", "experiments", "lattice", "runtime"]);
+  assert.deepEqual(EDGES.top.entries.map((e) => e.id), ["devices", "machine", "network", "web", "mail", "experiments", "lattice", "runtime"]);
   assert.deepEqual(EDGES.right.entries.map((e) => e.id), ["preferences", "screen", "code", "peripherals"]);
-  assert.deepEqual(EDGES.bottom.entries.map((e) => e.id), ["model", "projects", "rag", "planning", "reports"]);
+  assert.deepEqual(EDGES.bottom.entries.map((e) => e.id), ["model", "projects", "rag", "planning", "spec", "reports"]);
   assert.equal(edgeOf("lavoisier"), null, "the federation lives in the left column");
   assert.equal(edgeOf("restart"), null, "system housekeeping moved to the left column");
   assert.ok(ids.every((id) => glanceOf(id) !== undefined), "every edge item opens showing something");

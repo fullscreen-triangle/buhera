@@ -32,7 +32,7 @@ Add a repository by its path on your computer. Each one gets **tasks** and **uni
 
 ## 2. Plan
 
-Click **tasks**, then a task. Say how to split it — `seed=1..3` runs it three times, filling `{seed}` in the command; *once per file* runs it per tracked file matching a glob; *send back* names the files to return — and press **plan it**. For the lipid series' scoring script, a task `python3 score.py {seed}` split over three seeds:
+Click **tasks**, then a task. Say how to split it — `seed=1..3` runs it three times, filling `{seed}` in the command; **once per file** runs it per tracked file matching a glob; **send back** names the files to return — and press **plan it**. For the lipid series' scoring script, a task `python3 score.py {seed}` split over three seeds:
 
 ```text
 unit         score — 3 shard(s) (seed×3)
@@ -66,7 +66,7 @@ Your other staged and unstaged work is left as it was.
 
 ## 4. On AppHub
 
-Start a session with the profile the plan named (CPU, or a GPU profile such as *Deep Learning → Advanced: RTX 4090*). In its terminal:
+Start a session with the profile the plan named (CPU, or a GPU profile such as “Deep Learning → Advanced: RTX 4090”). In its terminal:
 
 ```text
 git clone https://git.uni-greifswald.de/<user>/<repo>.git     # the first time; afterwards: cd <repo> && git pull
@@ -91,7 +91,7 @@ seed-3   done    0      0s     d1dfb17ba78b   log
 3 done, 0 failed, 0 running, 0 not reported, of 3
 ```
 
-Before the session has pushed anything it says *nothing pushed back yet — is the unit running on AppHub?*; while it runs, **look again**. **log** shows a shard's output:
+Before the session has pushed anything it says “nothing pushed back yet — is the unit running on AppHub?”; while it runs, **look again**. **log** shows a shard's output:
 
 ```text
 shard seed-1
@@ -102,6 +102,6 @@ seed 1: mean chain length 34.122
 
 ## 6. The job belongs to the experiment
 
-On the wrapped frame, or next to a unit, choose the plan the job belongs to — or add it on the plan item under **jobs on AppHub**. The item then lists the unit with a **results** button, and an experiment that was only an idea becomes *running*.
+On the wrapped frame, or next to a unit, choose the plan the job belongs to — or add it on the plan item under **jobs on AppHub**. The item then lists the unit with a **results** button, and an experiment that was only an idea becomes “running”.
 
-That closes the loop the four tutorials walked: Mara's mail about the robot, the protocol in your notes, the plan with its evidence, and the scoring on AppHub — all on one screen, if you cut them onto it.
+That closes the loop the tutorials walked: Mara's mail about the robot, the protocol in your notes, the plan with its evidence, and the scoring on AppHub — all on one screen, if you cut them onto it.

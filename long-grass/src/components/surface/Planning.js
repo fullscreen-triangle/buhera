@@ -16,8 +16,10 @@ import {
   toMarkdown, toggleStep, updateItem, usePlanning,
 } from "@/lib/surface/planning";
 import { useStep } from "@/components/surface/actions";
+import { postJSON } from "@/lib/auth/headers";
 import { Button, Choice, when } from "@/components/surface/controls";
 import { SpraypaintResult } from "@/components/sandboxes/spraypaint/SpraypaintResult";
+import MermaidView from "@/components/surface/MermaidView";
 
 const VERDICT_INK = { covered: "text-teal-300", partial: "text-amber-300", declined: "text-rose-300" };
 
@@ -81,6 +83,56 @@ export function KeepOnPlan({ found, commit }) {
         </div>
       )}
     </span>
+  );
+}
+
+/**
+ * "+ note": your own words about a passage, kept on a plan with the passage
+ * and where it is (`cite`, e.g. url#anchor). Several notes may cite one place.
+ */
+export function NoteOnPlan({ cite, title, snippet }) {
+  const items = usePlanning();
+  const { project } = useSettings();
+  const open = itemsInProject(items, project).filter((i) => i.status !== "done" && i.status !== "dropped");
+  const [editing, setEditing] = useState(false);
+  const [text, setText] = useState("");
+  const [target, setTarget] = useState("");
+  const [saved, setSaved] = useState(null);
+
+  function save() {
+    if (!text.trim()) return;
+    const item = (target && items.find((i) => i.id === target)) || open[0] || addItem({ title: title.split(" — ")[0] || "notes", kind: "task" });
+    addRef(item.id, { source: "note", cite, title, snippet, note: text.trim() });
+    setSaved(item.title);
+    setText("");
+    setEditing(false);
+  }
+
+  if (!editing) {
+    return (
+      <span className="text-[11px] font-normal">
+        <button type="button" className="text-gray-600 hover:text-teal-300" onClick={() => { setEditing(true); setSaved(null); }}>+ note</button>
+        {saved && <span className="ml-2 text-teal-400/70">noted on “{saved}”</span>}
+      </span>
+    );
+  }
+  return (
+    <div className="basis-full mt-1 mb-2 border border-gray-800 rounded p-2 text-xs font-normal">
+      <textarea autoFocus rows={3} value={text} onChange={(e) => setText(e.target.value)} spellCheck={false}
+        placeholder="in your own words: what this says, what it means for you"
+        onKeyDown={(e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) save(); if (e.key === "Escape") setEditing(false); }}
+        className="w-full bg-transparent outline-none text-sm text-gray-200 leading-relaxed" />
+      <div className="flex flex-wrap items-center gap-3 mt-1 text-gray-500">
+        <span>on</span>
+        <select value={target} onChange={(e) => setTarget(e.target.value)} className="bg-black border border-gray-800 rounded text-gray-300 px-1 py-0.5">
+          {open.length === 0 && <option value="">a new task: {title.split(" — ")[0]}</option>}
+          {open.map((i) => <option key={i.id} value={i.id}>{i.title}</option>)}
+        </select>
+        <Button disabled={!text.trim()} onClick={save}>keep the note</Button>
+        <button type="button" className="hover:text-gray-300" onClick={() => setEditing(false)}>cancel</button>
+        <span className="text-gray-700">Ctrl+Enter keeps it</span>
+      </div>
+    </div>
   );
 }
 
@@ -177,8 +229,12 @@ function RefRow({ itemId, r }) {
         )}
         <button type="button" className="text-[11px] text-gray-700 hover:text-rose-300" onClick={() => removeRef(itemId, r.id)}>remove</button>
       </div>
-      <div className="ml-12 text-[11px] font-mono text-teal-300/70 break-all">{r.cite}</div>
+      <div className="ml-12 text-[11px] font-mono text-teal-300/70 break-all">
+        {/^https?:\/\//.test(r.cite) ? <a href={r.cite} target="_blank" rel="noreferrer noopener" className="hover:underline">{r.cite}</a> : r.cite}
+      </div>
+      {r.note && <div className="ml-12 my-1 text-sm text-gray-200 whitespace-pre-wrap">{r.note}</div>}
       {r.snippet && <div className="ml-12 text-xs text-gray-500 whitespace-pre-wrap line-clamp-3">{r.snippet}</div>}
+      {r.mermaid && <div className="ml-12 mt-2"><MermaidView text={r.mermaid} name={r.title} compact /></div>}
       {r.query && <div className="ml-12 text-[11px] text-gray-700">found by “{r.query}”</div>}
     </div>
   );
@@ -269,7 +325,7 @@ export function PlanningItem({ id, created }) {
 
 // ── what find found ──────────────────────────────────────────────────────
 
-const SOURCE_TITLE = { mail: "your mail", files: "your files", web: "the web", plans: "your plans" };
+const SOURCE_TITLE = { mail: "your mail", files: "your files", read: "what you have read", web: "the web", plans: "your plans" };
 
 function MailHits({ live, query }) {
   const step = useStep();
@@ -307,8 +363,8 @@ function passageFound(r, result, source, corpus) {
   const to = r.evidence_end_line ?? r.end_line;
   return {
     source,
-    cite: `${corpus === "mail" ? "kept mail: " : ""}${r.path}:${from}-${to}`,
-    title: firstLine(r.snippet) || r.path,
+    cite: r.source_url ? `${r.source_url} (kept page, lines ${from}-${to})` : `${corpus === "mail" ? "kept mail: " : ""}${r.path}:${from}-${to}`,
+    title: r.source_title ? `${r.source_title} — ${firstLine(r.snippet)}` : firstLine(r.snippet) || r.path,
     snippet: r.snippet,
     verdict: result.coverage?.verdict || null,
     query: result.query,
@@ -318,12 +374,8 @@ function passageFound(r, result, source, corpus) {
 }
 
 async function commitAsk(corpus, query) {
-  const res = await fetch(corpus === "mail" ? "/api/mail" : "/api/spraypaint", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action: "ask", query, dry_run: false, budget: 1 }),
-  });
-  const j = await res.json().catch(() => null);
+  const path = corpus === "mail" ? "/api/mail" : corpus === "library" ? "/api/web" : "/api/spraypaint";
+  const j = await postJSON(path, { action: "ask", query, dry_run: false, budget: 1 });
   const n = j?.output_delta?.committed_count;
   return typeof n === "number" ? { committed_count: n } : {};
 }
@@ -353,18 +405,22 @@ function Section({ s, query }) {
       </div>
     );
   } else if (s.source === "files") body = <Passages result={s.result} source="files" corpus="files" />;
+  else if (s.source === "read") body = <Passages result={s.result} source="read" corpus="library" />;
   else if (s.source === "web") {
-    const w = s.result || {};
     body = (
       <div>
-        <p className="text-sm text-gray-300 whitespace-pre-wrap leading-relaxed">{w.content}</p>
-        {!w.grounded && <p className="text-[11px] text-amber-300/70 mt-1">no citations came back — treat this as the model&apos;s own words.</p>}
-        {w.sources?.slice(0, 5).map((src) => (
-          <div key={src.index} className="text-[11px] flex gap-3">
-            <a href={src.uri} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-teal-300 truncate">{src.title || src.uri}</a>
-            <KeepOnPlan found={{ source: "web", cite: src.uri || src.title, title: src.title || src.uri, snippet: "", query }} />
+        <div className="text-[11px] text-gray-600 mb-1">{s.engine} · the pages themselves are not read until you read them</div>
+        {(s.results || []).map((r) => (
+          <div key={r.url} className="py-1 border-t border-gray-900">
+            <div className="flex flex-wrap items-baseline gap-x-3">
+              <a href={r.url} target="_blank" rel="noreferrer noopener" className="text-sm text-gray-200 hover:text-white">{r.title || r.url}</a>
+              {step && <button type="button" className="text-[11px] text-gray-500 hover:text-teal-300" onClick={() => step(`read ${r.url}`, "web", { kind: "read", url: r.url })}>read</button>}
+              <KeepOnPlan found={{ source: "web", cite: r.url, title: r.title, snippet: r.snippet, query }} />
+            </div>
+            {r.snippet && <div className="text-xs text-gray-500">{r.snippet}</div>}
           </div>
         ))}
+        {!(s.results || []).length && <p className="text-xs text-gray-600">no results.</p>}
       </div>
     );
   } else if (s.source === "plans") {
@@ -387,7 +443,7 @@ function Section({ s, query }) {
 
 export function PlanningFind({ query, sections }) {
   const step = useStep();
-  const order = useMemo(() => ["mail", "files", "plans", "web"], []);
+  const order = useMemo(() => ["read", "mail", "files", "plans", "web"], []);
   const sorted = [...(sections || [])].sort((a, b) => order.indexOf(a.source) - order.indexOf(b.source));
   return (
     <div>

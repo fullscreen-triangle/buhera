@@ -3,9 +3,9 @@
  *
  * Browser-side client for the spraypaint search backend: /api/spraypaint
  * (local, full-text passage retrieval over this repo) and /api/web-search
- * (internet, via an LLM's own browsing tool). Module code runs in the
- * browser, so both are called over fetch — the actual CLI spawn and the
- * actual Gemini call happen server-side in those two routes.
+ * (internet: a search engine's results). Module code runs in the browser, so
+ * both are called over fetch — the CLI spawn and the search happen
+ * server-side in those two routes.
  *
  * Instruction shapes:
  *   { kind: "ask", query, root?, budget?, scenes?, dry_run? }  → local search;
@@ -20,12 +20,14 @@
  *   a plain string                                     → sugar for { kind: "ask", query: <string> }
  * ========================================================================== */
 
+import { authHeaders } from "@/lib/auth/headers";
+
 async function postJSON(path, body) {
   let res;
   try {
     res = await fetch(path, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeaders() },
       body: JSON.stringify(body),
     });
   } catch (err) {

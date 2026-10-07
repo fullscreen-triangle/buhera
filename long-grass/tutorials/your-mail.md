@@ -4,7 +4,7 @@ All your mail accounts in one search, on the blank screen: the university's, Gma
 
 **Time:** 15 minutes, most of it setting up the first account.
 
-**Before you start:** mail is read by the long-grass server on your own computer (`npm run dev` in `long-grass/`). The hosted site will not read mail: it cannot tell whose mail a visitor may see, so it answers *"mail is read only on the machine this server runs on"*.
+**Before you start:** mail is read by the long-grass server on your own computer (`npm run dev` in `long-grass/`). The hosted site will not read mail: it cannot tell whose mail a visitor may see, so it answers "mail is read only on the machine this server runs on".
 
 ---
 
@@ -44,7 +44,7 @@ MAIL_GMAIL_PASSWORD=…
 - **University mail**: your IT department's pages name the IMAP host. Port 993 and TLS are the default; set `"port"` and `"secure"` if yours differs. Exchange servers need IMAP switched on for your account.
 - `"mailboxes": ["INBOX", "Sent"]` searches more than the inbox.
 
-Now open the top edge and pick **mail**. Each account says whether it is ready, or exactly what is missing (*"the variable MAIL_UNI_PASSWORD is not set on this server"*, *"no user"*).
+Now open the top edge and pick **mail**. Each account says whether it is ready, or exactly what is missing ("the variable MAIL_UNI_PASSWORD is not set on this server", "no user").
 
 ## 2. Searching
 

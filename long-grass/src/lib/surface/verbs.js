@@ -37,14 +37,68 @@ export function visInstruction(utterance, page) {
 //   plan [experiment|task] <title>           a new plan item ("plan experiment …")
 //   plans | plan                             the plan board
 //   apphub | lattice                         jobs on AppHub
+//   web <words>                              a search engine's results
+//   read <url> | read site <url> [n]         read a page, or a documentation site, into the library
+//   library                                  every page read
+//   diagram <url> [around <Class>] [depth 2] [all] [against <url>]
+//                                            a class diagram of a specification
+//   workflow <url> [against <url>]           the workflow its PROV-O terms describe
+//   compare <url> with <url>                 what the second specification changes about the first
+//   draw <what>                              a workflow drafted by your model from your open plan
+//   flowchart … / classDiagram … (Mermaid)   drawn as written — the one verb of several lines
 
 const MAIL_VERB = /^(?:mail|email|e-mail)\b\s*(.*)$/i;
 const FIND_VERB = /^(?:find|search)\s+(.+)$/i;
 const PLAN_VERB = /^plan\s+(?:(?:an?\s+)?(experiment|task)\b\s*:?\s*)?(.+)$/i;
 
+const URL_PART = String.raw`(https?:\/\/\S+)`;
+const MERMAID = /^(flowchart|graph|classDiagram|sequenceDiagram|stateDiagram(?:-v2)?|erDiagram|mindmap|timeline|gantt)\b/;
+const READ_SITE = new RegExp(String.raw`^read\s+(?:the\s+)?(?:site|all(?:\s+of)?)\s+${URL_PART}(?:\s+(\d+))?$`, "i");
+const READ = new RegExp(String.raw`^read\s+${URL_PART}$`, "i");
+const COMPARE = new RegExp(String.raw`^compare\s+${URL_PART}\s+(?:with|and|to)\s+${URL_PART}$`, "i");
+const WORKFLOW = new RegExp(String.raw`^workflow\s+(?:of\s+)?${URL_PART}(?:\s+against\s+${URL_PART})?$`, "i");
+const DIAGRAM = new RegExp(String.raw`^diagram\s+(?:of\s+)?${URL_PART}(.*)$`, "i");
+const AGAINST = new RegExp(String.raw`\bagainst\s+${URL_PART}`, "i");
+
+function readingVerb(s) {
+  let m = s.match(READ_SITE);
+  if (m) return { module: "web", instruction: { kind: "site", url: m[1], limit: m[2] ? Number(m[2]) : undefined } };
+  m = s.match(READ);
+  if (m) return { module: "web", instruction: { kind: "read", url: m[1] } };
+  m = s.match(/^web\s+(.+)$/i);
+  if (m) return { module: "web", instruction: { kind: "search", query: m[1].trim() } };
+  if (/^library$/i.test(s)) return { module: "web", instruction: { kind: "library" } };
+  m = s.match(COMPARE);
+  if (m) return { module: "spec", instruction: { kind: "compare", a: m[1], b: m[2] } };
+  m = s.match(WORKFLOW);
+  if (m) return { module: "spec", instruction: { kind: "diagram", view: "flow", url: m[1], against: m[2] } };
+  m = s.match(DIAGRAM);
+  if (m) {
+    const rest = m[2];
+    return {
+      module: "spec",
+      instruction: {
+        kind: "diagram",
+        view: "classes",
+        url: m[1],
+        focus: /\baround\s+([A-Za-z0-9_]+)/i.exec(rest)?.[1],
+        depth: Number(/\bdepth\s+(\d)/i.exec(rest)?.[1]) || undefined,
+        attributes: /\ball\b/i.test(rest) ? "all" : "mandatory",
+        against: AGAINST.exec(rest)?.[1],
+      },
+    };
+  }
+  m = s.match(/^draw\s+(.+)$/i);
+  if (m) return { module: "spec", instruction: { kind: "draft", request: m[1].trim() } };
+  return null;
+}
+
 export function workVerb(utterance) {
   const s = String(utterance).trim();
+  if (MERMAID.test(s)) return { module: "spec", instruction: { kind: "mermaid", text: s } };
   if (!s || s.includes("\n")) return null;
+  const reading = readingVerb(s);
+  if (reading) return reading;
   if (/^inbox$/i.test(s)) return { module: "mail", instruction: { kind: "search", query: "" } };
   let m = s.match(MAIL_VERB);
   if (m) return { module: "mail", instruction: m[1].trim() ? { kind: "search", query: m[1].trim() } : "accounts" };

@@ -1,7 +1,8 @@
 /* The tutorials' reading order, in two parts.
  *
- * START: the blank screen and the work it is for — mail, finding things,
- * planning, jobs on AppHub. Read these first, in order.
+ * START: a first task (understanding a specification), then the blank screen
+ * and the work it is for — mail, finding things, planning, jobs on AppHub.
+ * Read these first, in order.
  *
  * GUIDES: one module at a time, written for the earlier terminal. Every
  * `dispatch(...)` line in them still works typed on the blank screen.
@@ -10,6 +11,7 @@
  */
 
 export const START = [
+  "understanding-a-specification",
   "the-blank-screen",
   "your-mail",
   "finding-and-planning",

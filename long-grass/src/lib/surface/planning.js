@@ -4,7 +4,8 @@
  *
  *   item  { id, project, kind: "experiment" | "task", title, status, due,
  *           created, updated, steps: [{ id, text, done }],
- *           refs: [{ id, source, cite, title, snippet, verdict, query, at }],
+ *           refs: [{ id, source, cite, title, snippet, verdict, query, at,
+ *                    note?, mermaid? }],
  *           jobs: [{ repo, unit, remote, at }], notes }
  *   status  idea → planned → running → done  (or dropped)
  *
@@ -12,6 +13,8 @@
  * answer) kept on the item with where it came from (`cite`) and, for a
  * search that gives one, its coverage verdict — so a plan records not just
  * what you read but how sure the search was that it was about the thing.
+ * A ref with a `note` is your own words about a passage (cite: url#anchor);
+ * one with `mermaid` is a diagram. The Markdown export gives each its section.
  *
  * Kept in this browser (localStorage), like the surface's settings; scoped to
  * the active project. One store, observable with usePlanning().
@@ -130,10 +133,13 @@ export function removeStep(id, stepId) {
   return change(id, (i) => ({ ...i, steps: i.steps.filter((s) => s.id !== stepId) }));
 }
 
-/** Keep a found thing on an item. The same citation is kept once. */
+/**
+ * Keep a found thing on an item. The same citation is kept once — except a
+ * note or a diagram, which are your own words and may cite the same place.
+ */
 export function addRef(id, ref) {
   return change(id, (i) => {
-    if (i.refs.some((r) => r.cite === ref.cite)) return i;
+    if (!ref.note && !ref.mermaid && i.refs.some((r) => r.cite === ref.cite && !r.note && !r.mermaid)) return i;
     return { ...i, refs: [...i.refs, { id: newId("ref"), at: Date.now(), ...ref }] };
   });
 }
@@ -169,9 +175,26 @@ export function toMarkdown(item) {
     for (const s of item.steps) out.push(`- [${s.done ? "x" : " "}] ${s.text}`);
     out.push("");
   }
-  if (item.refs.length) {
+  const notes = item.refs.filter((r) => r.note);
+  const diagrams = item.refs.filter((r) => r.mermaid);
+  const found = item.refs.filter((r) => !r.note && !r.mermaid);
+  if (notes.length) {
+    out.push("## Notes", "");
+    for (const r of notes) {
+      out.push(`### ${r.title || r.cite}`, "", r.note.trim(), "");
+      if (r.snippet) out.push(`> ${String(r.snippet).replace(/\s+/g, " ").slice(0, 400)}`, "");
+      out.push(`— ${r.cite}`, "");
+    }
+  }
+  if (diagrams.length) {
+    out.push("## Diagrams", "");
+    for (const r of diagrams) {
+      out.push(`### ${r.title || "diagram"}`, "", r.snippet ? `${r.snippet}\n` : "", "```mermaid", r.mermaid.trim(), "```", "");
+    }
+  }
+  if (found.length) {
     out.push("## What we found", "");
-    for (const r of item.refs) {
+    for (const r of found) {
       out.push(`- **${r.title || r.cite}** — ${r.source}, \`${r.cite}\`${r.verdict ? ` (search verdict: ${r.verdict})` : ""}`);
       if (r.snippet) out.push(`  > ${String(r.snippet).replace(/\s+/g, " ").slice(0, 300)}`);
     }

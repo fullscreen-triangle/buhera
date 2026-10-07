@@ -14,7 +14,7 @@ import {
   FlaskConical, BrainCircuit, Terminal, Route, Sparkles, Languages, Crosshair, Shapes, Microscope,
   NotebookPen, Braces, Hammer, Workflow, Pill, Bot, Layers, Timer, Waves, Radar, Wind,
   MonitorSmartphone, Microchip, FlaskRound, TramFront, ALargeSmall, Monitor, Code, Printer, UserCog,
-  FolderKanban, LibraryBig, ListChecks, FileText, Mail, ServerCog, ChartGantt,
+  FolderKanban, LibraryBig, ListChecks, FileText, Mail, ServerCog, ChartGantt, Globe, DraftingCompass,
 } from "lucide-react";
 
 export const ICONS = {
@@ -22,6 +22,7 @@ export const ICONS = {
   devices: MonitorSmartphone,
   machine: Microchip,
   network: Wifi,
+  web: Globe,
   mail: Mail,
   experiments: FlaskRound,
   lattice: ServerCog,
@@ -36,6 +37,7 @@ export const ICONS = {
   projects: FolderKanban,
   rag: LibraryBig,
   planning: ChartGantt,
+  spec: DraftingCompass,
   plans: ListChecks,
   reports: FileText,
   // the federation (left column)

@@ -70,10 +70,11 @@ export default function TutorialsIndex({ items }) {
 
           <h1 className="text-4xl font-bold text-white mb-2">Tutorials</h1>
           <p className="text-gray-400 mb-6 leading-relaxed">
-            Start with the first four: they walk the blank screen and the work
-            it is for — your mail, finding things, planning an experiment, and
-            running its jobs on AppHub — with one experiment carried through
-            all of them. Every cell is something you can type on the blank
+            Start with the first: understand two specifications — DCAT-AP and
+            DCAT-AP+ — by reading them, taking notes and drawing them. The next
+            four walk the blank screen and the work it is for — your mail,
+            finding things, planning an experiment, and running its jobs on
+            AppHub. Every cell is something you can type on the blank
             screen; run it here with ▶ and it gives the real result.
           </p>
 

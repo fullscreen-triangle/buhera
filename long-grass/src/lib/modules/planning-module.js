@@ -7,7 +7,8 @@
  *   mail    your accounts, searched live over IMAP; and, once mail has been
  *           kept (mail sync), spraypaint over it, with a coverage verdict
  *   files   spraypaint over this machine's tree, with a coverage verdict
- *   web     a model with a search tool (needs GEMINI_API_KEY on the server)
+ *   read    what you have read (the web library), with a coverage verdict
+ *   web     a search engine (DuckDuckGo by default; SearXNG or Brave if set)
  *   plans   your own plan items that mention it
  *
  * Every hit can be kept on a plan item (lib/surface/planning.js) together
@@ -18,14 +19,15 @@
  * Instruction shapes:
  *   "show" | "board"                                 → the plan board
  *   "<words>"                                         → find
- *   { kind: "find", query, sources? }                 → find in ["mail","files","web","plans"]
+ *   { kind: "find", query, sources? }                 → find in ["mail","files","read","web","plans"]
  *   { kind: "new", title, type?: "experiment"|"task", due? }
  *   { kind: "item", id }
  * ========================================================================== */
 
 import { addItem, getItems, matchItems } from "@/lib/surface/planning";
+import { postJSON } from "@/lib/auth/headers";
 
-export const SOURCES = ["mail", "files", "web", "plans"];
+export const SOURCES = ["mail", "files", "read", "web", "plans"];
 
 async function post(path, body) {
   try {
@@ -60,8 +62,13 @@ const FINDERS = {
     return r.ok ? { ok: true, result: r.output_delta } : { ok: false, error: r.error };
   },
   async web(query) {
-    const r = await post("/api/web-search", { query });
-    return r.ok ? { ok: true, result: r.output_delta } : { ok: false, error: r.error };
+    const r = await postJSON("/api/web", { action: "search", query });
+    return r.ok ? { ok: true, engine: r.engine, results: r.results } : { ok: false, error: r.error };
+  },
+  async read(query) {
+    const r = await postJSON("/api/web", { action: "ask", query, dry_run: true, budget: 6 });
+    if (r.ok) return { ok: true, result: r.output_delta };
+    return { ok: false, error: /nothing has been read/.test(r.error || "") ? "nothing read yet — `read <url>` keeps a page here" : r.error };
   },
   async plans(query) {
     const hits = matchItems(query, getItems());

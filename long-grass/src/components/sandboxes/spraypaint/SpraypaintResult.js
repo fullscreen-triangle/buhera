@@ -132,6 +132,10 @@ export function SpraypaintResult({ query, results, allocation, price, budget, co
                     <button type="button" className="text-[11px] text-gray-500 hover:text-teal-300"
                       onClick={() => step(`mail: ${r.path}`, "mail", { kind: "open", path: r.path })}>open the mail</button>
                   )}
+                  {r.source_url && step && (
+                    <button type="button" className="text-[11px] text-gray-500 hover:text-teal-300"
+                      onClick={() => step(`read ${r.source_url}`, "web", { kind: "page", url: r.source_url })}>open {r.source_title || "the page"}</button>
+                  )}
                   {rowAction && rowAction(r)}
                 </div>
                 <Evidence r={r} terms={terms} />

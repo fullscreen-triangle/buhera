@@ -12,6 +12,8 @@
  *   mail_*       accounts, a search, a message, a sync         (Mail.js)
  *   planning_*   the board, one item, what find found          (Planning.js)
  *   lattice_*    jobs on AppHub: tasks, plan, unit, results    (Jobs.js)
+ *   web_*        search results, a page read, a site, the library (Reader.js)
+ *   spec_*       a specification's model, diagrams, a comparison (Spec.js)
  *
  * <Artifact> delegates unknown kinds here and passes itself in as `Artifact`,
  * so nested results render with the same renderer without an import cycle.
@@ -26,6 +28,8 @@ import RuntimeMap from "@/components/runtime/RuntimeMap";
 import { Button, Choice, Row, Slider, Toggle, pct, when } from "@/components/surface/controls";
 import { MailAccounts, MailMessage, MailSearch, MailSync } from "@/components/surface/Mail";
 import { PlanningBoard, PlanningFind, PlanningItem } from "@/components/surface/Planning";
+import { WebLibrary, WebPage, WebSearch, WebSite } from "@/components/surface/Reader";
+import { SpecCompare, SpecDiagram, SpecModel } from "@/components/surface/Spec";
 import { LatticeHome, LatticeLog, LatticePlan, LatticeResults, LatticeTasks, LatticeUnits, LatticeWrapped } from "@/components/surface/Jobs";
 
 // ── sections ─────────────────────────────────────────────────────────────
@@ -387,6 +391,13 @@ export default function SurfaceArtifact({ result, Artifact }) {
     case "planning_item": return <PlanningItem id={result.id} created={result.created} />;
     case "planning_find": return <PlanningFind {...result} />;
     case "lattice_home": return <LatticeHome />;
+    case "web_search": return <WebSearch {...result} />;
+    case "web_page": return <WebPage {...result} />;
+    case "web_site": return <WebSite {...result} />;
+    case "web_library": return <WebLibrary {...result} />;
+    case "spec_model": return <SpecModel {...result} />;
+    case "spec_diagram": return <SpecDiagram {...result} />;
+    case "spec_compare": return <SpecCompare {...result} />;
     case "lattice_tasks": return <LatticeTasks {...result} />;
     case "lattice_plan": return <LatticePlan {...result} />;
     case "lattice_wrapped": return <LatticeWrapped {...result} />;

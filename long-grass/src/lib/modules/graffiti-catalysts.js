@@ -20,6 +20,7 @@
  * ========================================================================== */
 
 import { embedText, sDistance } from "@/lib/substrate";
+import { postJSON } from "@/lib/auth/headers";
 
 /**
  * kernel_search — reads from a Kernel instance passed in at build time.
@@ -130,17 +131,17 @@ export function createSpraypaintCatalyst(name, power = 0.7) {
 }
 
 /**
- * web_search — internet search via an LLM's own browsing tool, through
- * /api/web-search. Namespace "remote" since it's the one catalyst here that
- * actually leaves the machine.
+ * web_search — internet search with a search engine, through /api/web-search.
+ * Namespace "remote" since it's the one catalyst here that actually leaves
+ * the machine.
  *
  * Instruction args:
  *   - "query" (string): the search text; defaults to currentClaim
  *
  * Result:
- *   claim = the grounded answer text
- *   power = 0.6 on success, 0 if unconfigured/unreachable (e.g. no
- *           GEMINI_API_KEY, or the key is invalid)
+ *   claim = the top result: its title, address and the engine's snippet
+ *   power = 0.4 when there are results — a snippet is a pointer to a source,
+ *           not a reading of it — and 0 when there are none or search fails
  */
 export function createWebSearchCatalyst(name, power = 0.6) {
   return {
@@ -152,16 +153,13 @@ export function createWebSearchCatalyst(name, power = 0.6) {
         return { claim: `${name}:no-query`, power: 0 };
       }
       try {
-        const res = await fetch("/api/web-search", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query }),
-        });
-        const body = await res.json().catch(() => null);
-        if (!res.ok || !body?.output_delta) {
+        const body = await postJSON("/api/web-search", { query });
+        if (!body.ok || !body?.output_delta) {
           return { claim: `${name}:unreachable:${query}`, power: 0 };
         }
-        return { claim: body.output_delta.content, power };
+        const top = body.output_delta.results?.[0];
+        if (!top) return { claim: `${name}:no-results:${query}`, power: 0 };
+        return { claim: `${top.title} — ${top.url}: ${top.snippet}`, power: Math.min(0.4, power) };
       } catch {
         return { claim: `${name}:error:${query}`, power: 0 };
       }

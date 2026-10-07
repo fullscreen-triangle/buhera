@@ -41,9 +41,9 @@ Move the pointer to an edge of the screen and hold it there for a moment. A draw
 
 | Edge | What is there |
 |---|---|
-| top | where you are: devices, this machine, the network, **mail**, shared experiments, **apphub** (jobs on the university's AppHub), the runtime graph |
+| top | where you are: devices, this machine, the network, **web** (what you have read), **mail**, shared experiments, **apphub** (jobs on the university's AppHub), the runtime graph |
 | right | how the screen is used: text size and spacing, screen, code visibility, printer and "save the screen as an image" |
-| bottom | who the work is for: your model, projects and groups, retrieval (RAG) folders, **planning**, reports |
+| bottom | who the work is for: your model, projects and groups, retrieval (RAG) folders, **planning**, **spec** (understanding a specification), reports |
 | left | every module, with a search at the top |
 
 Moving the pointer to another edge switches drawers; clicking anywhere else closes it.
@@ -66,7 +66,12 @@ These are written on the blank screen (or run here with ▶):
 |---|---|
 | `inbox` | your newest mail, every account |
 | `mail from:mara since:2026-09-01` | a mail search ([Your Mail](./your-mail)) |
-| `find plate layout blanks` | the same words looked up in your mail, your files, the web and your plans ([Finding and Planning](./finding-and-planning)) |
+| `find plate layout blanks` | the same words looked up in what you have read, your mail, your files, the web and your plans ([Finding and Planning](./finding-and-planning)) |
+| `web dcat-ap linkml` | a search engine's results |
+| `read https://…` · `read site https://…` | a page, or a documentation site, read into your library |
+| `diagram https://…` · `workflow https://…` · `compare https://… with https://…` | a specification's classes, its workflow, what one changes about another ([Understanding a Specification](./understanding-a-specification)) |
+| `draw …` | a workflow drafted by your model from your open plan's notes |
+| Mermaid (`flowchart LR …`) | drawn as written |
 | `plan experiment PC 34:1 lipid series` | a new plan item |
 | `plans` | the plan board |
 | `apphub` | your repositories and their jobs on AppHub ([Jobs on AppHub](./jobs-on-apphub)) |
