@@ -102,7 +102,7 @@ export default function TutorialPage({ title, description, blocks, prev, next })
             <Link href="/tutorials" className="text-blue-400 hover:text-blue-300">
               ← all tutorials
             </Link>
-            <Link href="/" className="text-blue-400 hover:text-blue-300">
+            <Link href="/surface" className="text-blue-400 hover:text-blue-300">
               blank screen →
             </Link>
           </nav>

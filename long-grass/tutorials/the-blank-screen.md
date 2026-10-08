@@ -1,6 +1,6 @@
 # The Blank Screen
 
-Buhera opens on a black screen with a caret and nothing else. There are no windows, no menus and no app to choose first: you write what you want, and each thing you do becomes a page of its own. This tutorial shows how to write, how to go back, where everything else is, and how to put parts of several pages side by side.
+The blank surface, at `/surface` (the **surface** link at the top of the [landing document](./the-landing-document)), is a black screen with a caret and nothing else. There are no windows, no menus and no app to choose first: you write what you want, and each thing you do becomes a page of its own. This tutorial shows how to write, how to go back, where everything else is, and how to put parts of several pages side by side.
 
 **Time:** 10 minutes.
 

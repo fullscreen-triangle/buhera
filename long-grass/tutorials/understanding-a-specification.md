@@ -6,7 +6,7 @@ Two specifications to understand, on the blank screen: DCAT-AP 3.0.1, the Europe
 
 **What you end with:** a task holding your notes (each with the passage and its address), the diagrams, a comparison, and a Markdown file of all of it.
 
-**Before you start:** nothing to install. On the hosted site, sign in first; reading the web there is for members only. Every example output below is from a real run on 7 October 2026, against DCAT-AP 3.0.1 (published 27 October 2025) and DCAT-AP+ 0.1.0rc4.
+**Before you start:** nothing to install. On the hosted site, sign in first; reading the web there is for members only. The commands below are written on the blank surface: follow **surface** at the top of the page after you sign in, or go to `/surface`. Every example output below is from a real run on 7 October 2026, against DCAT-AP 3.0.1 (published 27 October 2025) and DCAT-AP+ 0.1.0rc4.
 
 ---
 
@@ -241,4 +241,4 @@ plans
 
 Open **understand DCAT-AP 3.0.1 and DCAT-AP+**. Under “what we found”: your notes, each with its passage and address; the diagrams, drawn; the comparison with its summary. **save as markdown** writes it all to one file — notes under “Notes”, diagrams as Mermaid code blocks under “Diagrams”, which GitHub, GitLab and most editors draw — ready to send or to keep beside your work.
 
-Next: [The Blank Screen](./the-blank-screen) for everything else the surface does, then [Your Mail](./your-mail).
+Next: [The Landing Document](./the-landing-document), the page you see after you sign in, then [The Blank Screen](./the-blank-screen) for everything else the surface does.

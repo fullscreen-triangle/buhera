@@ -13,17 +13,9 @@
 import fs from "fs";
 import path from "path";
 import { allowed } from "@/lib/server/session";
-import { crawl, libraryDir, libraryPages, readKept, readUrl, search } from "@/lib/server/web";
+import { crawl, libraryDir, libraryPages, readKept, readUrl, reindexLibrary as reindex, search } from "@/lib/server/web";
 import { findBinary, run } from "@/lib/server/spawn";
 import { askArgs, parseJsonLoose } from "@/lib/server/spraypaint";
-
-async function reindex(dir) {
-  const bin = findBinary("spraypaint", "SPRAYPAINT_CLI");
-  if (!bin) return { ok: false, error: "spraypaint is not installed, so what you read cannot be searched with a verdict" };
-  fs.mkdirSync(path.join(dir, ".spraypaint"), { recursive: true });
-  const r = await run(bin, ["index", "--root", dir, "--json"], { timeoutMs: 600_000 });
-  return r.code === 0 ? { ok: true, ...(parseJsonLoose(r.stdout) || {}) } : { ok: false, error: r.stderr.trim().slice(0, 300) };
-}
 
 const strip = ({ outline, ...e }) => ({ ...e, headings: outline?.length || 0 });
 

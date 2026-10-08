@@ -58,13 +58,13 @@ export default function TutorialsIndex({ items }) {
     <>
       <Head>
         <title>tutorials · buhera</title>
-        <meta name="description" content="Buhera OS tutorials: the blank screen, your mail, finding and planning, jobs on AppHub." />
+        <meta name="description" content="Buhera OS tutorials: the landing document, the blank screen, your mail, finding and planning, jobs on AppHub." />
       </Head>
       <div className="min-h-screen bg-black text-gray-200">
         <div className="max-w-3xl mx-auto px-6 py-10">
           <nav className="mb-8 text-sm">
             <Link href="/" className="text-blue-400 hover:text-blue-300">
-              ← back to the blank screen
+              ← back to your document
             </Link>
           </nav>
 
@@ -72,7 +72,9 @@ export default function TutorialsIndex({ items }) {
           <p className="text-gray-400 mb-6 leading-relaxed">
             Start with the first: understand two specifications — DCAT-AP and
             DCAT-AP+ — by reading them, taking notes and drawing them. The next
-            four walk the blank screen and the work it is for — your mail,
+            shows the document you land on after signing in, where questions,
+            searches and scripts run as cells. The four after it walk the blank
+            screen (at /surface) and the work it is for — your mail,
             finding things, planning an experiment, and running its jobs on
             AppHub. Every cell is something you can type on the blank
             screen; run it here with ▶ and it gives the real result.

@@ -28,6 +28,8 @@ import net from "net";
 import * as cheerio from "cheerio";
 import TurndownService from "turndown";
 import { gfm } from "@joplin/turndown-plugin-gfm";
+import { findBinary, run } from "@/lib/server/spawn";
+import { parseJsonLoose } from "@/lib/server/spraypaint";
 
 const UA = "Mozilla/5.0 (compatible; BuheraReader/0.1; +https://github.com/fullscreen-triangle/buhera)";
 const MAX_BYTES = 6 * 1024 * 1024;
@@ -309,4 +311,13 @@ export async function search(query, { limit = 10, env = process.env } = {}) {
   });
   if (!r.ok) throw new Error(`duckduckgo answered HTTP ${r.status}`);
   return { engine: "duckduckgo", results: parseDuckDuckGo(await r.text()).slice(0, limit) };
+}
+
+/** Index the library with spraypaint, so what was read can be searched with a verdict. */
+export async function reindexLibrary(dir = libraryDir()) {
+  const bin = findBinary("spraypaint", "SPRAYPAINT_CLI");
+  if (!bin) return { ok: false, error: "spraypaint is not installed, so what you read cannot be searched with a verdict" };
+  fs.mkdirSync(path.join(dir, ".spraypaint"), { recursive: true });
+  const r = await run(bin, ["index", "--root", dir, "--json"], { timeoutMs: 600_000 });
+  return r.code === 0 ? { ok: true, ...(parseJsonLoose(r.stdout) || {}) } : { ok: false, error: r.stderr.trim().slice(0, 300) };
 }

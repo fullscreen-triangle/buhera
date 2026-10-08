@@ -1,6 +1,7 @@
 /* The tutorials' reading order, in two parts.
  *
- * START: a first task (understanding a specification), then the blank screen
+ * START: a first task (understanding a specification), the landing document,
+ * then the blank screen
  * and the work it is for — mail, finding things, planning, jobs on AppHub.
  * Read these first, in order.
  *
@@ -12,6 +13,7 @@
 
 export const START = [
   "understanding-a-specification",
+  "the-landing-document",
   "the-blank-screen",
   "your-mail",
   "finding-and-planning",
