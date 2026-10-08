@@ -74,3 +74,14 @@ test("the reading verbs", () => {
 });
 
 
+
+test("DuckDuckGo's lite page is read when its HTML page answers with a challenge", async () => {
+  const { parseDuckDuckGoLite } = await import("../src/lib/server/web.js");
+  const html = (await import("fs")).readFileSync(new URL("./fixtures/ddg-lite.html", import.meta.url), "utf8");
+  const r = parseDuckDuckGoLite(html);
+  assert.ok(r.length >= 5);
+  assert.equal(r[0].url, "https://semiceu.github.io/DCAT-AP/releases/3.0.1-draft/");
+  assert.equal(r[0].title, "Dcat-ap 3.0.1");
+  assert.ok(r[0].snippet.length > 20);
+  assert.ok(r.every((x) => /^https?:/.test(x.url)));
+});

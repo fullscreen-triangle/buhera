@@ -283,6 +283,23 @@ export function parseDuckDuckGo(html) {
   return out;
 }
 
+/** DuckDuckGo's lite page: each result is a link row followed by a snippet row. */
+export function parseDuckDuckGoLite(html) {
+  const $ = cheerio.load(html);
+  const out = [];
+  $("a.result-link").each((_, a) => {
+    let href = $(a).attr("href") || "";
+    const m = /[?&]uddg=([^&]+)/.exec(href);
+    if (m) href = decodeURIComponent(m[1]);
+    if (!/^https?:/.test(href)) return;
+    const snippet = $(a).closest("tr").nextAll("tr").find("td.result-snippet").first().text().replace(/\s+/g, " ").trim();
+    out.push({ title: $(a).text().trim(), url: href, snippet });
+  });
+  return out;
+}
+
+const BROWSER_UA = "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0";
+
 /** → { engine, results: [{ title, url, snippet }] } */
 export async function search(query, { limit = 10, env = process.env } = {}) {
   const q = String(query || "").trim();
@@ -309,8 +326,16 @@ export async function search(query, { limit = 10, env = process.env } = {}) {
     body: new URLSearchParams({ q }).toString(),
     signal: AbortSignal.timeout(20_000),
   });
-  if (!r.ok) throw new Error(`duckduckgo answered HTTP ${r.status}`);
-  return { engine: "duckduckgo", results: parseDuckDuckGo(await r.text()).slice(0, limit) };
+  const html = r.ok ? await r.text() : "";
+  const results = parseDuckDuckGo(html);
+  if (results.length || (r.status === 200 && !/anomaly|challenge/i.test(html))) return { engine: "duckduckgo", results: results.slice(0, limit) };
+  // From some addresses (a datacenter's, say) the HTML endpoint answers with a
+  // challenge instead of results; the lite one usually still answers.
+  const u = new URL("https://lite.duckduckgo.com/lite/");
+  u.searchParams.set("q", q);
+  const l = await fetch(u, { headers: { "User-Agent": BROWSER_UA }, signal: AbortSignal.timeout(20_000) });
+  if (!l.ok) throw new Error(`duckduckgo answered HTTP ${r.status}, and its lite page HTTP ${l.status}`);
+  return { engine: "duckduckgo lite", results: parseDuckDuckGoLite(await l.text()).slice(0, limit) };
 }
 
 /** Index the library with spraypaint, so what was read can be searched with a verdict. */
