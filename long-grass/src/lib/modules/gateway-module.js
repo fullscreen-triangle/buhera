@@ -57,6 +57,16 @@ function readSession() {
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed.token !== "string") return null;
+    // Expired past the gateway's own session TTL: drop it here rather than
+    // hand an unusable token to every call site that reads a session (auth
+    // headers, whoami, useGatewaySession's own copy of this check). Without
+    // this, nothing in the app notices expiry until the gateway's 401 comes
+    // back — by which point a page like `/login` has already redirected
+    // away from itself on the strength of a token that no longer works.
+    if (typeof parsed.expires_at === "number" && parsed.expires_at * 1000 <= Date.now()) {
+      clearSession();
+      return null;
+    }
     return parsed;
   } catch {
     return null;

@@ -27,6 +27,17 @@ function readRaw() {
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed.token !== "string") return null;
+    // The gateway's session TTL is 12 hours; a stale entry here is not a
+    // hypothetical — it's what every session looks like twelve hours after
+    // login. Treating mere presence as "logged in" sent every page here on
+    // past its expiry straight back to `/`, which then failed against the
+    // real (expired) token with no way back to the login form. Expiry is
+    // already in the stored object (see `writeSession` in gateway-module.js)
+    // — this is a read-time check, not a new network call.
+    if (typeof parsed.expires_at === "number" && parsed.expires_at * 1000 <= Date.now()) {
+      window.localStorage.removeItem("buhera.gateway.session");
+      return null;
+    }
     return parsed;
   } catch {
     return null;
